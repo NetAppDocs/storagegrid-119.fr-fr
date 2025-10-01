@@ -1,0 +1,40 @@
+---
+permalink: admin/configuring-storagegrid-certificates-for-fabricpool.html 
+sidebar: sidebar 
+keywords: fabricpool, ONTAP certificates 
+summary: 'Pour les clients S3 qui effectuent une validation stricte du nom d"hôte et ne prennent pas en charge la désactivation de la validation stricte du nom d"hôte, tels que les clients ONTAP utilisant FabricPool, vous pouvez générer ou télécharger un certificat de serveur lorsque vous configurez le point de terminaison de l"équilibreur de charge.' 
+---
+= Configurer les certificats StorageGRID pour FabricPool
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Pour les clients S3 qui effectuent une validation stricte du nom d'hôte et ne prennent pas en charge la désactivation de la validation stricte du nom d'hôte, tels que les clients ONTAP utilisant FabricPool, vous pouvez générer ou télécharger un certificat de serveur lorsque vous configurez le point de terminaison de l'équilibreur de charge.
+
+.Avant de commencer
+* Tu aslink:admin-group-permissions.html["autorisations d'accès spécifiques"] .
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+
+
+.À propos de cette tâche
+Lorsque vous créez un point de terminaison d’équilibrage de charge, vous pouvez générer un certificat de serveur auto-signé ou télécharger un certificat signé par une autorité de certification (CA) connue.  Dans les environnements de production, vous devez utiliser un certificat signé par une autorité de certification connue.  Les certificats signés par une autorité de certification peuvent être renouvelés sans interruption.  Ils sont également plus sécurisés car ils offrent une meilleure protection contre les attaques de type « man-in-the-middle ».
+
+Les étapes suivantes fournissent des directives générales pour les clients S3 qui utilisent FabricPool.  Pour des informations et des procédures plus détaillées, voirlink:../fabricpool/index.html["Configurer StorageGRID pour FabricPool"] .
+
+.Étapes
+. Vous pouvez également configurer un groupe de haute disponibilité (HA) à utiliser par FabricPool .
+. Créez un point de terminaison d’équilibrage de charge S3 à utiliser par FabricPool .
++
+Lorsque vous créez un point de terminaison d'équilibrage de charge HTTPS, vous êtes invité à télécharger votre certificat de serveur, votre clé privée de certificat et votre ensemble d'autorités de certification facultatif.
+
+. Attachez StorageGRID en tant que niveau cloud dans ONTAP.
++
+Spécifiez le port du point de terminaison de l’équilibreur de charge et le nom de domaine complet utilisé dans le certificat CA que vous avez téléchargé.  Ensuite, fournissez le certificat CA.
+
++
+
+NOTE: Si une autorité de certification intermédiaire a émis le certificat StorageGRID , vous devez fournir le certificat de l'autorité de certification intermédiaire.  Si le certificat StorageGRID a été émis directement par l'autorité de certification racine, vous devez fournir le certificat de l'autorité de certification racine.
+
+

@@ -1,0 +1,671 @@
+---
+permalink: vmware/automating-grid-node-deployment-in-vmware-vsphere.html 
+sidebar: sidebar 
+keywords: how to automate installation 
+summary: Vous pouvez utiliser l’outil VMware OVF pour automatiser le déploiement des nœuds de grille.  Vous pouvez également automatiser la configuration de StorageGRID. 
+---
+= Automatiser l'installation (VMware)
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser l’outil VMware OVF pour automatiser le déploiement des nœuds de grille.  Vous pouvez également automatiser la configuration de StorageGRID.
+
+
+
+== Automatiser le déploiement des nœuds de grille
+
+Utilisez l’outil VMware OVF pour automatiser le déploiement des nœuds de grille.
+
+.Avant de commencer
+* Vous avez accès à un système Linux/Unix avec Bash 3.2 ou version ultérieure.
+* Vous disposez de VMware vSphere avec vCenter
+* Vous avez installé et correctement configuré VMware OVF Tool 4.1.
+* Vous connaissez le nom d'utilisateur et le mot de passe pour accéder à VMware vSphere à l'aide de l'outil OVF
+* Vous disposez des autorisations suffisantes pour déployer des machines virtuelles à partir de fichiers OVF et les mettre sous tension, ainsi que des autorisations pour créer des volumes supplémentaires à attacher aux machines virtuelles.  Voir le `ovftool` documentation pour plus de détails.
+* Vous connaissez l’URL de l’infrastructure virtuelle (VI) de l’emplacement dans vSphere où vous souhaitez déployer les machines virtuelles StorageGRID .  Cette URL sera généralement une vApp ou un pool de ressources. Par exemple :  `vi://vcenter.example.com/vi/sgws`
++
+
+NOTE: Vous pouvez utiliser VMware `ovftool` utilitaire pour déterminer cette valeur (voir le `ovftool` documentation pour plus de détails).
+
++
+
+NOTE: Si vous effectuez un déploiement sur une vApp, les machines virtuelles ne démarreront pas automatiquement la première fois et vous devrez les mettre sous tension manuellement.
+
+* Vous avez collecté toutes les informations requises pour le fichier de configuration de déploiement.  Voirlink:collecting-information-about-your-deployment-environment.html["Collectez des informations sur votre environnement de déploiement"] pour information.
+* Vous avez accès aux fichiers suivants à partir de l'archive d'installation de VMware pour StorageGRID:
+
+
+[cols="1a,1a"]
+|===
+| Nom de fichier | Description 
+
+
+| NetApp-SG-version-SHA.vmdk  a| 
+Le fichier de disque de machine virtuelle utilisé comme modèle pour la création de machines virtuelles de nœuds de grille.
+
+*Remarque :* ce fichier doit se trouver dans le même dossier que le `.ovf` et `.mf` fichiers.
+
+
+
+| vsphere-primary-admin.ovf vsphere-primary-admin.mf  a| 
+Le fichier modèle Open Virtualization Format(`.ovf` ) et fichier manifeste(`.mf` ) pour déployer le nœud d’administration principal.
+
+
+
+| vsphere-non-primary-admin.ovf vsphere-non-primary-admin.mf  a| 
+Le fichier modèle(`.ovf` ) et fichier manifeste(`.mf` ) pour déployer des nœuds d’administration non principaux.
+
+
+
+| passerelle vsphere.ovf passerelle vsphere.mf  a| 
+Le fichier modèle(`.ovf` ) et fichier manifeste(`.mf` ) pour le déploiement de nœuds de passerelle.
+
+
+
+| vsphere-storage.ovf vsphere-storage.mf  a| 
+Le fichier modèle(`.ovf` ) et fichier manifeste(`.mf` ) pour déployer des nœuds de stockage basés sur des machines virtuelles.
+
+
+
+| déployer-vsphere-ovftool.sh  a| 
+Le script shell Bash utilisé pour automatiser le déploiement de nœuds de grille virtuels.
+
+
+
+| déployer-vsphere-ovftool-sample.ini  a| 
+L'exemple de fichier de configuration à utiliser avec le `deploy-vsphere-ovftool.sh` scénario.
+
+|===
+
+
+=== Définissez le fichier de configuration pour votre déploiement
+
+Vous spécifiez les informations nécessaires pour déployer des nœuds de grille virtuelle pour StorageGRID dans un fichier de configuration, qui est utilisé par le `deploy-vsphere-ovftool.sh` Script Bash.  Vous pouvez modifier un exemple de fichier de configuration, de sorte que vous n'ayez pas à créer le fichier à partir de zéro.
+
+.Étapes
+. Faire une copie du fichier de configuration d'exemple(`deploy-vsphere-ovftool.sample.ini` ).  Enregistrez le nouveau fichier sous `deploy-vsphere-ovftool.ini` dans le même répertoire que `deploy-vsphere-ovftool.sh` .
+. Ouvrir `deploy-vsphere-ovftool.ini` .
+. Saisissez toutes les informations requises pour déployer les nœuds de grille virtuelle VMware.
++
+Voir<<configuration-file-settings,Paramètres du fichier de configuration>> pour information.
+
+. Lorsque vous avez saisi et vérifié toutes les informations nécessaires, enregistrez et fermez le fichier.
+
+
+
+
+=== Paramètres du fichier de configuration
+
+Le `deploy-vsphere-ovftool.ini` Le fichier de configuration contient les paramètres requis pour déployer des nœuds de grille virtuels.
+
+Le fichier de configuration répertorie d’abord les paramètres globaux, puis répertorie les paramètres spécifiques au nœud dans des sections définies par le nom du nœud.  Lorsque le fichier est utilisé :
+
+* Les _paramètres globaux_ sont appliqués à tous les nœuds de la grille.
+* Les _paramètres spécifiques au nœud_ remplacent les paramètres globaux.
+
+
+
+
+==== Paramètres globaux
+
+Les paramètres globaux sont appliqués à tous les nœuds de la grille, sauf s'ils sont remplacés par des paramètres dans des sections individuelles.  Placez les paramètres qui s’appliquent à plusieurs nœuds dans la section des paramètres globaux, puis remplacez ces paramètres si nécessaire dans les sections des nœuds individuels.
+
+* *OVFTOOL_ARGUMENTS*: Vous pouvez spécifier OVFTOOL_ARGUMENTS comme paramètres globaux ou appliquer des arguments individuellement à des nœuds spécifiques. Par exemple:
++
+[listing, subs="specialcharacters,quotes"]
+----
+OVFTOOL_ARGUMENTS = --powerOn --noSSLVerify --diskMode=eagerZeroedThick --datastore='_datastore_name_'
+----
++
+Vous pouvez utiliser le `--powerOffTarget` et `--overwrite` options pour arrêter et remplacer les machines virtuelles existantes.
+
++
+
+CAUTION: Vous devez déployer des nœuds sur différents magasins de données et spécifier OVFTOOL_ARGUMENTS pour chaque nœud, plutôt que globalement.
+
+* *SOURCE* : Le chemin d'accès au modèle de machine virtuelle StorageGRID(`.vmdk` ) fichier et le `.ovf` et `.mf` fichiers pour les nœuds de grille individuels.  La valeur par défaut est le répertoire actuel.
++
+[listing, subs="specialcharacters,quotes"]
+----
+SOURCE = /downloads/StorageGRID-Webscale-_version_/vsphere
+----
+* *CIBLE* : L’URL de l’infrastructure virtuelle VMware vSphere (vi) pour l’emplacement où StorageGRID sera déployé. Par exemple:
++
+[listing]
+----
+TARGET = vi://vcenter.example.com/vm/sgws
+----
+* *GRID_NETWORK_CONFIG* : La méthode utilisée pour acquérir des adresses IP, soit STATIQUE, soit DHCP.  La valeur par défaut est STATIC.  Si tous ou la plupart des nœuds utilisent la même méthode pour acquérir des adresses IP, vous pouvez spécifier cette méthode ici.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+GRID_NETWORK_CONFIG = STATIC
+----
+* *GRID_NETWORK_TARGET* : le nom d'un réseau VMware existant à utiliser pour le réseau Grid.  Si tous ou la plupart des nœuds utilisent le même nom de réseau, vous pouvez le spécifier ici.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+GRID_NETWORK_TARGET = SG Admin Network
+----
+* *GRID_NETWORK_MASK* : Le masque de réseau pour le réseau Grid.  Si tous ou la plupart des nœuds utilisent le même masque de réseau, vous pouvez le spécifier ici.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+GRID_NETWORK_MASK = 255.255.255.0
+----
+* *GRID_NETWORK_GATEWAY* : La passerelle réseau pour le réseau Grid.  Si tous ou la plupart des nœuds utilisent la même passerelle réseau, vous pouvez le spécifier ici.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+GRID_NETWORK_GATEWAY = 10.1.0.1
+----
+* *GRID_NETWORK_MTU* : Facultatif.  L'unité de transmission maximale (MTU) sur le réseau électrique.  Si spécifié, la valeur doit être comprise entre 1280 et 9216. Par exemple:
++
+[listing]
+----
+GRID_NETWORK_MTU = 9000
+----
++
+Si omis, 1400 est utilisé.
+
++
+Si vous souhaitez utiliser des trames jumbo, définissez le MTU sur une valeur adaptée aux trames jumbo, telle que 9 000.  Sinon, conservez la valeur par défaut.
+
++
+
+NOTE: La valeur MTU du réseau doit correspondre à la valeur configurée sur le port du commutateur virtuel dans vSphere auquel le nœud est connecté.  Dans le cas contraire, des problèmes de performances du réseau ou une perte de paquets pourraient survenir.
+
++
+
+NOTE: Pour des performances réseau optimales, tous les nœuds doivent être configurés avec des valeurs MTU similaires sur leurs interfaces Grid Network.  L'alerte *Incompatibilité MTU du réseau de grille* est déclenchée s'il existe une différence significative dans les paramètres MTU du réseau de grille sur des nœuds individuels.  Les valeurs MTU ne doivent pas nécessairement être les mêmes pour tous les types de réseaux.
+
+* *ADMIN_NETWORK_CONFIG* : La méthode utilisée pour acquérir les adresses IP, soit DÉSACTIVÉE, STATIQUE ou DHCP.  La valeur par défaut est DÉSACTIVÉ.  Si tous ou la plupart des nœuds utilisent la même méthode pour acquérir des adresses IP, vous pouvez spécifier cette méthode ici.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+ADMIN_NETWORK_CONFIG = STATIC
+----
+* *ADMIN_NETWORK_TARGET* : le nom d’un réseau VMware existant à utiliser pour le réseau d’administration.  Ce paramètre est requis sauf si le réseau d'administration est désactivé.  Si tous ou la plupart des nœuds utilisent le même nom de réseau, vous pouvez le spécifier ici.  Contrairement au réseau Grid, tous les nœuds n’ont pas besoin d’être connectés au même réseau d’administration.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+ADMIN_NETWORK_TARGET = SG Admin Network
+----
+* *ADMIN_NETWORK_MASK* : Le masque réseau pour le réseau d'administration.  Ce paramètre est requis si vous utilisez une adresse IP statique.  Si tous ou la plupart des nœuds utilisent le même masque de réseau, vous pouvez le spécifier ici.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+ADMIN_NETWORK_MASK = 255.255.255.0
+----
+* *ADMIN_NETWORK_GATEWAY* : la passerelle réseau pour le réseau d'administration.  Ce paramètre est requis si vous utilisez une adresse IP statique et que vous spécifiez des sous-réseaux externes dans le paramètre ADMIN_NETWORK_ESL.  (C'est-à-dire que ce n'est pas nécessaire si ADMIN_NETWORK_ESL est vide.)  Si tous ou la plupart des nœuds utilisent la même passerelle réseau, vous pouvez le spécifier ici.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+ADMIN_NETWORK_GATEWAY = 10.3.0.1
+----
+* *ADMIN_NETWORK_ESL* : la liste des sous-réseaux externes (routes) pour le réseau d'administration, spécifiée sous la forme d'une liste séparée par des virgules de destinations de route CIDR.  Si tous ou la plupart des nœuds utilisent la même liste de sous-réseaux externes, vous pouvez le spécifier ici.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+ADMIN_NETWORK_ESL = 172.16.0.0/21,172.17.0.0/21
+----
+* *ADMIN_NETWORK_MTU* : Facultatif.  L'unité de transmission maximale (MTU) sur le réseau d'administration.  Ne spécifiez pas si ADMIN_NETWORK_CONFIG = DHCP.  Si spécifié, la valeur doit être comprise entre 1280 et 9216.  Si omis, 1400 est utilisé.  Si vous souhaitez utiliser des trames jumbo, définissez le MTU sur une valeur adaptée aux trames jumbo, telle que 9 000.  Sinon, conservez la valeur par défaut.  Si tous ou la plupart des nœuds utilisent le même MTU pour le réseau d'administration, vous pouvez le spécifier ici.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+ADMIN_NETWORK_MTU = 8192
+----
+* *CLIENT_NETWORK_CONFIG* : La méthode utilisée pour acquérir les adresses IP, soit DÉSACTIVÉE, STATIQUE ou DHCP.  La valeur par défaut est DÉSACTIVÉ.  Si tous ou la plupart des nœuds utilisent la même méthode pour acquérir des adresses IP, vous pouvez spécifier cette méthode ici.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+CLIENT_NETWORK_CONFIG = STATIC
+----
+* *CLIENT_NETWORK_TARGET* : le nom d’un réseau VMware existant à utiliser pour le réseau client.  Ce paramètre est requis sauf si le réseau client est désactivé.  Si tous ou la plupart des nœuds utilisent le même nom de réseau, vous pouvez le spécifier ici.  Contrairement au réseau Grid, tous les nœuds n’ont pas besoin d’être connectés au même réseau client.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+CLIENT_NETWORK_TARGET = SG Client Network
+----
+* *CLIENT_NETWORK_MASK* : Le masque réseau pour le réseau client.  Ce paramètre est requis si vous utilisez une adresse IP statique.  Si tous ou la plupart des nœuds utilisent le même masque de réseau, vous pouvez le spécifier ici.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+CLIENT_NETWORK_MASK = 255.255.255.0
+----
+* *CLIENT_NETWORK_GATEWAY* : la passerelle réseau pour le réseau client.  Ce paramètre est requis si vous utilisez une adresse IP statique.  Si tous ou la plupart des nœuds utilisent la même passerelle réseau, vous pouvez le spécifier ici.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+CLIENT_NETWORK_GATEWAY = 10.4.0.1
+----
+* *CLIENT_NETWORK_MTU* : Facultatif.  L'unité de transmission maximale (MTU) sur le réseau client.  Ne spécifiez pas si CLIENT_NETWORK_CONFIG = DHCP.  Si spécifié, la valeur doit être comprise entre 1280 et 9216.  Si omis, 1400 est utilisé.  Si vous souhaitez utiliser des trames jumbo, définissez le MTU sur une valeur adaptée aux trames jumbo, telle que 9 000.  Sinon, conservez la valeur par défaut.  Si tous ou la plupart des nœuds utilisent le même MTU pour le réseau client, vous pouvez le spécifier ici.  Vous pouvez ensuite remplacer le paramètre global en spécifiant des paramètres différents pour un ou plusieurs nœuds individuels. Par exemple:
++
+[listing]
+----
+CLIENT_NETWORK_MTU = 8192
+----
+* *PORT_REMAP* : remappe tout port utilisé par un nœud pour les communications internes du nœud de grille ou les communications externes.  Le remappage des ports est nécessaire si les politiques de réseau d'entreprise restreignent un ou plusieurs ports utilisés par StorageGRID.  Pour la liste des ports utilisés par StorageGRID, voir les communications internes des nœuds de grille et les communications externes danslink:../network/index.html["Directives de mise en réseau"] .
++
+
+NOTE: Ne remappez pas les ports que vous prévoyez d’utiliser pour configurer les points de terminaison de l’équilibreur de charge.
+
++
+
+NOTE: Si seul PORT_REMAP est défini, le mappage que vous spécifiez est utilisé pour les communications entrantes et sortantes.  Si PORT_REMAP_INBOUND est également spécifié, PORT_REMAP s'applique uniquement aux communications sortantes.
+
++
+Le format utilisé est : `_network type/protocol/default port used by grid node/new port_` , où le type de réseau est grille, administrateur ou client, et le protocole est TCP ou UDP.
+
++
+Par exemple:
+
++
+[listing]
+----
+PORT_REMAP = client/tcp/18082/443
+----
++
+Si utilisé seul, cet exemple de paramètre mappe symétriquement les communications entrantes et sortantes pour le nœud de grille du port 18082 au port 443.  Si utilisé conjointement avec PORT_REMAP_INBOUND, cet exemple de paramètre mappe les communications sortantes du port 18082 au port 443.
+
++
+Vous pouvez également remapper plusieurs ports à l’aide d’une liste séparée par des virgules.
+
++
+Par exemple:
+
++
+[listing]
+----
+PORT_REMAP = client/tcp/18082/443, client/tcp/18083/80
+----
+* *PORT_REMAP_INBOUND* : remappe les communications entrantes pour le port spécifié.  Si vous spécifiez PORT_REMAP_INBOUND mais ne spécifiez pas de valeur pour PORT_REMAP, les communications sortantes pour le port restent inchangées.
++
+
+NOTE: Ne remappez pas les ports que vous prévoyez d’utiliser pour configurer les points de terminaison de l’équilibreur de charge.
+
++
+Le format utilisé est : `_network type_/_protocol/_default port used by grid node_/_new port_` , où le type de réseau est grille, administrateur ou client, et le protocole est TCP ou UDP.
+
++
+Par exemple:
+
++
+[listing]
+----
+PORT_REMAP_INBOUND = client/tcp/443/18082
+----
++
+Cet exemple prend le trafic envoyé au port 443 pour passer un pare-feu interne et le dirige vers le port 18082, où le nœud de grille écoute les requêtes S3.
+
++
+Vous pouvez également remapper plusieurs ports entrants à l’aide d’une liste séparée par des virgules.
+
++
+Par exemple:
+
++
+[listing]
+----
+PORT_REMAP_INBOUND = grid/tcp/3022/22, admin/tcp/3022/22
+----
+* *TEMPORARY_PASSWORD_TYPE* : le type de mot de passe d'installation temporaire à utiliser lors de l'accès à la console de la machine virtuelle ou à l'API d'installation StorageGRID , ou à l'aide de SSH, avant que le nœud ne rejoigne la grille.
++
+
+TIP: Si tous ou la plupart des nœuds utilisent le même type de mot de passe d'installation temporaire, spécifiez le type dans la section des paramètres globaux.  Ensuite, utilisez éventuellement un paramètre différent pour un nœud individuel.  Par exemple, si vous sélectionnez *Utiliser un mot de passe personnalisé* globalement, vous pouvez utiliser *CUSTOM_TEMPORARY_PASSWORD=<mot de passe>* pour définir le mot de passe pour chaque nœud.
+
++
+*TEMPORARY_PASSWORD_TYPE* peut être l'un des suivants :
+
++
+** *Utiliser le nom du nœud* : le nom du nœud est utilisé comme mot de passe d'installation temporaire et fournit l'accès à la console de la machine virtuelle, à l'API d'installation StorageGRID et à SSH.
+** *Désactiver le mot de passe* : Aucun mot de passe d'installation temporaire ne sera utilisé.  Si vous devez accéder à la machine virtuelle pour déboguer les problèmes d'installation, consultezlink:troubleshooting-installation-issues.html["Résoudre les problèmes d'installation"] .
+** *Utiliser un mot de passe personnalisé*: La valeur fournie avec *CUSTOM_TEMPORARY_PASSWORD=<password>* est utilisée comme mot de passe d'installation temporaire et donne accès à la console VM, à l'API d'installation StorageGRID et à SSH.
++
+
+TIP: En option, vous pouvez omettre le paramètre *TEMPORARY_PASSWORD_TYPE* et spécifier uniquement *CUSTOM_TEMPORARY_PASSWORD=<mot de passe>*.
+
+
+
+* *CUSTOM_TEMPORARY_PASSWORD=<mot de passe>* Facultatif.  Le mot de passe temporaire à utiliser lors de l'installation lors de l'accès à la console VM, à l'API d'installation StorageGRID et à SSH.  Ignoré si *TEMPORARY_PASSWORD_TYPE* ​​est défini sur *Utiliser le nom du nœud* ou *Désactiver le mot de passe*.
+
+
+
+
+==== Paramètres spécifiques aux nœuds
+
+Chaque nœud se trouve dans sa propre section du fichier de configuration.  Chaque nœud nécessite les paramètres suivants :
+
+* L'en-tête de section définit le nom du nœud qui sera affiché dans le gestionnaire de grille.  Vous pouvez remplacer cette valeur en spécifiant le paramètre facultatif NODE_NAME pour le nœud.
+* *NODE_TYPE* : VM_Admin_Node, VM_Storage_Node ou VM_API_Gateway_Node
+* *STORAGE_TYPE* : combiné, données ou métadonnées.  Ce paramètre facultatif pour les nœuds de stockage est défini par défaut sur combiné (données et métadonnées) s'il n'est pas spécifié. Pour plus d'informations, consultez la section link:../primer/what-storage-node-is.html#types-of-storage-nodes["Types de nœuds de stockage"] .
+* *GRID_NETWORK_IP* : l'adresse IP du nœud sur le réseau Grid.
+* *ADMIN_NETWORK_IP* : l'adresse IP du nœud sur le réseau d'administration.  Requis uniquement si le nœud est connecté au réseau d'administration et que ADMIN_NETWORK_CONFIG est défini sur STATIC.
+* *CLIENT_NETWORK_IP* : l'adresse IP du nœud sur le réseau client.  Obligatoire uniquement si le nœud est connecté au réseau client et que CLIENT_NETWORK_CONFIG pour ce nœud est défini sur STATIC.
+* *ADMIN_IP* : l'adresse IP du nœud d'administration principal sur le réseau Grid.  Utilisez la valeur que vous spécifiez comme GRID_NETWORK_IP pour le nœud d’administration principal.  Si vous omettez ce paramètre, le nœud tente de découvrir l'adresse IP du nœud d'administration principal à l'aide de mDNS. Pour plus d'informations, consultez la section link:how-grid-nodes-discover-primary-admin-node.html["Comment les nœuds de grille découvrent le nœud d'administration principal"] .
++
+
+NOTE: Le paramètre ADMIN_IP est ignoré pour le nœud d’administration principal.
+
+* Tous les paramètres qui n’ont pas été définis globalement.  Par exemple, si un nœud est attaché au réseau d'administration et que vous n'avez pas spécifié les paramètres ADMIN_NETWORK globalement, vous devez les spécifier pour le nœud.
+
+
+.Nœud d'administration principal
+Les paramètres supplémentaires suivants sont requis pour le nœud d’administration principal :
+
+* *NODE_TYPE* : nœud VM_Admin_Node
+* *ADMIN_ROLE* : Principal
+
+
+Cet exemple d'entrée concerne un nœud d'administration principal présent sur les trois réseaux :
+
+[listing]
+----
+[DC1-ADM1]
+  ADMIN_ROLE = Primary
+  NODE_TYPE = VM_Admin_Node
+  TEMPORARY_PASSWORD_TYPE = Use custom password
+  CUSTOM_TEMPORARY_PASSWORD = Passw0rd
+
+  GRID_NETWORK_IP = 10.1.0.2
+  ADMIN_NETWORK_IP = 10.3.0.2
+  CLIENT_NETWORK_IP = 10.4.0.2
+----
+Le paramètre supplémentaire suivant est facultatif pour le nœud d’administration principal :
+
+* *DISQUE* : Par défaut, les nœuds d'administration se voient attribuer deux disques durs supplémentaires de 200 Go pour l'audit et l'utilisation de la base de données.  Vous pouvez augmenter ces paramètres à l’aide du paramètre DISK. Par exemple:
++
+[listing]
+----
+DISK = INSTANCES=2, CAPACITY=300
+----
+
+
+
+NOTE: Pour les nœuds d’administration, les INSTANCES doivent toujours être égales à 2.
+
+.Nœud de stockage
+Le paramètre supplémentaire suivant est requis pour les nœuds de stockage :
+
+* *NODE_TYPE* : nœud de stockage VM
++
+Cet exemple d'entrée concerne un nœud de stockage qui se trouve sur les réseaux de grille et d'administration, mais pas sur le réseau client.  Ce nœud utilise le paramètre ADMIN_IP pour spécifier l'adresse IP du nœud d'administration principal sur le réseau de grille.
+
++
+[listing]
+----
+[DC1-S1]
+  NODE_TYPE = VM_Storage_Node
+
+  GRID_NETWORK_IP = 10.1.0.3
+  ADMIN_NETWORK_IP = 10.3.0.3
+
+  ADMIN_IP = 10.1.0.2
+----
++
+Ce deuxième exemple d'entrée concerne un nœud de stockage sur un réseau client où la politique de réseau d'entreprise du client stipule qu'une application client S3 est uniquement autorisée à accéder au nœud de stockage à l'aide du port 80 ou 443.  L'exemple de fichier de configuration utilise PORT_REMAP pour permettre au nœud de stockage d'envoyer et de recevoir des messages S3 sur le port 443.
+
++
+[listing]
+----
+[DC2-S1]
+  NODE_TYPE = VM_Storage_Node
+
+  GRID_NETWORK_IP = 10.1.1.3
+  CLIENT_NETWORK_IP = 10.4.1.3
+  PORT_REMAP = client/tcp/18082/443
+
+  ADMIN_IP = 10.1.0.2
+----
++
+Le dernier exemple crée un remappage symétrique pour le trafic ssh du port 22 au port 3022, mais définit explicitement les valeurs pour le trafic entrant et sortant.
+
++
+[listing]
+----
+[DC1-S3]
+  NODE_TYPE = VM_Storage_Node
+
+  GRID_NETWORK_IP = 10.1.1.3
+
+  PORT_REMAP = grid/tcp/22/3022
+  PORT_REMAP_INBOUND = grid/tcp/3022/22
+
+  ADMIN_IP = 10.1.0.2
+----
+
+
+Les paramètres supplémentaires suivants sont facultatifs pour les nœuds de stockage :
+
+* *DISQUE* : Par défaut, les nœuds de stockage se voient attribuer trois disques de 4 To pour l'utilisation de RangeDB.  Vous pouvez augmenter ces paramètres avec le paramètre DISK. Par exemple:
++
+[listing]
+----
+DISK = INSTANCES=16, CAPACITY=4096
+----
+* *STORAGE_TYPE* : Par défaut, tous les nouveaux nœuds de stockage sont configurés pour stocker à la fois les données d'objet et les métadonnées, appelés nœuds de stockage _combinés_.  Vous pouvez modifier le type de nœud de stockage pour stocker uniquement des données ou des métadonnées avec le paramètre STORAGE_TYPE. Par exemple:
++
+[listing]
+----
+STORAGE_TYPE = data
+----
+
+
+.Nœud de passerelle
+Le paramètre supplémentaire suivant est requis pour les nœuds de passerelle :
+
+* *NODE_TYPE* : VM_API_Gateway
+
+
+Cet exemple d'entrée concerne un exemple de nœud de passerelle sur les trois réseaux.  Dans cet exemple, aucun paramètre de réseau client n'a été spécifié dans la section globale du fichier de configuration, ils doivent donc être spécifiés pour le nœud :
+
+[listing]
+----
+[DC1-G1]
+  NODE_TYPE = VM_API_Gateway
+
+  GRID_NETWORK_IP = 10.1.0.5
+  ADMIN_NETWORK_IP = 10.3.0.5
+
+  CLIENT_NETWORK_CONFIG = STATIC
+  CLIENT_NETWORK_TARGET = SG Client Network
+  CLIENT_NETWORK_MASK = 255.255.255.0
+  CLIENT_NETWORK_GATEWAY = 10.4.0.1
+  CLIENT_NETWORK_IP = 10.4.0.5
+
+  ADMIN_IP = 10.1.0.2
+----
+.Nœud d'administration non principal
+Les paramètres supplémentaires suivants sont requis pour les nœuds d’administration non principaux :
+
+* *NODE_TYPE* : nœud VM_Admin_Node
+* *ADMIN_ROLE* : Non principal
+
+
+Cet exemple d'entrée concerne un nœud d'administration non principal qui ne se trouve pas sur le réseau client :
+
+[listing]
+----
+[DC2-ADM1]
+  ADMIN_ROLE = Non-Primary
+  NODE_TYPE = VM_Admin_Node
+
+  GRID_NETWORK_TARGET = SG Grid Network
+  GRID_NETWORK_IP = 10.1.0.6
+  ADMIN_NETWORK_IP = 10.3.0.6
+
+  ADMIN_IP = 10.1.0.2
+----
+Le paramètre supplémentaire suivant est facultatif pour les nœuds d’administration non principaux :
+
+* *DISQUE* : Par défaut, les nœuds d'administration se voient attribuer deux disques durs supplémentaires de 200 Go pour l'audit et l'utilisation de la base de données.  Vous pouvez augmenter ces paramètres à l’aide du paramètre DISK. Par exemple:
++
+[listing]
+----
+DISK = INSTANCES=2, CAPACITY=300
+----
+
+
+
+NOTE: Pour les nœuds d’administration, les INSTANCES doivent toujours être égales à 2.
+
+
+
+== Exécutez le script Bash
+
+Vous pouvez utiliser le `deploy-vsphere-ovftool.sh` Script Bash et fichier de configuration deploy-vsphere-ovftool.ini que vous avez modifiés pour automatiser le déploiement des nœuds StorageGRID dans VMware vSphere.
+
+.Avant de commencer
+Vous avez créé un fichier de configuration deploy-vsphere-ovftool.ini pour votre environnement.
+
+Vous pouvez utiliser l'aide disponible avec le script Bash en entrant les commandes d'aide(`-h/--help` ). Par exemple:
+
+[listing]
+----
+./deploy-vsphere-ovftool.sh -h
+----
+ou
+
+[listing]
+----
+./deploy-vsphere-ovftool.sh --help
+----
+.Étapes
+. Connectez-vous à la machine Linux que vous utilisez pour exécuter le script Bash.
+. Accédez au répertoire dans lequel vous avez extrait l’archive d’installation.
++
+Par exemple:
+
++
+[listing]
+----
+cd StorageGRID-Webscale-version/vsphere
+----
+. Pour déployer tous les nœuds de grille, exécutez le script Bash avec les options appropriées pour votre environnement.
++
+Par exemple:
+
++
+[listing]
+----
+./deploy-vsphere-ovftool.sh --username=user --password=pwd ./deploy-vsphere-ovftool.ini
+----
+. Si un nœud de grille n’a pas pu être déployé en raison d’une erreur, résolvez l’erreur et réexécutez le script Bash uniquement pour ce nœud.
++
+Par exemple:
+
++
+[listing]
+----
+./deploy-vsphere-ovftool.sh --username=user --password=pwd --single-node="DC1-S3" ./deploy-vsphere-ovftool.ini
+----
+
+
+Le déploiement est terminé lorsque le statut de chaque nœud est « Réussi ».
+
+[listing]
+----
+Deployment Summary
++-----------------------------+----------+----------------------+
+| node                        | attempts | status               |
++-----------------------------+----------+----------------------+
+| DC1-ADM1                    |        1 | Passed               |
+| DC1-G1                      |        1 | Passed               |
+| DC1-S1                      |        1 | Passed               |
+| DC1-S2                      |        1 | Passed               |
+| DC1-S3                      |        1 | Passed               |
++-----------------------------+----------+----------------------+
+----
+
+
+== Automatiser la configuration de StorageGRID
+
+Après avoir déployé les nœuds de grille, vous pouvez automatiser la configuration du système StorageGRID .
+
+.Avant de commencer
+* Vous connaissez l’emplacement des fichiers suivants à partir de l’archive d’installation.
++
+[cols="1a,1a"]
+|===
+| Nom de fichier | Description 
+
+
+| configure-storagegrid.py  a| 
+Script Python utilisé pour automatiser la configuration
+
+
+
+| configure-storagegrid.sample.json  a| 
+Exemple de fichier de configuration à utiliser avec le script
+
+
+
+| configure-storagegrid.blank.json  a| 
+Fichier de configuration vide à utiliser avec le script
+
+|===
+* Vous avez créé un `configure-storagegrid.json` fichier de configuration.  Pour créer ce fichier, vous pouvez modifier le fichier de configuration d'exemple(`configure-storagegrid.sample.json` ) ou le fichier de configuration vide(`configure-storagegrid.blank.json` ).
++
+Vous pouvez utiliser le `configure-storagegrid.py` Script Python et le `configure-storagegrid.json` fichier de configuration de grille pour automatiser la configuration de votre système StorageGRID .
+
++
+
+NOTE: Vous pouvez également configurer le système à l’aide du gestionnaire de grille ou de l’API d’installation.
+
+
+
+.Étapes
+. Connectez-vous à la machine Linux que vous utilisez pour exécuter le script Python.
+. Accédez au répertoire dans lequel vous avez extrait l’archive d’installation.
++
+Par exemple:
+
++
+[listing]
+----
+cd StorageGRID-Webscale-version/platform
+----
++
+où `platform` est debs, rpms ou vsphere.
+
+. Exécutez le script Python et utilisez le fichier de configuration que vous avez créé.
++
+Par exemple:
+
++
+[listing]
+----
+./configure-storagegrid.py ./configure-storagegrid.json --start-install
+----
+
+
+.Résultat
+Un plan de relance `.zip` Le fichier est généré pendant le processus de configuration et il est téléchargé dans le répertoire dans lequel vous exécutez le processus d'installation et de configuration.  Vous devez sauvegarder le fichier du package de récupération afin de pouvoir récupérer le système StorageGRID si un ou plusieurs nœuds de grille échouent.  Par exemple, copiez-le vers un emplacement réseau sécurisé et sauvegardé et vers un emplacement de stockage cloud sécurisé.
+
+
+CAUTION: Le fichier du package de récupération doit être sécurisé car il contient des clés de chiffrement et des mots de passe qui peuvent être utilisés pour obtenir des données à partir du système StorageGRID .
+
+Si vous avez spécifié que des mots de passe aléatoires doivent être générés, ouvrez le `Passwords.txt` fichier et recherchez les mots de passe requis pour accéder à votre système StorageGRID .
+
+[listing]
+----
+######################################################################
+##### The StorageGRID "Recovery Package" has been downloaded as: #####
+#####           ./sgws-recovery-package-994078-rev1.zip          #####
+#####   Safeguard this file as it will be needed in case of a    #####
+#####                 StorageGRID node recovery.                 #####
+######################################################################
+----
+Votre système StorageGRID est installé et configuré lorsqu'un message de confirmation s'affiche.
+
+[listing]
+----
+StorageGRID has been configured and installed.
+----
+.Informations connexes
+* link:navigating-to-grid-manager.html["Accéder au gestionnaire de grille"]
+* link:overview-of-installation-rest-api.html["Installation de l'API REST"]
+

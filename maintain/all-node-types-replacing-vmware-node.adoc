@@ -1,0 +1,78 @@
+---
+permalink: maintain/all-node-types-replacing-vmware-node.html 
+sidebar: sidebar 
+keywords: replace VMware node 
+summary: Lorsque vous récupérez un nœud StorageGRID défaillant hébergé sur VMware, vous supprimez le nœud défaillant et déployez un nœud de récupération. 
+---
+= Remplacer le nœud VMware
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lorsque vous récupérez un nœud StorageGRID défaillant hébergé sur VMware, vous supprimez le nœud défaillant et déployez un nœud de récupération.
+
+.Avant de commencer
+Vous avez déterminé que la machine virtuelle ne peut pas être restaurée et doit être remplacée.
+
+.À propos de cette tâche
+Vous utilisez VMware vSphere Web Client pour supprimer d’abord la machine virtuelle associée au nœud de grille défaillant.  Ensuite, vous pouvez déployer une nouvelle machine virtuelle.
+
+Cette procédure n’est qu’une étape du processus de récupération du nœud de grille.  La procédure de suppression et de déploiement des nœuds est la même pour tous les nœuds VMware, y compris les nœuds d'administration, les nœuds de stockage et les nœuds de passerelle.
+
+.Étapes
+. Connectez-vous à VMware vSphere Web Client.
+. Accédez à la machine virtuelle du nœud de grille défaillant.
+. Notez toutes les informations nécessaires au déploiement du nœud de récupération.
++
+.. Cliquez avec le bouton droit sur la machine virtuelle, sélectionnez l’onglet *Modifier les paramètres* et notez les paramètres utilisés.
+.. Sélectionnez l’onglet *Options vApp* pour afficher et enregistrer les paramètres réseau du nœud de grille.
+
+
+. Si le nœud de grille défaillant est un nœud de stockage, déterminez si l’un des disques durs virtuels utilisés pour le stockage des données n’est pas endommagé et conservez-le pour le rattacher au nœud de grille récupéré.
+. Mettez la machine virtuelle hors tension.
+. Sélectionnez *Actions* > *Toutes les actions vCenter* > *Supprimer du disque* pour supprimer la machine virtuelle.
+. Déployez une nouvelle machine virtuelle pour être le nœud de remplacement et connectez-la à un ou plusieurs réseaux StorageGRID . Pour les instructions, voirlink:../vmware/deploying-storagegrid-node-as-virtual-machine.html["Déploiement d'un nœud StorageGRID en tant que machine virtuelle"] .
++
+Lorsque vous déployez le nœud, vous pouvez éventuellement remapper les ports du nœud ou augmenter les paramètres du processeur ou de la mémoire.
+
++
+
+NOTE: Après avoir déployé le nouveau nœud, vous pouvez ajouter de nouveaux disques virtuels en fonction de vos besoins de stockage, rattacher tous les disques durs virtuels conservés à partir du nœud de grille défaillant précédemment supprimé, ou les deux.
+
+. Terminez la procédure de récupération de nœud, en fonction du type de nœud que vous récupérez.
++
+[cols="1a,2a"]
+|===
+| Type de nœud | Aller à 
+
+
+ a| 
+Nœud d'administration principal
+ a| 
+link:configuring-replacement-primary-admin-node.html["Configurer le nœud d'administration principal de remplacement"]
+
+
+
+ a| 
+Nœud d'administration non principal
+ a| 
+link:selecting-start-recovery-to-configure-non-primary-admin-node.html["Sélectionnez Démarrer la récupération pour configurer le nœud d’administration non principal"]
+
+
+
+ a| 
+Nœud de passerelle
+ a| 
+link:selecting-start-recovery-to-configure-gateway-node.html["Sélectionnez Démarrer la récupération pour configurer le nœud de passerelle"]
+
+
+
+ a| 
+Nœud de stockage
+ a| 
+link:selecting-start-recovery-to-configure-storage-node.html["Sélectionnez Démarrer la récupération pour configurer le nœud de stockage"]
+
+|===
+

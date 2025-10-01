@@ -1,0 +1,41 @@
+---
+permalink: tenant/signing-out-of-tenant-manager.html 
+sidebar: sidebar 
+keywords: how to sign out of tenant manager 
+summary: Une fois que vous avez terminé de travailler avec le gestionnaire de locataires, vous devez vous déconnecter pour garantir que les utilisateurs non autorisés ne peuvent pas accéder au système StorageGRID .  La fermeture de votre navigateur peut ne pas vous déconnecter du système, en fonction des paramètres de cookies du navigateur. 
+---
+= Déconnexion de Tenant Manager
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Une fois que vous avez terminé de travailler avec le gestionnaire de locataires, vous devez vous déconnecter pour garantir que les utilisateurs non autorisés ne peuvent pas accéder au système StorageGRID .  La fermeture de votre navigateur peut ne pas vous déconnecter du système, en fonction des paramètres de cookies du navigateur.
+
+.Étapes
+. Localisez la liste déroulante du nom d’utilisateur dans le coin supérieur droit de l’interface utilisateur.
++
+image::../media/tenant_user_sign_out.png[Lien de déconnexion]
+
+. Sélectionnez le nom d'utilisateur, puis sélectionnez *Déconnexion*.
++
+** Si SSO n'est pas utilisé :
++
+Vous êtes déconnecté du nœud d'administration.  La page de connexion du gestionnaire de locataires s'affiche.
+
++
+
+NOTE: Si vous vous êtes connecté à plusieurs nœuds d’administration, vous devez vous déconnecter de chaque nœud.
+
+** Si SSO est activé :
++
+Vous êtes déconnecté de tous les nœuds d’administration auxquels vous accédiez.  La page de Sign in StorageGRID s'affiche.  Le nom du compte locataire auquel vous venez d'accéder est répertorié par défaut dans la liste déroulante *Comptes récents* et l'*ID de compte* du locataire est affiché.
+
++
+
+NOTE: Si SSO est activé et que vous êtes également connecté au Gestionnaire de grille, vous devez également vous déconnecter du Gestionnaire de grille pour vous déconnecter de SSO.
+
+
+
+

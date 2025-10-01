@@ -1,0 +1,33 @@
+---
+permalink: maintain/checking-systems-condition-before-applying-hotfix.html 
+sidebar: sidebar 
+keywords: storagegrid, hotfix 
+summary: Vous devez vérifier que le système est prêt à accueillir le correctif. 
+---
+= Vérifiez l'état du système avant d'appliquer le correctif
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez vérifier que le système est prêt à accueillir le correctif.
+
+. Sign in au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+. Si possible, assurez-vous que le système fonctionne normalement et que tous les nœuds du réseau sont connectés au réseau.
++
+Les nœuds connectés ont des coches vertesimage:../media/icon_alert_green_checkmark.png["icône d'alerte coche verte"] sur la page Nœuds.
+
+. Vérifiez et résolvez toutes les alertes actuelles, si possible.
+. Assurez-vous qu'aucune autre procédure de maintenance n'est en cours, telle qu'une procédure de mise à niveau, de récupération, d'extension ou de mise hors service.
++
+Vous devez attendre que toutes les procédures de maintenance actives soient terminées avant d'appliquer un correctif.
+
++
+Vous ne pouvez pas appliquer un correctif StorageGRID lorsqu'une autre procédure de maintenance est en cours d'exécution.  Par exemple, vous ne pouvez pas appliquer un correctif pendant qu'une procédure de mise hors service, d'extension ou de récupération est en cours d'exécution.
+
++
+
+NOTE: Si un nœud ou un sitelink:pausing-and-resuming-decommission-process-for-storage-nodes.html["la procédure de déclassement est suspendue"] , vous pouvez appliquer un correctif en toute sécurité.  En outre, vous pourrez peut-être appliquer un correctif lors des dernières étapes d'une procédure de mise à niveau de StorageGRID . Voir les instructions pourlink:../upgrade/index.html["mise à niveau du logiciel StorageGRID"] .
+
+

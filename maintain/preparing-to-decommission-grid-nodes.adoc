@@ -1,0 +1,14 @@
+---
+permalink: maintain/preparing-to-decommission-grid-nodes.html 
+sidebar: sidebar 
+keywords: storagegrid, decommission 
+summary: 'Vous devez examiner les considérations relatives à la suppression des nœuds de grille et confirmer qu"aucune tâche de réparation n"est active pour les données codées par effacement.' 
+---
+= Préparez-vous à démanteler les nœuds du réseau
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez examiner les considérations relatives à la suppression des nœuds de grille et confirmer qu'aucune tâche de réparation n'est active pour les données codées par effacement.

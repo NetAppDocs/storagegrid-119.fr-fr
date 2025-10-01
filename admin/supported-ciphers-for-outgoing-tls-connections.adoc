@@ -1,0 +1,25 @@
+---
+permalink: admin/supported-ciphers-for-outgoing-tls-connections.html 
+sidebar: sidebar 
+keywords: tls cipher suites, transport layer security connections 
+summary: 'Le système StorageGRID prend en charge un ensemble limité de suites de chiffrement pour les connexions TLS (Transport Layer Security) aux systèmes externes utilisés pour la fédération d"identité et les pools de stockage cloud.' 
+---
+= Chiffres pris en charge pour les connexions TLS sortantes
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Le système StorageGRID prend en charge un ensemble limité de suites de chiffrement pour les connexions TLS (Transport Layer Security) aux systèmes externes utilisés pour la fédération d'identité et les pools de stockage cloud.
+
+
+
+== Versions prises en charge de TLS
+
+StorageGRID prend en charge TLS 1.2 et TLS 1.3 pour les connexions aux systèmes externes utilisés pour la fédération d'identité et les pools de stockage cloud.
+
+Les chiffrements TLS pris en charge pour une utilisation avec des systèmes externes ont été sélectionnés pour garantir la compatibilité avec une gamme de systèmes externes. La liste est plus longue que la liste des chiffrements pris en charge pour une utilisation avec les applications clientes S3. Pour configurer les chiffrements, accédez à *CONFIGURATION* > *Sécurité* > *Paramètres de sécurité* et sélectionnez *Politiques TLS et SSH*.
+
+
+NOTE: Les options de configuration TLS telles que les versions de protocole, les chiffrements, les algorithmes d'échange de clés et les algorithmes MAC ne sont pas configurables dans StorageGRID.  Contactez votre représentant de compte NetApp si vous avez des demandes spécifiques concernant ces paramètres.

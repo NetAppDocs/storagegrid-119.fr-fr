@@ -1,0 +1,73 @@
+---
+permalink: ilm/creating-storage-pool.html 
+sidebar: sidebar 
+keywords: create storage pool 
+summary: 'Vous créez des pools de stockage pour déterminer où le système StorageGRID stocke les données d"objet et le type de stockage utilisé.  Chaque pool de stockage comprend un ou plusieurs sites et un ou plusieurs niveaux de stockage.' 
+---
+= Créer un pool de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous créez des pools de stockage pour déterminer où le système StorageGRID stocke les données d'objet et le type de stockage utilisé.  Chaque pool de stockage comprend un ou plusieurs sites et un ou plusieurs niveaux de stockage.
+
+
+NOTE: Lorsque vous installez StorageGRID 11.9 sur une nouvelle grille, des pools de stockage sont automatiquement créés pour chaque site. Cependant, si vous avez initialement installé StorageGRID 11.6 ou une version antérieure, les pools de stockage ne sont pas automatiquement créés pour chaque site.
+
+Si vous souhaitez créer des pools de stockage cloud pour stocker des données d'objets en dehors de votre système StorageGRID , consultez lelink:what-cloud-storage-pool-is.html["informations sur l'utilisation des pools de stockage cloud"] .
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+* Vous avez examiné les instructions de création de pools de stockage.
+
+
+.À propos de cette tâche
+Les pools de stockage déterminent où les données des objets sont stockées.  Le nombre de pools de stockage dont vous avez besoin dépend du nombre de sites de votre grille et des types de copies que vous souhaitez : répliquées ou codées par effacement.
+
+* Pour la réplication et le codage d’effacement sur un seul site, créez un pool de stockage pour chaque site.  Par exemple, si vous souhaitez stocker des copies d’objets répliquées sur trois sites, créez trois pools de stockage.
+* Pour le codage d'effacement sur trois sites ou plus, créez un pool de stockage qui inclut une entrée pour chaque site.  Par exemple, si vous souhaitez effacer des objets de code sur trois sites, créez un pool de stockage.
++
+
+NOTE: N'incluez pas le site Tous les sites dans un pool de stockage qui sera utilisé dans un profil de codage d'effacement.  Ajoutez plutôt une entrée distincte au pool de stockage pour chaque site qui stockera les données codées par effacement.  Voir<<entries,cette étape>> pour un exemple.
+
+* Si vous disposez de plusieurs niveaux de stockage, ne créez pas de pool de stockage incluant différents niveaux de stockage sur un seul site. Voir lelink:guidelines-for-creating-storage-pools.html["Directives pour la création de pools de stockage"] .
+
+
+.Étapes
+. Sélectionnez *ILM* > *Pools de stockage*.
++
+L'onglet Pools de stockage répertorie tous les pools de stockage définis.
+
++
+
+NOTE: Pour les nouvelles installations de StorageGRID 11.6 ou version antérieure, le pool de stockage Tous les nœuds de stockage est automatiquement mis à jour chaque fois que vous ajoutez de nouveaux sites de centre de données.  N'utilisez pas ce pool dans les règles ILM.
+
+. Pour créer un nouveau pool de stockage, sélectionnez *Créer*.
+. Saisissez un nom unique pour le pool de stockage.  Utilisez un nom qui sera facile à identifier lorsque vous configurerez des profils de codage d’effacement et des règles ILM.
+. Dans la liste déroulante *Site*, sélectionnez un site pour ce pool de stockage.
++
+Lorsque vous sélectionnez un site, le nombre de nœuds de stockage dans le tableau est automatiquement mis à jour.
+
++
+En général, n'utilisez pas le site Tous les sites dans un pool de stockage.  Les règles ILM qui utilisent un pool de stockage Tous les sites placent les objets sur n'importe quel site disponible, vous donnant ainsi moins de contrôle sur le placement des objets.  De plus, un pool de stockage Tous les sites utilise immédiatement les nœuds de stockage d’un nouveau site, ce qui n’est peut-être pas le comportement auquel vous vous attendez.
+
+. Dans la liste déroulante *Qualité de stockage*, sélectionnez le type de stockage qui sera utilisé si une règle ILM utilise ce pool de stockage.
++
+Le niveau de stockage, _inclut tous les niveaux de stockage_, inclut tous les nœuds de stockage sur le site sélectionné.  Si vous avez créé des niveaux de stockage supplémentaires pour les nœuds de stockage de votre grille, ils sont répertoriés dans la liste déroulante.
+
+. [[entrées]]Si vous souhaitez utiliser le pool de stockage dans un profil de codage d'effacement multisite, sélectionnez *Ajouter plus de nœuds* pour ajouter une entrée pour chaque site au pool de stockage.
++
+
+NOTE: Vous êtes averti si vous ajoutez plusieurs entrées avec des niveaux de stockage différents pour un site.
+
++
+Pour supprimer une entrée, sélectionnez l'icône Supprimerimage:../media/icon-x-to-remove.png["icône de suppression"] .
+
+. Lorsque vous êtes satisfait de vos sélections, sélectionnez *Enregistrer*.
++
+Le nouveau pool de stockage est ajouté à la liste.
+
+

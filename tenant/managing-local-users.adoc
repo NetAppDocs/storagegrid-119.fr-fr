@@ -1,0 +1,225 @@
+---
+permalink: tenant/managing-local-users.html 
+sidebar: sidebar 
+keywords: how to create local tenant users, manage users 
+summary: 'Vous pouvez créer des utilisateurs locaux et les affecter à des groupes locaux pour déterminer les fonctionnalités auxquelles ces utilisateurs peuvent accéder. Le gestionnaire de locataires comprend un utilisateur local prédéfini, nommé « root ».  Bien que vous puissiez ajouter et supprimer des utilisateurs locaux, vous ne pouvez pas supprimer l"utilisateur root.' 
+---
+= Gérer les utilisateurs locaux
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez créer des utilisateurs locaux et les affecter à des groupes locaux pour déterminer les fonctionnalités auxquelles ces utilisateurs peuvent accéder. Le gestionnaire de locataires comprend un utilisateur local prédéfini, nommé « root ». Bien que vous puissiez ajouter et supprimer des utilisateurs locaux, vous ne pouvez pas supprimer l'utilisateur root.
+
+
+NOTE: Si l'authentification unique (SSO) est activée pour votre système StorageGRID , les utilisateurs locaux ne pourront pas se connecter au gestionnaire de locataires ou à l'API de gestion des locataires, bien qu'ils puissent utiliser des applications clientes pour accéder aux ressources du locataire, en fonction des autorisations de groupe.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Autorisation d'accès root"] .
+* Si votre compte locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille*, vous avez examiné le flux de travail et les considérations pourlink:grid-federation-account-clone.html["clonage de groupes de locataires et d'utilisateurs"] , et vous êtes connecté à la grille source du locataire.
+
+
+
+
+== [[create-user]]Créer un utilisateur local
+
+Vous pouvez créer un utilisateur local et l’affecter à un ou plusieurs groupes locaux pour contrôler ses autorisations d’accès.
+
+Les utilisateurs S3 qui n'appartiennent à aucun groupe ne disposent pas d'autorisations de gestion ni de stratégies de groupe S3 qui leur sont appliquées.  Ces utilisateurs peuvent bénéficier d’un accès au compartiment S3 accordé via une politique de compartiment.
+
+Les utilisateurs Swift qui n'appartiennent à aucun groupe ne disposent pas d'autorisations de gestion ni d'accès au conteneur Swift.
+
+
+
+=== Accéder à l'assistant de création d'utilisateur
+
+.Étapes
+. Sélectionnez *GESTION DES ACCÈS* > *Utilisateurs*.
++
+Si votre compte locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille*, une bannière bleue indique qu'il s'agit de la grille source du locataire.  Tous les utilisateurs locaux que vous créez sur cette grille seront clonés sur l’autre grille de la connexion.
+
++
+image::../media/grid-federation-tenant-user-banner.png[image de la bannière bleue sur la page utilisateur s'il s'agit de la grille source du locataire]
+
+. Sélectionnez *Créer un utilisateur*.
+
+
+
+
+=== Entrez les informations d'identification
+
+.Étapes
+. Pour l’étape *Saisir les informations d’identification de l’utilisateur*, remplissez les champs suivants.
++
+[cols="1a,3a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Nom et prénom
+ a| 
+Le nom complet de cet utilisateur, par exemple, le prénom et le nom d'une personne ou le nom d'une application.
+
+
+
+ a| 
+Nom d'utilisateur
+ a| 
+Le nom que cet utilisateur utilisera pour se connecter. Les noms d'utilisateur doivent être uniques et ne peuvent pas être modifiés.
+
+*Remarque* : si votre compte de locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille*, une erreur de clonage se produira si le même *Nom d'utilisateur* existe déjà pour le locataire sur la grille de destination.
+
+
+
+ a| 
+Mot de passe et confirmation du mot de passe
+ a| 
+Le mot de passe que l'utilisateur utilisera initialement lors de la connexion.
+
+
+
+ a| 
+Refuser l'accès
+ a| 
+Sélectionnez *Oui* pour empêcher cet utilisateur de se connecter au compte locataire, même s'il appartient toujours à un ou plusieurs groupes.
+
+Par exemple, sélectionnez *Oui* pour suspendre temporairement la possibilité pour un utilisateur de se connecter.
+
+|===
+. Sélectionnez *Continuer*.
+
+
+
+
+=== Affecter à des groupes
+
+.Étapes
+. Affectez l’utilisateur à un ou plusieurs groupes locaux pour déterminer les tâches qu’il peut effectuer.
++
+L'affectation d'un utilisateur à des groupes est facultative.  Si vous préférez, vous pouvez sélectionner des utilisateurs lorsque vous créez ou modifiez des groupes.
+
++
+Les utilisateurs qui n'appartiennent à aucun groupe n'auront aucune autorisation de gestion.  Les autorisations sont cumulatives.  Les utilisateurs disposeront de toutes les autorisations pour tous les groupes auxquels ils appartiennent. Voir link:tenant-management-permissions.html["Autorisations de gestion des locataires"] .
+
+. Sélectionnez *Créer un utilisateur*.
++
+Si votre compte locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille* et que vous êtes sur la grille source du locataire, le nouvel utilisateur local est cloné sur la grille de destination du locataire.  *Succès* apparaît comme *Statut de clonage* dans la section Présentation de la page de détails de l'utilisateur.
+
+. Sélectionnez *Terminer* pour revenir à la page Utilisateurs.
+
+
+
+
+== Afficher ou modifier l'utilisateur local
+
+.Étapes
+. Sélectionnez *GESTION DES ACCÈS* > *Utilisateurs*.
+. Consultez les informations fournies sur la page Utilisateurs, qui répertorie les informations de base pour tous les utilisateurs locaux et fédérés de ce compte locataire.
++
+Si le compte locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille* et que vous visualisez l'utilisateur sur la grille source du locataire :
+
++
+** Un message de bannière indique que si vous modifiez ou supprimez un utilisateur, vos modifications ne seront pas synchronisées avec l'autre grille.
+** Si nécessaire, un message de bannière indique si les utilisateurs n'ont pas été clonés sur le locataire sur la grille de destination. Vous pouvez <<clone-users,réessayer un clone d'utilisateur qui a échoué>> .
+
+
+. Si vous souhaitez modifier le nom complet de l'utilisateur :
++
+.. Cochez la case correspondant à l'utilisateur.
+.. Sélectionnez *Actions* > *Modifier le nom complet*.
+.. Entrez le nouveau nom.
+.. Sélectionnez *Enregistrer les modifications*.
+
+
+. Si vous souhaitez afficher plus de détails ou apporter des modifications supplémentaires, effectuez l’une des opérations suivantes :
++
+** Sélectionnez le nom d'utilisateur.
+** Cochez la case correspondant à l'utilisateur, puis sélectionnez *Actions* > *Afficher les détails de l'utilisateur*.
+
+
+. Consultez la section Présentation, qui affiche les informations suivantes pour chaque utilisateur :
++
+** Nom et prénom
+** Nom d'utilisateur
+** Type d'utilisateur
+** Accès refusé
+** Mode d'accès
+** Adhésion au groupe
+** Champs supplémentaires si le compte locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille* et que vous visualisez l'utilisateur sur la grille source du locataire :
++
+*** Statut du clonage, soit *Succès* soit *Échec*
+*** Une bannière bleue indiquant que si vous modifiez cet utilisateur, vos modifications ne seront pas synchronisées avec l'autre grille.
+
+
+
+
+. Modifiez les paramètres utilisateur selon vos besoins. Voir<<create-user,Créer un utilisateur local>> pour plus de détails sur ce qu'il faut saisir.
++
+.. Dans la section Aperçu, modifiez le nom complet en sélectionnant le nom ou l'icône de modificationimage:../media/icon_edit_tm.png["Modifier l'icône"] .
++
+Vous ne pouvez pas changer le nom d'utilisateur.
+
+.. Dans l'onglet *Mot de passe*, modifiez le mot de passe de l'utilisateur et sélectionnez *Enregistrer les modifications*.
+.. Dans l'onglet *Accès*, sélectionnez *Non* pour autoriser l'utilisateur à se connecter ou sélectionnez *Oui* pour empêcher l'utilisateur de se connecter. Ensuite, sélectionnez *Enregistrer les modifications*.
+.. Dans l'onglet *Clés d'accès*, sélectionnez *Créer une clé* et suivez les instructions pourlink:creating-another-users-s3-access-keys.html["créer les clés d'accès S3 d'un autre utilisateur"] .
+.. Dans l'onglet *Groupes*, sélectionnez *Modifier les groupes* pour ajouter l'utilisateur à des groupes ou supprimer l'utilisateur des groupes.  Ensuite, sélectionnez *Enregistrer les modifications*.
+
+
+. Confirmez que vous avez sélectionné *Enregistrer les modifications* pour chaque section que vous avez modifiée.
+
+
+
+
+== Utilisateur local en double
+
+Vous pouvez dupliquer un utilisateur local pour créer un nouvel utilisateur plus rapidement.
+
+
+NOTE: Si votre compte locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille* et que vous dupliquez un utilisateur à partir de la grille source du locataire, l'utilisateur dupliqué sera cloné sur la grille de destination du locataire.
+
+.Étapes
+. Sélectionnez *GESTION DES ACCÈS* > *Utilisateurs*.
+. Cochez la case correspondant à l’utilisateur que vous souhaitez dupliquer.
+. Sélectionnez *Actions* > *Dupliquer l'utilisateur*.
+. Voir<<create-user,Créer un utilisateur local>> pour plus de détails sur ce qu'il faut saisir.
+. Sélectionnez *Créer un utilisateur*.
+
+
+
+
+== [[clone-users]]Réessayer le clonage de l'utilisateur
+
+Pour réessayer un clonage qui a échoué :
+
+. Sélectionnez chaque utilisateur qui indique _(Échec du clonage)_ sous le nom d'utilisateur.
+. Sélectionnez *Actions* > *Cloner les utilisateurs*.
+. Affichez l’état de l’opération de clonage à partir de la page de détails de chaque utilisateur que vous clonez.
+
+
+Pour plus d'informations, voirlink:grid-federation-account-clone.html["Cloner des groupes de locataires et des utilisateurs"] .
+
+
+
+== Supprimer un ou plusieurs utilisateurs locaux
+
+Vous pouvez supprimer définitivement un ou plusieurs utilisateurs locaux qui n'ont plus besoin d'accéder au compte locataire StorageGRID .
+
+
+NOTE: Si votre compte locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille* et que vous supprimez un utilisateur local, StorageGRID ne supprimera pas l'utilisateur correspondant sur l'autre grille.  Si vous devez conserver ces informations synchronisées, vous devez supprimer le même utilisateur des deux grilles.
+
+
+NOTE: Vous devez utiliser la source d’identité fédérée pour supprimer les utilisateurs fédérés.
+
+.Étapes
+. Sélectionnez *GESTION DES ACCÈS* > *Utilisateurs*.
+. Cochez la case correspondant à chaque utilisateur que vous souhaitez supprimer.
+. Sélectionnez *Actions* > *Supprimer l'utilisateur* ou *Actions* > *Supprimer les utilisateurs*.
++
+Une boîte de dialogue de confirmation apparaît.
+
+. Sélectionnez *Supprimer l'utilisateur* ou *Supprimer les utilisateurs*.
+

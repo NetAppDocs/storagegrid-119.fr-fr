@@ -1,0 +1,87 @@
+---
+permalink: s3/complete-multipart-upload.html 
+sidebar: sidebar 
+keywords: multipart upload, object, object size 
+summary: 'L"opération CompleteMultipartUpload termine un téléchargement en plusieurs parties d"un objet en assemblant les parties précédemment téléchargées.' 
+---
+= Téléchargement complet en plusieurs parties
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'opération CompleteMultipartUpload termine un téléchargement en plusieurs parties d'un objet en assemblant les parties précédemment téléchargées.
+
+
+NOTE: StorageGRID prend en charge les valeurs non consécutives dans l'ordre croissant pour le `partNumber` paramètre de demande avec CompleteMultipartUpload.  Le paramètre peut commencer par n'importe quelle valeur.
+
+
+
+== Résoudre les conflits
+
+Les demandes client conflictuelles, telles que deux clients écrivant sur la même clé, sont résolues sur la base des « derniers gagnants ».  Le moment de l'évaluation des « dernières victoires » est basé sur le moment où le système StorageGRID termine une demande donnée, et non sur le moment où les clients S3 commencent une opération.
+
+
+
+== En-têtes de requête pris en charge
+
+Les en-têtes de requête suivants sont pris en charge :
+
+* `x-amz-checksum-sha256`
+* `x-amz-storage-class`
++
+Le `x-amz-storage-class` l'en-tête affecte le nombre de copies d'objets créées par StorageGRID si la règle ILM correspondante spécifie lelink:../ilm/data-protection-options-for-ingest.html["Option de double validation ou d'ingestion équilibrée"] .
+
+* `STANDARD`
++
+(Par défaut) Spécifie une opération d'ingestion à double validation lorsque la règle ILM utilise l'option Double validation ou lorsque l'option Équilibré revient à la création de copies intermédiaires.
+
+* `REDUCED_REDUNDANCY`
++
+Spécifie une opération d'ingestion à validation unique lorsque la règle ILM utilise l'option de validation double ou lorsque l'option Équilibré revient à la création de copies intermédiaires.
+
++
+
+NOTE: Si vous ingérez un objet dans un bucket avec le verrouillage d'objet S3 activé, le `REDUCED_REDUNDANCY` l'option est ignorée.  Si vous ingérez un objet dans un bucket conforme hérité, le `REDUCED_REDUNDANCY` l'option renvoie une erreur.  StorageGRID effectuera toujours une ingestion à double validation pour garantir que les exigences de conformité sont satisfaites.
+
+
+
+
+CAUTION: Si un téléchargement en plusieurs parties n'est pas terminé dans les 15 jours, l'opération est marquée comme inactive et toutes les données associées sont supprimées du système.
+
+
+NOTE: Le `ETag` la valeur renvoyée n'est pas une somme MD5 des données, mais suit l'implémentation de l'API Amazon S3 de la `ETag` valeur pour les objets en plusieurs parties.
+
+
+
+== En-têtes de requête non pris en charge
+
+Les en-têtes de requête suivants ne sont pas pris en charge :
+
+* `x-amz-sdk-checksum-algorithm`
+* `x-amz-trailer`
+
+
+
+
+== Gestion des versions
+
+Cette opération termine un téléchargement en plusieurs parties.  Si le contrôle de version est activé pour un bucket, la version de l'objet est créée une fois le téléchargement en plusieurs parties terminé.
+
+Si le contrôle de version est activé pour un bucket, un `versionId` est généré automatiquement pour la version de l'objet stocké.  Ce `versionId` est également renvoyé dans la réponse en utilisant le `x-amz-version-id` en-tête de réponse.
+
+Si le contrôle de version est suspendu, la version de l'objet est stockée avec une valeur nulle `versionId` et si une version nulle existe déjà, elle sera écrasée.
+
+
+NOTE: Lorsque le contrôle de version est activé pour un bucket, l'exécution d'un téléchargement en plusieurs parties crée toujours une nouvelle version, même s'il existe des téléchargements en plusieurs parties simultanés effectués sur la même clé d'objet.  Lorsque le contrôle de version n'est pas activé pour un bucket, il est possible de lancer un téléchargement en plusieurs parties, puis de lancer et de terminer un autre téléchargement en plusieurs parties sur la même clé d'objet.  Sur les buckets non versionnés, le téléchargement en plusieurs parties qui se termine en dernier est prioritaire.
+
+
+
+== Échec de la réplication, de la notification ou de la notification des métadonnées
+
+Si le bucket dans lequel le téléchargement en plusieurs parties se produit est configuré pour un service de plateforme, le téléchargement en plusieurs parties réussit même si l'action de réplication ou de notification associée échoue.
+
+Un locataire peut déclencher la réplication ou la notification ayant échoué en mettant à jour les métadonnées ou les balises de l'objet.  Un locataire peut soumettre à nouveau les valeurs existantes pour éviter d'apporter des modifications indésirables.
+
+link:../admin/troubleshooting-platform-services.html["Dépanner les services de la plateforme"] .

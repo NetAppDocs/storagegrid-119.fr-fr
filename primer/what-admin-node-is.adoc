@@ -1,0 +1,223 @@
+---
+permalink: primer/what-admin-node-is.html 
+sidebar: sidebar 
+keywords: admin nodes 
+summary: 'Les nœuds d’administration fournissent des services de gestion tels que la configuration du système, la surveillance et la journalisation.  Les nœuds d’administration peuvent également être utilisés pour équilibrer la charge du trafic client S3.  Chaque grille doit avoir un nœud d"administration principal et peut avoir n"importe quel nombre de nœuds d"administration non principaux pour la redondance.' 
+---
+= Qu'est-ce qu'un nœud d'administration ?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les nœuds d’administration fournissent des services de gestion tels que la configuration du système, la surveillance et la journalisation.  Les nœuds d’administration peuvent également être utilisés pour équilibrer la charge du trafic client S3.  Chaque grille doit avoir un nœud d'administration principal et peut avoir n'importe quel nombre de nœuds d'administration non principaux pour la redondance.
+
+
+
+== Différences entre les nœuds d'administration principaux et non principaux
+
+Lorsque vous vous connectez au gestionnaire de grille ou au gestionnaire de locataires, vous vous connectez à un nœud d'administration. Vous pouvez vous connecter à n’importe quel nœud d’administration, et chaque nœud d’administration affiche une vue similaire du système StorageGRID . Cependant, le nœud d’administration principal fournit plus de fonctionnalités que les nœuds d’administration non principaux. Par exemple, la plupart des procédures de maintenance doivent être effectuées à partir des nœuds d’administration principaux.
+
+Le tableau résume les capacités des nœuds d’administration principaux et non principaux.
+
+[cols="2a,1a,1a"]
+|===
+| Capacités | Nœud d'administration principal | Nœud d'administration non principal 
+
+
+ a| 
+Comprend le<<ams,AMS>> service
+ a| 
+Oui
+ a| 
+Oui
+
+
+
+ a| 
+Comprend le<<cmn,CMN>> service
+ a| 
+Oui
+ a| 
+Non
+
+
+
+ a| 
+Comprend le<<nms,NMS>> service
+ a| 
+Oui
+ a| 
+Oui
+
+
+
+ a| 
+Comprend le<<prometheus,Prométhée>> service
+ a| 
+Oui
+ a| 
+Oui
+
+
+
+ a| 
+Comprend le<<ssm,SSM>> service
+ a| 
+Oui
+ a| 
+Oui
+
+
+
+ a| 
+Comprend le<<load-balancer,Équilibreur de charge>> et<<high-availability,Haute disponibilité>> services
+ a| 
+Oui
+ a| 
+Oui
+
+
+
+ a| 
+Soutient le<<mgmt-api,Interface de programmation d'application de gestion>> (API de gestion)
+ a| 
+Oui
+ a| 
+Oui
+
+
+
+ a| 
+Peut être utilisé pour toutes les tâches de maintenance liées au réseau, par exemple le changement d'adresse IP et la mise à jour des serveurs NTP
+ a| 
+Oui
+ a| 
+Non
+
+
+
+ a| 
+Peut effectuer un rééquilibrage EC après l'extension du nœud de stockage
+ a| 
+Oui
+ a| 
+Non
+
+
+
+ a| 
+Peut être utilisé pour la procédure de restauration du volume
+ a| 
+Oui
+ a| 
+Oui
+
+
+
+ a| 
+Peut collecter des fichiers journaux et des données système à partir d'un ou plusieurs nœuds
+ a| 
+Oui
+ a| 
+Non
+
+
+
+ a| 
+Envoie des notifications d'alerte, des packages AutoSupport et des interruptions SNMP et informe
+ a| 
+Oui. Agit comme le<<preferred-sender,expéditeur préféré>> .
+ a| 
+Oui. Agit comme un expéditeur de secours.
+
+|===
+
+
+== [[preferred-sender]]Nœud d'administration de l'expéditeur préféré
+
+Si votre déploiement StorageGRID inclut plusieurs nœuds d'administration, le nœud d'administration principal est l'expéditeur préféré pour les notifications d'alerte, les packages AutoSupport et les interruptions et informations SNMP.
+
+Dans le cadre du fonctionnement normal du système, seul l’expéditeur préféré envoie des notifications. Cependant, tous les autres nœuds d’administration surveillent l’expéditeur préféré. Si un problème est détecté, d'autres nœuds d'administration agissent comme des _expéditeurs de secours_.
+
+Plusieurs notifications peuvent être envoyées dans ces cas :
+
+* Si les nœuds d'administration deviennent « isolés » les uns des autres, l'expéditeur préféré et les expéditeurs de secours tenteront d'envoyer des notifications, et plusieurs copies des notifications pourraient être reçues.
+* Si l'expéditeur de secours détecte des problèmes avec l'expéditeur préféré et commence à envoyer des notifications, l'expéditeur préféré peut retrouver sa capacité à envoyer des notifications. Si cela se produit, des notifications en double peuvent être envoyées. L'expéditeur de secours cessera d'envoyer des notifications lorsqu'il ne détectera plus d'erreurs sur l'expéditeur préféré.
++
+
+NOTE: Lorsque vous testez les packages AutoSupport , tous les nœuds d’administration envoient le test.  Lorsque vous testez les notifications d’alerte, vous devez vous connecter à chaque nœud d’administration pour vérifier la connectivité.
+
+
+
+
+
+== Services principaux pour les nœuds d'administration
+
+Le tableau suivant présente les principaux services des nœuds d’administration ; cependant, ce tableau ne répertorie pas tous les services de nœud.
+
+[cols="1a,2a"]
+|===
+| Service | Fonction clé 
+
+
+ a| 
+[[ams]]Système de gestion des audits (AMS)
+ a| 
+Suivi de l'activité et des événements du système.
+
+
+
+ a| 
+[[cmn]]Nœud de gestion de configuration (CMN)
+ a| 
+Gère la configuration à l'échelle du système.
+
+
+
+ a| 
+[[haute-disponibilité]]Haute disponibilité
+ a| 
+Gère les adresses IP virtuelles haute disponibilité pour les groupes de nœuds d'administration et de nœuds de passerelle.
+
+*Remarque :* ce service est également disponible sur les nœuds de passerelle.
+
+
+
+ a| 
+[[load-balancer]]Équilibreur de charge
+ a| 
+Fournit un équilibrage de charge du trafic S3 des clients vers les nœuds de stockage.
+
+*Remarque :* ce service est également disponible sur les nœuds de passerelle.
+
+
+
+ a| 
+[[mgmt-api]]Interface de programmation d'application de gestion (mgmt-api)
+ a| 
+Traite les demandes de l'API Grid Management et de l'API Tenant Management.
+
+
+
+ a| 
+[[nms]]Système de gestion de réseau (NMS)
+ a| 
+Fournit des fonctionnalités pour le gestionnaire de grille.
+
+
+
+ a| 
+[[prometheus]]Prométhée
+ a| 
+Collecte et stocke les métriques de séries chronologiques des services sur tous les nœuds.
+
+
+
+ a| 
+[[ssm]]Moniteur d'état du serveur (SSM)
+ a| 
+Surveille le système d'exploitation et le matériel sous-jacent.
+
+|===

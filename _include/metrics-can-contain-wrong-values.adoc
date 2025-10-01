@@ -1,0 +1,6 @@
+= 
+:allow-uri-read: 
+
+
+
+NOTE: Lorsqu'un nœud n'est pas connecté au réseau, par exemple lors d'une mise à niveau ou d'un état déconnecté, certaines mesures peuvent être indisponibles ou exclues des totaux du site et du réseau.  Une fois qu'un nœud se reconnecte au réseau, attendez quelques minutes que les valeurs se stabilisent.

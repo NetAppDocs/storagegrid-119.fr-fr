@@ -1,0 +1,32 @@
+---
+permalink: s3/authenticating-requests.html 
+sidebar: sidebar 
+keywords: authenticate requests, authenticating, requests 
+summary: Le système StorageGRID prend en charge l’accès authentifié et anonyme aux objets à l’aide de l’API S3. 
+---
+= Authentifier les demandes
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Le système StorageGRID prend en charge l’accès authentifié et anonyme aux objets à l’aide de l’API S3.
+
+L'API S3 prend en charge les versions Signature 2 et Signature 4 pour l'authentification des requêtes API S3.
+
+Les demandes authentifiées doivent être signées à l'aide de votre identifiant de clé d'accès et de votre clé d'accès secrète.
+
+Le système StorageGRID prend en charge deux méthodes d'authentification : HTTP `Authorization` en-tête et utilisation des paramètres de requête.
+
+
+
+== Utiliser l'en-tête d'autorisation HTTP
+
+Le HTTP `Authorization` L'en-tête est utilisé par toutes les opérations API S3, à l'exception des demandes anonymes lorsque la politique de compartiment le permet.  Le `Authorization` L'en-tête contient toutes les informations de signature requises pour authentifier une demande.
+
+
+
+== Utiliser les paramètres de requête
+
+Vous pouvez utiliser des paramètres de requête pour ajouter des informations d’authentification à une URL.  Ceci est connu sous le nom de présignature de l'URL, qui peut être utilisée pour accorder un accès temporaire à des ressources spécifiques.  Les utilisateurs disposant de l'URL présignée n'ont pas besoin de connaître la clé d'accès secrète pour accéder à la ressource, ce qui vous permet de fournir un accès restreint à un tiers à une ressource.

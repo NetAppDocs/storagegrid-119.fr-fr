@@ -1,0 +1,61 @@
+---
+permalink: maintain/vmware-adding-trunk-or-access-interfaces-to-node.html 
+sidebar: sidebar 
+keywords: add extra interface to node, access interface, VM interface 
+summary: 'Vous pouvez ajouter des interfaces de jonction ou d"accès supplémentaires à un nœud de machine virtuelle après son installation.  Les interfaces que vous ajoutez sont affichées sur la page Interfaces VLAN et sur la page Groupes HA.' 
+---
+= VMware : ajouter des interfaces de jonction ou d'accès à un nœud
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez ajouter une jonction ou une interface d’accès à un nœud de machine virtuelle une fois le nœud installé.  Les interfaces que vous ajoutez sont affichées sur la page Interfaces VLAN et sur la page Groupes HA.
+
+.Avant de commencer
+* Vous avez accès aux instructions pourlink:../vmware/index.html["installer StorageGRID sur votre plateforme VMware"] .
+* Vous disposez de machines virtuelles VMware Admin Node et Gateway Node.
+* Vous disposez d'un sous-réseau réseau qui n'est pas utilisé comme réseau de grille, d'administration ou de client.
+* Vous avez le `Passwords.txt` déposer.
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+
+
+
+CAUTION: N'essayez pas d'ajouter des interfaces à un nœud pendant qu'une mise à niveau logicielle, une procédure de récupération ou une procédure d'extension est active.
+
+.À propos de cette tâche
+Suivez ces étapes pour ajouter une ou plusieurs interfaces supplémentaires à un nœud VMware une fois le nœud installé.  Par exemple, vous souhaiterez peut-être ajouter une interface de jonction à un nœud d'administration ou de passerelle, afin de pouvoir utiliser des interfaces VLAN pour séparer le trafic appartenant à différentes applications ou locataires.  Ou vous souhaiterez peut-être ajouter une interface d’accès à utiliser dans un groupe de haute disponibilité (HA).
+
+Si vous ajoutez une interface de jonction, vous devez configurer une interface VLAN dans StorageGRID.  Si vous ajoutez une interface d’accès, vous pouvez ajouter l’interface directement à un groupe HA ; vous n’avez pas besoin de configurer une interface VLAN.
+
+Le nœud peut être indisponible pendant une brève période lorsque vous ajoutez des interfaces.
+
+.Étapes
+. Dans vCenter, ajoutez une nouvelle carte réseau (type VMXNET3) à un nœud d’administration et à une machine virtuelle de nœud de passerelle.  Cochez les cases *Connecté* et *Connecter à la mise sous tension*.
++
+image::../media/vcenter.png[vCenter]
+
+. Utilisez SSH pour vous connecter au nœud d’administration ou au nœud de passerelle.
+. Utiliser `ip link show` pour confirmer que la nouvelle interface réseau ens256 est détectée.
++
+[listing]
+----
+ip link show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1400 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 00:50:56:a0:4e:5b brd ff:ff:ff:ff:ff:ff
+3: eth1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 00:50:56:a0:fa:ce brd ff:ff:ff:ff:ff:ff
+4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1400 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 00:50:56:a0:d6:87 brd ff:ff:ff:ff:ff:ff
+5: ens256: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq master ens256vrf state UP mode DEFAULT group default qlen 1000
+    link/ether 00:50:56:a0:ea:88 brd ff:ff:ff:ff:ff:ff
+----
+
+
+.Après avoir terminé
+* Si vous avez ajouté une ou plusieurs interfaces trunk, accédez àlink:../admin/configure-vlan-interfaces.html["configurer les interfaces VLAN"] pour configurer une ou plusieurs interfaces VLAN pour chaque nouvelle interface parent.
+* Si vous avez ajouté une ou plusieurs interfaces d'accès, accédez àlink:../admin/configure-high-availability-group.html["configurer des groupes de haute disponibilité"] pour ajouter les nouvelles interfaces directement aux groupes HA.
+

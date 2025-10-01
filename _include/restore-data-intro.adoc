@@ -1,0 +1,86 @@
+= Quelle procédure dois-je utiliser ?
+:allow-uri-read: 
+
+
+
+
+== Quelle procédure dois-je utiliser ?
+
+Dans la mesure du possible, restaurez les données de l'objet à l'aide de la page *Restauration de volume* dans le gestionnaire de grille.
+
+* Si les volumes sont répertoriés dans *MAINTENANCE* > *Restauration de volume* > *Nœuds à restaurer*, restaurez les données de l'objet à l'aide de l'link:../maintain/restoring-volume.html["Page de restauration de volume dans le gestionnaire de grille"] .
+* Si les volumes ne sont pas répertoriés dans *MAINTENANCE* > *Restauration de volume* > *Nœuds à restaurer*, suivez les étapes ci-dessous pour utiliser le `repair-data` script pour restaurer les données de l'objet.
++
+Si le nœud de stockage récupéré contient moins de volumes que le nœud qu'il remplace, vous devez utiliser le `repair-data` scénario.
+
+
+
+
+NOTE: Le script de réparation des données est obsolète et sera supprimé dans une prochaine version.  Lorsque cela est possible, utilisez lelink:../maintain/restoring-volume.html["Procédure de restauration de volume dans le gestionnaire de grille"] .
+
+
+
+== Utilisez le `repair-data` script pour restaurer les données de l'objet
+
+.Avant de commencer
+* Vous avez confirmé que le nœud de stockage récupéré a un état de connexion *Connecté*image:../media/icon_alert_green_checkmark.png["icône d'alerte coche verte"] dans l'onglet *NODES* > *Aperçu* dans le Gestionnaire de grille.
+
+
+.À propos de cette tâche
+Les données d'objet peuvent être restaurées à partir d'autres nœuds de stockage ou d'un pool de stockage cloud, en supposant que les règles ILM de la grille ont été configurées de manière à ce que des copies d'objet soient disponibles.
+
+Notez ce qui suit :
+
+* Si une règle ILM a été configurée pour stocker une seule copie répliquée et que cette copie existait sur un volume de stockage défaillant, vous ne pourrez pas récupérer l'objet.
+* Si la seule copie restante d'un objet se trouve dans un pool de stockage Cloud, StorageGRID doit émettre plusieurs requêtes au point de terminaison du pool de stockage Cloud pour restaurer les données de l'objet.  Avant d’effectuer cette procédure, contactez le support technique pour obtenir de l’aide afin d’estimer le délai de récupération et les coûts associés.
+
+
+
+
+== À propos de la `repair-data` scénario
+
+Pour restaurer les données d'un objet, exécutez la commande `repair-data` scénario.  Ce script démarre le processus de restauration des données d'objet et fonctionne avec l'analyse ILM pour garantir que les règles ILM sont respectées.
+
+Sélectionnez *Données répliquées* ou *Données codées par effacement (EC)* ci-dessous pour découvrir les différentes options pour `repair-data` script, selon que vous restaurez des données répliquées ou des données codées par effacement.  Si vous devez restaurer les deux types de données, vous devez exécuter les deux ensembles de commandes.
+
+
+NOTE: Pour plus d'informations sur le `repair-data` script, entrez `repair-data --help` à partir de la ligne de commande du nœud d'administration principal.
+
+
+NOTE: Le script de réparation des données est obsolète et sera supprimé dans une prochaine version.  Lorsque cela est possible, utilisez lelink:../maintain/restoring-volume.html["Procédure de restauration de volume dans le gestionnaire de grille"] .
+
+[role="tabbed-block"]
+====
+.Données répliquées
+--
+Deux commandes sont disponibles pour restaurer les données répliquées, selon que vous devez réparer l'intégralité du nœud ou uniquement certains volumes du nœud :
+
+`repair-data start-replicated-node-repair`
+
+`repair-data start-replicated-volume-repair`
+
+Vous pouvez suivre les réparations des données répliquées avec cette commande :
+
+`repair-data show-replicated-repair-status`
+
+--
+.Données codées par effacement (EC)
+--
+Deux commandes sont disponibles pour restaurer les données codées par effacement, selon que vous devez réparer l'intégralité du nœud ou uniquement certains volumes du nœud :
+
+`repair-data start-ec-node-repair`
+
+`repair-data start-ec-volume-repair`
+
+Vous pouvez suivre les réparations des données codées par effacement avec cette commande :
+
+`repair-data show-ec-repair-status`
+
+
+NOTE: Les réparations des données codées par effacement peuvent commencer lorsque certains nœuds de stockage sont hors ligne.  Cependant, si toutes les données codées par effacement ne peuvent pas être comptabilisées, la réparation ne peut pas être effectuée.  La réparation sera terminée une fois que tous les nœuds seront disponibles.
+
+
+NOTE: Le travail de réparation EC réserve temporairement une grande quantité de stockage.  Des alertes de stockage peuvent être déclenchées, mais seront résolues une fois la réparation terminée.  S'il n'y a pas suffisamment de stockage pour la réservation, la tâche de réparation EC échouera.  Les réservations de stockage sont libérées lorsque la tâche de réparation EC est terminée, que la tâche ait échoué ou réussi.
+
+--
+====

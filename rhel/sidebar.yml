@@ -1,0 +1,81 @@
+---
+section: rhel
+title: Installer StorageGRID sur Red Hat Enterprise Linux
+entries:
+- title: Démarrage rapide
+  pdf-filename: Installer StorageGRID sur Red Hat Enterprise Linux
+  url: "/rhel/index.html"
+- title: Planifier et préparer l'installation sur Red Hat
+  entries:
+  - title: Informations et matériel requis
+    url: "/rhel/required-materials.html"
+  - title: Téléchargez et extrayez les fichiers d'installation de StorageGRID
+    url: "/rhel/downloading-and-extracting-storagegrid-installation-files.html"
+  - title: Vérifier manuellement les fichiers d'installation
+    url: "/rhel/download-files-verify.html"
+  - title: Configuration logicielle requise
+    url: "/rhel/software-requirements.html"
+  - title: Exigences CPU et RAM
+    url: "/rhel/cpu-and-ram-requirements.html"
+  - title: Exigences de stockage et de performances
+    url: "/rhel/storage-and-performance-requirements.html"
+  - title: Exigences de migration des conteneurs de nœuds
+    url: "/rhel/node-container-migration-requirements.html"
+  - title: Préparer les hôtes (Red Hat)
+    entries:
+    - title: Comment les paramètres à l'échelle de l'hôte changent
+      url: "/rhel/how-host-wide-settings-change.html"
+    - title: Installer Linux
+      url: "/rhel/installing-linux.html"
+    - title: Configurer le réseau hôte (Red Hat)
+      url: "/rhel/configuring-host-network.html"
+    - title: Configurer le stockage hôte
+      url: "/rhel/configuring-host-storage.html"
+    - title: Configurer le volume de stockage du moteur de conteneur
+      url: "/rhel/configuring-docker-storage-volume.html"
+    - title: Installer les services hôtes StorageGRID
+      url: "/rhel/installing-storagegrid-webscale-host-service.html"
+- title: Automatiser l'installation (Red Hat)
+  url: "/rhel/automating-installation.html"
+- title: Déployer des nœuds de grille virtuels (Red Hat)
+  entries:
+  - title: Créer des fichiers de configuration de nœud pour les déploiements Red Hat
+    url: "/rhel/creating-node-configuration-files.html"
+  - title: Comment les nœuds de grille découvrent le nœud d'administration principal
+    url: "/rhel/how-grid-nodes-discover-primary-admin-node.html"
+  - title: Exemples de fichiers de configuration de nœuds
+    url: "/rhel/example-node-configuration-files.html"
+  - title: Valider la configuration de StorageGRID
+    url: "/rhel/validating-storagegrid-configuration.html"
+  - title: Démarrer le service hôte StorageGRID
+    url: "/rhel/starting-storagegrid-host-service.html"
+- title: Configurer la grille et terminer l'installation (Red Hat)
+  entries:
+  - title: Accéder au gestionnaire de grille
+    url: "/rhel/navigating-to-grid-manager.html"
+  - title: Spécifier les informations de licence
+    url: "/rhel/specifying-storagegrid-license-information.html"
+  - title: Ajouter des sites
+    url: "/rhel/adding-sites.html"
+  - title: Spécifier les sous-réseaux du réseau Grid
+    url: "/rhel/specifying-grid-network-subnets.html"
+  - title: Approuver les nœuds de grille en attente
+    url: "/rhel/approving-pending-grid-nodes.html"
+  - title: Spécifier les informations du serveur NTP
+    url: "/rhel/specifying-network-time-protocol-server-information.html"
+  - title: Spécifier les informations du serveur DNS
+    url: "/rhel/specifying-domain-name-system-server-information.html"
+  - title: Spécifier les mots de passe système
+    url: "/rhel/specifying-storagegrid-system-passwords.html"
+  - title: Vérifiez la configuration et terminez l'installation
+    url: "/rhel/reviewing-your-configuration-and-completing-installation.html"
+  - title: Consignes post-installation
+    url: "/rhel/post-installation-guidelines.html"
+- title: Installation de l'API REST
+  url: "/rhel/overview-of-installation-rest-api.html"
+- title: Où aller ensuite
+  url: "/rhel/where-to-go-next.html"
+- title: Résoudre les problèmes d'installation
+  url: "/rhel/troubleshooting-installation-issues.html"
+- title: Exemple /etc/sysconfig/network-scripts
+  url: "/rhel/example-etc-sysconfig-network-scripts.html"

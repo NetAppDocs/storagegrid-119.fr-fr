@@ -1,0 +1,46 @@
+---
+permalink: admin/configuring-stored-object-compression.html 
+sidebar: sidebar 
+keywords: object compression, compress stored objects 
+summary: 'Vous pouvez activer la compression d"objets pour réduire la taille des objets stockés dans StorageGRID, afin que les objets consomment moins de stockage.' 
+---
+= Compresser les objets stockés
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez activer la compression d'objets pour réduire la taille des objets stockés dans StorageGRID, afin que les objets consomment moins de stockage.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:admin-group-permissions.html["autorisations d'accès spécifiques"] .
+
+
+.À propos de cette tâche
+Par défaut, la compression d’objet est désactivée.  Si vous activez la compression, StorageGRID tente de compresser chaque objet lors de son enregistrement, en utilisant une compression sans perte.
+
+
+NOTE: Si vous modifiez ce paramètre, l’application du nouveau paramètre prendra environ une minute.  La valeur configurée est mise en cache pour les performances et la mise à l'échelle.
+
+Avant d’activer la compression d’objet, tenez compte des points suivants :
+
+* Vous ne devez pas sélectionner *Compresser les objets stockés* à moins que vous ne sachiez que les données stockées sont compressibles.
+* Les applications qui enregistrent des objets dans StorageGRID peuvent compresser les objets avant de les enregistrer.  Si une application cliente a déjà compressé un objet avant de l'enregistrer dans StorageGRID, la sélection de cette option ne réduira pas davantage la taille de l'objet.
+* Ne sélectionnez pas *Compresser les objets stockés* si vous utilisez NetApp FabricPool avec StorageGRID.
+* Si *Compresser les objets stockés* est sélectionné, les applications clientes S3 doivent éviter d'effectuer des opérations GetObject qui spécifient une plage d'octets à renvoyer.  Ces opérations de « lecture de plage » sont inefficaces car StorageGRID doit décompresser efficacement les objets pour accéder aux octets demandés.  Les opérations GetObject qui demandent une petite plage d'octets à partir d'un très grand objet sont particulièrement inefficaces ; par exemple, il est inefficace de lire une plage de 10 Mo à partir d'un objet compressé de 50 Go.
++
+Si les plages sont lues à partir d'objets compressés, les demandes des clients peuvent expirer.
+
++
+
+NOTE: Si vous devez compresser des objets et que votre application cliente doit utiliser des lectures de plage, augmentez le délai d'expiration de lecture pour l'application.
+
+
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Système* > *Paramètres de stockage* > *Compression d'objet*.
+. Cochez la case *Compresser les objets stockés*.
+. Sélectionnez *Enregistrer*.
+

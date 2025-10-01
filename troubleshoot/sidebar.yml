@@ -1,0 +1,42 @@
+---
+section: troubleshoot
+title: Dépannage du système StorageGRID
+entries:
+- title: Consignes de dépannage
+  pdf-filename: Dépannage du système StorageGRID
+  url: "/troubleshoot/index.html"
+- title: Résoudre les problèmes d'objets et de stockage
+  entries:
+  - title: Confirmer les emplacements des données d'objet
+    url: "/troubleshoot/confirming-object-data-locations.html"
+  - title: Échecs du magasin d'objets
+    url: "/troubleshoot/object-store-storage-volume-failures.html"
+  - title: Vérifier l'intégrité de l'objet
+    url: "/troubleshoot/verifying-object-integrity.html"
+  - title: 'Dépannage de l''alerte S3 PUT : taille de l''objet trop grande'
+    url: "/troubleshoot/troubleshoot-s3-put-object-size-too-large-alert.html"
+  - title: Résoudre les problèmes de données d'objets perdues ou manquantes
+    entries:
+    - title: Méthodes de récupération d'objets
+      pdf-filename: Résoudre les problèmes de données d'objets perdues ou manquantes
+      url: "/troubleshoot/troubleshooting-lost-and-missing-object-data.html"
+    - title: Enquêter sur les objets perdus
+      url: "/troubleshoot/investigating-lost-objects.html"
+    - title: Rechercher et restaurer des objets potentiellement perdus
+      url: "/troubleshoot/searching-for-and-restoring-potentially-lost-objects.html"
+    - title: Réinitialiser le nombre d'objets perdus et manquants
+      url: "/troubleshoot/resetting-lost-and-missing-object-counts.html"
+  - title: Dépannage de l'alerte de faible stockage de données d'objet
+    url: "/troubleshoot/troubleshooting-low-object-data-storage-alert.html"
+  - title: Dépannage des alertes de remplacement du filigrane en lecture seule faible
+    url: "/troubleshoot/troubleshoot-low-watermark-alert.html"
+- title: Résoudre les problèmes de métadonnées
+  url: "/troubleshoot/troubleshooting-metadata-issues.html"
+- title: Résoudre les erreurs de certificat
+  url: "/troubleshoot/troubleshooting-certificate-errors.html"
+- title: Résoudre les problèmes liés au nœud d'administration et à l'interface utilisateur
+  url: "/troubleshoot/troubleshooting-admin-node-and-user-interface-issues.html"
+- title: Résoudre les problèmes de réseau, de matériel et de plate-forme
+  url: "/troubleshoot/troubleshooting-network-hardware-and-platform-issues.html"
+- title: Dépanner le serveur syslog externe
+  url: "/troubleshoot/troubleshooting-syslog-server.html"

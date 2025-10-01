@@ -1,0 +1,47 @@
+---
+permalink: audit/audit-messages-and-object-lifecycle.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, log, object lifecycle, ingest, retrieve, delete, s3, timing, ILM, Information lifecycle management 
+summary: Des messages d’audit sont générés chaque fois qu’un objet est ingéré, récupéré ou supprimé.  Vous pouvez identifier ces transactions dans le journal d’audit en localisant les messages d’audit spécifiques à l’API S3. 
+---
+= Quand les messages d’audit sont-ils générés ?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Des messages d’audit sont générés chaque fois qu’un objet est ingéré, récupéré ou supprimé.  Vous pouvez identifier ces transactions dans le journal d’audit en localisant les messages d’audit spécifiques à l’API S3.
+
+Les messages d'audit sont liés via des identifiants spécifiques à chaque protocole.
+
+[cols="1a,1a"]
+|===
+| Protocole | Code 
+
+
+ a| 
+Liaison des opérations S3
+ a| 
+S3BK (godet), S3KY (clé) ou les deux
+
+
+
+ a| 
+Lier les opérations Swift
+ a| 
+WCON (conteneur), WOBJ (objet) ou les deux
+
+
+
+ a| 
+Lier les opérations internes
+ a| 
+CBID (identifiant interne de l'objet)
+
+|===
+
+
+== Moment des messages d'audit
+
+En raison de facteurs tels que les différences de synchronisation entre les nœuds de grille, la taille des objets et les délais du réseau, l'ordre des messages d'audit générés par les différents services peut varier par rapport à celui indiqué dans les exemples de cette section.

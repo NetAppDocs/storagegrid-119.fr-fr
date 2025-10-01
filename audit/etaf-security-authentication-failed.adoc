@@ -1,0 +1,71 @@
+---
+permalink: audit/etaf-security-authentication-failed.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, ETAF, Security Authentication Failed 
+summary: 'Ce message est généré lorsqu"une tentative de connexion utilisant Transport Layer Security (TLS) a échoué.' 
+---
+= ETAF : échec de l'authentification de sécurité
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ce message est généré lorsqu'une tentative de connexion utilisant Transport Layer Security (TLS) a échoué.
+
+[cols="1a,1a,4a"]
+|===
+| Code | Champ | Description 
+
+
+ a| 
+CNID
+ a| 
+Identifiant de connexion
+ a| 
+L'identifiant système unique pour la connexion TCP/IP sur laquelle l'authentification a échoué.
+
+
+
+ a| 
+RUID
+ a| 
+Identité de l'utilisateur
+ a| 
+Un identifiant dépendant du service représentant l’identité de l’utilisateur distant.
+
+
+
+ a| 
+RSLT
+ a| 
+Code de raison
+ a| 
+La raison de l'échec :
+
+SCNI : l'établissement de la connexion sécurisée a échoué.
+
+CERM : Le certificat était manquant.
+
+CERT : Le certificat n'était pas valide.
+
+CERE : Le certificat a expiré.
+
+CERR : Le certificat a été révoqué.
+
+CSGN : la signature du certificat n'était pas valide.
+
+CSGU : le signataire du certificat était inconnu.
+
+UCRM : les informations d’identification de l’utilisateur étaient manquantes.
+
+UCRI : les informations d’identification de l’utilisateur n’étaient pas valides.
+
+UCRU : les informations d'identification de l'utilisateur n'ont pas été autorisées.
+
+TOUT : L'authentification a expiré.
+
+|===
+Lorsqu'une connexion est établie avec un service sécurisé qui utilise TLS, les informations d'identification de l'entité distante sont vérifiées à l'aide du profil TLS et d'une logique supplémentaire intégrée au service.  Si cette authentification échoue en raison de certificats ou d’informations d’identification non valides, inattendus ou non autorisés, un message d’audit est enregistré.  Cela permet d'effectuer des requêtes sur les tentatives d'accès non autorisées et d'autres problèmes de connexion liés à la sécurité.
+
+Le message peut résulter d'une entité distante ayant une configuration incorrecte ou de tentatives de présentation d'informations d'identification non valides ou non autorisées au système.  Ce message d’audit doit être surveillé pour détecter les tentatives d’accès non autorisé au système.

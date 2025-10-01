@@ -1,0 +1,115 @@
+---
+permalink: monitor/creating-custom-alert-rules.html 
+sidebar: sidebar 
+keywords: how to create custom alert rules 
+summary: 'Vous pouvez créer des règles d"alerte personnalisées pour définir vos propres conditions de déclenchement d"alertes.' 
+---
+= Créer des règles d'alerte personnalisées
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez créer des règles d'alerte personnalisées pour définir vos propres conditions de déclenchement d'alertes.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:../admin/admin-group-permissions.html["Gérer les alertes ou l'autorisation d'accès root"] .
+* Vous connaissez lelink:commonly-used-prometheus-metrics.html["métriques Prometheus couramment utilisées"] .
+* Vous comprenez le https://prometheus.io/docs/prometheus/latest/querying/basics/["syntaxe des requêtes Prometheus"^] .
+* En option, vous avez regardé la vidéo : https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=54af90c4-9a38-4136-9621-b1ff008604a3["Vidéo : Alertes personnalisées"^] .
++
+[link=https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=54af90c4-9a38-4136-9621-b1ff008604a3]
+image::../media/video-screenshot-alert-create-custom-118.png[Vidéo : Alertes personnalisées]
+
+
+
+.À propos de cette tâche
+StorageGRID ne valide pas les alertes personnalisées.  Si vous décidez de créer des règles d’alerte personnalisées, suivez ces directives générales :
+
+* Consultez les conditions des règles d’alerte par défaut et utilisez-les comme exemples pour vos règles d’alerte personnalisées.
+* Si vous définissez plusieurs conditions pour une règle d’alerte, utilisez la même expression pour toutes les conditions.  Ensuite, modifiez la valeur seuil pour chaque condition.
+* Vérifiez soigneusement chaque condition pour détecter les fautes de frappe et les erreurs de logique.
+* Utilisez uniquement les métriques répertoriées dans l’API Grid Management.
+* Lorsque vous testez une expression à l'aide de l'API Grid Management, sachez qu'une réponse « réussie » peut être un corps de réponse vide (aucune alerte déclenchée).  Pour voir si l'alerte est réellement déclenchée, vous pouvez définir temporairement un seuil sur une valeur que vous pensez être vraie actuellement.
++
+Par exemple, pour tester l'expression `node_memory_MemTotal_bytes < 24000000000` , exécuter d'abord `node_memory_MemTotal_bytes >= 0` et assurez-vous d'obtenir les résultats attendus (tous les nœuds renvoient une valeur).  Ensuite, modifiez l'opérateur et le seuil aux valeurs prévues et exécutez à nouveau.  Aucun résultat n'indique qu'il n'y a aucune alerte actuelle pour cette expression.
+
+* Ne présumez pas qu’une alerte personnalisée fonctionne à moins d’avoir validé que l’alerte est déclenchée au moment prévu.
+
+
+.Étapes
+. Sélectionnez *ALERTES* > *Règles*.
++
+La page Règles d’alerte s’affiche.
+
+. Sélectionnez *Créer une règle personnalisée*.
++
+La boîte de dialogue Créer une règle personnalisée s’affiche.
+
++
+image::../media/alerts_create_custom_rule.png[Alertes > Créer une règle personnalisée]
+
+. Cochez ou décochez la case *Activé* pour déterminer si cette règle d'alerte est actuellement activée.
++
+Si une règle d’alerte est désactivée, ses expressions ne sont pas évaluées et aucune alerte n’est déclenchée.
+
+. Saisissez les informations suivantes :
++
+[cols="1a,2a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Nom unique
+ a| 
+Un nom unique pour cette règle.  Le nom de la règle d’alerte est affiché sur la page Alertes et constitue également l’objet des notifications par e-mail.  Les noms des règles d’alerte peuvent comporter entre 1 et 64 caractères.
+
+
+
+ a| 
+Description
+ a| 
+Une description du problème qui se produit.  La description est le message d’alerte affiché sur la page Alertes et dans les notifications par e-mail.  Les descriptions des règles d’alerte peuvent comporter entre 1 et 128 caractères.
+
+
+
+ a| 
+Actions recommandées
+ a| 
+Facultativement, les actions recommandées à entreprendre lorsque cette alerte est déclenchée.  Saisissez les actions recommandées sous forme de texte brut (sans codes de formatage).  Les actions recommandées pour les règles d’alerte peuvent être comprises entre 0 et 1 024 caractères.
+
+|===
+. Dans la section Conditions, saisissez une expression Prometheus pour un ou plusieurs niveaux de gravité d’alerte.
++
+Une expression de base est généralement de la forme :
+
++
+`[metric] [operator] [value]`
+
++
+Les expressions peuvent avoir n’importe quelle longueur, mais apparaissent sur une seule ligne dans l’interface utilisateur.  Au moins une expression est requise.
+
++
+Cette expression provoque le déclenchement d'une alerte si la quantité de RAM installée pour un nœud est inférieure à 24 000 000 000 octets (24 Go).
+
++
+`node_memory_MemTotal_bytes < 24000000000`
+
++
+Pour voir les métriques disponibles et tester les expressions Prometheus, sélectionnez l'icône d'aideimage:../media/icon_nms_question.png["icône de point d'interrogation"] et suivez le lien vers la section Métriques de l'API de gestion de grille.
+
+. Dans le champ *Durée*, saisissez la durée pendant laquelle une condition doit rester en vigueur en continu avant que l'alerte ne soit déclenchée, puis sélectionnez une unité de temps.
++
+Pour déclencher une alerte immédiatement lorsqu'une condition devient vraie, entrez *0*.  Augmentez cette valeur pour empêcher des conditions temporaires de déclencher des alertes.
+
++
+La valeur par défaut est de 5 minutes.
+
+. Sélectionnez *Enregistrer*.
++
+La boîte de dialogue se ferme et la nouvelle règle d’alerte personnalisée apparaît dans le tableau Règles d’alerte.
+
+

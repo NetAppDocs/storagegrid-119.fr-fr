@@ -1,0 +1,109 @@
+---
+permalink: admin/managing-traffic-classification-policies.html 
+sidebar: sidebar 
+keywords: QoS, quality of service, traffic classification, best practices, limit traffic, monitor traffic 
+summary: 'Les politiques de classification du trafic vous permettent d’identifier et de surveiller différents types de trafic réseau.  Ces politiques peuvent vous aider à limiter et à surveiller le trafic afin d’améliorer vos offres de qualité de service (QoS).' 
+---
+= Quelles sont les politiques de classification du trafic ?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les politiques de classification du trafic vous permettent d’identifier et de surveiller différents types de trafic réseau.  Ces politiques peuvent vous aider à limiter et à surveiller le trafic afin d’améliorer vos offres de qualité de service (QoS).
+
+Les stratégies de classification du trafic sont appliquées aux points de terminaison sur le service StorageGRID Load Balancer pour les nœuds de passerelle et les nœuds d'administration.  Pour créer des politiques de classification du trafic, vous devez déjà avoir créé des points de terminaison d’équilibrage de charge.
+
+
+
+== Règles de correspondance
+
+Chaque politique de classification du trafic contient une ou plusieurs règles de correspondance pour identifier le trafic réseau lié à une ou plusieurs des entités suivantes :
+
+* Seaux
+* Sous-réseau
+* Locataire
+* Points de terminaison de l'équilibreur de charge
+
+
+StorageGRID surveille le trafic qui correspond à n’importe quelle règle de la politique en fonction des objectifs de la règle.  Tout trafic correspondant à une règle d’une politique est géré par cette politique.  À l’inverse, vous pouvez définir des règles pour correspondre à tout le trafic, à l’exception d’une entité spécifiée.
+
+
+
+== Limitation du trafic
+
+En option, vous pouvez ajouter les types de limites suivants à une politique :
+
+* Bande passante globale
+* Bande passante par requête
+* Demandes simultanées
+* Taux de demande
+
+
+Les valeurs limites sont appliquées pour chaque équilibreur de charge.  Si le trafic est réparti simultanément sur plusieurs équilibreurs de charge, les débits maximum totaux sont un multiple des limites de débit que vous spécifiez.
+
+
+NOTE: Vous pouvez créer des politiques pour limiter la bande passante globale ou pour limiter la bande passante par demande.  Cependant, StorageGRID ne peut pas limiter les deux types de bande passante en même temps.  Les limites de bande passante globales peuvent avoir un impact mineur supplémentaire sur les performances du trafic non limité.
+
+Pour les limites de bande passante globales ou par demande, les demandes entrent ou sortent au débit que vous définissez.  StorageGRID ne peut appliquer qu'une seule vitesse, donc la correspondance de politique la plus spécifique, par type de correspondance, est celle appliquée.  La bande passante consommée par la demande n'est pas comptabilisée dans d'autres politiques de correspondance moins spécifiques contenant des politiques de limite de bande passante globale.  Pour tous les autres types de limites, les demandes des clients sont retardées de 250 millisecondes et reçoivent une réponse 503 Slow Down pour les demandes qui dépassent toute limite de politique correspondante.
+
+Dans le gestionnaire de grille, vous pouvez afficher les graphiques de trafic et vérifier que les politiques appliquent les limites de trafic que vous attendez.
+
+
+
+== Utiliser des politiques de classification du trafic avec des SLA
+
+Vous pouvez utiliser des stratégies de classification du trafic conjointement avec des limites de capacité et la protection des données pour appliquer des accords de niveau de service (SLA) qui fournissent des détails sur la capacité, la protection des données et les performances.
+
+L'exemple suivant montre trois niveaux d'un SLA.  Vous pouvez créer des stratégies de classification du trafic pour atteindre les objectifs de performances de chaque niveau SLA.
+
+[cols="1a,1a,1a,1a,1a"]
+|===
+| Niveau de service | Capacité | Protection des données | Performances maximales autorisées | Coût 
+
+
+ a| 
+Or
+ a| 
+1 Po de stockage autorisé
+ a| 
+Règle ILM en 3 exemplaires
+ a| 
+25 000 requêtes/sec
+
+Bande passante de 5 Go/s (40 Gbps)
+ a| 
+$$$ par mois
+
+
+
+ a| 
+Argent
+ a| 
+250 To de stockage autorisé
+ a| 
+Règle ILM en 2 exemplaires
+ a| 
+10 000 requêtes/sec
+
+Bande passante de 1,25 Go/s (10 Gbps)
+ a| 
+$$ par mois
+
+
+
+ a| 
+Bronze
+ a| 
+100 To de stockage autorisé
+ a| 
+Règle ILM en 2 exemplaires
+ a| 
+5 000 requêtes/s
+
+Bande passante de 1 Go/s (8 Gbps)
+ a| 
+$ par mois
+
+|===

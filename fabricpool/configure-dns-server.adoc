@@ -1,0 +1,33 @@
+---
+permalink: fabricpool/configure-dns-server.html 
+sidebar: sidebar 
+keywords: dns, vip, virtual ip, fqdn, server name 
+summary: 'Après avoir configuré les groupes de haute disponibilité, les points de terminaison de l"équilibreur de charge et les noms de domaine S3, vous devez vous assurer que le DNS inclut les entrées nécessaires pour StorageGRID.' 
+---
+= Configurer le serveur DNS
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Après avoir configuré les groupes de haute disponibilité, les points de terminaison d'équilibrage de charge et les noms de domaine de point de terminaison S3, vous devez vous assurer que le DNS inclut les entrées nécessaires pour StorageGRID.  Vous devez inclure une entrée DNS pour chaque nom dans le certificat de sécurité et pour chaque adresse IP que vous pourriez utiliser.
+
+Voir link:../admin/managing-load-balancing.html["Considérations relatives à l'équilibrage de charge"] .
+
+
+
+== Entrées DNS pour le nom du serveur StorageGRID
+
+Ajoutez des entrées DNS pour associer le nom du serveur StorageGRID (nom de domaine complet) à chaque adresse IP StorageGRID que vous utiliserez.  Les adresses IP que vous saisissez dans le DNS dépendent du fait que vous utilisez ou non un groupe HA de nœuds d'équilibrage de charge :
+
+* Si vous avez configuré un groupe HA, ONTAP se connectera aux adresses IP virtuelles de ce groupe HA.
+* Si vous n'utilisez pas de groupe HA, ONTAP peut se connecter au service StorageGRID Load Balancer à l'aide de l'adresse IP de n'importe quel nœud de passerelle ou nœud d'administration.
+* Si le nom du serveur correspond à plusieurs adresses IP, ONTAP établit des connexions client avec toutes les adresses IP (jusqu'à un maximum de 16 adresses IP).  Les adresses IP sont récupérées selon une méthode circulaire lorsque les connexions sont établies.
+
+
+
+
+== Entrées DNS pour les requêtes de type hébergement virtuel
+
+Si vous avez définilink:../admin/configuring-s3-api-endpoint-domain-names.html["Noms de domaine de point de terminaison S3"] et vous utiliserez des requêtes de type hébergé virtuel, ajouterez des entrées DNS pour tous les noms de domaine de point de terminaison S3 requis, y compris tous les noms génériques.

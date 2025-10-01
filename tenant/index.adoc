@@ -1,0 +1,62 @@
+---
+permalink: tenant/index.html 
+sidebar: sidebar 
+keywords: use tenant account 
+summary: 'Un compte locataire vous permet d"utiliser l"API REST Simple Storage Service (S3) ou l"API REST Swift pour stocker et récupérer des objets dans un système StorageGRID .' 
+---
+= Utiliser un compte locataire
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Un compte locataire vous permet d'utiliser l'API REST Simple Storage Service (S3) ou l'API REST Swift pour stocker et récupérer des objets dans un système StorageGRID .
+
+
+
+== Qu'est-ce qu'un compte locataire ?
+
+Chaque compte locataire possède ses propres groupes fédérés ou locaux, utilisateurs, buckets S3 ou conteneurs Swift et objets.
+
+Les comptes locataires peuvent être utilisés pour séparer les objets stockés par différentes entités.  Par exemple, plusieurs comptes locataires peuvent être utilisés pour l’un ou l’autre de ces cas d’utilisation :
+
+* *Cas d'utilisation d'entreprise :* si le système StorageGRID est utilisé au sein d'une entreprise, le stockage d'objets de la grille peut être séparé par les différents services de l'organisation.  Par exemple, il peut y avoir des comptes locataires pour le service marketing, le service d'assistance clientèle, le service des ressources humaines, etc.
++
+
+NOTE: Si vous utilisez le protocole client S3, vous pouvez également utiliser des buckets S3 et des stratégies de bucket pour séparer les objets entre les services d'une entreprise. Vous n’avez pas besoin de créer des comptes locataires distincts. Voir les instructions de mise en œuvrelink:../s3/bucket-and-group-access-policies.html["Buckets S3 et politiques de buckets"] pour plus d'informations.
+
+* *Cas d'utilisation du fournisseur de services :* si le système StorageGRID est utilisé par un fournisseur de services, le stockage d'objets de la grille peut être séparé par les différentes entités qui louent le stockage.  Par exemple, il peut y avoir des comptes locataires pour la société A, la société B, la société C, etc.
+
+
+
+
+== Comment créer un compte locataire
+
+Les comptes locataires sont créés par unlink:../admin/managing-tenants.html["Administrateur de grille StorageGRID utilisant Grid Manager"] .  Lors de la création d’un compte locataire, l’administrateur du réseau spécifie les éléments suivants :
+
+* Informations de base, notamment le nom du locataire, le type de client (S3) et le quota de stockage facultatif.
+* Autorisations pour le compte locataire, par exemple si le compte locataire peut utiliser les services de la plateforme S3, configurer sa propre source d'identité, utiliser S3 Select ou utiliser une connexion de fédération de grille.
+* L'accès root initial pour le locataire, selon que le système StorageGRID utilise des groupes et des utilisateurs locaux, une fédération d'identité ou une authentification unique (SSO).
+
+
+De plus, les administrateurs de grille peuvent activer le paramètre de verrouillage d'objet S3 pour le système StorageGRID si les comptes de locataire S3 doivent se conformer aux exigences réglementaires.  Lorsque le verrouillage d'objet S3 est activé, tous les comptes de locataire S3 peuvent créer et gérer des compartiments conformes.
+
+
+
+=== Configurer les locataires S3
+
+Après unlink:../admin/creating-tenant-account.html["Le compte locataire S3 est créé"] , vous pouvez accéder au gestionnaire de locataires pour effectuer des tâches telles que les suivantes :
+
+* Configurer la fédération d'identité (sauf si la source d'identité est partagée avec la grille)
+* Gérer les groupes et les utilisateurs
+* Utiliser la fédération de grille pour le clonage de compte et la réplication inter-grille
+* Gérer les clés d'accès S3
+* Créer et gérer des buckets S3
+* Utiliser les services de la plateforme S3
+* Utiliser S3 Select
+* Surveiller l'utilisation du stockage
+
+
+
+TIP: Bien que vous puissiez créer et gérer des buckets S3 avec Tenant Manager, vous devez utiliser unlink:../s3/index.html["Client S3"] oulink:use-s3-console.html["Console S3"] pour ingérer et gérer des objets.

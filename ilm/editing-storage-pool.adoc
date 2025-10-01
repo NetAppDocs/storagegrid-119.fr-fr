@@ -1,0 +1,46 @@
+---
+permalink: ilm/editing-storage-pool.html 
+sidebar: sidebar 
+keywords: edit storage pool 
+summary: Vous pouvez modifier un pool de stockage pour changer son nom ou pour mettre à jour les sites et les niveaux de stockage. 
+---
+= Modifier le pool de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez modifier un pool de stockage pour changer son nom ou pour mettre à jour les sites et les niveaux de stockage.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+* Vous avez examiné lelink:guidelines-for-creating-storage-pools.html["directives pour la création de pools de stockage"] .
+* Si vous prévoyez de modifier un pool de stockage utilisé par une règle dans la stratégie ILM active, vous avez réfléchi à la manière dont vos modifications affecteront le placement des données d'objet.
+
+
+.À propos de cette tâche
+Si vous ajoutez un nouveau site ou un nouveau niveau de stockage à un pool de stockage utilisé dans la stratégie ILM active, sachez que les nœuds de stockage du nouveau site ou du nouveau niveau de stockage ne seront pas utilisés automatiquement.  Pour forcer StorageGRID à utiliser un nouveau site ou un nouveau niveau de stockage, vous devez activer une nouvelle stratégie ILM après avoir enregistré le pool de stockage modifié.
+
+.Étapes
+. Sélectionnez *ILM* > *Pools de stockage*.
+. Cochez la case correspondant au pool de stockage que vous souhaitez modifier.
++
+Vous ne pouvez pas modifier le pool de stockage Tous les nœuds de stockage (StorageGRID 11.6 et versions antérieures).
+
+. Sélectionnez *Modifier*.
+. Si nécessaire, modifiez le nom du pool de stockage.
+. Selon les besoins, sélectionnez d’autres sites et niveaux de stockage.
++
+Vous ne pouvez pas modifier le site ou le niveau de stockage si le pool de stockage est utilisé dans un profil de codage d'effacement et que la modification rendrait le schéma de codage d'effacement invalide.  Par exemple, si un pool de stockage utilisé dans un profil de codage d'effacement inclut actuellement un niveau de stockage avec un seul site, vous ne pouvez pas utiliser un niveau de stockage avec deux sites car la modification rendrait le schéma de codage d'effacement non valide.
+
++
+
+CAUTION: L'ajout ou la suppression de sites d'un pool de stockage existant ne déplacera aucune donnée codée par effacement existante.  Si vous souhaitez déplacer les données existantes du site, vous devez créer un nouveau pool de stockage et un profil EC pour réencoder les données.
+
+. Sélectionnez *Enregistrer*.
+
+
+.Après avoir terminé
+Si vous avez ajouté un nouveau site ou un nouveau niveau de stockage à un pool de stockage utilisé dans la stratégie ILM active, activez une nouvelle stratégie ILM pour forcer StorageGRID à utiliser le nouveau site ou le nouveau niveau de stockage.  Par exemple, clonez votre politique ILM existante, puis activez le clone. Voir link:working-with-ilm-rules-and-ilm-policies.html["Travailler avec les règles et les politiques ILM"] .

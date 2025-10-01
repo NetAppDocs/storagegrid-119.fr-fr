@@ -1,0 +1,95 @@
+---
+permalink: maintain/starting-storagegrid-appliance-installation.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, appliance, appliance install 
+summary: 'Pour installer StorageGRID sur un nœud de stockage d"appliance, utilisez le programme d"installation de l"appliance StorageGRID , inclus sur l"appliance.' 
+---
+= Démarrer l'installation de l'appliance StorageGRID
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Pour installer StorageGRID sur un nœud de stockage d'appliance, utilisez le programme d'installation de l'appliance StorageGRID , inclus sur l'appliance.
+
+.Avant de commencer
+* L'appareil a été installé dans un rack, connecté à vos réseaux et sous tension.
+* Les liens réseau et les adresses IP ont été configurés pour l'appliance à l'aide du programme d'installation de l'appliance StorageGRID .
+* Vous connaissez l’adresse IP du nœud d’administration principal de la grille StorageGRID .
+* Tous les sous-réseaux du réseau de grille répertoriés sur la page de configuration IP du programme d'installation de l'appliance StorageGRID ont été définis dans la liste des sous-réseaux du réseau de grille sur le nœud d'administration principal.
+* Vous avez effectué ces tâches préalables en suivant les instructions d’installation de votre dispositif de stockage. Voir https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/index.html["Démarrage rapide pour l'installation du matériel"^] .
+* Vous utilisez unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous connaissez l’une des adresses IP attribuées au contrôleur de calcul de l’appliance.  Vous pouvez utiliser l'adresse IP du réseau d'administration (port de gestion 1 sur le contrôleur), du réseau de grille ou du réseau client.
+
+
+.À propos de cette tâche
+Pour installer StorageGRID sur un nœud de stockage d'appliance :
+
+* Vous spécifiez ou confirmez l'adresse IP du nœud d'administration principal et le nom d'hôte (nom du système) du nœud.
+* Vous démarrez l'installation et attendez que les volumes soient configurés et que le logiciel soit installé.
++
+
+NOTE: Lors de la récupération d'un nœud de stockage d'appliance, réinstallez-le avec le même type de stockage que l'appliance d'origine (combiné, métadonnées uniquement ou données uniquement). Si vous spécifiez un type de stockage différent, la récupération échouera et nécessitera la réinstallation de l'appliance avec le type de stockage correct spécifié.
+
+* À mi-chemin du processus, l’installation s’arrête.  Pour reprendre l'installation, vous devez vous connecter au Grid Manager et configurer le nœud de stockage en attente en remplacement du nœud défaillant.
+* Une fois le nœud configuré, le processus d’installation de l’appliance se termine et l’appliance est redémarrée.
+
+
+.Étapes
+. Ouvrez un navigateur et saisissez l’une des adresses IP du contrôleur de calcul de l’appliance.
++
+`https://_Controller_IP_:8443`
+
++
+La page d’accueil du programme d’installation de l’appliance StorageGRID s’affiche.
+
+. Dans la section Connexion du nœud d’administration principal, déterminez si vous devez spécifier l’adresse IP du nœud d’administration principal.
++
+Le programme d'installation de l'appliance StorageGRID peut découvrir cette adresse IP automatiquement, en supposant que le nœud d'administration principal, ou au moins un autre nœud de grille avec ADMIN_IP configuré, est présent sur le même sous-réseau.
+
+. Si cette adresse IP n'est pas affichée ou si vous devez la modifier, spécifiez l'adresse :
++
+[cols="1a,2a"]
+|===
+| Option | Étapes 
+
+
+ a| 
+Saisie IP manuelle
+ a| 
+.. Décochez la case *Activer la découverte du nœud d'administration*.
+.. Saisissez l'adresse IP manuellement.
+.. Cliquez sur *Enregistrer*.
+.. Attendez que l’état de connexion de la nouvelle adresse IP devienne « prêt ».
+
+
+
+
+ a| 
+Découverte automatique de tous les nœuds d'administration principaux connectés
+ a| 
+.. Cochez la case *Activer la découverte du nœud d'administration*.
+.. Dans la liste des adresses IP découvertes, sélectionnez le nœud d’administration principal de la grille sur laquelle ce nœud de stockage d’appliance sera déployé.
+.. Cliquez sur *Enregistrer*.
+.. Attendez que l’état de connexion de la nouvelle adresse IP devienne « prêt ».
+
+
+|===
+. Dans le champ *Nom du nœud*, entrez le même nom d'hôte (nom du système) que celui utilisé pour le nœud que vous récupérez, puis cliquez sur *Enregistrer*.
+. Dans la section Installation, confirmez que l'état actuel est « Prêt à démarrer l'installation de `_node name_` dans la grille avec le nœud d'administration principal `_admin_ip_`" et que le bouton *Démarrer l'installation* est activé.
++
+Si le bouton *Démarrer l'installation* n'est pas activé, vous devrez peut-être modifier la configuration réseau ou les paramètres du port.  Pour les instructions, consultez les instructions d'entretien de votre appareil.
+
+. Depuis la page d’accueil du programme d’installation de l’appliance StorageGRID , cliquez sur *Démarrer l’installation*.
++
+image::../media/appliance_installer_home_start_installation_enabled.gif[Cette figure est décrite par le texte qui l'entoure.]
+
++
+L'état actuel passe à « L'installation est en cours » et la page Installation du moniteur s'affiche.
+
++
+
+NOTE: Si vous devez accéder manuellement à la page d’installation du moniteur, cliquez sur *Installation du moniteur* dans la barre de menus. Voir https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/monitoring-appliance-installation.html["Surveiller l'installation de l'appareil"^] .
+
+

@@ -1,0 +1,140 @@
+---
+permalink: audit/wput-swift-put.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, WPUT, Swift PUT 
+summary: 'Lorsqu"un client Swift émet une transaction PUT, une demande est effectuée pour créer un nouvel objet ou conteneur.  Ce message est émis par le serveur si la transaction réussit.' 
+---
+= WPUT : Swift PUT
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lorsqu'un client Swift émet une transaction PUT, une demande est effectuée pour créer un nouvel objet ou conteneur.  Ce message est émis par le serveur si la transaction réussit.
+
+[cols="1a,1a,4a"]
+|===
+| Code | Champ | Description 
+
+
+ a| 
+CBID
+ a| 
+Identifiant du bloc de contenu
+ a| 
+L'identifiant unique du bloc de contenu demandé.  Si le CBID est inconnu, ce champ est défini sur 0.  Les opérations sur les conteneurs n'incluent pas ce champ.
+
+
+
+ a| 
+CSIZ
+ a| 
+Taille du contenu
+ a| 
+La taille de l'objet récupéré en octets.  Les opérations sur les conteneurs n'incluent pas ce champ.
+
+
+
+ a| 
+HTRH
+ a| 
+En-tête de requête HTTP
+ a| 
+Liste des noms et valeurs d'en-tête de requête HTTP enregistrés tels que sélectionnés lors de la configuration.
+
+ `X-Forwarded-For`est automatiquement inclus s'il est présent dans la demande et si le `X-Forwarded-For` la valeur est différente de l'adresse IP de l'expéditeur de la demande (champ d'audit SAIP).
+
+
+
+ a| 
+MTME
+ a| 
+Heure de la dernière modification
+ a| 
+L'horodatage Unix, en microsecondes, indiquant quand l'objet a été modifié pour la dernière fois.
+
+
+
+ a| 
+RSLT
+ a| 
+Code de résultat
+ a| 
+Résultat de la transaction PUT.  Le résultat est toujours :
+
+SUCS : réussi
+
+
+
+ a| 
+SAIP
+ a| 
+Adresse IP du client demandeur
+ a| 
+L'adresse IP de l'application cliente qui a effectué la demande.
+
+
+
+ a| 
+TEMPS
+ a| 
+Durée
+ a| 
+Temps total de traitement de la demande en microsecondes.
+
+
+
+ a| 
+TLIP
+ a| 
+Adresse IP de l'équilibreur de charge approuvé
+ a| 
+Si la demande a été acheminée par un équilibreur de charge de couche 7 approuvé, l'adresse IP de l'équilibreur de charge.
+
+
+
+ a| 
+UUID
+ a| 
+Identifiant unique universel
+ a| 
+L'identifiant de l'objet dans le système StorageGRID .
+
+
+
+ a| 
+CMPC
+ a| 
+ID de compte Swift
+ a| 
+L'ID de compte unique tel que spécifié par le système StorageGRID .
+
+
+
+ a| 
+WCON
+ a| 
+Conteneur Swift
+ a| 
+Le nom du conteneur Swift.
+
+
+
+ a| 
+WOBJ
+ a| 
+Objet Swift
+ a| 
+L'identifiant de l'objet Swift.  Les opérations sur les conteneurs n'incluent pas ce champ.
+
+
+
+ a| 
+WUSR
+ a| 
+Utilisateur du compte Swift
+ a| 
+Le nom d'utilisateur du compte Swift qui identifie de manière unique le client effectuant la transaction.
+
+|===

@@ -1,0 +1,30 @@
+---
+permalink: audit/audit-log-file-rotation.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, log file, audit.log, audit.log file, rotation, save, autosave, auto save, auto-save 
+summary: 'Les fichiers journaux d"audit sont enregistrés dans le répertoire /var/local/log d"un nœud d"administration. Les fichiers journaux d’audit actifs sont nommés audit.log.' 
+---
+= Rotation du fichier journal d'audit
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les fichiers journaux d'audit sont enregistrés sur un nœud d'administration `/var/local/log` annuaire. Les fichiers journaux d'audit actifs sont nommés `audit.log` .
+
+
+NOTE: En option, vous pouvez modifier la destination des journaux d'audit et envoyer les informations d'audit à un serveur syslog externe. Les journaux locaux des enregistrements d'audit continuent d'être générés et stockés lorsqu'un serveur syslog externe est configuré. Voir link:../monitor/configure-audit-messages.html["Configurer les messages d'audit et les destinations des journaux"] .
+
+Une fois par jour, l'actif `audit.log` le fichier est enregistré et un nouveau `audit.log` le fichier est démarré.  Le nom du fichier enregistré indique quand il a été enregistré, au format `_yyyy-mm-dd.txt_` .  Si plusieurs journaux d'audit sont créés en une seule journée, les noms de fichiers utilisent la date d'enregistrement du fichier, suivie d'un numéro, au format `_yyyy-mm-dd.txt.n_` .  Par exemple, `2018-04-15.txt` et `2018-04-15.txt.1` sont les premier et deuxième fichiers journaux créés et enregistrés le 15 avril 2018.
+
+Après une journée, le fichier enregistré est compressé et renommé, au format `_yyyy-mm-dd.txt.gz_` , qui préserve la date originale. Au fil du temps, cela entraîne une consommation de stockage allouée aux journaux d’audit sur le nœud d’administration. Un script surveille la consommation d'espace du journal d'audit et supprime les fichiers journaux si nécessaire pour libérer de l'espace dans le `/var/local/log` annuaire.  Les journaux d'audit sont supprimés en fonction de la date de leur création, le plus ancien étant supprimé en premier. Vous pouvez surveiller les actions du script dans le fichier suivant : `/var/local/log/manage-audit.log` .
+
+Cet exemple montre l'actif `audit.log` fichier, le fichier de la veille(`2018-04-15.txt` ), et le fichier compressé du jour précédent(`2018-04-14.txt.gz` ).
+
+[listing]
+----
+audit.log
+2018-04-15.txt
+2018-04-14.txt.gz
+----

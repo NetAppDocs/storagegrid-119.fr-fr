@@ -1,0 +1,62 @@
+---
+permalink: maintain/grid-node-decommissioning.html 
+sidebar: sidebar 
+keywords: storagegrid, decommission, remove grid node 
+summary: Vous pouvez utiliser la procédure de mise hors service de nœud pour supprimer un ou plusieurs nœuds de grille sur un ou plusieurs sites.  Vous ne pouvez pas désactiver le nœud d’administration principal. 
+---
+= Déclassement des nœuds de réseau
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser la procédure de mise hors service de nœud pour supprimer un ou plusieurs nœuds de grille sur un ou plusieurs sites.  Vous ne pouvez pas désactiver le nœud d’administration principal.
+
+
+
+== Quand mettre hors service un nœud
+
+Utilisez la procédure de mise hors service du nœud lorsque l’une des situations suivantes est vraie :
+
+* Vous avez ajouté un nœud de stockage plus grand dans une extension et vous souhaitez supprimer un ou plusieurs nœuds de stockage plus petits, tout en préservant les objets.
++
+
+TIP: Si vous souhaitez remplacer un appareil plus ancien par un appareil plus récent, pensez https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/how-appliance-node-cloning-works.html["clonage du nœud de l'appareil"^] au lieu d'ajouter un nouvel appareil dans une extension, puis de mettre hors service l'ancien appareil.
+
+* Vous avez besoin de moins de stockage total.
+* Vous n’avez plus besoin d’un nœud de passerelle.
+* Vous n’avez plus besoin d’un nœud d’administration non principal.
+* Votre réseau comprend un nœud déconnecté que vous ne pouvez pas récupérer ou remettre en ligne.
+* Votre grille comprend un nœud d’archive.
+
+
+
+
+== Comment décommissionner un nœud
+
+Vous pouvez mettre hors service les nœuds de réseau connectés ou les nœuds de réseau déconnectés.
+
+Mettre hors service les nœuds connectés:: En général, vous devez mettre hors service les nœuds de grille uniquement lorsqu'ils sont connectés au système StorageGRID et uniquement lorsque tous les nœuds sont en état normal (ils ont des icônes vertes sur les pages *NODES* et sur la page *Decommission Nodes*).
++
+--
+Pour les instructions, voirlink:decommissioning-connected-grid-nodes.html["Décommissionner les nœuds de réseau connectés"] .
+
+--
+Décommissionner les nœuds déconnectés:: Dans certains cas, vous devrez peut-être mettre hors service un nœud de réseau qui n'est pas actuellement connecté au réseau (un nœud dont l'état est inconnu ou administrativement hors service).
++
+--
+Pour les instructions, voirlink:decommissioning-disconnected-grid-nodes.html["Décommissionner les nœuds de réseau déconnectés"] .
+
+--
+
+
+
+
+== Éléments à prendre en compte avant de mettre hors service un nœud
+
+Avant d’effectuer l’une ou l’autre procédure, examinez les considérations relatives à chaque type de nœud :
+
+* link:considerations-for-decommissioning-admin-or-gateway-nodes.html["Considérations relatives à la mise hors service du nœud d'administration ou de passerelle"]
+* link:considerations-for-decommissioning-storage-nodes.html["Considérations relatives à la mise hors service du nœud de stockage"]
+

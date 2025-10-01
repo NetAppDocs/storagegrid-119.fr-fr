@@ -1,0 +1,37 @@
+---
+permalink: maintain/rebooting-grid-node-from-command-shell.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, reboot node, command shell reboot 
+summary: 'Si vous devez surveiller l"opération de redémarrage de plus près ou si vous ne parvenez pas à accéder au gestionnaire de grille, vous pouvez vous connecter au nœud de grille et exécuter la commande de redémarrage du gestionnaire de serveur à partir de l"interpréteur de commandes.' 
+---
+= Redémarrer le nœud de grille à partir de l'interpréteur de commandes
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si vous devez surveiller l'opération de redémarrage de plus près ou si vous ne parvenez pas à accéder au gestionnaire de grille, vous pouvez vous connecter au nœud de grille et exécuter la commande de redémarrage du gestionnaire de serveur à partir de l'interpréteur de commandes.
+
+.Avant de commencer
+Vous avez le `Passwords.txt` déposer.
+
+.Étapes
+. Connectez-vous au nœud de grille :
++
+.. Entrez la commande suivante : `ssh admin@_grid_node_IP_`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+
+
++
+Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+. En option, arrêtez les services : `service servermanager stop`
++
+L’arrêt des services est une étape facultative, mais recommandée.  L’arrêt des services peut prendre jusqu’à 15 minutes et vous souhaiterez peut-être vous connecter au système à distance pour surveiller le processus d’arrêt avant de redémarrer le nœud à l’étape suivante.
+
+. Redémarrer le nœud de grille : `reboot`
+. Déconnectez-vous de l'interpréteur de commandes : `exit`
+

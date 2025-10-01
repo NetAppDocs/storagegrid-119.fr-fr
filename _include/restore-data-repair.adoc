@@ -1,0 +1,118 @@
+= Rechercher le nom d'hôte pour le nœud de stockage
+:allow-uri-read: 
+
+
+
+
+== Rechercher le nom d'hôte pour le nœud de stockage
+
+. Connectez-vous au nœud d’administration principal :
++
+.. Entrez la commande suivante : `ssh admin@_primary_Admin_Node_IP_`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
++
+Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+
+
+. Utilisez le `/etc/hosts` fichier pour trouver le nom d'hôte du nœud de stockage pour les volumes de stockage restaurés.  Pour voir une liste de tous les nœuds de la grille, saisissez ce qui suit : `cat /etc/hosts` .
+
+
+
+
+== Réparer les données si tous les volumes sont en panne
+
+Si tous les volumes de stockage sont en panne, réparez l’ensemble du nœud.  Suivez les instructions pour les *données répliquées*, les *données codées par effacement (EC)* ou les deux, selon que vous utilisez des données répliquées, des données codées par effacement (EC) ou les deux.
+
+Si seuls certains volumes sont en panne, accédez à<<Réparer les données si seuls certains volumes sont défaillants>> .
+
+
+NOTE: Tu ne peux pas courir `repair-data` opérations pour plusieurs nœuds en même temps.  Pour récupérer plusieurs nœuds, contactez le support technique.
+
+[role="tabbed-block"]
+====
+.Données répliquées
+--
+Si votre grille comprend des données répliquées, utilisez le `repair-data start-replicated-node-repair` commande avec le `--nodes` option, où `--nodes` est le nom d'hôte (nom du système), pour réparer l'ensemble du nœud de stockage.
+
+Cette commande répare les données répliquées sur un nœud de stockage nommé SG-DC-SN3 :
+
+`repair-data start-replicated-node-repair --nodes SG-DC-SN3`
+
+
+NOTE: Lorsque les données d'objet sont restaurées, l'alerte *Objets perdus* est déclenchée si le système StorageGRID ne parvient pas à localiser les données d'objet répliquées. Des alertes peuvent être déclenchées sur les nœuds de stockage dans tout le système. Vous devez déterminer la cause de la perte et si une récupération est possible. Voir link:../troubleshoot/investigating-lost-objects.html["Enquêter sur les objets perdus"] .
+
+--
+.Données codées par effacement (EC)
+--
+Si votre grille contient des données codées par effacement, utilisez le `repair-data start-ec-node-repair` commande avec le `--nodes` option, où `--nodes` est le nom d'hôte (nom du système), pour réparer l'ensemble du nœud de stockage.
+
+Cette commande répare les données codées par effacement sur un nœud de stockage nommé SG-DC-SN3 :
+
+`repair-data start-ec-node-repair --nodes SG-DC-SN3`
+
+L'opération renvoie un unique `repair ID` qui identifie ceci `repair_data` opération.  Utilisez ceci `repair ID` pour suivre les progrès et les résultats de la `repair_data` opération.  Aucun autre commentaire n’est renvoyé une fois le processus de récupération terminé.
+
+Les réparations des données codées par effacement peuvent commencer lorsque certains nœuds de stockage sont hors ligne.  La réparation sera terminée une fois que tous les nœuds seront disponibles.
+
+--
+====
+
+
+== Réparer les données si seuls certains volumes sont défaillants
+
+Si seulement certains volumes sont défaillants, réparez les volumes concernés.  Suivez les instructions pour les *données répliquées*, les *données codées par effacement (EC)* ou les deux, selon que vous utilisez des données répliquées, des données codées par effacement (EC) ou les deux.
+
+Si tous les volumes sont en panne, accédez à<<Réparer les données si tous les volumes sont en panne>> .
+
+Saisissez les ID de volume en hexadécimal.  Par exemple, `0000` est le premier volume et `000F` est le seizième volume.  Vous pouvez spécifier un volume, une plage de volumes ou plusieurs volumes qui ne sont pas dans une séquence.
+
+Tous les volumes doivent être sur le même nœud de stockage.  Si vous devez restaurer des volumes pour plusieurs nœuds de stockage, contactez le support technique.
+
+[role="tabbed-block"]
+====
+.Données répliquées
+--
+Si votre grille contient des données répliquées, utilisez le `start-replicated-volume-repair` commande avec le `--nodes` option pour identifier le nœud (où `--nodes` est le nom d'hôte du nœud).  Ajoutez ensuite soit le `--volumes` ou `--volume-range` option, comme illustré dans les exemples suivants.
+
+*Volume unique* : Cette commande restaure les données répliquées sur le volume `0002` sur un nœud de stockage nommé SG-DC-SN3 :
+
+`repair-data start-replicated-volume-repair --nodes SG-DC-SN3 --volumes 0002`
+
+*Plage de volumes* : Cette commande restaure les données répliquées sur tous les volumes de la plage `0003` à `0009` sur un nœud de stockage nommé SG-DC-SN3 :
+
+`repair-data start-replicated-volume-repair --nodes SG-DC-SN3 --volume-range 0003,0009`
+
+*Plusieurs volumes non séquentiels* : Cette commande restaure les données répliquées sur les volumes `0001` , `0005` , et `0008` sur un nœud de stockage nommé SG-DC-SN3 :
+
+`repair-data start-replicated-volume-repair --nodes SG-DC-SN3 --volumes 0001,0005,0008`
+
+
+NOTE: Lorsque les données d'objet sont restaurées, l'alerte *Objets perdus* est déclenchée si le système StorageGRID ne parvient pas à localiser les données d'objet répliquées. Des alertes peuvent être déclenchées sur les nœuds de stockage dans tout le système. Notez la description de l’alerte et les actions recommandées pour déterminer la cause de la perte et si la récupération est possible.
+
+--
+.Données codées par effacement (EC)
+--
+Si votre grille contient des données codées par effacement, utilisez le `start-ec-volume-repair` commande avec le `--nodes` option pour identifier le nœud (où `--nodes` est le nom d'hôte du nœud).  Ajoutez ensuite soit le `--volumes` ou `--volume-range` option, comme illustré dans les exemples suivants.
+
+*Volume unique* : Cette commande restaure les données codées par effacement sur le volume `0007` sur un nœud de stockage nommé SG-DC-SN3 :
+
+`repair-data start-ec-volume-repair --nodes SG-DC-SN3 --volumes 0007`
+
+*Plage de volumes* : Cette commande restaure les données codées par effacement sur tous les volumes de la plage `0004` à `0006` sur un nœud de stockage nommé SG-DC-SN3 :
+
+`repair-data start-ec-volume-repair --nodes SG-DC-SN3 --volume-range 0004,0006`
+
+*Plusieurs volumes non séquentiels* : cette commande restaure les données codées par effacement sur les volumes `000A` , `000C` , et `000E` sur un nœud de stockage nommé SG-DC-SN3 :
+
+`repair-data start-ec-volume-repair --nodes SG-DC-SN3 --volumes 000A,000C,000E`
+
+Le `repair-data` l'opération renvoie un unique `repair ID` qui identifie ceci `repair_data` opération.  Utilisez ceci `repair ID` pour suivre les progrès et les résultats de la `repair_data` opération.  Aucun autre commentaire n’est renvoyé une fois le processus de récupération terminé.
+
+
+NOTE: Les réparations des données codées par effacement peuvent commencer lorsque certains nœuds de stockage sont hors ligne.  La réparation sera terminée une fois que tous les nœuds seront disponibles.
+
+--
+====

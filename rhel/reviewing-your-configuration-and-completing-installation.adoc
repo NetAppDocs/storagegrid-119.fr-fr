@@ -1,0 +1,47 @@
+---
+permalink: rhel/reviewing-your-configuration-and-completing-installation.html 
+sidebar: sidebar 
+keywords: how to complete installation red hat linux 
+summary: 'Vous devez examiner attentivement les informations de configuration que vous avez saisies pour vous assurer que l"installation se déroule correctement.' 
+---
+= Vérifiez votre configuration et terminez l'installation
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez examiner attentivement les informations de configuration que vous avez saisies pour vous assurer que l'installation se déroule correctement.
+
+.Étapes
+. Voir la page *Résumé*.
++
+image::../media/11_gmi_installer_summary_page.gif[Cette image est expliquée par le texte qui l'entoure.]
+
+. Vérifiez que toutes les informations de configuration de la grille sont correctes.  Utilisez les liens Modifier sur la page Résumé pour revenir en arrière et corriger les erreurs.
+. Cliquez sur *Installer*.
++
+
+NOTE: Si un nœud est configuré pour utiliser le réseau client, la passerelle par défaut de ce nœud passe du réseau de grille au réseau client lorsque vous cliquez sur *Installer*.  Si vous perdez la connectivité, vous devez vous assurer que vous accédez au nœud d’administration principal via un sous-réseau accessible. Voirlink:../network/index.html["Directives de mise en réseau"] pour plus de détails.
+
+. Cliquez sur *Télécharger le package de récupération*.
++
+Lorsque l'installation progresse jusqu'au point où la topologie de la grille est définie, vous êtes invité à télécharger le fichier du package de récupération(`.zip` ), et confirmez que vous pouvez accéder avec succès au contenu de ce fichier.  Vous devez télécharger le fichier du package de récupération afin de pouvoir récupérer le système StorageGRID si un ou plusieurs nœuds de grille échouent.  L'installation se poursuit en arrière-plan, mais vous ne pouvez pas terminer l'installation et accéder au système StorageGRID tant que vous n'avez pas téléchargé et vérifié ce fichier.
+
+. Vérifiez que vous pouvez extraire le contenu du `.zip` fichier, puis enregistrez-le dans deux emplacements sûrs, sécurisés et distincts.
++
+
+CAUTION: Le fichier du package de récupération doit être sécurisé car il contient des clés de chiffrement et des mots de passe qui peuvent être utilisés pour obtenir des données à partir du système StorageGRID .
+
+. Cochez la case *J'ai téléchargé et vérifié avec succès le fichier du package de récupération*, puis cliquez sur *Suivant*.
++
+Si l'installation est toujours en cours, la page d'état apparaît.  Cette page indique la progression de l'installation pour chaque nœud de grille.
+
++
+image::../media/12_gmi_installer_status_page.gif[Cette image est expliquée par le texte qui l'entoure.]
+
++
+Lorsque l’étape Terminé est atteinte pour tous les nœuds de grille, la page de connexion au Gestionnaire de grille s’affiche.
+
+. Sign in au Grid Manager en utilisant l'utilisateur « root » et le mot de passe que vous avez spécifié lors de l'installation.
+

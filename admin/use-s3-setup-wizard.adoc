@@ -1,0 +1,58 @@
+---
+permalink: admin/use-s3-setup-wizard.html 
+sidebar: sidebar 
+keywords: S3, S3 setup wizard 
+summary: 'Vous pouvez utiliser l"assistant de configuration S3 pour configurer StorageGRID comme système de stockage d"objets pour une application S3.' 
+---
+= Utiliser l'assistant de configuration S3 : considérations et exigences
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser l'assistant de configuration S3 pour configurer StorageGRID comme système de stockage d'objets pour une application S3.
+
+
+
+== Quand utiliser l'assistant de configuration S3
+
+L'assistant de configuration S3 vous guide à travers chaque étape de la configuration de StorageGRID pour une utilisation avec une application S3.  Dans le cadre de l’exécution de l’assistant, vous téléchargez des fichiers que vous pouvez utiliser pour saisir des valeurs dans l’application S3.  Utilisez l'assistant pour configurer votre système plus rapidement et vous assurer que vos paramètres sont conformes aux meilleures pratiques de StorageGRID .
+
+Si vous avez lelink:admin-group-permissions.html["Autorisation d'accès root"] , vous pouvez terminer l'assistant de configuration S3 lorsque vous commencez à utiliser StorageGRID Grid Manager, ou vous pouvez accéder à l'assistant et le terminer à tout moment ultérieurement.  Selon vos besoins, vous pouvez également configurer manuellement certains ou tous les éléments requis, puis utiliser l'assistant pour assembler les valeurs dont une application S3 a besoin.
+
+
+
+== Avant d'utiliser l'assistant
+
+Avant d’utiliser l’assistant, vérifiez que vous avez rempli ces conditions préalables.
+
+Obtenir des adresses IP et configurer des interfaces VLAN:: Si vous configurez un groupe haute disponibilité (HA), vous savez à quels nœuds l'application S3 se connectera et quel réseau StorageGRID sera utilisé.  Vous savez également quelles valeurs saisir pour le sous-réseau CIDR, l’adresse IP de la passerelle et les adresses IP virtuelles (VIP).
++
+--
+Si vous prévoyez d’utiliser un réseau local virtuel pour séparer le trafic de l’application S3, vous avez déjà configuré l’interface VLAN. Voir link:../admin/configure-vlan-interfaces.html["Configurer les interfaces VLAN"] .
+
+--
+Configurer la fédération d'identité et l'authentification unique:: Si vous prévoyez d'utiliser la fédération d'identité ou l'authentification unique (SSO) pour votre système StorageGRID , vous avez activé ces fonctionnalités. Vous savez également quel groupe fédéré doit avoir un accès root pour le compte locataire que l’application S3 utilisera. Voirlink:../admin/using-identity-federation.html["Utiliser la fédération d'identité"] etlink:../admin/configuring-sso.html["Configurer l'authentification unique"] .
+Obtenir et configurer des noms de domaine:: Vous savez quel nom de domaine complet (FQDN) utiliser pour StorageGRID.  Les entrées du serveur de noms de domaine (DNS) mapperont ce nom de domaine complet aux adresses IP virtuelles (VIP) du groupe HA que vous créez à l'aide de l'assistant.
++
+--
+Si vous prévoyez d'utiliser des requêtes hébergées virtuellement de type S3, vous devez disposerlink:../admin/configuring-s3-api-endpoint-domain-names.html["noms de domaine de point de terminaison S3 configurés"] .  Il est recommandé d’utiliser des requêtes de type hébergé virtuellement.
+
+--
+Examiner les exigences relatives à l'équilibreur de charge et aux certificats de sécurité:: Si vous prévoyez d’utiliser l’équilibreur de charge StorageGRID , vous avez examiné les considérations générales relatives à l’équilibrage de charge.  Vous disposez des certificats que vous allez télécharger ou des valeurs dont vous avez besoin pour générer un certificat.
++
+--
+Si vous prévoyez d'utiliser un point de terminaison d'équilibrage de charge externe (tiers), vous disposez du nom de domaine complet (FQDN), du port et du certificat pour cet équilibreur de charge.
+
+--
+Configurer toutes les connexions de fédération de grille:: Si vous souhaitez autoriser le locataire S3 à cloner les données de compte et à répliquer les objets de compartiment sur une autre grille à l'aide d'une connexion de fédération de grille, confirmez les éléments suivants avant de démarrer l'assistant :
++
+--
+* Tu aslink:grid-federation-manage-connection.html["configuré la connexion à la fédération de grille"] .
+* Le statut de la connexion est *Connecté*.
+* Vous disposez de l'autorisation d'accès root.
+
+
+--
+

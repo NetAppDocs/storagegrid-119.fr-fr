@@ -1,0 +1,166 @@
+---
+permalink: ilm/example-5-ilm-rules-and-policy-for-strict-ingest-behavior.html 
+sidebar: sidebar 
+keywords: strict ingest example, example ILM rule, information lifecycle rule examples 
+summary: 'Vous pouvez utiliser un filtre d"emplacement et le comportement d"ingestion strict dans une règle pour empêcher l"enregistrement d"objets à un emplacement de centre de données particulier.' 
+---
+= Exemple 5 : Règles et politique ILM pour un comportement d'ingestion strict
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser un filtre d'emplacement et le comportement d'ingestion strict dans une règle pour empêcher l'enregistrement d'objets à un emplacement de centre de données particulier.
+
+Dans cet exemple, un locataire basé à Paris ne souhaite pas stocker certains objets en dehors de l'UE en raison de préoccupations réglementaires.  D'autres objets, y compris tous les objets provenant d'autres comptes locataires, peuvent être stockés dans le centre de données de Paris ou dans le centre de données américain.
+
+
+CAUTION: Les règles et politiques ILM suivantes ne sont que des exemples.  Il existe de nombreuses façons de configurer les règles ILM.  Avant d’activer une nouvelle politique, simulez-la pour confirmer qu’elle fonctionnera comme prévu pour protéger le contenu contre la perte.
+
+.Informations connexes
+* link:data-protection-options-for-ingest.html["Options d'ingestion"]
+* link:create-ilm-rule-select-ingest-behavior.html["Créer une règle ILM : sélectionner le comportement d'ingestion"]
+
+
+
+
+== Règle ILM 1 par exemple 5 : Ingestion stricte pour garantir le centre de données de Paris
+
+Cet exemple de règle ILM utilise le comportement d'ingestion strict pour garantir que les objets enregistrés par un locataire basé à Paris dans des buckets S3 avec la région définie sur la région eu-ouest-3 (Paris) ne sont jamais stockés dans le centre de données américain.
+
+Cette règle s'applique aux objets appartenant au locataire Paris et dont la région de compartiment S3 est définie sur eu-west-3 (Paris).
+
+[cols="1a,2a"]
+|===
+| Définition de la règle | Exemple de valeur 
+
+
+ a| 
+Compte locataire
+ a| 
+Locataire parisien
+
+
+
+ a| 
+Filtre avancé
+ a| 
+La contrainte de localisation est égale à eu-ouest-3
+
+
+
+ a| 
+Piscines de stockage
+ a| 
+Site 1 (Paris)
+
+
+
+ a| 
+Nom de la règle
+ a| 
+Ingestion stricte pour garantir le centre de données de Paris
+
+
+
+ a| 
+Heure de référence
+ a| 
+Temps d'ingestion
+
+
+
+ a| 
+Placements
+ a| 
+Le jour 0, conserver deux copies répliquées pour toujours dans le site 1 (Paris)
+
+
+
+ a| 
+Comportement d'ingestion
+ a| 
+Strict.  Utilisez toujours les placements de cette règle lors de l'ingestion.  L'ingestion échoue s'il n'est pas possible de stocker deux copies de l'objet dans le centre de données de Paris.
+
+|===
+image::../media/ilm_rule_1_example_5_strict_ingest.png[Règle 1 de l'ILM Exemple 5 Ingestion stricte]
+
+
+
+== Règle ILM 2 par exemple 5 : Ingestion équilibrée pour d'autres objets
+
+Cet exemple de règle ILM utilise le comportement d'ingestion équilibré pour fournir une efficacité ILM optimale pour tous les objets ne correspondant pas à la première règle.  Deux copies de tous les objets correspondant à cette règle seront stockées : une dans le centre de données américain et une dans le centre de données parisien.  Si la règle ne peut pas être satisfaite immédiatement, des copies provisoires sont stockées à tout endroit disponible.
+
+Cette règle s'applique aux objets appartenant à n'importe quel locataire et à n'importe quelle région.
+
+[cols="1a,2a"]
+|===
+| Définition de la règle | Exemple de valeur 
+
+
+ a| 
+Compte locataire
+ a| 
+Ignorer
+
+
+
+ a| 
+Filtre avancé
+ a| 
+_Non spécifié_
+
+
+
+ a| 
+Piscines de stockage
+ a| 
+Site 1 (Paris) et Site 2 (États-Unis)
+
+
+
+ a| 
+Nom de la règle
+ a| 
+2 copies 2 centres de données
+
+
+
+ a| 
+Heure de référence
+ a| 
+Temps d'ingestion
+
+
+
+ a| 
+Placements
+ a| 
+Le jour 0, conservez deux copies répliquées pour toujours dans deux centres de données
+
+
+
+ a| 
+Comportement d'ingestion
+ a| 
+Équilibré.  Les objets qui correspondent à cette règle sont placés conformément aux instructions de placement de la règle si possible.  Dans le cas contraire, des copies provisoires sont réalisées à tout endroit disponible.
+
+|===
+
+
+== Politique ILM pour l'exemple 5 : Combinaison des comportements d'ingestion
+
+L'exemple de politique ILM inclut deux règles qui ont des comportements d'ingestion différents.
+
+Une politique ILM qui utilise deux comportements d'ingestion différents peut inclure des règles ILM telles que les suivantes :
+
+* Stockez les objets appartenant au locataire de Paris et dont la région de compartiment S3 est définie sur eu-west-3 (Paris) uniquement dans le centre de données de Paris.  Échec de l'ingestion si le centre de données de Paris n'est pas disponible.
+* Stockez tous les autres objets (y compris ceux qui appartiennent au locataire de Paris mais qui ont une région de compartiment différente) dans le centre de données américain et dans le centre de données de Paris.  Faites des copies provisoires dans n’importe quel endroit disponible si les instructions de placement ne peuvent pas être respectées.
+
+
+Lorsque vous simulez l’exemple de politique, vous vous attendez à ce que les objets de test soient évalués comme suit :
+
+* Tous les objets appartenant au locataire de Paris et dont la région de compartiment S3 est définie sur eu-west-3 correspondent à la première règle et sont stockés dans le centre de données de Paris.  Étant donné que la première règle utilise l’ingestion stricte, ces objets ne sont jamais stockés dans le centre de données américain.  Si les nœuds de stockage du centre de données de Paris ne sont pas disponibles, l'ingestion échoue.
+* Tous les autres objets sont mis en correspondance avec la deuxième règle, y compris les objets qui appartiennent au locataire Paris et dont la région de compartiment S3 n'est pas définie sur eu-west-3.  Une copie de chaque objet est enregistrée dans chaque centre de données.  Cependant, comme la deuxième règle utilise l’ingestion équilibrée, si un centre de données n’est pas disponible, deux copies intermédiaires sont enregistrées à n’importe quel emplacement disponible.
+

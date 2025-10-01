@@ -1,0 +1,21 @@
+---
+permalink: monitor/using-task-tab-to-reboot-grid-node.html 
+sidebar: sidebar 
+keywords: Tasks tab, rename node, reboot node, maintenance mode 
+summary: 'L"onglet Tâches s"affiche pour tous les nœuds. Vous pouvez utiliser cet onglet pour renommer ou redémarrer un nœud ou pour mettre un nœud d"appliance en mode maintenance.' 
+---
+= Utiliser l'onglet Tâches
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'onglet Tâches s'affiche pour tous les nœuds. Vous pouvez utiliser cet onglet pour renommer ou redémarrer un nœud ou pour mettre un nœud d'appliance en mode maintenance.
+
+Pour connaître les exigences et les instructions complètes pour chaque option de cet onglet, consultez les éléments suivants :
+
+* link:../maintain/rename-grid-site-node-overview.html["Renommer la grille, les sites et les nœuds"]
+* link:../maintain/rebooting-grid-node-from-grid-manager.html["Redémarrer le nœud de grille"]
+* https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/placing-appliance-into-maintenance-mode.html["Mettre l'appareil en mode maintenance"^]
+

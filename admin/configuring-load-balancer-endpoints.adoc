@@ -1,0 +1,553 @@
+---
+permalink: admin/configuring-load-balancer-endpoints.html 
+sidebar: sidebar 
+keywords: how to configure load balancer endpoint, how to attach certificate to load balancer endpoint 
+summary: 'Les points de terminaison de l"équilibreur de charge déterminent les ports et les protocoles réseau que les clients S3 peuvent utiliser lors de la connexion à l"équilibreur de charge StorageGRID sur les nœuds de passerelle et d"administration.  Vous pouvez également utiliser des points de terminaison pour accéder au gestionnaire de grille, au gestionnaire de locataires ou aux deux.' 
+---
+= Configurer les points de terminaison de l'équilibreur de charge
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les points de terminaison de l'équilibreur de charge déterminent les ports et les protocoles réseau que les clients S3 peuvent utiliser lors de la connexion à l'équilibreur de charge StorageGRID sur les nœuds de passerelle et d'administration.  Vous pouvez également utiliser des points de terminaison pour accéder au gestionnaire de grille, au gestionnaire de locataires ou aux deux.
+
+
+TIP: Les détails Swift ont été supprimés de cette version du site de documentation. Voir https://docs.netapp.com/us-en/storagegrid-118/admin/configuring-client-connections.html["Configurer les connexions client S3 et Swift"^] .
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:admin-group-permissions.html["Autorisation d'accès root"] .
+* Vous avez examiné lelink:managing-load-balancing.html["considérations pour l'équilibrage de charge"] .
+* Si vous avez précédemment remappé un port que vous avez l'intention d'utiliser pour le point de terminaison de l'équilibreur de charge, vous avezlink:../maintain/removing-port-remaps.html["supprimé le remappage du port"] .
+* Vous avez créé tous les groupes de haute disponibilité (HA) que vous prévoyez d’utiliser.  Les groupes HA sont recommandés, mais pas obligatoires. Voir link:managing-high-availability-groups.html["Gérer les groupes de haute disponibilité"] .
+* Si le point de terminaison de l'équilibreur de charge doit être utilisé parlink:../admin/manage-s3-select-for-tenant-accounts.html["Locataires S3 pour S3 Select"] , il ne doit pas utiliser les adresses IP ou les noms de domaine complets de nœuds bare-metal.  Seuls les dispositifs de services et les nœuds logiciels basés sur VMware sont autorisés pour les points de terminaison d'équilibrage de charge utilisés pour S3 Select.
+* Vous avez configuré toutes les interfaces VLAN que vous prévoyez d’utiliser. Voir link:configure-vlan-interfaces.html["Configurer les interfaces VLAN"] .
+* Si vous créez un point de terminaison HTTPS (recommandé), vous disposez des informations relatives au certificat du serveur.
++
+
+NOTE: Les modifications apportées à un certificat de point de terminaison peuvent prendre jusqu'à 15 minutes pour être appliquées à tous les nœuds.
+
++
+** Pour télécharger un certificat, vous avez besoin du certificat du serveur, de la clé privée du certificat et, éventuellement, d'un bundle CA.
+** Pour générer un certificat, vous avez besoin de tous les noms de domaine et adresses IP que les clients S3 utiliseront pour accéder au point de terminaison.  Vous devez également connaître le sujet (Nom distinctif).
+** Si vous souhaitez utiliser le certificat API StorageGRID S3 (qui peut également être utilisé pour les connexions directes aux nœuds de stockage), vous avez déjà remplacé le certificat par défaut par un certificat personnalisé signé par une autorité de certification externe. Voir link:../admin/configuring-custom-server-certificate-for-storage-node.html["Configurer les certificats API S3"] .
+
+
+
+
+
+
+== Créer un point de terminaison d'équilibrage de charge
+
+Chaque point de terminaison d'équilibrage de charge client S3 spécifie un port, un type de client (S3) et un protocole réseau (HTTP ou HTTPS). Les points de terminaison de l'équilibreur de charge de l'interface de gestion spécifient un port, un type d'interface et un réseau client non approuvé.
+
+
+
+=== Accéder à l'assistant
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Réseau* > *Points de terminaison de l'équilibreur de charge*.
+. Pour créer un point de terminaison pour un client S3 ou Swift, sélectionnez l'onglet *Client S3 ou Swift*.
+. Pour créer un point de terminaison pour l'accès au Grid Manager, au Tenant Manager ou aux deux, sélectionnez l'onglet *Interface de gestion*.
+. Sélectionnez *Créer*.
+
+
+
+
+=== Entrez les détails du point de terminaison
+
+.Étapes
+. Sélectionnez les instructions appropriées pour saisir les détails du type de point de terminaison que vous souhaitez créer.
+
+
+[role="tabbed-block"]
+====
+.Client S3 ou Swift
+--
+[cols="1a,3a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Nom
+ a| 
+Un nom descriptif pour le point de terminaison, qui apparaîtra dans le tableau de la page Points de terminaison de l'équilibreur de charge.
+
+
+
+ a| 
+Port
+ a| 
+Le port StorageGRID que vous souhaitez utiliser pour l’équilibrage de charge.  Ce champ est défini par défaut sur 10433 pour le premier point de terminaison que vous créez, mais vous pouvez saisir n'importe quel port externe inutilisé compris entre 1 et 65535.
+
+Si vous entrez *80* ou *8443*, le point de terminaison est configuré uniquement sur les nœuds de passerelle, sauf si vous avez libéré le port 8443.  Vous pouvez ensuite utiliser le port 8443 comme point de terminaison S3, et le port sera configuré sur les nœuds de passerelle et d’administration.
+
+
+
+ a| 
+Type de client
+ a| 
+Le type d'application cliente qui utilisera ce point de terminaison, soit *S3* ou *Swift*.
+
+
+
+ a| 
+Protocole réseau
+ a| 
+Le protocole réseau que les clients utiliseront lors de la connexion à ce point de terminaison.
+
+* Sélectionnez *HTTPS* pour une communication sécurisée et cryptée TLS (recommandé).  Vous devez joindre un certificat de sécurité avant de pouvoir enregistrer le point de terminaison.
+* Sélectionnez *HTTP* pour une communication moins sécurisée et non chiffrée.  Utilisez HTTP uniquement pour une grille non destinée à la production.
+
+
+|===
+--
+.Interface de gestion
+--
+[cols="1a,3a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Nom
+ a| 
+Un nom descriptif pour le point de terminaison, qui apparaîtra dans le tableau de la page Points de terminaison de l'équilibreur de charge.
+
+
+
+ a| 
+Port
+ a| 
+Le port StorageGRID que vous souhaitez utiliser pour accéder au Grid Manager, au Tenant Manager ou aux deux.
+
+* Gestionnaire de grille : *8443*
+* Gestionnaire locataire : *9443*
+* Gestionnaire de réseau et gestionnaire de locataire : *443*
+
+
+*Remarque* : Vous pouvez utiliser ces ports prédéfinis ou d’autres ports disponibles.
+
+
+
+ a| 
+Type d'interface
+ a| 
+Sélectionnez le bouton radio correspondant à l’interface StorageGRID à laquelle vous accéderez à l’aide de ce point de terminaison.
+
+
+
+ a| 
+Réseau de clients non fiables
+ a| 
+Sélectionnez *Oui* si ce point de terminaison doit être accessible aux réseaux clients non approuvés.  Sinon, sélectionnez *Non*.
+
+Lorsque vous sélectionnez *Oui*, le port est ouvert sur tous les réseaux clients non approuvés.
+
+*Remarque* : vous ne pouvez configurer un port pour qu'il soit ouvert ou fermé sur des réseaux clients non approuvés que lorsque vous créez le point de terminaison de l'équilibreur de charge.
+
+|===
+--
+====
+. Sélectionnez *Continuer*.
+
+
+
+
+=== Sélectionnez un mode de reliure
+
+.Étapes
+. Sélectionnez un mode de liaison pour le point de terminaison afin de contrôler la manière dont le point de terminaison est accessible à l'aide de n'importe quelle adresse IP ou à l'aide d'adresses IP et d'interfaces réseau spécifiques.
++
+Certains modes de liaison sont disponibles pour les points de terminaison client ou les points de terminaison d'interface de gestion.  Tous les modes pour les deux types de points de terminaison sont répertoriés ici.
+
++
+[cols="1a,3a"]
+|===
+| Mode | Description 
+
+
+ a| 
+Global (par défaut pour les points de terminaison client)
+ a| 
+Les clients peuvent accéder au point de terminaison à l'aide de l'adresse IP de n'importe quel nœud de passerelle ou nœud d'administration, de l'adresse IP virtuelle (VIP) de n'importe quel groupe HA sur n'importe quel réseau ou d'un nom de domaine complet correspondant.
+
+Utilisez le paramètre *Global* sauf si vous devez restreindre l'accessibilité de ce point de terminaison.
+
+
+
+ a| 
+IP virtuelles des groupes HA
+ a| 
+Les clients doivent utiliser une adresse IP virtuelle (ou un nom de domaine complet correspondant) d’un groupe HA pour accéder à ce point de terminaison.
+
+Les points de terminaison avec ce mode de liaison peuvent tous utiliser le même numéro de port, à condition que les groupes HA que vous sélectionnez pour les points de terminaison ne se chevauchent pas.
+
+
+
+ a| 
+Interfaces de nœuds
+ a| 
+Les clients doivent utiliser les adresses IP (ou les noms de domaine complets correspondants) des interfaces de nœuds sélectionnées pour accéder à ce point de terminaison.
+
+
+
+ a| 
+Type de nœud (points de terminaison client uniquement)
+ a| 
+En fonction du type de nœud que vous sélectionnez, les clients doivent utiliser soit l'adresse IP (ou le nom de domaine complet correspondant) de n'importe quel nœud d'administration, soit l'adresse IP (ou le nom de domaine complet correspondant) de n'importe quel nœud de passerelle pour accéder à ce point de terminaison.
+
+
+
+ a| 
+Tous les nœuds d'administration (par défaut pour les points de terminaison de l'interface de gestion)
+ a| 
+Les clients doivent utiliser l’adresse IP (ou le nom de domaine complet correspondant) de n’importe quel nœud d’administration pour accéder à ce point de terminaison.
+
+|===
++
+Si plusieurs points de terminaison utilisent le même port, StorageGRID utilise cet ordre de priorité pour décider quel point de terminaison utiliser : *IP virtuelles des groupes HA* > *Interfaces de nœud* > *Type de nœud* > *Global*.
+
++
+Si vous créez des points de terminaison d’interface de gestion, seuls les nœuds d’administration sont autorisés.
+
+. Si vous avez sélectionné *IP virtuelles de groupes HA*, sélectionnez un ou plusieurs groupes HA.
++
+Si vous créez des points de terminaison d’interface de gestion, sélectionnez les VIP associés uniquement aux nœuds d’administration.
+
+. Si vous avez sélectionné *Interfaces de nœud*, sélectionnez une ou plusieurs interfaces de nœud pour chaque nœud d'administration ou nœud de passerelle que vous souhaitez associer à ce point de terminaison.
+. Si vous avez sélectionné *Type de nœud*, sélectionnez soit les nœuds d'administration, qui incluent à la fois le nœud d'administration principal et tous les nœuds d'administration non principaux, soit les nœuds de passerelle.
+
+
+
+
+=== Contrôler l'accès des locataires
+
+
+NOTE: Un point de terminaison d'interface de gestion peut contrôler l'accès des locataires uniquement lorsque le point de terminaison dispose du<<enter-endpoint-details,type d'interface de Tenant Manager>> .
+
+.Étapes
+. Pour l'étape *Accès locataire*, sélectionnez l'une des options suivantes :
++
+[cols="1a,2a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Autoriser tous les locataires (par défaut)
+ a| 
+Tous les comptes locataires peuvent utiliser ce point de terminaison pour accéder à leurs buckets.
+
+Vous devez sélectionner cette option si vous n’avez pas encore créé de compte locataire.  Après avoir ajouté des comptes locataires, vous pouvez modifier le point de terminaison de l’équilibreur de charge pour autoriser ou bloquer des comptes spécifiques.
+
+
+
+ a| 
+Autoriser les locataires sélectionnés
+ a| 
+Seuls les comptes locataires sélectionnés peuvent utiliser ce point de terminaison pour accéder à leurs compartiments.
+
+
+
+ a| 
+Bloquer les locataires sélectionnés
+ a| 
+Les comptes locataires sélectionnés ne peuvent pas utiliser ce point de terminaison pour accéder à leurs compartiments.  Tous les autres locataires peuvent utiliser ce point de terminaison.
+
+|===
+. Si vous créez un point de terminaison *HTTP*, vous n'avez pas besoin de joindre un certificat.  Sélectionnez *Créer* pour ajouter le nouveau point de terminaison de l’équilibreur de charge.  Ensuite, allez à<<after-you-finish,Après avoir terminé>> .  Sinon, sélectionnez *Continuer* pour joindre le certificat.
+
+
+
+
+=== Joindre un certificat
+
+.Étapes
+. Si vous créez un point de terminaison *HTTPS*, sélectionnez le type de certificat de sécurité que vous souhaitez attacher au point de terminaison.
++
+Le certificat sécurise les connexions entre les clients S3 et le service Load Balancer sur le nœud d'administration ou les nœuds de passerelle.
+
++
+** *Télécharger le certificat*.  Sélectionnez cette option si vous avez des certificats personnalisés à télécharger.
+** *Générer un certificat*.  Sélectionnez cette option si vous disposez des valeurs nécessaires pour générer un certificat personnalisé.
+** *Utilisez le certificat StorageGRID S3*.  Sélectionnez cette option si vous souhaitez utiliser le certificat API S3 global, qui peut également être utilisé pour les connexions directes aux nœuds de stockage.
++
+Vous ne pouvez pas sélectionner cette option à moins d'avoir remplacé le certificat API S3 par défaut, signé par l'autorité de certification de grille, par un certificat personnalisé signé par une autorité de certification externe. Voir link:../admin/configuring-custom-server-certificate-for-storage-node.html["Configurer les certificats API S3"] .
+
+** *Utiliser le certificat d'interface de gestion*.  Sélectionnez cette option si vous souhaitez utiliser le certificat d’interface de gestion globale, qui peut également être utilisé pour les connexions directes aux nœuds d’administration.
+
+
+. Si vous n'utilisez pas le certificat StorageGRID S3, téléchargez ou générez le certificat.
++
+[role="tabbed-block"]
+====
+.Télécharger le certificat
+--
+.. Sélectionnez *Télécharger le certificat*.
+.. Téléchargez les fichiers de certificat de serveur requis :
++
+*** *Certificat de serveur* : Le fichier de certificat de serveur personnalisé au format PEM.
+*** *Clé privée du certificat* : Le fichier de clé privée du certificat du serveur personnalisé(`.key` ).
++
+
+NOTE: Les clés privées EC doivent être de 224 bits ou plus.  Les clés privées RSA doivent être de 2 048 bits ou plus.
+
+*** *CA bundle* : un fichier facultatif unique contenant les certificats de chaque autorité de certification émettrice intermédiaire (CA).  Le fichier doit contenir chacun des fichiers de certificat CA codés en PEM, concaténés dans l'ordre de la chaîne de certificats.
+
+
+.. Développez *Détails du certificat* pour voir les métadonnées de chaque certificat que vous avez téléchargé.  Si vous avez téléchargé un bundle CA facultatif, chaque certificat s'affiche sur son propre onglet.
++
+*** Sélectionnez *Télécharger le certificat* pour enregistrer le fichier de certificat ou sélectionnez *Télécharger le bundle CA* pour enregistrer le bundle de certificats.
++
+Spécifiez le nom du fichier de certificat et l’emplacement de téléchargement.  Enregistrez le fichier avec l'extension `.pem` .
+
++
+Par exemple :  `storagegrid_certificate.pem`
+
+*** Sélectionnez *Copier le certificat PEM* ou *Copier le bundle CA PEM* pour copier le contenu du certificat afin de le coller ailleurs.
+
+
+.. Sélectionnez *Créer*. + Le point de terminaison de l’équilibreur de charge est créé.  Le certificat personnalisé est utilisé pour toutes les nouvelles connexions ultérieures entre les clients S3 ou l'interface de gestion et le point de terminaison.
+
+
+--
+.Générer un certificat
+--
+.. Sélectionnez *Générer un certificat*.
+.. Spécifiez les informations du certificat :
++
+[cols="1a,3a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Nom de domaine
+ a| 
+Un ou plusieurs noms de domaine entièrement qualifiés à inclure dans le certificat.  Utilisez un * comme caractère générique pour représenter plusieurs noms de domaine.
+
+
+
+ a| 
+propriété intellectuelle
+ a| 
+Une ou plusieurs adresses IP à inclure dans le certificat.
+
+
+
+ a| 
+Sujet (facultatif)
+ a| 
+Sujet X.509 ou nom distinctif (DN) du propriétaire du certificat.
+
+Si aucune valeur n'est saisie dans ce champ, le certificat généré utilise le premier nom de domaine ou adresse IP comme nom commun du sujet (CN).
+
+
+
+ a| 
+Jours de validité
+ a| 
+Nombre de jours après la création pendant lesquels le certificat expire.
+
+
+
+ a| 
+Ajouter des extensions d'utilisation de clés
+ a| 
+Si cette option est sélectionnée (par défaut et recommandé), les extensions d'utilisation de clé et d'utilisation de clé étendue sont ajoutées au certificat généré.
+
+Ces extensions définissent l’objectif de la clé contenue dans le certificat.
+
+*Remarque* : laissez cette case à cocher sélectionnée, sauf si vous rencontrez des problèmes de connexion avec des clients plus anciens lorsque les certificats incluent ces extensions.
+
+|===
+.. Sélectionnez *Générer*.
+.. Sélectionnez *Détails du certificat* pour voir les métadonnées du certificat généré.
++
+*** Sélectionnez *Télécharger le certificat* pour enregistrer le fichier de certificat.
++
+Spécifiez le nom du fichier de certificat et l’emplacement de téléchargement.  Enregistrez le fichier avec l'extension `.pem` .
+
++
+Par exemple :  `storagegrid_certificate.pem`
+
+*** Sélectionnez *Copier le certificat PEM* pour copier le contenu du certificat afin de le coller ailleurs.
+
+
+.. Sélectionnez *Créer*.
++
+Le point de terminaison de l’équilibreur de charge est créé.  Le certificat personnalisé est utilisé pour toutes les nouvelles connexions ultérieures entre les clients S3 ou l'interface de gestion et ce point de terminaison.
+
+
+
+--
+====
+
+
+
+
+=== Après avoir terminé
+
+.Étapes
+. Si vous utilisez un DNS, assurez-vous que le DNS inclut un enregistrement pour associer le nom de domaine complet (FQDN) StorageGRID à chaque adresse IP que les clients utiliseront pour établir des connexions.
++
+L'adresse IP que vous entrez dans l'enregistrement DNS dépend du fait que vous utilisez ou non un groupe HA de nœuds d'équilibrage de charge :
+
++
+** Si vous avez configuré un groupe HA, les clients se connecteront aux adresses IP virtuelles de ce groupe HA.
+** Si vous n'utilisez pas de groupe HA, les clients se connecteront au service StorageGRID Load Balancer à l'aide de l'adresse IP d'un nœud de passerelle ou d'un nœud d'administration.
++
+Vous devez également vous assurer que l'enregistrement DNS référence tous les noms de domaine de point de terminaison requis, y compris tous les noms génériques.
+
+
+
+. Fournissez aux clients S3 les informations nécessaires pour se connecter au point de terminaison :
++
+** Numéro de port
+** Nom de domaine entièrement qualifié ou adresse IP
+** Tous les détails du certificat requis
+
+
+
+
+
+
+== Afficher et modifier les points de terminaison de l'équilibreur de charge
+
+Vous pouvez afficher les détails des points de terminaison d'équilibrage de charge existants, y compris les métadonnées du certificat pour un point de terminaison sécurisé.  Vous pouvez modifier certains paramètres d’un point de terminaison.
+
+* Pour afficher les informations de base de tous les points de terminaison de l’équilibreur de charge, consultez les tableaux sur la page Points de terminaison de l’équilibreur de charge.
+* Pour afficher tous les détails sur un point de terminaison spécifique, y compris les métadonnées du certificat, sélectionnez le nom du point de terminaison dans le tableau.  Les informations affichées varient en fonction du type de point de terminaison et de sa configuration.
++
+image::../media/load_balancer_endpoint_details.png[Détails du point de terminaison de l'équilibreur de charge]
+
+* Pour modifier un point de terminaison, utilisez le menu *Actions* sur la page Points de terminaison de l'équilibreur de charge.
++
+
+NOTE: Si vous perdez l'accès à Grid Manager lors de la modification du port d'un point de terminaison d'interface de gestion, mettez à jour l'URL et le port pour retrouver l'accès.
+
++
+
+TIP: Après avoir modifié un point de terminaison, vous devrez peut-être attendre jusqu'à 15 minutes pour que vos modifications soient appliquées à tous les nœuds.
+
++
+[cols="1a, 2a,2a"]
+|===
+| Tâche | Menu Actions | Page de détails 
+
+
+ a| 
+Modifier le nom du point de terminaison
+ a| 
+.. Cochez la case correspondant au point de terminaison.
+.. Sélectionnez *Actions* > *Modifier le nom du point de terminaison*.
+.. Entrez le nouveau nom.
+.. Sélectionnez *Enregistrer*.
+
+ a| 
+.. Sélectionnez le nom du point de terminaison pour afficher les détails.
+.. Sélectionnez l'icône d'éditionimage:../media/icon_edit_tm.png["Modifier l'icône"] .
+.. Entrez le nouveau nom.
+.. Sélectionnez *Enregistrer*.
+
+
+
+
+ a| 
+Modifier le port du point de terminaison
+ a| 
+.. Cochez la case correspondant au point de terminaison.
+.. Sélectionnez *Actions* > *Modifier le port du point de terminaison*
+.. Entrez un numéro de port valide.
+.. Sélectionnez *Enregistrer*.
+
+ a| 
+_n / A_
+
+
+
+ a| 
+Modifier le mode de liaison du point de terminaison
+ a| 
+.. Cochez la case correspondant au point de terminaison.
+.. Sélectionnez *Actions* > *Modifier le mode de liaison du point de terminaison*.
+.. Mettez à jour le mode de liaison si nécessaire.
+.. Sélectionnez *Enregistrer les modifications*.
+
+ a| 
+.. Sélectionnez le nom du point de terminaison pour afficher les détails.
+.. Sélectionnez *Modifier le mode de liaison*.
+.. Mettez à jour le mode de liaison si nécessaire.
+.. Sélectionnez *Enregistrer les modifications*.
+
+
+
+
+ a| 
+Modifier le certificat du point de terminaison
+ a| 
+.. Cochez la case correspondant au point de terminaison.
+.. Sélectionnez *Actions* > *Modifier le certificat du point de terminaison*.
+.. Téléchargez ou générez un nouveau certificat personnalisé ou commencez à utiliser le certificat S3 global, selon vos besoins.
+.. Sélectionnez *Enregistrer les modifications*.
+
+ a| 
+.. Sélectionnez le nom du point de terminaison pour afficher les détails.
+.. Sélectionnez l'onglet *Certificat*.
+.. Sélectionnez *Modifier le certificat*.
+.. Téléchargez ou générez un nouveau certificat personnalisé ou commencez à utiliser le certificat S3 global, selon vos besoins.
+.. Sélectionnez *Enregistrer les modifications*.
+
+
+
+
+ a| 
+Modifier l'accès des locataires
+ a| 
+.. Cochez la case correspondant au point de terminaison.
+.. Sélectionnez *Actions* > *Modifier l'accès du locataire*.
+.. Choisissez une option d’accès différente, sélectionnez ou supprimez des locataires de la liste, ou faites les deux.
+.. Sélectionnez *Enregistrer les modifications*.
+
+ a| 
+.. Sélectionnez le nom du point de terminaison pour afficher les détails.
+.. Sélectionnez l'onglet *Accès locataire*.
+.. Sélectionnez *Modifier l'accès du locataire*.
+.. Choisissez une option d’accès différente, sélectionnez ou supprimez des locataires de la liste, ou faites les deux.
+.. Sélectionnez *Enregistrer les modifications*.
+
+
+|===
+
+
+
+
+== Supprimer les points de terminaison de l'équilibreur de charge
+
+Vous pouvez supprimer un ou plusieurs points de terminaison à l'aide du menu *Actions*, ou vous pouvez supprimer un seul point de terminaison à partir de la page de détails.
+
+
+CAUTION: Pour éviter toute interruption du client, mettez à jour toutes les applications clientes S3 affectées avant de supprimer un point de terminaison d'équilibrage de charge.  Mettez à jour chaque client pour qu’il se connecte à l’aide d’un port attribué à un autre point de terminaison d’équilibrage de charge.  Assurez-vous également de mettre à jour toutes les informations de certificat requises.
+
+
+NOTE: Si vous perdez l’accès à Grid Manager lors de la suppression d’un point de terminaison d’interface de gestion, mettez à jour l’URL.
+
+* Pour supprimer un ou plusieurs points de terminaison :
++
+.. Sur la page Équilibreur de charge, cochez la case correspondant à chaque point de terminaison que vous souhaitez supprimer.
+.. Sélectionnez *Actions* > *Supprimer*.
+.. Sélectionnez *OK*.
+
+
+* Pour supprimer un point de terminaison de la page de détails :
++
+.. Depuis la page Équilibreur de charge, sélectionnez le nom du point de terminaison.
+.. Sélectionnez *Supprimer* sur la page de détails.
+.. Sélectionnez *OK*.
+
+
+

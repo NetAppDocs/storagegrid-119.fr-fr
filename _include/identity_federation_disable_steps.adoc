@@ -1,0 +1,19 @@
+= 
+:allow-uri-read: 
+
+
+Vous pouvez désactiver temporairement ou définitivement la fédération d’identité pour les groupes et les utilisateurs. Lorsque la fédération d’identité est désactivée, il n’y a aucune communication entre StorageGRID et la source d’identité. Cependant, tous les paramètres que vous avez configurés sont conservés, ce qui vous permet de réactiver facilement la fédération d’identité à l’avenir.
+
+.À propos de cette tâche
+Avant de désactiver la fédération d’identité, vous devez tenir compte des points suivants :
+
+* Les utilisateurs fédérés ne pourront pas se connecter.
+* Les utilisateurs fédérés actuellement connectés conserveront l'accès au système StorageGRID jusqu'à l'expiration de leur session, mais ils ne pourront pas se connecter après l'expiration de leur session.
+* La synchronisation entre le système StorageGRID et la source d'identité n'aura pas lieu et les alertes ne seront pas générées pour les comptes qui n'ont pas été synchronisés.
+* La case à cocher *Activer la fédération d'identité* est désactivée si l'authentification unique (SSO) est définie sur *Activé* ou *Mode Sandbox*. Le statut SSO sur la page d'authentification unique doit être *Désactivé* avant de pouvoir désactiver la fédération d'identité. Voir link:../admin/disabling-single-sign-on.html["Désactiver l'authentification unique"] .
+
+
+.Étapes
+. Accédez à la page Fédération d'identité.
+. Décochez la case *Activer la fédération d'identité*.
+

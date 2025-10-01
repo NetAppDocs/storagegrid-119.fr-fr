@@ -1,0 +1,142 @@
+---
+permalink: admin/troubleshooting-platform-services.html 
+sidebar: sidebar 
+keywords: troubleshoot platform services, platform services endpoint error 
+summary: 'Les points de terminaison utilisés dans les services de plateforme sont créés et gérés par les utilisateurs locataires dans le gestionnaire de locataires. Toutefois, si un locataire rencontre des problèmes lors de la configuration ou de l"utilisation des services de plateforme, vous pourrez peut-être utiliser le gestionnaire de grille pour vous aider à résoudre le problème.' 
+---
+= Dépanner les services de la plateforme
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les points de terminaison utilisés dans les services de plateforme sont créés et gérés par les utilisateurs locataires dans le gestionnaire de locataires. Toutefois, si un locataire rencontre des problèmes lors de la configuration ou de l'utilisation des services de plateforme, vous pourrez peut-être utiliser le gestionnaire de grille pour vous aider à résoudre le problème.
+
+
+
+== Problèmes avec les nouveaux points de terminaison
+
+Avant qu'un locataire puisse utiliser les services de la plateforme, il doit créer un ou plusieurs points de terminaison à l'aide du gestionnaire de locataires.  Chaque point de terminaison représente une destination externe pour un service de plateforme, tel qu'un bucket StorageGRID S3, un bucket Amazon Web Services, une rubrique Amazon Simple Notification Service, une rubrique Kafka ou un cluster Elasticsearch hébergé localement ou sur AWS.  Chaque point de terminaison inclut à la fois l’emplacement de la ressource externe et les informations d’identification nécessaires pour accéder à cette ressource.
+
+Lorsqu'un locataire crée un point de terminaison, le système StorageGRID valide que le point de terminaison existe et qu'il peut être atteint à l'aide des informations d'identification spécifiées.  La connexion au point de terminaison est validée à partir d’un nœud sur chaque site.
+
+Si la validation du point de terminaison échoue, un message d’erreur explique pourquoi la validation du point de terminaison a échoué.  L’utilisateur locataire doit résoudre le problème, puis essayer à nouveau de créer le point de terminaison.
+
+
+NOTE: La création du point de terminaison échouera si les services de plateforme ne sont pas activés pour le compte locataire.
+
+
+
+== Problèmes avec les points de terminaison existants
+
+Si une erreur se produit lorsque StorageGRID tente d’atteindre un point de terminaison existant, un message s’affiche sur le tableau de bord dans le gestionnaire de locataires.
+
+image::../media/tenant_dashboard_endpoint_error.png[message d'erreur du point de terminaison sur le tableau de bord]
+
+Les utilisateurs locataires peuvent accéder à la page Points de terminaison pour consulter le message d’erreur le plus récent pour chaque point de terminaison et déterminer depuis combien de temps l’erreur s’est produite.  La colonne *Dernière erreur* affiche le message d'erreur le plus récent pour chaque point de terminaison et indique depuis combien de temps l'erreur s'est produite.  Les erreurs qui incluent leimage:../media/icon_alert_red_critical.png["Icône X rouge"] l'icône s'est produite au cours des 7 derniers jours.
+
+image::../media/endpoints_last_error.png[capture d'écran de la page Points de terminaison affichant la colonne Dernière erreur]
+
+
+NOTE: Certains messages d'erreur dans la colonne *Dernière erreur* peuvent inclure un logID entre parenthèses.  Un administrateur de grille ou un support technique peut utiliser cet ID pour localiser des informations plus détaillées sur l'erreur dans le fichier bycast.log.
+
+
+
+== Problèmes liés aux serveurs proxy
+
+Si vous avez configuré unlink:configuring-storage-proxy-settings.html["proxy de stockage"] entre les nœuds de stockage et les points de terminaison du service de la plateforme, des erreurs peuvent se produire si votre service proxy n'autorise pas les messages provenant de StorageGRID. Pour résoudre ces problèmes, vérifiez les paramètres de votre serveur proxy pour vous assurer que les messages liés au service de la plateforme ne sont pas bloqués.
+
+
+
+== Déterminer si une erreur s'est produite
+
+Si des erreurs de point de terminaison se sont produites au cours des 7 derniers jours, le tableau de bord du gestionnaire de locataires affiche un message d'alerte.  Vous pouvez accéder à la page Points de terminaison pour voir plus de détails sur l'erreur.
+
+
+
+== Les opérations client échouent
+
+Certains problèmes de services de plateforme peuvent entraîner l’échec des opérations client sur le bucket S3.  Par exemple, les opérations du client S3 échoueront si le service interne de machine à états répliquée (RSM) s'arrête ou s'il y a trop de messages de services de plateforme en file d'attente pour livraison.
+
+Pour vérifier l’état des services :
+
+. Sélectionnez *SUPPORT* > *Outils* > *Topologie de grille*.
+. Sélectionnez *_site_* > *_Nœud de stockage_* > *SSM* > *Services*.
+
+
+
+
+== Erreurs de point de terminaison récupérables et irrécupérables
+
+Une fois les points de terminaison créés, des erreurs de demande de service de plateforme peuvent se produire pour diverses raisons.  Certaines erreurs sont récupérables avec l’intervention de l’utilisateur.  Par exemple, des erreurs récupérables peuvent se produire pour les raisons suivantes :
+
+* Les informations d'identification de l'utilisateur ont été supprimées ou ont expiré.
+* Le bucket de destination n'existe pas.
+* La notification ne peut pas être délivrée.
+
+
+Si StorageGRID rencontre une erreur récupérable, la demande de service de plateforme sera relancée jusqu'à ce qu'elle réussisse.
+
+D’autres erreurs sont irrécupérables. Par exemple, une erreur irrécupérable se produit si le point de terminaison est supprimé.
+
+Si StorageGRID rencontre une erreur de point de terminaison irrécupérable :
+
+* Dans le gestionnaire de grille, accédez à *Support* > *Outils* > *Métriques* > *Grafana* > *Présentation des services de la plateforme* pour afficher les détails de l'erreur.
+* Dans le gestionnaire de locataires, accédez à *STOCKAGE (S3)* > *Points de terminaison des services de plateforme* pour afficher les détails de l'erreur.
+* Vérifiez le `/var/local/log/bycast-err.log` pour les erreurs liées.  Les nœuds de stockage dotés du service ADC contiennent ce fichier journal.
+
+
+
+
+== Les messages des services de la plateforme ne peuvent pas être livrés
+
+Si la destination rencontre un problème qui l’empêche d’accepter les messages des services de plateforme, l’opération client sur le bucket réussit, mais le message des services de plateforme n’est pas remis. Par exemple, cette erreur peut se produire si les informations d’identification sont mises à jour sur la destination de telle sorte que StorageGRID ne peut plus s’authentifier auprès du service de destination.
+
+Vérifiez les alertes associées.
+
+
+
+== Des performances plus lentes pour les demandes de service de la plateforme
+
+Le logiciel StorageGRID peut limiter les requêtes S3 entrantes pour un bucket si la vitesse à laquelle les requêtes sont envoyées dépasse la vitesse à laquelle le point de terminaison de destination peut recevoir les requêtes.  La limitation se produit uniquement lorsqu'il existe un arriéré de requêtes en attente d'être envoyées au point de terminaison de destination.
+
+Le seul effet visible est que les requêtes S3 entrantes prendront plus de temps à s’exécuter.  Si vous commencez à détecter des performances nettement plus lentes, vous devez réduire le taux d’ingestion ou utiliser un point de terminaison avec une capacité supérieure.  Si l’arriéré des demandes continue de croître, les opérations S3 du client (telles que les demandes PUT) finiront par échouer.
+
+Les requêtes CloudMirror sont plus susceptibles d’être affectées par les performances du point de terminaison de destination, car ces requêtes impliquent généralement plus de transfert de données que les requêtes d’intégration de recherche ou de notification d’événements.
+
+
+
+== Les demandes de service de la plateforme échouent
+
+Pour afficher le taux d’échec des demandes pour les services de la plateforme :
+
+. Sélectionnez *NODES*.
+. Sélectionnez *_site_* > *Services de plateforme*.
+. Consultez le graphique des taux d’erreur des demandes.
++
+image::../media/nodes_page_site_level_platform_services.gif[Nœuds Page Services de plateforme au niveau du site]
+
+
+
+
+
+== Alerte d'indisponibilité des services de la plateforme
+
+L'alerte *Services de plateforme indisponibles* indique qu'aucune opération de service de plateforme ne peut être effectuée sur un site car trop peu de nœuds de stockage avec le service RSM sont en cours d'exécution ou disponibles.
+
+Le service RSM garantit que les demandes de service de la plateforme sont envoyées à leurs points de terminaison respectifs.
+
+Pour résoudre cette alerte, déterminez quels nœuds de stockage du site incluent le service RSM.  (Le service RSM est présent sur les nœuds de stockage qui incluent également le service ADC.)  Ensuite, assurez-vous qu’une simple majorité de ces nœuds de stockage sont en cours d’exécution et disponibles.
+
+
+NOTE: Si plusieurs nœuds de stockage contenant le service RSM échouent sur un site, vous perdez toutes les demandes de service de plateforme en attente pour ce site.
+
+
+
+== Conseils de dépannage supplémentaires pour les points de terminaison des services de plateforme
+
+Pour plus d'informations, voirlink:../tenant/troubleshooting-platform-services-endpoint-errors.html["Utiliser un compte locataire > Résoudre les problèmes des points de terminaison des services de la plateforme"] .
+
+.Informations connexes
+link:../troubleshoot/index.html["Dépannage du système StorageGRID"]

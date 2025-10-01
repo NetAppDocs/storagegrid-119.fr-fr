@@ -1,0 +1,145 @@
+---
+permalink: maintain/accessing-decommission-nodes-page.html 
+sidebar: sidebar 
+keywords: storagegrid, decommission nodes, decommissioning nodes, maintenance task 
+summary: 'Lorsque vous accédez à la page Décommissionner les nœuds dans le gestionnaire de grille, vous pouvez voir en un coup d"œil quels nœuds peuvent être mis hors service.' 
+---
+= Accéder à la page des nœuds de déclassement
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lorsque vous accédez à la page Décommissionner les nœuds dans le gestionnaire de grille, vous pouvez voir en un coup d'œil quels nœuds peuvent être mis hors service.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:../admin/admin-group-permissions.html["Autorisation d'accès de maintenance ou root"] .
+
+
+
+CAUTION: Soyez prudent lorsque vous désaffectez des nœuds de stockage dans une grille contenant uniquement des nœuds de métadonnées basés sur des logiciels.  Si vous désactivez tous les nœuds configurés pour stocker à la fois des objets et des métadonnées, la possibilité de stocker des objets est supprimée de la grille.  Voirlink:../primer/what-storage-node-is.html#types-of-storage-nodes["Types de nœuds de stockage"] pour plus d'informations sur les nœuds de stockage contenant uniquement des métadonnées.
+
+.Étapes
+. Sélectionnez *MAINTENANCE* > *Tâches* > *Mise hors service*.
+. Sélectionnez *Désactiver les nœuds*.
++
+La page Décommissionner les nœuds s’affiche.  À partir de cette page, vous pouvez :
+
++
+** Déterminer quels nœuds du réseau peuvent être mis hors service actuellement.
+** Voir la santé de tous les nœuds de la grille
+** Trier la liste par ordre croissant ou décroissant par *Nom*, *Site*, *Type* ou *A un ADC*.
+** Saisissez des termes de recherche pour trouver rapidement des nœuds particuliers.
++
+Dans cet exemple, la colonne Décommission possible indique que vous pouvez mettre hors service le nœud de passerelle et l'un des quatre nœuds de stockage.
+
++
+image::../media/decommission_nodes_page_all_connected.png[Page de déclassement des nœuds]
+
+
+
+. Consultez la colonne *Déclassement possible* pour chaque nœud que vous souhaitez mettre hors service.
++
+Si un nœud de grille peut être mis hors service, cette colonne comprend une coche verte et la colonne de gauche comprend une case à cocher.  Si un nœud ne peut pas être mis hors service, cette colonne décrit le problème.  S'il existe plusieurs raisons pour lesquelles un nœud ne peut pas être mis hors service, la raison la plus critique est indiquée.
+
++
+[cols="1a,1a,1a"]
+|===
+| Déclassement Raison possible | Description | Étapes à suivre pour résoudre le problème 
+
+
+ a| 
+Non, la mise hors service du _type de nœud_ n'est pas prise en charge.
+ a| 
+Vous ne pouvez pas désactiver le nœud d’administration principal.
+ a| 
+Aucun.
+
+
+
+ a| 
+Non, au moins un nœud du réseau est déconnecté.
+
+*Remarque :* ce message s’affiche uniquement pour les nœuds de réseau connectés.
+ a| 
+Vous ne pouvez pas mettre hors service un nœud de réseau connecté si un nœud de réseau est déconnecté.
+
+La colonne *Santé* inclut l'une de ces icônes pour les nœuds de grille déconnectés :
+
+** image:../media/icon_alarm_gray_administratively_down.png["icône de point d'interrogation gris"](gris) : Administrativement en panne
+** image:../media/icon_alarm_blue_unknown.png["icône de point d'interrogation bleu"](bleu) : Inconnu
+
+ a| 
+Vous devez remettre en ligne tous les nœuds déconnectés oulink:decommissioning-disconnected-grid-nodes.html["mettre hors service tous les nœuds déconnectés"] avant de pouvoir supprimer un nœud connecté.
+
+*Remarque* : si votre réseau contient plusieurs nœuds déconnectés, le logiciel vous demande de les mettre hors service tous en même temps, ce qui augmente le risque de résultats inattendus.
+
+
+
+ a| 
+Non, un ou plusieurs nœuds requis sont actuellement déconnectés et doivent être récupérés.
+
+*Remarque :* ce message s’affiche uniquement pour les nœuds de grille déconnectés.
+ a| 
+Vous ne pouvez pas mettre hors service un nœud de grille déconnecté si un ou plusieurs nœuds requis sont également déconnectés (par exemple, un nœud de stockage requis pour le quorum ADC).
+ a| 
+.. Consultez les messages de mise hors service possible pour tous les nœuds déconnectés.
+.. Déterminez quels nœuds ne peuvent pas être mis hors service car ils sont nécessaires.
++
+*** Si l'état d'un nœud requis est administrativement en panne, remettez le nœud en ligne.
+*** Si l’état d’un nœud requis est inconnu, effectuez une procédure de récupération de nœud pour récupérer le nœud requis.
+
+
+
+
+
+
+ a| 
+Non, membre du(des) groupe(s) HA : _nom du groupe_. Avant de pouvoir mettre hors service ce nœud, vous devez le supprimer de tous les groupes HA.
+ a| 
+Vous ne pouvez pas désactiver un nœud d'administration ou un nœud de passerelle si une interface de nœud appartient à un groupe de haute disponibilité (HA).
+ a| 
+Modifiez le groupe HA pour supprimer l'interface du nœud ou supprimer l'intégralité du groupe HA. Voir link:../admin/configure-high-availability-group.html["Configurer des groupes de haute disponibilité"] .
+
+
+
+ a| 
+Non, le site _x_ nécessite un minimum de _n_ nœuds de stockage avec des services ADC.
+ a| 
+*Nœuds de stockage uniquement.* Vous ne pouvez pas mettre hors service un nœud de stockage si le nombre de nœuds restant sur le site est insuffisant pour prendre en charge les exigences de quorum ADC.
+ a| 
+Effectuer une expansion.  Ajoutez un nouveau nœud de stockage au site et spécifiez qu’il doit disposer d’un service ADC.  Voir les informations sur lelink:understanding-adc-service-quorum.html["Quorum du CDA"] .
+
+
+
+ a| 
+Non, un ou plusieurs profils de codage d’effacement nécessitent au moins _n_ nœuds de stockage.  Si le profil n'est pas utilisé dans une règle ILM, vous pouvez le désactiver.
+ a| 
+*Nœuds de stockage uniquement.* Vous ne pouvez pas mettre hors service un nœud de stockage à moins qu'il ne reste suffisamment de nœuds pour les profils de codage d'effacement existants.
+
+Par exemple, si un profil de codage d'effacement existe pour le codage d'effacement 4+2, au moins 6 nœuds de stockage doivent rester.
+ a| 
+Pour chaque profil de codage d’effacement concerné, effectuez l’une des étapes suivantes, en fonction de la manière dont le profil est utilisé :
+
+** *Utilisé dans les politiques ILM actives* : effectuer une extension.  Ajoutez suffisamment de nouveaux nœuds de stockage pour permettre au codage d’effacement de continuer. Voir les instructions pourlink:../expand/index.html["étendre votre réseau"] .
+** *Utilisé dans une règle ILM mais pas dans les politiques ILM actives* : Modifiez ou supprimez la règle, puis désactivez le profil de codage d'effacement.
+** *Non utilisé dans aucune règle ILM* : Désactivez le profil de codage d'effacement.
+
+
+*Remarque :* un message d’erreur s’affiche si vous tentez de désactiver un profil de codage d’effacement et que les données d’objet sont toujours associées au profil.  Vous devrez peut-être attendre plusieurs semaines avant de réessayer le processus de désactivation.
+
+En savoir plus surlink:../ilm/manage-erasure-coding-profiles.html["désactiver un profil de codage d'effacement"] .
+
+
+
+ a| 
+Non, vous ne pouvez pas mettre hors service un nœud d’archive à moins que le nœud ne soit déconnecté.
+ a| 
+Si un nœud d’archive est toujours connecté, vous ne pouvez pas le supprimer.
+ a| 
+*Remarque* : la prise en charge des nœuds d’archive a été supprimée.  Si vous devez mettre hors service un nœud d'archive, consultez https://docs.netapp.com/us-en/storagegrid-118/maintain/grid-node-decommissioning.html["Mise hors service des nœuds de grille (site de documentation StorageGRID 11.8)"^]
+
+|===
+

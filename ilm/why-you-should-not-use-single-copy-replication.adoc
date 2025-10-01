@@ -1,0 +1,29 @@
+---
+permalink: ilm/why-you-should-not-use-single-copy-replication.html 
+sidebar: sidebar 
+keywords: dual commit, single commit, number of copies for replication 
+summary: 'Lors de la création d"une règle ILM pour créer des copies répliquées, vous devez toujours spécifier au moins deux copies pour toute période dans les instructions de placement.' 
+---
+= Pourquoi vous ne devriez pas utiliser la réplication à copie unique
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lors de la création d'une règle ILM pour créer des copies répliquées, vous devez toujours spécifier au moins deux copies pour toute période dans les instructions de placement.
+
+
+NOTE: N'utilisez pas de règle ILM qui crée une seule copie répliquée pour une période donnée.  Si une seule copie répliquée d’un objet existe, cet objet est perdu si un nœud de stockage échoue ou présente une erreur importante.  Vous perdez également temporairement l’accès à l’objet pendant les procédures de maintenance telles que les mises à niveau.
+
+Dans l'exemple suivant, la règle ILM Make 1 Copy spécifie qu'une copie répliquée d'un objet doit être placée dans un pool de stockage contenant trois nœuds de stockage.  Lorsqu'un objet correspondant à cette règle est ingéré, StorageGRID place une seule copie sur un seul nœud de stockage.
+
+image::../media/ilm_replication_make_1_copy.png[Réplication ILM Faire 1 copie]
+
+Lorsqu'une règle ILM crée une seule copie répliquée d'un objet, l'objet devient inaccessible lorsque le nœud de stockage n'est pas disponible.  Dans cet exemple, vous perdrez temporairement l'accès à l'objet AAA chaque fois que le nœud de stockage 2 est hors ligne, par exemple lors d'une mise à niveau ou d'une autre procédure de maintenance.  Vous perdrez entièrement l’objet AAA si le nœud de stockage 2 tombe en panne.
+
+image::../media/ilm_replication_make_1_copy_sn_fails.png[Échec de la création d'une copie SN lors de la réplication ILM]
+
+Pour éviter de perdre des données d'objet, vous devez toujours faire au moins deux copies de tous les objets que vous souhaitez protéger par réplication.  Si deux copies ou plus existent, vous pouvez toujours accéder à l'objet si un nœud de stockage tombe en panne ou est hors ligne.
+
+image::../media/ilm_replication_make_2_copies_sn_fails.png[La réplication ILM effectue 2 copies SN et échoue]

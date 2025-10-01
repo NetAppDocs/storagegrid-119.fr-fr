@@ -1,0 +1,94 @@
+---
+permalink: primer/exploring-tenant-manager.html 
+sidebar: sidebar 
+keywords: what is the tenant manager, tenant manager dashboard 
+summary: 'Le gestionnaire de locataires est l"interface graphique basée sur un navigateur à laquelle les utilisateurs locataires accèdent pour configurer, gérer et surveiller leurs comptes de stockage.' 
+---
+= Découvrez le gestionnaire de locataires
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lelink:../tenant/index.html["Gestionnaire de locataires"] est l'interface graphique basée sur un navigateur à laquelle les utilisateurs locataires accèdent pour configurer, gérer et surveiller leurs comptes de stockage.
+
+
+NOTE: Le gestionnaire de locataires est mis à jour à chaque version et peut ne pas correspondre aux exemples de captures d'écran sur cette page.
+
+Lorsque les utilisateurs locataires se connectent au gestionnaire de locataires, ils se connectent à un nœud d’administration.
+
+
+
+== Tableau de bord du gestionnaire de locataires
+
+Une fois qu’un administrateur de grille a créé un compte locataire à l’aide du gestionnaire de grille ou de l’API de gestion de grille, les utilisateurs locataires peuvent se connecter au gestionnaire de locataires.
+
+Le tableau de bord du gestionnaire de locataires permet aux utilisateurs locataires de surveiller l'utilisation du stockage en un coup d'œil. Le panneau d'utilisation du stockage contient une liste des plus grands buckets (S3) ou conteneurs (Swift) pour le locataire. La valeur de l'espace utilisé correspond à la quantité totale de données d'objet dans le bucket ou le conteneur. Le graphique à barres représente les tailles relatives de ces seaux ou conteneurs.
+
+La valeur affichée au-dessus du graphique à barres est la somme de l'espace utilisé pour tous les compartiments ou conteneurs du locataire.  Si le nombre maximal de gigaoctets, de téraoctets ou de pétaoctets disponibles pour le locataire a été spécifié lors de la création du compte, la quantité de quota utilisée et restante est également affichée.
+
+image::../media/tenant_dashboard_with_buckets.png[Tableau de bord du gestionnaire de locataires]
+
+
+
+== Menu de stockage (S3)
+
+Le menu Stockage est fourni uniquement pour les comptes locataires S3.  Ce menu permet aux utilisateurs S3 de gérer les clés d'accès, de créer, de gérer et de supprimer des buckets, de gérer les points de terminaison des services de la plateforme et d'afficher toutes les connexions de fédération de grille qu'ils sont autorisés à utiliser.
+
+
+
+=== Mes clés d'accès
+
+Les utilisateurs du locataire S3 peuvent gérer les clés d’accès comme suit :
+
+* Les utilisateurs disposant de l’autorisation Gérer vos propres informations d’identification S3 peuvent créer ou supprimer leurs propres clés d’accès S3.
+* Les utilisateurs disposant de l’autorisation d’accès root peuvent gérer les clés d’accès pour le compte root S3, leur propre compte et tous les autres utilisateurs.  Les clés d'accès racine fournissent également un accès complet aux compartiments et aux objets du locataire, sauf si elles sont explicitement désactivées par une stratégie de compartiment.
++
+
+NOTE: La gestion des clés d'accès pour les autres utilisateurs s'effectue à partir du menu Gestion des accès.
+
+
+
+
+
+=== Seaux
+
+Les utilisateurs locataires S3 disposant des autorisations appropriées peuvent effectuer les tâches suivantes pour leurs compartiments :
+
+* Créer des buckets
+* Activer le verrouillage d'objet S3 pour un nouveau compartiment (en supposant que le verrouillage d'objet S3 est activé pour le système StorageGRID )
+* Mettre à jour les valeurs de cohérence
+* Activer et désactiver les mises à jour de l'heure du dernier accès
+* Activer ou suspendre le contrôle de version des objets
+* Mettre à jour la conservation par défaut du verrouillage des objets S3
+* Configurer le partage de ressources inter-origines (CORS)
+* Supprimer tous les objets d'un bucket
+* Supprimer les compartiments vides
+* Utilisez lelink:../tenant/use-s3-console.html["Console S3"] pour gérer les objets du bucket
+
+
+Si un administrateur de grille a activé l'utilisation des services de plateforme pour le compte locataire, un utilisateur locataire S3 disposant des autorisations appropriées peut également effectuer ces tâches :
+
+* Configurez les notifications d’événements S3, qui peuvent être envoyées à un service de destination prenant en charge Amazon Simple Notification Service.
+* Configurez la réplication CloudMirror, qui permet au locataire de répliquer automatiquement des objets vers un bucket S3 externe.
+* Configurez l'intégration de recherche, qui envoie les métadonnées d'objet à un index de recherche de destination chaque fois qu'un objet est créé, supprimé ou que ses métadonnées ou balises sont mises à jour.
+
+
+
+
+=== Points de terminaison des services de plateforme
+
+Si un administrateur de grille a activé l’utilisation des services de plateforme pour le compte locataire, un utilisateur locataire S3 disposant de l’autorisation Gérer les points de terminaison peut configurer un point de terminaison de destination pour chaque service de plateforme.
+
+
+
+=== Connexions de la fédération de réseau
+
+Si un administrateur de grille a activé l'utilisation d'une connexion de fédération de grille pour le compte de locataire, un utilisateur de locataire S3 disposant de l'autorisation d'accès racine peut afficher le nom de la connexion, accéder à la page des détails du bucket pour chaque bucket dont la réplication inter-grille est activée et afficher l'erreur la plus récente survenue lors de la réplication des données du bucket vers l'autre grille de la connexion. Voir link:../tenant/grid-federation-view-connections-tenant.html["Afficher les connexions de la fédération de grille"] .
+
+
+
+== Menu de gestion des accès
+
+Le menu Gestion des accès permet aux locataires StorageGRID d'importer des groupes d'utilisateurs à partir d'une source d'identité fédérée et d'attribuer des autorisations de gestion.  Les locataires peuvent également gérer les groupes de locataires et les utilisateurs locaux, sauf si l'authentification unique (SSO) est en vigueur pour l'ensemble du système StorageGRID .

@@ -1,0 +1,29 @@
+---
+permalink: maintain/understanding-adc-service-quorum.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, adc, adc quorum 
+summary: 'Vous ne pourrez peut-être pas mettre hors service certains nœuds de stockage sur un site si trop peu de services de contrôleur de domaine administratif (ADC) restent après la mise hors service.' 
+---
+= Quel est le quorum de l'ADC ?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous ne pourrez peut-être pas mettre hors service certains nœuds de stockage sur un site si trop peu de services de contrôleur de domaine administratif (ADC) restent après la mise hors service.
+
+Le service ADC, présent sur certains nœuds de stockage, conserve les informations de topologie de grille et fournit des services de configuration à la grille.  Le système StorageGRID nécessite qu'un quorum de services ADC soit disponible sur chaque site et à tout moment.
+
+Vous ne pouvez pas mettre hors service un nœud de stockage si la suppression du nœud entraîne le non-respect du quorum ADC.  Pour satisfaire le quorum ADC lors d'une mise hors service, un minimum de trois nœuds de stockage sur chaque site doivent disposer du service ADC.  Si un site dispose de plus de trois nœuds de stockage avec le service ADC, une simple majorité de ces nœuds doit rester disponible après la mise hors service : `((0.5 * _Storage Nodes with ADC_) + 1)`
+
+
+CAUTION: Soyez prudent lorsque vous désaffectez des nœuds de stockage dans une grille contenant uniquement des nœuds de métadonnées basés sur des logiciels.  Si vous désactivez tous les nœuds configurés pour stocker à la fois des objets et des métadonnées, la possibilité de stocker des objets est supprimée de la grille.  Voirlink:../primer/what-storage-node-is.html#types-of-storage-nodes["Types de nœuds de stockage"] pour plus d'informations sur les nœuds de stockage contenant uniquement des métadonnées.
+
+Par exemple, supposons qu’un site comprend actuellement six nœuds de stockage avec des services ADC et que vous souhaitez mettre hors service trois nœuds de stockage.  En raison de l'exigence de quorum de l'ADC, vous devez effectuer deux procédures de mise hors service, comme suit :
+
+* Lors de la première procédure de mise hors service, vous devez vous assurer que quatre nœuds de stockage avec services ADC restent disponibles : `((0.5 * 6) + 1)` .  Cela signifie que vous ne pouvez initialement mettre hors service que deux nœuds de stockage.
+* Lors de la deuxième procédure de mise hors service, vous pouvez supprimer le troisième nœud de stockage, car le quorum ADC ne nécessite désormais que trois services ADC pour rester disponibles : `((0.5 * 4) + 1)` .
+
+
+Si vous devez mettre hors service un nœud de stockage mais que vous ne pouvez pas le faire en raison de l'exigence de quorum ADC, ajoutez un nouveau nœud de stockage dans unlink:../expand/index.html["expansion"] et préciser qu'il doit disposer d'un service ADC.  Ensuite, mettez hors service le nœud de stockage existant.

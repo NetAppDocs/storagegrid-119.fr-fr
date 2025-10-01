@@ -1,0 +1,96 @@
+---
+permalink: ilm/creating-default-ilm-rule.html 
+sidebar: sidebar 
+keywords: create default ilm rule 
+summary: Avant de créer une stratégie ILM, vous devez créer une règle par défaut pour placer tous les objets ne correspondant pas à une autre règle dans la stratégie.  La règle par défaut ne peut utiliser aucun filtre.  Cela doit s’appliquer à tous les locataires, à tous les buckets et à toutes les versions d’objet. 
+---
+= Créer une règle ILM par défaut
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avant de créer une stratégie ILM, vous devez créer une règle par défaut pour placer tous les objets ne correspondant pas à une autre règle dans la stratégie.  La règle par défaut ne peut utiliser aucun filtre.  Cela doit s’appliquer à tous les locataires, à tous les buckets et à toutes les versions d’objet.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+
+
+.À propos de cette tâche
+La règle par défaut est la dernière règle à être évaluée dans une politique ILM, elle ne peut donc utiliser aucun filtre.  Les instructions de placement pour la règle par défaut sont appliquées à tous les objets qui ne correspondent pas à une autre règle de la politique.
+
+Dans cet exemple de politique, la première règle s’applique uniquement aux objets appartenant à test-tenant-1.  La règle par défaut, qui est la dernière, s'applique aux objets appartenant à tous les autres comptes locataires.
+
+image::../media/ilm_policies_page_default_rule.png[Règle par défaut de la page des politiques ILM]
+
+Lorsque vous créez la règle par défaut, gardez ces exigences à l’esprit :
+
+* La règle par défaut sera automatiquement placée comme dernière règle lorsque vous l'ajouterez à une politique.
+* La règle par défaut ne peut utiliser aucun filtre de base ou avancé.
+* La règle par défaut doit s’appliquer à toutes les versions d’objet.
+* La règle par défaut doit créer des copies répliquées.
++
+
+NOTE: N'utilisez pas de règle qui crée des copies à code d'effacement comme règle par défaut pour une stratégie.  Les règles de codage d'effacement doivent utiliser un filtre avancé pour empêcher le codage d'effacement des objets plus petits.
+
+* En général, la règle par défaut doit conserver les objets pour toujours.
+* Si vous utilisez (ou prévoyez d'activer) le paramètre global de verrouillage d'objet S3, la règle par défaut doit être conforme.
+
+
+.Étapes
+. Sélectionnez *ILM* > *Règles*.
+. Sélectionnez *Créer*.
++
+L'étape 1 (Saisir les détails) de l'assistant Créer une règle ILM s'affiche.
+
+. Saisissez un nom unique pour la règle dans le champ *Nom de la règle*.
+. Vous pouvez également saisir une brève description de la règle dans le champ *Description*.
+. Laissez le champ *Comptes locataires* vide.
++
+La règle par défaut doit s’appliquer à tous les comptes locataires.
+
+. Laissez la sélection du menu déroulant Nom du bucket comme *s'applique à tous les buckets*.
++
+La règle par défaut doit s’appliquer à tous les compartiments S3.
+
+. Conservez la réponse par défaut, *Non*, pour la question « Appliquer cette règle uniquement aux anciennes versions d'objet (dans les compartiments S3 avec le contrôle de version activé) ? »
+. N'ajoutez pas de filtres avancés.
++
+La règle par défaut ne peut spécifier aucun filtre.
+
+. Sélectionnez *Suivant*.
++
+L’étape 2 (Définir les emplacements) apparaît.
+
+. Pour l'heure de référence, sélectionnez n'importe quelle option.
++
+Si vous avez conservé la réponse par défaut, *Non*, pour la question « Appliquer cette règle uniquement aux anciennes versions d'objet ? »  L'heure non actuelle ne sera pas incluse dans la liste déroulante.  La règle par défaut doit s’appliquer à toutes les versions d’objet.
+
+. Spécifiez les instructions de placement pour la règle par défaut.
++
+** La règle par défaut doit conserver les objets pour toujours.  Un avertissement s'affiche lorsque vous activez une nouvelle politique si la règle par défaut ne conserve pas les objets pour toujours.  Vous devez confirmer qu’il s’agit du comportement que vous attendez.
+** La règle par défaut doit créer des copies répliquées.
++
+
+NOTE: N'utilisez pas de règle qui crée des copies à code d'effacement comme règle par défaut pour une stratégie.  Les règles de codage d'effacement doivent inclure le filtre avancé *Taille de l'objet (Mo) supérieure à 200 Ko* pour empêcher le codage d'effacement des objets plus petits.
+
+** Si vous utilisez (ou prévoyez d'activer) le paramètre global de verrouillage d'objet S3, la règle par défaut doit être conforme :
++
+*** Il doit créer au moins deux copies d'objet répliquées ou une copie à code d'effacement.
+*** Ces copies doivent exister sur les nœuds de stockage pendant toute la durée de chaque ligne dans les instructions de placement.
+*** Les copies d’objets ne peuvent pas être enregistrées dans un pool de stockage cloud.
+*** Au moins une ligne des instructions de placement doit commencer au jour 0, en utilisant l'heure d'ingestion comme heure de référence.
+*** Au moins une ligne des instructions de placement doit être « pour toujours ».
+
+
+
+
+. Consultez le diagramme de rétention pour confirmer vos instructions de placement.
+. Sélectionnez *Continuer*.
++
+L’étape 3 (Sélectionner le comportement d’ingestion) apparaît.
+
+. Sélectionnez l'option d'ingestion à utiliser et sélectionnez *Créer*.
+

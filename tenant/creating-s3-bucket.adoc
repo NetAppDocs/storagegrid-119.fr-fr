@@ -1,0 +1,161 @@
+---
+permalink: tenant/creating-s3-bucket.html 
+sidebar: sidebar 
+keywords: how to create S3 bucket 
+summary: Vous pouvez utiliser Tenant Manager pour créer des compartiments S3 pour les données d’objet. 
+---
+= Créer un bucket S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser Tenant Manager pour créer des compartiments S3 pour les données d’objet.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs disposant de l'accès Root ou Gérer tous les bucketslink:tenant-management-permissions.html["autorisation"] . Ces autorisations remplacent les paramètres d’autorisations dans les stratégies de groupe ou de compartiment.
++
+
+NOTE: Les autorisations permettant de définir ou de modifier les propriétés de verrouillage d'objet S3 des compartiments ou des objets peuvent être accordées parlink:../s3/bucket-and-group-access-policies.html["politique de compartiment ou politique de groupe"] .
+
+* Si vous prévoyez d'activer le verrouillage d'objet S3 pour un bucket, un administrateur de grille a activé le paramètre global de verrouillage d'objet S3 pour le système StorageGRID et vous avez examiné les exigences pour les buckets et objets de verrouillage d'objet S3.
+* Si chaque locataire dispose de 5 000 buckets, chaque nœud de stockage de la grille dispose d'un minimum de 64 Go de RAM.
++
+
+NOTE: Chaque grille peut contenir un maximum de 100 000 buckets.
+
+
+
+
+
+== Accéder à l'assistant
+
+.Étapes
+. Sélectionnez *Afficher les buckets* dans le tableau de bord ou sélectionnez *STOCKAGE (S3)* > *Buckets*.
+. Sélectionnez *Créer un bucket*.
+
+
+
+
+== Entrez les détails
+
+.Étapes
+. Saisissez les détails du bucket.
++
+[cols="1a,3a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Nom du bucket
+ a| 
+Un nom pour le bucket qui respecte ces règles :
+
+** Doit être unique sur chaque système StorageGRID (pas seulement unique au sein du compte locataire).
+** Doit être conforme au DNS.
+** Doit contenir au moins 3 et pas plus de 63 caractères.
+** Chaque étiquette doit commencer et se terminer par une lettre minuscule ou un chiffre et ne peut utiliser que des lettres minuscules, des chiffres et des traits d'union.
+** Ne doit pas contenir de points dans les demandes de style hébergé virtuellement.  Les points entraîneront des problèmes avec la vérification du certificat générique du serveur.
+
+
+Pour plus d'informations, consultez le https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html["Documentation d'Amazon Web Services (AWS) sur les règles de dénomination des buckets"^] .
+
+*Remarque* : vous ne pouvez pas modifier le nom du bucket après l'avoir créé.
+
+
+
+ a| 
+Région
+ a| 
+La région du seau.
+
+Votre administrateur StorageGRID gère les régions disponibles. La région d’un bucket peut affecter la politique de protection des données appliquée aux objets. Par défaut, tous les buckets sont créés dans le `us-east-1` région.
+
+*Remarque* : vous ne pouvez pas modifier la région après avoir créé le bucket.
+
+|===
+. Sélectionnez *Continuer*.
+
+
+
+
+== Gérer les paramètres
+
+.Étapes
+. Vous pouvez également activer le contrôle de version des objets pour le bucket.
++
+Activez le contrôle de version des objets si vous souhaitez stocker chaque version de chaque objet dans ce bucket.  Vous pouvez ensuite récupérer les versions précédentes d'un objet selon vos besoins.  Vous devez activer le contrôle de version des objets si le bucket doit être utilisé pour la réplication inter-grille.
+
+. Si le paramètre global de verrouillage d'objet S3 est activé, activez éventuellement le verrouillage d'objet S3 pour que le bucket stocke les objets à l'aide d'un modèle WORM (écriture unique, lecture multiple).
++
+Activez le verrouillage d'objet S3 pour un bucket uniquement si vous devez conserver des objets pendant une durée déterminée, par exemple pour répondre à certaines exigences réglementaires. S3 Object Lock est un paramètre permanent qui vous aide à empêcher la suppression ou l'écrasement d'objets pendant une durée déterminée ou indéfiniment.
+
++
+
+CAUTION: Une fois le paramètre de verrouillage d'objet S3 activé pour un bucket, il ne peut pas être désactivé. Toute personne disposant des autorisations appropriées peut ajouter des objets à ce bucket qui ne peuvent pas être modifiés.  Vous ne pourrez peut-être pas supprimer ces objets ni le bucket lui-même.
+
++
+Si vous activez le verrouillage d'objet S3 pour un bucket, le contrôle de version du bucket est activé automatiquement.
+
+. Si vous avez sélectionné *Activer le verrouillage d'objet S3*, activez éventuellement la *Rétention par défaut* pour ce bucket.
++
+
+NOTE: Votre administrateur de réseau doit vous donner la permission delink:../tenant/using-s3-object-lock.html["utiliser les fonctionnalités spécifiques de S3 Object Lock"] .
+
++
+Lorsque la *rétention par défaut* est activée, les nouveaux objets ajoutés au bucket seront automatiquement protégés contre la suppression ou l'écrasement. Le paramètre *Conservation par défaut* ne s'applique pas aux objets qui ont leurs propres périodes de conservation.
+
++
+.. Si la *Rétention par défaut* est activée, spécifiez un *Mode de rétention par défaut* pour le bucket.
++
+[cols="1a,2a"]
+|===
+| Mode de rétention par défaut | Description 
+
+
+ a| 
+Gouvernance
+ a| 
+*** Les utilisateurs avec le `s3:BypassGovernanceRetention` l'autorisation peut utiliser le `x-amz-bypass-governance-retention: true` en-tête de demande pour contourner les paramètres de conservation.
+*** Ces utilisateurs peuvent supprimer une version d'objet avant que sa date de conservation ne soit atteinte.
+*** Ces utilisateurs peuvent augmenter, diminuer ou supprimer la date de conservation d'un objet.
+
+
+
+
+ a| 
+Conformité
+ a| 
+*** L'objet ne peut pas être supprimé tant que sa date de conservation n'est pas atteinte.
+*** La date de conservation de l'objet peut être augmentée, mais elle ne peut pas être diminuée.
+*** La date de conservation de l'objet ne peut pas être supprimée tant que cette date n'est pas atteinte.
+
+
+*Remarque* : votre administrateur de réseau doit vous autoriser à utiliser le mode de conformité.
+
+|===
+.. Si la *Conservation par défaut* est activée, spécifiez la *Période de conservation par défaut* pour le bucket.
++
+La *Période de conservation par défaut* indique la durée pendant laquelle les nouveaux objets ajoutés à ce bucket doivent être conservés, à compter du moment où ils sont ingérés. Spécifiez une valeur inférieure ou égale à la période de conservation maximale du locataire, telle que définie par l'administrateur de la grille.
+
++
+Une période de conservation _maximale_, qui peut être une valeur comprise entre 1 jour et 100 ans, est définie lorsque l'administrateur de la grille crée le locataire.  Lorsque vous définissez une période de conservation par défaut, elle ne peut pas dépasser la valeur définie pour la période de conservation maximale.  Si nécessaire, demandez à votre administrateur de réseau d’augmenter ou de diminuer la période de conservation maximale.
+
+
+
+. [[capacity-limit]]Vous pouvez également sélectionner *Activer la limite de capacité*.
++
+La limite de capacité est la capacité maximale disponible pour les objets de ce bucket. Cette valeur représente une quantité logique (taille de l'objet), et non une quantité physique (taille sur le disque).
+
++
+Si aucune limite n'est définie, la capacité de ce bucket est illimitée. Consultez link:../tenant/understanding-tenant-manager-dashboard.html#bucket-capacity-usage["Utilisation de la limite de capacité"] pour plus d'informations.
+
+. Sélectionnez *Créer un bucket*.
++
+Le bucket est créé et ajouté au tableau sur la page Buckets.
+
+. En option, sélectionnez *Accéder à la page des détails du bucket* pourlink:viewing-s3-bucket-details.html["afficher les détails du godet"] et effectuer une configuration supplémentaire.
+

@@ -1,0 +1,58 @@
+---
+permalink: maintain/copying-audit-logs-from-failed-primary-admin-node.html 
+sidebar: sidebar 
+keywords: storagegrid, audit log, copy audit log, copying audit log, primary admin node, primary admin node 
+summary: 'Si vous êtes en mesure de copier les journaux d"audit du nœud d"administration principal défaillant, vous devez les conserver pour conserver l"enregistrement de l"activité et de l"utilisation du système de la grille.  Vous pouvez restaurer les journaux d’audit conservés sur le nœud d’administration principal récupéré une fois qu’il est opérationnel.' 
+---
+= Copier les journaux d'audit du nœud d'administration principal défaillant
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si vous êtes en mesure de copier les journaux d'audit du nœud d'administration principal défaillant, vous devez les conserver pour conserver l'enregistrement de l'activité et de l'utilisation du système de la grille.  Vous pouvez restaurer les journaux d’audit conservés sur le nœud d’administration principal récupéré une fois qu’il est opérationnel.
+
+.À propos de cette tâche
+Cette procédure copie les fichiers journaux d'audit du nœud d'administration défaillant vers un emplacement temporaire sur un nœud de grille distinct.  Ces journaux d’audit conservés peuvent ensuite être copiés sur le nœud d’administration de remplacement.  Les journaux d’audit ne sont pas automatiquement copiés sur le nouveau nœud d’administration.
+
+Selon le type de panne, vous ne pourrez peut-être pas copier les journaux d’audit à partir d’un nœud d’administration défaillant.  Si le déploiement ne comporte qu'un seul nœud d'administration, le nœud d'administration récupéré commence à enregistrer les événements dans le journal d'audit dans un nouveau fichier vide et les données précédemment enregistrées sont perdues.  Si le déploiement inclut plusieurs nœuds d’administration, vous pouvez récupérer les journaux d’audit à partir d’un autre nœud d’administration.
+
+
+NOTE: Si les journaux d'audit ne sont pas accessibles sur le nœud d'administration défaillant maintenant, vous pourrez peut-être y accéder ultérieurement, par exemple après la récupération de l'hôte.
+
+.Étapes
+. Connectez-vous au nœud d’administration défaillant si possible.  Sinon, connectez-vous au nœud d’administration principal ou à un autre nœud d’administration, si disponible.
++
+.. Entrez la commande suivante : `ssh admin@_grid_node_IP_`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
++
+Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+
+
+. Arrêtez le service AMS pour l’empêcher de créer un nouveau fichier journal :``service ams stop``
+. Accédez au répertoire d’exportation d’audit :
++
+`cd /var/local/log`
+
+. Renommer la source `audit.log` fichier vers un nom de fichier numéroté unique.  Par exemple, renommez le fichier audit.log en `2023-10-25.txt.1` .
++
+[listing]
+----
+ls -l
+mv audit.log 2023-10-25.txt.1
+----
+. Redémarrez le service AMS : `service ams start`
+. Créez le répertoire pour copier tous les fichiers journaux d’audit vers un emplacement temporaire sur un nœud de grille distinct : `ssh admin@_grid_node_IP_ mkdir -p /var/local/tmp/saved-audit-logs`
++
+Lorsque vous y êtes invité, saisissez le mot de passe de l'administrateur.
+
+. Copiez tous les fichiers journaux d’audit vers l’emplacement temporaire : `scp -p * admin@_grid_node_IP_:/var/local/tmp/saved-audit-logs`
++
+Lorsque vous y êtes invité, saisissez le mot de passe de l'administrateur.
+
+. Déconnectez-vous en tant que root : `exit`
+

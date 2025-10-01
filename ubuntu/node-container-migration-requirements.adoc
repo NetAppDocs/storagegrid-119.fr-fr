@@ -1,0 +1,67 @@
+---
+permalink: ubuntu/node-container-migration-requirements.html 
+sidebar: sidebar 
+keywords: node container migration requirements 
+summary: 'La fonctionnalité de migration de nœud vous permet de déplacer manuellement un nœud d"un hôte à un autre.  En règle générale, les deux hôtes se trouvent dans le même centre de données physique.' 
+---
+= Exigences de migration des conteneurs de nœuds
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+La fonctionnalité de migration de nœud vous permet de déplacer manuellement un nœud d'un hôte à un autre.  En règle générale, les deux hôtes se trouvent dans le même centre de données physique.
+
+La migration de nœuds vous permet d’effectuer la maintenance de l’hôte physique sans perturber les opérations du réseau.  Vous déplacez tous les nœuds StorageGRID , un par un, vers un autre hôte avant de mettre l'hôte physique hors ligne.  La migration des nœuds ne nécessite qu’un court temps d’arrêt pour chaque nœud et ne devrait pas affecter le fonctionnement ou la disponibilité des services de grille.
+
+Si vous souhaitez utiliser la fonctionnalité de migration de nœuds StorageGRID , votre déploiement doit répondre à des exigences supplémentaires :
+
+* Noms d'interface réseau cohérents entre les hôtes d'un même centre de données physique
+* Stockage partagé pour les volumes de métadonnées et de référentiel d'objets StorageGRID accessible par tous les hôtes dans un seul centre de données physique.  Par exemple, vous pouvez utiliser des baies de stockage NetApp E-Series.
+
+
+Si vous utilisez des hôtes virtuels et que la couche d'hyperviseur sous-jacente prend en charge la migration de machines virtuelles, vous souhaiterez peut-être utiliser cette fonctionnalité à la place de la fonctionnalité de migration de nœuds dans StorageGRID.  Dans ce cas, vous pouvez ignorer ces exigences supplémentaires.
+
+Avant d’effectuer la migration ou la maintenance de l’hyperviseur, arrêtez les nœuds correctement. Voir les instructions pourlink:../maintain/shutting-down-grid-node.html["fermeture d'un nœud de grille"] .
+
+
+
+== VMware Live Migration n'est pas pris en charge
+
+Lors de l'exécution d'une installation bare-metal sur des machines virtuelles VMware, OpenStack Live Migration et VMware Live vMotion provoquent un saut de l'heure de l'horloge de la machine virtuelle et ne sont pas pris en charge pour les nœuds de grille de tout type.  Bien que rares, des heures d'horloge incorrectes peuvent entraîner une perte de données ou des mises à jour de configuration.
+
+La migration à froid est prise en charge.  Lors d'une migration à froid, vous arrêtez les nœuds StorageGRID avant de les migrer entre les hôtes. Voir les instructions pourlink:../maintain/shutting-down-grid-node.html["fermeture d'un nœud de grille"] .
+
+
+
+== Noms d'interface réseau cohérents
+
+Pour déplacer un nœud d'un hôte à un autre, le service hôte StorageGRID doit avoir la certitude que la connectivité réseau externe du nœud à son emplacement actuel peut être dupliquée au nouvel emplacement.  Cette confiance est obtenue grâce à l’utilisation de noms d’interface réseau cohérents dans les hôtes.
+
+Supposons, par exemple, que le nœud StorageGRID NodeA exécuté sur Host1 a été configuré avec les mappages d'interface suivants :
+
+image::../media/eth0_bond.gif[Cette image est expliquée par le texte qui l'entoure.]
+
+Le côté gauche des flèches correspond aux interfaces traditionnelles vues depuis un conteneur StorageGRID (c'est-à-dire respectivement les interfaces Grid, Admin et Client Network).  Le côté droit des flèches correspond aux interfaces hôtes réelles fournissant ces réseaux, qui sont trois interfaces VLAN subordonnées à la même liaison d'interface physique.
+
+Maintenant, supposons que vous souhaitiez migrer NodeA vers Host2.  Si Host2 possède également des interfaces nommées bond0.1001, bond0.1002 et bond0.1003, le système autorisera le déplacement, en supposant que les interfaces portant le même nom fourniront la même connectivité sur Host2 que sur Host1.  Si Host2 ne possède pas d'interfaces portant les mêmes noms, le déplacement ne sera pas autorisé.
+
+Il existe de nombreuses façons d'obtenir une dénomination d'interface réseau cohérente sur plusieurs hôtes ; voirlink:configuring-host-network.html["Configurer le réseau hôte"] pour quelques exemples.
+
+
+
+== Stockage partagé
+
+Pour réaliser des migrations de nœuds rapides et à faible surcharge, la fonctionnalité de migration de nœuds StorageGRID ne déplace pas physiquement les données des nœuds.  Au lieu de cela, la migration des nœuds est effectuée sous la forme d'une paire d'opérations d'exportation et d'importation, comme suit :
+
+.Étapes
+. Pendant l'opération « exportation de nœud », une petite quantité de données d'état persistantes est extraite du conteneur de nœud exécuté sur HostA et mise en cache sur le volume de données système de ce nœud.  Ensuite, le conteneur de nœuds sur HostA est désinstancié.
+. Pendant l'opération « importation de nœud », le conteneur de nœud sur HostB qui utilise la même interface réseau et les mêmes mappages de stockage de blocs qui étaient en vigueur sur HostA est instancié.  Ensuite, les données d’état persistantes mises en cache sont insérées dans la nouvelle instance.
+
+
+Compte tenu de ce mode de fonctionnement, toutes les données système et tous les volumes de stockage d'objets du nœud doivent être accessibles à la fois depuis HostA et HostB pour que la migration soit autorisée et fonctionne.  De plus, ils doivent avoir été mappés dans le nœud à l'aide de noms qui font référence aux mêmes LUN sur HostA et HostB.
+
+L'exemple suivant montre une solution pour le mappage de périphériques de bloc pour un nœud de stockage StorageGRID , où le multipathing DM est utilisé sur les hôtes et le champ d'alias a été utilisé dans `/etc/multipath.conf` pour fournir des noms de périphériques de bloc cohérents et conviviaux disponibles sur tous les hôtes.
+
+image::../media/block_device_mapping_rhel.gif[Cette image est expliquée par le texte qui l'entoure.]

@@ -1,0 +1,123 @@
+---
+permalink: maintain/applying-hotfix.html 
+sidebar: sidebar 
+keywords: storagegrid, hotfix, software update 
+summary: 'Le correctif est d’abord appliqué automatiquement au nœud d’administration principal.  Ensuite, vous devez approuver l’application du correctif aux autres nœuds de grille jusqu’à ce que tous les nœuds exécutent la même version du logiciel.  Vous pouvez personnaliser la séquence d"approbation en choisissant d"approuver des nœuds de grille individuels, des groupes de nœuds de grille ou tous les nœuds de grille.' 
+---
+= Appliquer le correctif
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Le correctif est d’abord appliqué automatiquement au nœud d’administration principal.  Ensuite, vous devez approuver l’application du correctif aux autres nœuds de grille jusqu’à ce que tous les nœuds exécutent la même version du logiciel.  Vous pouvez personnaliser la séquence d'approbation en choisissant d'approuver des nœuds de grille individuels, des groupes de nœuds de grille ou tous les nœuds de grille.
+
+.Avant de commencer
+* Vous avez examiné lelink:storagegrid-hotfix-procedure.html["considérations pour l'application d'un correctif"] .
+* Vous disposez de la phrase secrète de provisionnement.
+* Vous disposez d'un accès Root ou de l'autorisation Maintenance.
+
+
+.À propos de cette tâche
+* Vous pouvez retarder l'application d'un correctif à un nœud, mais le processus de correctif n'est pas terminé tant que vous n'avez pas appliqué le correctif à tous les nœuds.
+* Vous ne pouvez pas effectuer une mise à niveau du logiciel StorageGRID ou une mise à jour du système d'exploitation SANtricity tant que vous n'avez pas terminé le processus de correctif.
+
+
+.Étapes
+. Sign in au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+. Sélectionnez *MAINTENANCE* > *Système* > *Mise à jour du logiciel*.
++
+La page de mise à jour du logiciel apparaît.
+
++
+image::../media/software_update_landing.png[Page de destination de mise à jour du logiciel]
+
+. Sélectionnez *Appliquer le correctif*.
++
+La page Hotfix StorageGRID s'affiche.
+
++
+image::../media/hotfix_choose_file.png[Correctif Choisir un fichier]
+
+. Sélectionnez le fichier de correctif que vous avez téléchargé à partir du site de support NetApp .
++
+.. Sélectionnez *Parcourir*.
+.. Localisez et sélectionnez le fichier.
++
+`hotfix-install-_version_`
+
+.. Sélectionnez *Ouvrir*.
++
+Le fichier est téléchargé.  Une fois le téléchargement terminé, le nom du fichier s'affiche dans le champ Détails.
+
++
+
+NOTE: Ne modifiez pas le nom du fichier car cela fait partie du processus de vérification.
+
+
+
+. Saisissez la phrase secrète de provisionnement dans la zone de texte.
++
+Le bouton *Démarrer* devient activé.
+
+. Sélectionnez *Démarrer*.
++
+Un avertissement s'affiche indiquant que la connexion de votre navigateur peut être temporairement perdue lorsque les services sur le nœud d'administration principal sont redémarrés.
+
+. Sélectionnez *OK* pour commencer à appliquer le correctif au nœud d’administration principal.
++
+Lorsque le correctif démarre :
+
++
+.. Les validations du correctif sont exécutées.
++
+
+NOTE: Si des erreurs sont signalées, résolvez-les, téléchargez à nouveau le fichier de correctif et sélectionnez à nouveau *Démarrer*.
+
+.. Le tableau de progression de l’installation du correctif apparaît.
++
+Ce tableau affiche tous les nœuds de votre grille et l’étape actuelle de l’installation du correctif pour chaque nœud.  Les nœuds du tableau sont regroupés par type (nœuds d’administration, nœuds de passerelle et nœuds de stockage).
+
+.. La barre de progression atteint la fin, puis le nœud d'administration principal s'affiche comme « Terminé ».
++
+image::../media/hotfix_progress_table.png[Tableau de progression des correctifs]
+
+
+
+. Vous pouvez également trier les listes de nœuds de chaque groupe par ordre croissant ou décroissant par *Site*, *Nom*, *Progression*, *Étape* ou *Détails*.  Ou saisissez un terme dans la case *Rechercher* pour rechercher des nœuds spécifiques.
+. Approuver les nœuds de grille prêts à être mis à jour.  Les nœuds approuvés du même type sont mis à niveau un par un.
++
+
+CAUTION: N'approuvez pas le correctif pour un nœud à moins d'être sûr que le nœud est prêt à être mis à jour.  Lorsque le correctif est appliqué à un nœud de grille, certains services sur ce nœud peuvent être redémarrés.  Ces opérations peuvent provoquer des interruptions de service pour les clients qui communiquent avec le nœud.
+
++
+** Sélectionnez un ou plusieurs boutons *Approuver* pour ajouter un ou plusieurs nœuds individuels à la file d'attente des correctifs.
+** Sélectionnez le bouton *Approuver tout* dans chaque groupe pour ajouter tous les nœuds du même type à la file d'attente des correctifs.  Si vous avez saisi des critères de recherche dans la case *Rechercher*, le bouton *Approuver tout* s'applique à tous les nœuds sélectionnés par les critères de recherche.
++
+
+NOTE: Le bouton *Approuver tout* en haut de la page approuve tous les nœuds répertoriés sur la page, tandis que le bouton *Approuver tout* en haut d'un regroupement de tables approuve uniquement tous les nœuds de ce groupe.  Si l'ordre dans lequel les nœuds sont mis à niveau est important, approuvez les nœuds ou les groupes de nœuds un par un et attendez que la mise à niveau soit terminée sur chaque nœud avant d'approuver le(s) nœud(s) suivant(s).
+
+** Sélectionnez le bouton de niveau supérieur *Approuver tout* en haut de la page pour ajouter tous les nœuds de la grille à la file d'attente des correctifs.
++
+
+NOTE: Vous devez terminer le correctif StorageGRID avant de pouvoir démarrer une autre mise à jour logicielle.  Si vous ne parvenez pas à effectuer le correctif, contactez le support technique.
+
+** Sélectionnez *Supprimer* ou *Supprimer tout* pour supprimer un nœud ou tous les nœuds de la file d'attente des correctifs.
++
+Lorsque l'étape progresse au-delà de « En file d'attente », le bouton *Supprimer* est masqué et vous ne pouvez plus supprimer le nœud du processus de correctif.
+
++
+image::../media/approve_all_progresstable.png[Progression du correctif avec le bouton de suppression]
+
+
+
+. Attendez que le correctif soit appliqué à chaque nœud de grille approuvé.
++
+Une fois le correctif installé avec succès sur tous les nœuds, le tableau de progression de l'installation du correctif se ferme.  Une bannière verte indique la date et l'heure à laquelle le correctif a été effectué.
+
+. Si le correctif n’a pu être appliqué à aucun nœud, examinez l’erreur pour chaque nœud, résolvez le problème et répétez ces étapes.
++
+La procédure n’est pas terminée tant que le correctif n’est pas appliqué avec succès à tous les nœuds.  Vous pouvez réessayer le processus de correctif en toute sécurité autant de fois que nécessaire jusqu'à ce qu'il soit terminé.
+
+

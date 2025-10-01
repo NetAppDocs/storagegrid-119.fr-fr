@@ -1,0 +1,32 @@
+---
+permalink: rhel/how-grid-nodes-discover-primary-admin-node.html 
+sidebar: sidebar 
+keywords: red hat linux primary admin node 
+summary: Les nœuds de grille communiquent avec le nœud d’administration principal pour la configuration et la gestion.  Chaque nœud de grille doit connaître l’adresse IP du nœud d’administration principal sur le réseau de grille. 
+---
+= Comment les nœuds de grille découvrent le nœud d'administration principal
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les nœuds de grille communiquent avec le nœud d’administration principal pour la configuration et la gestion.  Chaque nœud de grille doit connaître l’adresse IP du nœud d’administration principal sur le réseau de grille.
+
+Pour garantir qu'un nœud de grille peut accéder au nœud d'administration principal, vous pouvez effectuer l'une des opérations suivantes lors du déploiement du nœud :
+
+* Vous pouvez utiliser le paramètre ADMIN_IP pour saisir manuellement l'adresse IP du nœud d'administration principal.
+* Vous pouvez omettre le paramètre ADMIN_IP pour que le nœud de grille découvre automatiquement la valeur.  La découverte automatique est particulièrement utile lorsque le réseau Grid utilise DHCP pour attribuer l'adresse IP au nœud d'administration principal.
+
+
+La découverte automatique du nœud d'administration principal est réalisée à l'aide d'un système de noms de domaine multidiffusion (mDNS).  Lorsque le nœud d’administration principal démarre pour la première fois, il publie son adresse IP à l’aide de mDNS.  D’autres nœuds sur le même sous-réseau peuvent alors interroger l’adresse IP et l’acquérir automatiquement.  Cependant, étant donné que le trafic IP multidiffusion n'est normalement pas routable sur les sous-réseaux, les nœuds des autres sous-réseaux ne peuvent pas acquérir directement l'adresse IP du nœud d'administration principal.
+
+[NOTE]
+====
+Si vous utilisez la découverte automatique :
+
+* Vous devez inclure le paramètre ADMIN_IP pour au moins un nœud de grille sur tous les sous-réseaux auxquels le nœud d'administration principal n'est pas directement connecté.  Ce nœud de grille publiera ensuite l'adresse IP du nœud d'administration principal pour que les autres nœuds du sous-réseau puissent la découvrir avec mDNS.
+* Assurez-vous que votre infrastructure réseau prend en charge le passage du trafic IP multidiffusion au sein d’un sous-réseau.
+
+
+====

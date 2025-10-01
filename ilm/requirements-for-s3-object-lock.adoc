@@ -1,0 +1,107 @@
+---
+permalink: ilm/requirements-for-s3-object-lock.html 
+sidebar: sidebar 
+keywords: requirements, s3 object lock, compliant ilm rule, compliant ilm policy 
+summary: 'Vous devez examiner les exigences d"activation du paramètre global de verrouillage d"objet S3, les exigences de création de règles ILM et de stratégies ILM conformes, ainsi que les restrictions que StorageGRID impose aux buckets et aux objets qui utilisent le verrouillage d"objet S3.' 
+---
+= Conditions requises pour le verrouillage d'objet S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez examiner les exigences d'activation du paramètre global de verrouillage d'objet S3, les exigences de création de règles ILM et de stratégies ILM conformes, ainsi que les restrictions que StorageGRID impose aux buckets et aux objets qui utilisent le verrouillage d'objet S3.
+
+
+
+== Conditions requises pour l'utilisation du paramètre global de verrouillage d'objet S3
+
+* Vous devez activer le paramètre global de verrouillage d'objet S3 à l'aide du gestionnaire de grille ou de l'API de gestion de grille avant qu'un locataire S3 puisse créer un bucket avec le verrouillage d'objet S3 activé.
+* L'activation du paramètre global de verrouillage d'objet S3 permet à tous les comptes de locataire S3 de créer des buckets avec le verrouillage d'objet S3 activé.
+* Une fois que vous avez activé le paramètre global de verrouillage d’objet S3, vous ne pouvez pas désactiver le paramètre.
+* Vous ne pouvez pas activer le verrouillage d'objet S3 global à moins que la règle par défaut de toutes les stratégies ILM actives soit _conforme_ (c'est-à-dire que la règle par défaut doit être conforme aux exigences des compartiments avec le verrouillage d'objet S3 activé).
+* Lorsque le paramètre global de verrouillage d'objet S3 est activé, vous ne pouvez pas créer une nouvelle stratégie ILM ni activer une stratégie ILM existante, sauf si la règle par défaut de la stratégie est conforme.  Une fois le paramètre de verrouillage d'objet S3 global activé, les pages de règles ILM et de politiques ILM indiquent quelles règles ILM sont conformes.
+
+
+
+
+== Exigences relatives aux règles ILM conformes
+
+Si vous souhaitez activer le paramètre global de verrouillage d'objet S3, vous devez vous assurer que la règle par défaut dans toutes les stratégies ILM actives est conforme.  Une règle conforme satisfait aux exigences des deux compartiments avec le verrouillage d'objet S3 activé et de tous les compartiments existants pour lesquels la conformité héritée est activée :
+
+* Il doit créer au moins deux copies d'objet répliquées ou une copie à code d'effacement.
+* Ces copies doivent exister sur les nœuds de stockage pendant toute la durée de chaque ligne dans les instructions de placement.
+* Les copies d’objets ne peuvent pas être enregistrées dans un pool de stockage cloud.
+* Au moins une ligne des instructions de placement doit commencer au jour 0, en utilisant *Heure d'ingestion* comme heure de référence.
+* Au moins une ligne des instructions de placement doit être « pour toujours ».
+
+
+
+
+== Exigences relatives aux politiques ILM
+
+Lorsque le paramètre global de verrouillage d'objet S3 est activé, les stratégies ILM actives et inactives peuvent inclure des règles conformes et non conformes.
+
+* La règle par défaut dans une politique ILM active ou inactive doit être conforme.
+* Les règles non conformes s'appliquent uniquement aux objets dans les compartiments pour lesquels le verrouillage d'objet S3 n'est pas activé ou pour lesquels la fonctionnalité de conformité héritée n'est pas activée.
+* Les règles de conformité peuvent s'appliquer aux objets de n'importe quel compartiment ; le verrouillage d'objet S3 ou la conformité héritée n'ont pas besoin d'être activés pour le compartiment.
+
+
+link:example-7-compliant-ilm-policy-for-s3-object-lock.html["Exemple de politique ILM conforme pour le verrouillage des objets S3"]
+
+
+
+== Exigences pour les buckets avec S3 Object Lock activé
+
+* Si le paramètre global de verrouillage d'objet S3 est activé pour le système StorageGRID , vous pouvez utiliser le gestionnaire de locataires, l'API de gestion des locataires ou l'API REST S3 pour créer des buckets avec le verrouillage d'objets S3 activé.
+* Si vous prévoyez d'utiliser S3 Object Lock, vous devez activer S3 Object Lock lorsque vous créez le bucket.  Vous ne pouvez pas activer le verrouillage d'objet S3 pour un bucket existant.
+* Lorsque le verrouillage d'objet S3 est activé pour un bucket, StorageGRID active automatiquement le contrôle de version pour ce bucket.  Vous ne pouvez pas désactiver le verrouillage d'objet S3 ou suspendre le contrôle de version du bucket.
+* Vous pouvez également spécifier un mode de conservation par défaut et une période de conservation pour chaque compartiment à l'aide du gestionnaire de locataires, de l'API de gestion des locataires ou de l'API REST S3.  Les paramètres de conservation par défaut du bucket s'appliquent uniquement aux nouveaux objets ajoutés au bucket qui ne disposent pas de leurs propres paramètres de conservation.  Vous pouvez remplacer ces paramètres par défaut en spécifiant un mode de conservation et une date de conservation pour chaque version d'objet lors de son téléchargement.
+* La configuration du cycle de vie du bucket est prise en charge pour les buckets avec S3 Object Lock activé.
+* La réplication CloudMirror n'est pas prise en charge pour les buckets avec S3 Object Lock activé.
+
+
+
+
+== Exigences relatives aux objets dans les compartiments avec le verrouillage d'objet S3 activé
+
+* Pour protéger une version d'objet, vous pouvez spécifier des paramètres de rétention par défaut pour le compartiment ou spécifier des paramètres de rétention pour chaque version d'objet.  Les paramètres de conservation au niveau de l’objet peuvent être spécifiés à l’aide de l’application cliente S3 ou de l’API REST S3.
+* Les paramètres de conservation s'appliquent aux versions d'objet individuelles.  Une version d'objet peut avoir à la fois une date de conservation et un paramètre de conservation légale, l'un mais pas l'autre, ou aucun des deux.  La spécification d'une date de conservation ou d'un paramètre de conservation légale pour un objet protège uniquement la version spécifiée dans la demande.  Vous pouvez créer de nouvelles versions de l'objet, tandis que la version précédente de l'objet reste verrouillée.
+
+
+
+
+== Cycle de vie des objets dans les buckets avec S3 Object Lock activé
+
+Chaque objet enregistré dans un bucket avec S3 Object Lock activé passe par ces étapes :
+
+. *Objet ingéré*
++
+Lorsqu'une version d'objet est ajoutée à un bucket sur lequel le verrouillage d'objet S3 est activé, les paramètres de rétention sont appliqués comme suit :
+
++
+** Si des paramètres de conservation sont spécifiés pour l’objet, les paramètres au niveau de l’objet sont appliqués.  Tous les paramètres de bucket par défaut sont ignorés.
+** Si aucun paramètre de conservation n'est spécifié pour l'objet, les paramètres de compartiment par défaut sont appliqués, s'ils existent.
+** Si aucun paramètre de conservation n'est spécifié pour l'objet ou le compartiment, l'objet n'est pas protégé par S3 Object Lock.
+
+
++
+Si les paramètres de conservation sont appliqués, l'objet et toutes les métadonnées définies par l'utilisateur S3 sont protégés.
+
+. *Conservation et suppression d'objets*
++
+Plusieurs copies de chaque objet protégé sont stockées par StorageGRID pendant la période de conservation spécifiée.  Le nombre et le type exacts de copies d'objets ainsi que les emplacements de stockage sont déterminés par les règles de conformité des politiques ILM actives.  La possibilité de supprimer un objet protégé avant que sa date de conservation ne soit atteinte dépend de son mode de conservation.
+
++
+** Si un objet est sous conservation légale, personne ne peut supprimer l'objet, quel que soit son mode de conservation.
+
+
+
+
+.Informations connexes
+* link:../tenant/creating-s3-bucket.html["Créer un bucket S3"]
+* link:../tenant/update-default-retention-settings.html["Mettre à jour la conservation par défaut du verrouillage des objets S3"]
+* link:../s3/use-s3-api-for-s3-object-lock.html["Utiliser l'API REST S3 pour configurer le verrouillage d'objet S3"]
+* link:example-7-compliant-ilm-policy-for-s3-object-lock.html["Exemple 7 : Politique ILM conforme pour le verrouillage d'objet S3"]
+

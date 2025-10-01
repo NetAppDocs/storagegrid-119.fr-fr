@@ -1,0 +1,53 @@
+---
+permalink: s3/upload-part-copy.html 
+sidebar: sidebar 
+keywords: UploadPart, UploadPartCopy, multipart uploads, uploads, 
+summary: 'L"opération UploadPartCopy télécharge une partie d"un objet en copiant les données d"un objet existant comme source de données.' 
+---
+= TéléchargerPartCopy
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'opération UploadPartCopy télécharge une partie d'un objet en copiant les données d'un objet existant comme source de données.
+
+L'opération UploadPartCopy est implémentée avec tout le comportement de l'API REST Amazon S3.  Sous réserve de modifications sans préavis.
+
+Cette requête lit et écrit les données d'objet spécifiées dans `x-amz-copy-source-range` au sein du système StorageGRID .
+
+Les en-têtes de requête suivants sont pris en charge :
+
+* `x-amz-copy-source-if-match`
+* `x-amz-copy-source-if-none-match`
+* `x-amz-copy-source-if-unmodified-since`
+* `x-amz-copy-source-if-modified-since`
+
+
+
+
+== En-têtes de requête pour le chiffrement côté serveur
+
+Si vous avez spécifié le chiffrement SSE-C pour la demande CreateMultipartUpload, vous devez également inclure les en-têtes de demande suivants dans chaque demande UploadPartCopy :
+
+* `x-amz-server-side-encryption-customer-algorithm`: Préciser `AES256` .
+* `x-amz-server-side-encryption-customer-key`:Spécifiez la même clé de chiffrement que celle que vous avez fournie dans la demande CreateMultipartUpload.
+* `x-amz-server-side-encryption-customer-key-MD5`: Spécifiez le même condensé MD5 que celui que vous avez fourni dans la demande CreateMultipartUpload.
+
+
+Si l'objet source est chiffré à l'aide d'une clé fournie par le client (SSE-C), vous devez inclure les trois en-têtes suivants dans la demande UploadPartCopy, afin que l'objet puisse être déchiffré puis copié :
+
+* `x-amz-copy-source​-server-side​-encryption​-customer-algorithm`: Préciser `AES256` .
+* `x-amz-copy-source​-server-side-encryption-customer-key`: Spécifiez la clé de chiffrement que vous avez fournie lors de la création de l'objet source.
+* `x-amz-copy-source​-server-side-encryption-customer-key-MD5`: Spécifiez le condensé MD5 que vous avez fourni lors de la création de l'objet source.
+
+
+
+CAUTION: Les clés de chiffrement que vous fournissez ne sont jamais stockées.  Si vous perdez une clé de chiffrement, vous perdez l'objet correspondant.  Avant d'utiliser les clés fournies par le client pour sécuriser les données d'objet, examinez les considérations danslink:using-server-side-encryption.html["Utiliser le cryptage côté serveur"] .
+
+
+
+== Gestion des versions
+
+Le téléchargement en plusieurs parties consiste en des opérations distinctes pour lancer le téléchargement, répertorier les téléchargements, télécharger des parties, assembler les parties téléchargées et terminer le téléchargement.  Les objets sont créés (et versionnés si applicable) lorsque l'opération CompleteMultipartUpload est effectuée.

@@ -1,0 +1,259 @@
+---
+permalink: ilm/example-6-changing-ilm-policy.html 
+sidebar: sidebar 
+keywords: change ILM policy, example ILM policy, information lifecycle policy example 
+summary: Si votre protection des données doit être modifiée ou si vous ajoutez de nouveaux sites, vous pouvez créer et activer une nouvelle politique ILM. 
+---
+= Exemple 6 : Modifier une politique ILM
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si votre protection des données doit être modifiée ou si vous ajoutez de nouveaux sites, vous pouvez créer et activer une nouvelle politique ILM.
+
+Avant de modifier une politique, vous devez comprendre comment les modifications apportées aux placements ILM peuvent affecter temporairement les performances globales d'un système StorageGRID .
+
+Dans cet exemple, un nouveau site StorageGRID a été ajouté dans une extension et une nouvelle stratégie ILM active doit être implémentée pour stocker les données sur le nouveau site.  Pour mettre en œuvre une nouvelle politique active, commencez parlink:creating-ilm-policy.html["créer une politique"] .  Ensuite, vous devezlink:../ilm/creating-ilm-policy.html#simulate-ilm-policy["simuler"] et puislink:../ilm/creating-ilm-policy.html#activate-ilm-policy["activer"] la nouvelle politique.
+
+
+CAUTION: Les règles et politiques ILM suivantes ne sont que des exemples.  Il existe de nombreuses façons de configurer les règles ILM.  Avant d’activer une nouvelle politique, simulez-la pour confirmer qu’elle fonctionnera comme prévu pour protéger le contenu contre la perte.
+
+
+
+== Comment la modification d'une politique ILM affecte les performances
+
+Lorsque vous activez une nouvelle stratégie ILM, les performances de votre système StorageGRID peuvent être temporairement affectées, en particulier si les instructions de placement dans la nouvelle stratégie nécessitent le déplacement de nombreux objets existants vers de nouveaux emplacements.
+
+Lorsque vous activez une nouvelle stratégie ILM, StorageGRID l’utilise pour gérer tous les objets, y compris les objets existants et les objets nouvellement ingérés.  Avant d’activer une nouvelle stratégie ILM, vérifiez toutes les modifications apportées au placement des objets répliqués et codés par effacement existants.  La modification de l'emplacement d'un objet existant peut entraîner des problèmes de ressources temporaires lorsque les nouveaux emplacements sont évalués et mis en œuvre.
+
+Pour garantir qu'une nouvelle politique ILM n'affecte pas le placement des objets répliqués et codés par effacement existants, vous pouvezlink:create-ilm-rule-enter-details.html#use-advanced-filters-in-ilm-rules["créer une règle ILM avec un filtre de temps d'ingestion"] .  Par exemple, *L'heure d'ingestion _est le ou après_ _<date et heure>_*, de sorte que la nouvelle règle s'applique uniquement aux objets ingérés à la date et à l'heure spécifiées ou après.
+
+Les types de modifications de politique ILM qui peuvent affecter temporairement les performances de StorageGRID sont les suivants :
+
+* Application d'un profil de codage d'effacement différent aux objets codés par effacement existants.
++
+
+NOTE: StorageGRID considère que chaque profil de codage d'effacement est unique et ne réutilise pas les fragments de codage d'effacement lorsqu'un nouveau profil est utilisé.
+
+* Modification du type de copies requises pour les objets existants ; par exemple, conversion d'un pourcentage important d'objets répliqués en objets à code d'effacement.
+* Déplacer des copies d'objets existants vers un emplacement complètement différent ; par exemple, déplacer un grand nombre d'objets vers ou depuis un pool de stockage cloud ou vers ou depuis un site distant.
+
+
+
+
+== Politique ILM active pour l'exemple 6 : Protection des données sur deux sites
+
+Dans cet exemple, la stratégie ILM active a été initialement conçue pour un système StorageGRID à deux sites et utilise deux règles ILM.
+
+image::../media/policy_6_active_policy.png[Exemple de politique ILM 6 Politique active]
+
+Dans cette politique ILM, les objets appartenant au locataire A sont protégés par un codage d'effacement 2+1 sur un seul site, tandis que les objets appartenant à tous les autres locataires sont protégés sur deux sites à l'aide d'une réplication à 2 copies.
+
+
+
+=== Règle 1 : Code d'effacement sur un seul site pour le locataire A
+
+[cols="1a,2a"]
+|===
+| Définition de la règle | Exemple de valeur 
+
+
+ a| 
+Nom de la règle
+ a| 
+Codage d'effacement sur un seul site pour le locataire A
+
+
+
+ a| 
+Compte locataire
+ a| 
+Locataire A
+
+
+
+ a| 
+Piscine de stockage
+ a| 
+Site 1
+
+
+
+ a| 
+Placements
+ a| 
+Codage d'effacement 2+1 sur le site 1 du jour 0 à l'infini
+
+|===
+
+
+=== Règle 2 : Réplication sur deux sites pour d'autres locataires
+
+[cols="1a,2a"]
+|===
+| Définition de la règle | Exemple de valeur 
+
+
+ a| 
+Nom de la règle
+ a| 
+Réplication sur deux sites pour d'autres locataires
+
+
+
+ a| 
+Compte locataire
+ a| 
+Ignorer
+
+
+
+ a| 
+Piscines de stockage
+ a| 
+Site 1 et Site 2
+
+
+
+ a| 
+Placements
+ a| 
+Deux copies répliquées du jour 0 jusqu'à toujours : une copie sur le site 1 et une copie sur le site 2.
+
+|===
+
+
+== Politique ILM pour l'exemple 6 : Protection des données sur trois sites
+
+Dans cet exemple, la politique ILM est remplacée par une nouvelle politique pour un système StorageGRID à trois sites.
+
+Après avoir effectué une extension pour ajouter le nouveau site, l'administrateur de la grille a créé deux nouveaux pools de stockage : un pool de stockage pour le site 3 et un pool de stockage contenant les trois sites (différent du pool de stockage par défaut de tous les nœuds de stockage).  Ensuite, l’administrateur a créé deux nouvelles règles ILM et une nouvelle politique ILM, conçues pour protéger les données sur les trois sites.
+
+Lorsque cette nouvelle politique ILM est activée, les objets appartenant au locataire A seront protégés par un codage d'effacement 2+1 sur trois sites, tandis que les objets appartenant à d'autres locataires (et les objets plus petits appartenant au locataire A) seront protégés sur trois sites à l'aide d'une réplication à 3 copies.
+
+
+
+=== Règle 1 : Codage d'effacement à trois sites pour le locataire A
+
+[cols="1a,2a"]
+|===
+| Définition de la règle | Exemple de valeur 
+
+
+ a| 
+Nom de la règle
+ a| 
+Codage d'effacement à trois sites pour le locataire A
+
+
+
+ a| 
+Compte locataire
+ a| 
+Locataire A
+
+
+
+ a| 
+Piscine de stockage
+ a| 
+Les 3 sites (comprend le site 1, le site 2 et le site 3)
+
+
+
+ a| 
+Placements
+ a| 
+Codage d'effacement 2+1 sur les 3 sites du jour 0 à pour toujours
+
+|===
+
+
+=== Règle 2 : Réplication sur trois sites pour d'autres locataires
+
+[cols="1a,2a"]
+|===
+| Définition de la règle | Exemple de valeur 
+
+
+ a| 
+Nom de la règle
+ a| 
+Réplication sur trois sites pour d'autres locataires
+
+
+
+ a| 
+Compte locataire
+ a| 
+Ignorer
+
+
+
+ a| 
+Piscines de stockage
+ a| 
+Site 1, Site 2 et Site 3
+
+
+
+ a| 
+Placements
+ a| 
+Trois copies répliquées du jour 0 jusqu'à toujours : une copie sur le site 1, une copie sur le site 2 et une copie sur le site 3.
+
+|===
+
+
+== Activation de la politique ILM par exemple 6
+
+Lorsque vous activez une nouvelle stratégie ILM, les objets existants peuvent être déplacés vers de nouveaux emplacements ou de nouvelles copies d'objets peuvent être créées pour les objets existants, en fonction des instructions de placement dans toutes les règles nouvelles ou mises à jour.
+
+
+CAUTION: Des erreurs dans une politique ILM peuvent entraîner une perte de données irrécupérable.  Examinez et simulez attentivement la politique avant de l’activer pour confirmer qu’elle fonctionnera comme prévu.
+
+
+CAUTION: Lorsque vous activez une nouvelle stratégie ILM, StorageGRID l’utilise pour gérer tous les objets, y compris les objets existants et les objets nouvellement ingérés.  Avant d’activer une nouvelle stratégie ILM, vérifiez toutes les modifications apportées au placement des objets répliqués et codés par effacement existants.  La modification de l'emplacement d'un objet existant peut entraîner des problèmes de ressources temporaires lorsque les nouveaux emplacements sont évalués et mis en œuvre.
+
+
+
+=== Que se passe-t-il lorsque les instructions de codage d'effacement changent
+
+Dans la politique ILM actuellement active pour cet exemple, les objets appartenant au locataire A sont protégés à l'aide du codage d'effacement 2+1 sur le site 1.  Dans la nouvelle politique ILM, les objets appartenant au locataire A seront protégés à l’aide du codage d’effacement 2+1 sur les sites 1, 2 et 3.
+
+Lorsque la nouvelle politique ILM est activée, les opérations ILM suivantes se produisent :
+
+* Les nouveaux objets ingérés par le locataire A sont divisés en deux fragments de données et un fragment de parité est ajouté.  Ensuite, chacun des trois fragments est stocké dans un site différent.
+* Les objets existants appartenant au locataire A sont réévalués pendant le processus d'analyse ILM en cours.  Étant donné que les instructions de placement ILM utilisent un nouveau profil de codage d'effacement, des fragments entièrement nouveaux codés par effacement sont créés et distribués aux trois sites.
++
+
+NOTE: Les fragments 2+1 existants sur le site 1 ne sont pas réutilisés.  StorageGRID considère que chaque profil de codage d'effacement est unique et ne réutilise pas les fragments de codage d'effacement lorsqu'un nouveau profil est utilisé.
+
+
+
+
+
+=== Que se passe-t-il lorsque les instructions de réplication changent
+
+Dans la stratégie ILM actuellement active pour cet exemple, les objets appartenant à d’autres locataires sont protégés à l’aide de deux copies répliquées dans les pools de stockage des sites 1 et 2.  Dans la nouvelle politique ILM, les objets appartenant à d’autres locataires seront protégés à l’aide de trois copies répliquées dans les pools de stockage des sites 1, 2 et 3.
+
+Lorsque la nouvelle politique ILM est activée, les opérations ILM suivantes se produisent :
+
+* Lorsqu'un locataire autre que le locataire A ingère un nouvel objet, StorageGRID crée trois copies et enregistre une copie sur chaque site.
+* Les objets existants appartenant à ces autres locataires sont réévalués pendant le processus d'analyse ILM en cours.  Étant donné que les copies d’objet existantes sur le site 1 et le site 2 continuent de satisfaire aux exigences de réplication de la nouvelle règle ILM, StorageGRID n’a besoin de créer qu’une seule nouvelle copie de l’objet pour le site 3.
+
+
+
+
+=== Impact sur les performances de l'activation de cette politique
+
+Lorsque la politique ILM de cet exemple est activée, les performances globales de ce système StorageGRID seront temporairement affectées.  Des niveaux de ressources de grille supérieurs à la normale seront nécessaires pour créer de nouveaux fragments codés par effacement pour les objets existants du locataire A et de nouvelles copies répliquées sur le site 3 pour les objets existants des autres locataires.
+
+En raison du changement de politique ILM, les demandes de lecture et d'écriture des clients peuvent temporairement subir des latences supérieures à la normale.  Les latences reviendront à des niveaux normaux une fois les instructions de placement entièrement implémentées sur la grille.
+
+Pour éviter les problèmes de ressources lors de l'activation d'une nouvelle stratégie ILM, vous pouvez utiliser le filtre avancé Heure d'ingestion dans n'importe quelle règle susceptible de modifier l'emplacement d'un grand nombre d'objets existants.  Définissez le temps d'ingestion comme étant supérieur ou égal à l'heure approximative à laquelle la nouvelle politique entrera en vigueur pour garantir que les objets existants ne sont pas déplacés inutilement.
+
+
+NOTE: Contactez le support technique si vous devez ralentir ou augmenter la vitesse à laquelle les objets sont traités après une modification de la politique ILM.

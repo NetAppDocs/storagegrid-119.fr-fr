@@ -1,0 +1,122 @@
+---
+permalink: fabricpool/configure-ontap.html 
+sidebar: sidebar 
+keywords: fabricPool, system manager, ONTAP CLI, add cloud tier 
+summary: Après avoir obtenu les informations StorageGRID requises, vous pouvez accéder à ONTAP pour ajouter StorageGRID en tant que niveau cloud. 
+---
+= Configurer ONTAP System Manager
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Après avoir obtenu les informations StorageGRID requises, vous pouvez accéder à ONTAP pour ajouter StorageGRID en tant que niveau cloud.
+
+.Avant de commencer
+* Si vous avez terminé l'assistant de configuration de FabricPool , vous disposez de `ONTAP_FabricPool_settings___bucketname__.txt` fichier que vous avez téléchargé.
+* Si vous avez configuré StorageGRID manuellement, vous disposez du nom de domaine complet (FQDN) que vous utilisez pour StorageGRID ou de l'adresse IP virtuelle (VIP) du groupe HA StorageGRID , du numéro de port du point de terminaison de l'équilibreur de charge, du certificat de l'équilibreur de charge, de l'ID de clé d'accès et de la clé secrète de l'utilisateur root du compte de locataire, ainsi que du nom du bucket ONTAP utilisera dans ce locataire.
+
+
+
+
+== Gestionnaire du système Access ONTAP
+
+Ces instructions décrivent comment utiliser ONTAP System Manager pour ajouter StorageGRID en tant que niveau cloud.  Vous pouvez effectuer la même configuration à l’aide de l’interface de ligne de commande ONTAP .  Pour obtenir des instructions, rendez-vous sur https://docs.netapp.com/us-en/ontap/fabricpool/index.html["Documentation ONTAP pour FabricPool"^] .
+
+.Étapes
+. Accédez au gestionnaire système pour le cluster ONTAP que vous souhaitez hiérarchiser vers StorageGRID.
+. Sign in en tant qu’administrateur du cluster.
+. Accédez à *STOCKAGE* > *Niveaux* > *Ajouter un niveau Cloud*.
+. Sélectionnez * StorageGRID* dans la liste des fournisseurs de magasins d’objets.
+
+
+
+
+== Entrer les valeurs StorageGRID
+
+Voir https://docs.netapp.com/us-en/ontap/fabricpool/index.html["Documentation ONTAP pour FabricPool"^] pour plus d'informations.
+
+.Étapes
+. Remplissez le formulaire Ajouter un niveau de cloud en utilisant le `ONTAP_FabricPool_settings___bucketname__.txt` fichier ou les valeurs que vous avez obtenues manuellement.
++
+[cols="1a,3a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Nom
+ a| 
+Saisissez un nom unique pour ce niveau de cloud.  Vous pouvez accepter la valeur par défaut.
+
+
+
+ a| 
+Style d'URL
+ a| 
+Si tulink:../admin/configuring-s3-api-endpoint-domain-names.html["noms de domaine de point de terminaison S3 configurés"] , sélectionnez *URL de style hébergé virtuellement*.
+
+*Path-Style URL* est la valeur par défaut pour ONTAP, mais l'utilisation de requêtes de style hébergé virtuel est recommandée pour StorageGRID.  Vous devez utiliser *URL de style chemin* si vous fournissez une adresse IP au lieu d'un nom de domaine pour le champ *Nom du serveur (FQDN)*.
+
+
+
+ a| 
+Nom du serveur (FQDN)
+ a| 
+Saisissez le nom de domaine complet (FQDN) que vous utilisez pour StorageGRID ou l'adresse IP virtuelle (VIP) du groupe HA StorageGRID . Par exemple :  `s3.storagegrid.__company__.com` .
+
+Notez ce qui suit :
+
+** L'adresse IP ou le nom de domaine que vous spécifiez ici doit correspondre au certificat que vous avez téléchargé ou généré pour le point de terminaison de l'équilibreur de charge StorageGRID .
+** Si vous fournissez un nom de domaine, l'enregistrement DNS doit correspondre à chaque adresse IP que vous utiliserez pour vous connecter à StorageGRID. Voir link:configure-dns-server.html["Configurer le serveur DNS"] .
+
+
+
+
+ a| 
+SSL
+ a| 
+Activé (par défaut).
+
+
+
+ a| 
+Certificat de magasin d'objets
+ a| 
+Collez le certificat PEM que vous utilisez pour le point de terminaison de l'équilibreur de charge StorageGRID , y compris :
+`-----BEGIN CERTIFICATE-----` et `-----END CERTIFICATE-----` .
+
+*Remarque :* si une autorité de certification intermédiaire a émis le certificat StorageGRID , vous devez fournir le certificat de l'autorité de certification intermédiaire.  Si le certificat StorageGRID a été émis directement par l'autorité de certification racine, vous devez fournir le certificat de l'autorité de certification racine.
+
+
+
+ a| 
+Port
+ a| 
+Saisissez le port utilisé par le point de terminaison de l’équilibreur de charge StorageGRID .  ONTAP utilisera ce port lorsqu'il se connectera à StorageGRID. Par exemple, 10433.
+
+
+
+ a| 
+Clé d'accès et clé secrète
+ a| 
+Saisissez l’ID de clé d’accès et la clé d’accès secrète pour l’utilisateur root du compte locataire StorageGRID .
+
+*Astuce* : si vous générez une nouvelle clé d’accès et une clé d’accès secrète dans StorageGRID à l’avenir, saisissez les nouvelles clés dans ONTAP avant de supprimer les anciennes valeurs de StorageGRID.  Dans le cas contraire, ONTAP risque de perdre temporairement son accès à StorageGRID.
+
+
+
+ a| 
+Nom du conteneur
+ a| 
+Saisissez le nom du bucket StorageGRID que vous avez créé pour l’utiliser avec ce niveau ONTAP .
+
+|===
+. Terminez la configuration finale de FabricPool dans ONTAP.
++
+.. Attachez un ou plusieurs agrégats au niveau cloud.
+.. Vous pouvez également créer une stratégie de hiérarchisation des volumes.
+
+
+

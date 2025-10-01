@@ -1,0 +1,61 @@
+---
+permalink: s3/recommendations-for-implementing-s3-rest-api.html 
+sidebar: sidebar 
+keywords: implement s3 rest api 
+summary: Vous devez suivre ces recommandations lors de l’implémentation de l’API REST S3 à utiliser avec StorageGRID. 
+---
+= Recommandations pour la mise en œuvre de l'API REST S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez suivre ces recommandations lors de l’implémentation de l’API REST S3 à utiliser avec StorageGRID.
+
+
+
+== Recommandations pour les HEADs vers des objets inexistants
+
+Si votre application vérifie régulièrement si un objet existe dans un chemin où vous ne vous attendez pas à ce que l'objet existe réellement, vous devez utiliser l'option « Disponible ».link:consistency-controls.html["cohérence"] . Par exemple, vous devez utiliser la cohérence « Disponible » si votre application HEAD un emplacement avant d'y effectuer un PUT.
+
+Dans le cas contraire, si l'opération HEAD ne trouve pas l'objet, vous risquez de recevoir un nombre élevé d'erreurs de serveur interne 500 si deux ou plusieurs nœuds de stockage sur le même site ne sont pas disponibles ou si un site distant est inaccessible.
+
+Vous pouvez définir la cohérence « Disponible » pour chaque bucket à l'aide de l'link:put-bucket-consistency-request.html["Cohérence du seau PUT"] demande, ou vous pouvez spécifier la cohérence dans l'en-tête de demande pour une opération API individuelle.
+
+
+
+== Recommandations pour les clés d'objet
+
+Suivez ces recommandations pour les noms de clés d’objet, en fonction de la date de création initiale du bucket.
+
+.Buckets créés dans StorageGRID 11.4 ou version antérieure
+* N'utilisez pas de valeurs aléatoires comme quatre premiers caractères des clés d'objet.  Ceci est en contraste avec l’ancienne recommandation AWS pour les préfixes de clé.  Utilisez plutôt des préfixes non aléatoires et non uniques, tels que `image` .
+* Si vous suivez l’ancienne recommandation AWS d’utiliser des caractères aléatoires et uniques dans les préfixes de clé, préfixez les clés d’objet avec un nom de répertoire.  C'est-à-dire, utilisez ce format :
++
+`mybucket/mydir/f8e3-image3132.jpg`
+
++
+Au lieu de ce format :
+
++
+`mybucket/f8e3-image3132.jpg`
+
+
+
+.Buckets créés dans StorageGRID 11.4 ou version ultérieure
+Il n’est pas nécessaire de restreindre les noms de clés d’objet pour respecter les meilleures pratiques en matière de performances.  Dans la plupart des cas, vous pouvez utiliser des valeurs aléatoires pour les quatre premiers caractères des noms de clés d’objet.
+
+
+TIP: Une exception à cette règle est une charge de travail S3 qui supprime en continu tous les objets après une courte période de temps.  Pour minimiser l'impact sur les performances de ce cas d'utilisation, faites varier une partie initiale du nom de la clé tous les plusieurs milliers d'objets avec quelque chose comme la date.  Par exemple, supposons qu'un client S3 écrit généralement 2 000 objets/seconde et que la politique de cycle de vie ILM ou bucket supprime tous les objets après trois jours.  Pour minimiser l’impact sur les performances, vous pouvez nommer les clés en utilisant un modèle comme celui-ci : `/mybucket/mydir/_yyyymmddhhmmss_-_random_UUID_.jpg`
+
+
+
+== Recommandations pour les « lectures de plage »
+
+Si lelink:../admin/configuring-stored-object-compression.html["option globale pour compresser les objets stockés"] est activé, les applications clientes S3 doivent éviter d'effectuer des opérations GetObject qui spécifient une plage d'octets à renvoyer.  Ces opérations de « lecture de plage » sont inefficaces car StorageGRID doit décompresser efficacement les objets pour accéder aux octets demandés.  Les opérations GetObject qui demandent une petite plage d'octets à partir d'un très grand objet sont particulièrement inefficaces ; par exemple, il est inefficace de lire une plage de 10 Mo à partir d'un objet compressé de 50 Go.
+
+Si les plages sont lues à partir d'objets compressés, les demandes des clients peuvent expirer.
+
+
+NOTE: Si vous devez compresser des objets et que votre application cliente doit utiliser des lectures de plage, augmentez le délai d'expiration de lecture pour l'application.

@@ -1,0 +1,62 @@
+---
+permalink: maintain/selecting-node-recovery-procedure.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, procedure 
+summary: Vous devez sélectionner la procédure de récupération appropriée pour le type de nœud défaillant. 
+---
+= Sélectionnez la procédure de récupération du nœud
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez sélectionner la procédure de récupération appropriée pour le type de nœud défaillant.
+
+[cols="1a,2a"]
+|===
+| Nœud de grille | Procédure de récupération 
+
+
+ a| 
+Plus d'un nœud de stockage
+ a| 
+Contactez le support technique. Si plusieurs nœuds de stockage sont défaillants, le support technique doit aider à la récupération pour éviter les incohérences de la base de données qui pourraient entraîner une perte de données.  Une procédure de récupération du site peut être nécessaire.
+
+link:how-site-recovery-is-performed-by-technical-support.html["Comment le support technique récupère un site"]
+
+
+
+ a| 
+Un seul nœud de stockage
+ a| 
+La procédure de récupération du nœud de stockage dépend du type et de la durée de la panne.
+
+link:recovering-from-storage-node-failures.html["Récupérer après une panne de nœud de stockage"]
+
+
+
+ a| 
+Nœud d'administration
+ a| 
+La procédure du nœud d'administration varie selon que vous devez récupérer le nœud d'administration principal ou un nœud d'administration non principal.
+
+link:recovering-from-admin-node-failures.html["Récupérer après une panne du nœud d'administration"]
+
+
+
+ a| 
+Nœud de passerelle
+ a| 
+link:replacing-gateway-node.html["Récupérer après une panne du nœud de passerelle"]
+
+
+
+ a| 
+Nœud d'archive
+ a| 
+https://docs.netapp.com/us-en/storagegrid-118/maintain/recovering-from-archive-node-failures.html["Récupération après une panne de nœud d'archivage (site de documentation StorageGRID 11.8)"^]
+
+|===
+
+NOTE: Si un serveur hébergeant plusieurs nœuds de grille tombe en panne, vous pouvez récupérer les nœuds dans n'importe quel ordre. Cependant, si le serveur défaillant héberge le nœud d’administration principal, vous devez d’abord récupérer ce nœud. La récupération du nœud d’administration principal en premier empêche les autres récupérations de nœuds de s’arrêter pendant qu’elles attendent de contacter le nœud d’administration principal.

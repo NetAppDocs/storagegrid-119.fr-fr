@@ -1,0 +1,52 @@
+---
+permalink: ilm/workflow-for-s3-object-lock.html 
+sidebar: sidebar 
+keywords: object lock workflow 
+summary: 'En tant qu"administrateur de grille, vous devez collaborer étroitement avec les utilisateurs locataires pour garantir que les objets sont protégés d"une manière qui répond à leurs exigences de conservation.' 
+---
+= Tâches de verrouillage d'objet S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+En tant qu'administrateur de grille, vous devez collaborer étroitement avec les utilisateurs locataires pour garantir que les objets sont protégés d'une manière qui répond à leurs exigences de conservation.
+
+
+NOTE: L’application des paramètres du locataire sur la grille peut prendre 15 minutes ou plus en fonction de la connectivité réseau, de l’état du nœud et des opérations Cassandra.
+
+Les listes suivantes destinées aux administrateurs de grille et aux utilisateurs locataires contiennent les tâches de haut niveau pour l'utilisation de la fonctionnalité de verrouillage d'objet S3.
+
+Administrateur de réseau::
++
+--
+* Activez le paramètre de verrouillage d'objet S3 global pour l'ensemble du système StorageGRID .
+* Assurez-vous que les politiques de gestion du cycle de vie de l'information (ILM) sont _conformes_ ; c'est-à-dire qu'elles répondent auxlink:../ilm/managing-objects-with-s3-object-lock.html["exigences des buckets avec S3 Object Lock activé"] .
+* Si nécessaire, autorisez un locataire à utiliser la conformité comme mode de conservation.  Sinon, seul le mode Gouvernance est autorisé.
+* Si nécessaire, définissez une période de conservation maximale pour un locataire.
+
+
+--
+Utilisateur locataire::
++
+--
+* Passez en revue les considérations relatives aux buckets et aux objets avec S3 Object Lock.
+* Si nécessaire, contactez l'administrateur de la grille pour activer le paramètre de verrouillage d'objet S3 global et définir les autorisations.
+* Créez des buckets avec le verrouillage d'objet S3 activé.
+* Vous pouvez également configurer les paramètres de conservation par défaut pour un bucket :
++
+** Mode de conservation par défaut : Gouvernance ou Conformité, si autorisé par l'administrateur du réseau.
+** Période de conservation par défaut : doit être inférieure ou égale à la période de conservation maximale définie par l'administrateur du réseau.
+
+
+* Utilisez l'application client S3 pour ajouter des objets et éventuellement définir une conservation spécifique à l'objet :
++
+** Mode de rétention.  Gouvernance ou conformité, si autorisée par l'administrateur du réseau.
+** Date de conservation : doit être inférieure ou égale à ce qui est autorisé par la période de conservation maximale définie par l'administrateur de la grille.
+
+
+
+
+--
+

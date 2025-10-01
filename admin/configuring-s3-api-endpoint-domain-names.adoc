@@ -1,0 +1,102 @@
+---
+permalink: admin/configuring-s3-api-endpoint-domain-names.html 
+sidebar: sidebar 
+keywords: s3 endpoint domain names, virtual-hosted-style requests 
+summary: Pour prendre en charge les demandes de type S3 hébergées virtuellement, vous devez utiliser le gestionnaire de grille pour configurer la liste des noms de domaine de point de terminaison S3 auxquels les clients S3 se connectent. 
+---
+= Configurer les noms de domaine des points de terminaison S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Pour prendre en charge les demandes de type S3 hébergées virtuellement, vous devez utiliser le gestionnaire de grille pour configurer la liste des noms de domaine de point de terminaison S3 auxquels les clients S3 se connectent.
+
+
+CAUTION: L'utilisation d'une adresse IP pour un nom de domaine de point de terminaison n'est pas prise en charge.  Les versions futures empêcheront cette configuration.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+* Vous avez confirmé qu’une mise à niveau du réseau n’est pas en cours.
++
+
+CAUTION: N'apportez aucune modification à la configuration du nom de domaine lorsqu'une mise à niveau de la grille est en cours.
+
+
+
+.À propos de cette tâche
+Pour permettre aux clients d’utiliser les noms de domaine de point de terminaison S3, vous devez effectuer toutes les opérations suivantes :
+
+* Utilisez le gestionnaire de grille pour ajouter les noms de domaine de point de terminaison S3 au système StorageGRID .
+* Assurez-vous que lelink:../admin/configuring-administrator-client-certificates.html["certificat que le client utilise pour les connexions HTTPS à StorageGRID"] est signé pour tous les noms de domaine dont le client a besoin.
++
+Par exemple, si le point final est `s3.company.com` , vous devez vous assurer que le certificat utilisé pour les connexions HTTPS inclut le `s3.company.com` point de terminaison et le nom alternatif du sujet (SAN) générique du point de terminaison : `*.s3.company.com` .
+
+* Configurer le serveur DNS utilisé par le client.  Incluez les enregistrements DNS pour les adresses IP que les clients utilisent pour établir des connexions et assurez-vous que les enregistrements font référence à tous les noms de domaine de point de terminaison S3 requis, y compris tous les noms génériques.
++
+
+NOTE: Les clients peuvent se connecter à StorageGRID à l’aide de l’adresse IP d’un nœud de passerelle, d’un nœud d’administration ou d’un nœud de stockage, ou en se connectant à l’adresse IP virtuelle d’un groupe de haute disponibilité.  Vous devez comprendre comment les applications clientes se connectent à la grille afin d’inclure les adresses IP correctes dans les enregistrements DNS.
+
+
+
+Les clients qui utilisent des connexions HTTPS (recommandées) à la grille peuvent utiliser l'un de ces certificats :
+
+* Les clients qui se connectent à un point de terminaison d’équilibrage de charge peuvent utiliser un certificat personnalisé pour ce point de terminaison.  Chaque point de terminaison d’équilibrage de charge peut être configuré pour reconnaître différents noms de domaine de point de terminaison S3.
+* Les clients qui se connectent à un point de terminaison d'équilibrage de charge ou directement à un nœud de stockage peuvent personnaliser le certificat API S3 global pour inclure tous les noms de domaine de point de terminaison S3 requis.
+
+
+
+NOTE: Si vous n'ajoutez pas de noms de domaine de point de terminaison S3 et que la liste est vide, la prise en charge des demandes de type S3 hébergées virtuellement est désactivée.
+
+
+
+== Ajouter un nom de domaine de point de terminaison S3
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Réseau* > *Noms de domaine de point de terminaison S3*.
+. Saisissez le nom de domaine dans le champ *Nom de domaine 1*.  Sélectionnez *Ajouter un autre nom de domaine* pour ajouter d’autres noms de domaine.
+. Sélectionnez *Enregistrer*.
+. Assurez-vous que les certificats de serveur utilisés par les clients correspondent aux noms de domaine de point de terminaison S3 requis.
++
+** Si les clients se connectent à un point de terminaison d’équilibrage de charge qui utilise son propre certificat,link:../admin/configuring-load-balancer-endpoints.html["mettre à jour le certificat associé au point de terminaison"] .
+** Si les clients se connectent à un point de terminaison d'équilibrage de charge qui utilise le certificat API S3 global ou directement aux nœuds de stockage,link:../admin/use-s3-setup-wizard-steps.html["mettre à jour le certificat API S3 global"] .
+
+
+. Ajoutez les enregistrements DNS requis pour garantir que les demandes de nom de domaine de point de terminaison peuvent être résolues.
+
+
+.Résultat
+Désormais, lorsque les clients utilisent le point de terminaison `_bucket.s3.company.com_` , le serveur DNS résout le point de terminaison correct et le certificat authentifie le point de terminaison comme prévu.
+
+
+
+== Renommer un nom de domaine de point de terminaison S3
+
+Si vous modifiez un nom utilisé par les applications S3, les demandes de type hébergé virtuellement échoueront.
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Réseau* > *Noms de domaine de point de terminaison S3*.
+. Sélectionnez le champ du nom de domaine que vous souhaitez modifier et effectuez les modifications nécessaires.
+. Sélectionnez *Enregistrer*.
+. Sélectionnez *Oui* pour confirmer votre modification.
+
+
+
+
+== Supprimer un nom de domaine de point de terminaison S3
+
+Si vous supprimez un nom utilisé par les applications S3, les demandes de type hébergé virtuellement échoueront.
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Réseau* > *Noms de domaine de point de terminaison S3*.
+. Sélectionnez l'icône de suppressionimage:../media/icon-x-to-remove.png["icône de suppression"] à côté du nom de domaine.
+. Sélectionnez *Oui* pour confirmer la suppression.
+
+
+.Informations connexes
+* link:../s3/index.html["Utiliser l'API REST S3"]
+* link:viewing-ip-addresses.html["Afficher les adresses IP"]
+* link:configure-high-availability-group.html["Configurer des groupes de haute disponibilité"]
+

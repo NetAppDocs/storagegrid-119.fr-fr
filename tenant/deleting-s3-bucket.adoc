@@ -1,0 +1,58 @@
+---
+permalink: tenant/deleting-s3-bucket.html 
+sidebar: sidebar 
+keywords: how to delete S3 bucket 
+summary: Vous pouvez utiliser le gestionnaire de locataires pour supprimer un compartiment S3 vide. 
+---
+= Supprimer le compartiment S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser le gestionnaire de locataires pour supprimer un ou plusieurs compartiments S3 vides.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Gérer tous les buckets ou l'autorisation d'accès root"] . Ces autorisations remplacent les paramètres d’autorisations dans les stratégies de groupe ou de compartiment.
+* Les buckets que vous souhaitez supprimer sont vides.  Si les buckets que vous souhaitez supprimer ne sont pas vides,link:../tenant/deleting-s3-bucket-objects.html["supprimer des objets du bucket"] .
+
+
+.À propos de cette tâche
+Ces instructions décrivent comment supprimer un compartiment S3 à l’aide du gestionnaire de locataires.  Vous pouvez également supprimer des compartiments S3 à l’aide de lalink:understanding-tenant-management-api.html["API de gestion des locataires"] ou lelink:../s3/operations-on-buckets.html["API REST S3"] .
+
+Vous ne pouvez pas supprimer un compartiment S3 s'il contient des objets, des versions d'objet non actuelles ou des marqueurs de suppression.  Pour plus d'informations sur la manière dont les objets versionnés S3 sont supprimés, consultezlink:../ilm/how-objects-are-deleted.html["Comment les objets sont supprimés"] .
+
+.Étapes
+. Sélectionnez *Afficher les buckets* dans le tableau de bord ou sélectionnez *STOCKAGE (S3)* > *Buckets*.
++
+La page Buckets apparaît et affiche tous les buckets S3 existants.
+
+. Utilisez le menu *Actions* ou la page de détails pour un bucket spécifique.
++
+[role="tabbed-block"]
+====
+.Menu Actions
+--
+.. Cochez la case correspondant à chaque compartiment que vous souhaitez supprimer.
+.. Sélectionnez *Actions* > *Supprimer les buckets*.
+
+
+--
+.Page de détails
+--
+.. Sélectionnez un nom de bucket pour afficher ses détails.
+.. Sélectionnez *Supprimer le bucket*.
+
+
+--
+====
+. Lorsque la boîte de dialogue de confirmation apparaît, sélectionnez *Oui*.
++
+StorageGRID confirme que chaque bucket est vide, puis supprime chaque bucket.  Cette opération peut prendre quelques minutes.
+
++
+Si un bucket n'est pas vide, un message d'erreur s'affiche.  Vous devezlink:../tenant/deleting-s3-bucket-objects.html["supprimer tous les objets et tous les marqueurs de suppression dans le bucket"] avant de pouvoir supprimer le bucket.
+
+

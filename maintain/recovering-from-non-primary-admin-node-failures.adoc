@@ -1,0 +1,24 @@
+---
+permalink: maintain/recovering-from-non-primary-admin-node-failures.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, non-primary admin node failure 
+summary: 'Vous devez effectuer les tâches suivantes pour récupérer après une panne d’un nœud d’administration non principal.  Un nœud d’administration héberge le service de nœud de gestion de configuration (CMN) et est connu comme le nœud d’administration principal.  Bien que vous puissiez avoir plusieurs nœuds d’administration, chaque système StorageGRID n’inclut qu’un seul nœud d’administration principal.  Tous les autres nœuds d’administration sont des nœuds d’administration non principaux.' 
+---
+= Récupérer après une panne d'un nœud d'administration non principal
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez effectuer les tâches suivantes pour récupérer après une panne d’un nœud d’administration non principal.  Un nœud d’administration héberge le service de nœud de gestion de configuration (CMN) et est connu comme le nœud d’administration principal.  Bien que vous puissiez avoir plusieurs nœuds d’administration, chaque système StorageGRID n’inclut qu’un seul nœud d’administration principal.  Tous les autres nœuds d’administration sont des nœuds d’administration non principaux.
+
+Suivez ces étapes de haut niveau pour récupérer un nœud d’administration non principal :
+
+. link:copying-audit-logs-from-failed-non-primary-admin-node.html["Copier les journaux d'audit du nœud d'administration non principal défaillant"]
+. link:replacing-non-primary-admin-node.html["Remplacer le nœud d'administration non principal"]
+. link:selecting-start-recovery-to-configure-non-primary-admin-node.html["Sélectionnez Démarrer la récupération pour configurer le nœud d’administration non principal"]
+. link:restoring-audit-log-on-recovered-non-primary-admin-node.html["Restaurer le journal d'audit sur un nœud d'administration non principal récupéré"]
+. link:restoring-admin-node-database-non-primary-admin-node.html["Restaurer la base de données du nœud d'administration lors de la récupération d'un nœud d'administration non principal"]
+. link:restoring-prometheus-metrics-non-primary-admin-node.html["Restaurer les métriques Prometheus lors de la récupération d'un nœud d'administration non principal"]
+

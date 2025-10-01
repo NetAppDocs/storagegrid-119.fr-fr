@@ -1,0 +1,49 @@
+---
+permalink: maintain/replacing-gateway-node.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, replace gateway node, replacing gateway node 
+summary: Vous pouvez remplacer un nœud de passerelle défaillant par un nœud de passerelle exécuté sur le même matériel physique ou virtuel, ou vous pouvez remplacer un nœud de passerelle exécuté sur VMware ou un hôte Linux par un nœud de passerelle hébergé sur un dispositif de services. 
+---
+= Remplacer le nœud de passerelle
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez remplacer un nœud de passerelle défaillant par un nœud de passerelle exécuté sur le même matériel physique ou virtuel, ou vous pouvez remplacer un nœud de passerelle exécuté sur VMware ou un hôte Linux par un nœud de passerelle hébergé sur un dispositif de services.
+
+La procédure de remplacement de nœud que vous devez suivre dépend de la plate-forme qui sera utilisée par le nœud de remplacement.  Une fois la procédure de remplacement du nœud terminée (qui convient à tous les types de nœuds), cette procédure vous dirigera vers l’étape suivante pour la récupération du nœud de passerelle.
+
+[cols="1a,2a"]
+|===
+| Plateforme de remplacement | Procédure 
+
+
+ a| 
+VMware
+ a| 
+link:all-node-types-replacing-vmware-node.html["Remplacer un nœud VMware"]
+
+
+
+ a| 
+Linux
+ a| 
+link:all-node-types-replacing-linux-node.html["Remplacer un nœud Linux"]
+
+
+
+ a| 
+Appareils de service
+ a| 
+link:replacing-failed-node-with-services-appliance.html["Remplacer un appareil de service"]
+
+
+
+ a| 
+OpenStack
+ a| 
+Les fichiers de disque et les scripts de machine virtuelle fournis par NetApp pour OpenStack ne sont plus pris en charge pour les opérations de récupération.  Si vous devez récupérer un nœud exécuté dans un déploiement OpenStack, téléchargez les fichiers pour votre système d'exploitation Linux.  Ensuite, suivez la procédure pourlink:all-node-types-replacing-linux-node.html["remplacement d'un nœud Linux"] .
+
+|===

@@ -1,0 +1,174 @@
+---
+permalink: maintain/decommissioning-disconnected-grid-nodes.html 
+sidebar: sidebar 
+keywords: storagegrid, disconnected nodes, decommission node 
+summary: 'Vous devrez peut-être mettre hors service un nœud qui n"est pas actuellement connecté au réseau (un nœud dont l"état est inconnu ou administrativement hors service).' 
+---
+= Décommissionner les nœuds de réseau déconnectés
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devrez peut-être mettre hors service un nœud qui n'est pas actuellement connecté au réseau (un nœud dont l'état est inconnu ou administrativement hors service).
+
+.Avant de commencer
+* Vous comprenez les considérations relatives au déclassementlink:considerations-for-decommissioning-admin-or-gateway-nodes.html["Nœuds d'administration et de passerelle"] et les considérations relatives au déclassementlink:considerations-for-decommissioning-storage-nodes.html["Nœuds de stockage"] .
+* Vous avez obtenu tous les éléments prérequis.
+* Vous avez vérifié qu'aucune tâche de réparation de données n'est active. Voir link:checking-data-repair-jobs.html["Vérifier les tâches de réparation de données"] .
+* Vous avez confirmé que la récupération du nœud de stockage n’est en cours nulle part dans la grille.  Si tel est le cas, vous devez attendre que toute reconstruction de Cassandra effectuée dans le cadre de la récupération soit terminée.  Vous pouvez ensuite procéder au démantèlement.
+* Vous avez assuré qu'aucune autre procédure de maintenance ne sera exécutée pendant l'exécution de la procédure de mise hors service du nœud, sauf si la procédure de mise hors service du nœud est suspendue.
+* La colonne *Désactivation possible* pour le ou les nœuds déconnectés que vous souhaitez mettre hors service inclut une coche verte.
+* Vous disposez de la phrase secrète de provisionnement.
+
+
+.À propos de cette tâche
+Vous pouvez identifier les nœuds déconnectés en recherchant l'icône bleue Inconnuimage:../media/icon_alarm_blue_unknown.png["Icône inconnue"] ou l'icône grise Administrativement vers le basimage:../media/icon_alarm_gray_administratively_down.png["Icône administrativement en panne"] dans la colonne *Santé*.
+
+Avant de mettre hors service un nœud déconnecté, notez les points suivants :
+
+* Cette procédure est principalement destinée à supprimer un seul nœud déconnecté.  Si votre réseau contient plusieurs nœuds déconnectés, le logiciel vous demande de les mettre hors service tous en même temps, ce qui augmente le risque de résultats inattendus.
++
+
+CAUTION: Une perte de données peut se produire si vous mettez hors service plusieurs nœuds de stockage déconnectés à la fois. Voir link:considerations-for-decommissioning-storage-nodes.html#considerations-disconnected-storage-nodes["Considérations relatives aux nœuds de stockage déconnectés"] .
+
++
+
+CAUTION: Soyez prudent lorsque vous désaffectez des nœuds de stockage dans une grille contenant uniquement des nœuds de métadonnées basés sur des logiciels.  Si vous désactivez tous les nœuds configurés pour stocker à la fois des objets et des métadonnées, la possibilité de stocker des objets est supprimée de la grille.  Voirlink:../primer/what-storage-node-is.html#types-of-storage-nodes["Types de nœuds de stockage"] pour plus d'informations sur les nœuds de stockage contenant uniquement des métadonnées.
+
+* Si un nœud déconnecté ne peut pas être supprimé (par exemple, un nœud de stockage requis pour le quorum ADC), aucun autre nœud déconnecté ne peut être supprimé.
+
+
+.Étapes
+. À moins que vous ne mettiez hors service un nœud d'archive (qui doit être déconnecté), essayez de remettre en ligne ou de récupérer les nœuds de grille déconnectés.
++
+Voirlink:warnings-and-considerations-for-grid-node-recovery.html["Procédures de récupération des nœuds de grille"] pour les instructions.
+
+. Si vous ne parvenez pas à récupérer un nœud de réseau déconnecté et que vous souhaitez le mettre hors service pendant qu'il est déconnecté, cochez la case correspondant à ce nœud.
++
+
+NOTE: Si votre réseau contient plusieurs nœuds déconnectés, le logiciel vous demande de les mettre hors service tous en même temps, ce qui augmente le risque de résultats inattendus.
+
++
+
+CAUTION: Soyez prudent lorsque vous choisissez de mettre hors service plusieurs nœuds de réseau déconnectés à la fois, en particulier si vous sélectionnez plusieurs nœuds de stockage déconnectés.  Si vous avez plusieurs nœuds de stockage déconnectés que vous ne pouvez pas récupérer, contactez le support technique pour déterminer la meilleure marche à suivre.
+
+. Saisissez la phrase secrète d’approvisionnement.
++
+Le bouton *Démarrer la mise hors service* est activé.
+
+. Cliquez sur *Démarrer la mise hors service*.
++
+Un avertissement s'affiche, indiquant que vous avez sélectionné un nœud déconnecté et que les données de l'objet seront perdues si le nœud possède la seule copie d'un objet.
+
+. Passez en revue la liste des nœuds et cliquez sur *OK*.
++
+La procédure de mise hors service démarre et la progression est affichée pour chaque nœud. Au cours de la procédure, un nouveau package de récupération est généré contenant la modification de la configuration de la grille.
+
+. Dès que le nouveau package de récupération est disponible, cliquez sur le lien ou sélectionnez *MAINTENANCE* > *Système* > *Pack de récupération* pour accéder à la page du package de récupération. Ensuite, téléchargez le `.zip` déposer.
++
+Voir les instructions pourlink:downloading-recovery-package.html["téléchargement du package de récupération"] .
+
++
+
+NOTE: Téléchargez le package de récupération dès que possible pour vous assurer de pouvoir récupérer votre réseau en cas de problème lors de la procédure de mise hors service.
+
++
+
+CAUTION: Le fichier du package de récupération doit être sécurisé car il contient des clés de chiffrement et des mots de passe qui peuvent être utilisés pour obtenir des données à partir du système StorageGRID .
+
+. Surveillez régulièrement la page de mise hors service pour vous assurer que tous les nœuds sélectionnés sont mis hors service avec succès.
++
+La mise hors service des nœuds de stockage peut prendre des jours ou des semaines.  Lorsque toutes les tâches sont terminées, la liste de sélection des nœuds s'affiche à nouveau avec un message de réussite.  Si vous avez mis hors service un nœud de stockage déconnecté, un message d'information indique que les tâches de réparation ont été démarrées.
+
+. Une fois les nœuds arrêtés automatiquement dans le cadre de la procédure de mise hors service, supprimez toutes les machines virtuelles restantes ou autres ressources associées au nœud mis hors service.
++
+
+CAUTION: N’effectuez pas cette étape tant que les nœuds ne se sont pas arrêtés automatiquement.
+
+. Si vous mettez hors service un nœud de stockage, surveillez l'état des tâches de réparation des *données répliquées* et des *données à code d'effacement (EC)* qui sont automatiquement démarrées pendant le processus de mise hors service.
+
+
+[role="tabbed-block"]
+====
+.Données répliquées
+--
+* Pour obtenir une estimation du pourcentage d'achèvement de la réparation répliquée, ajoutez le `show-replicated-repair-status` option à la commande repair-data.
++
+`repair-data show-replicated-repair-status`
+
+* Pour déterminer si les réparations sont terminées :
++
+.. Sélectionnez *NODES* > *_Nœud de stockage en cours de réparation_* > *ILM*.
+.. Passez en revue les attributs dans la section Évaluation.  Lorsque les réparations sont terminées, l'attribut *En attente - Tout* indique 0 objet.
+
+
+* Pour suivre la réparation plus en détail :
++
+.. Sélectionnez *SUPPORT* > *Outils* > *Topologie de grille*.
+.. Sélectionnez *_grid_* > *_Nœud de stockage en cours de réparation_* > *LDR* > *Data Store*.
+.. Utilisez une combinaison des attributs suivants pour déterminer, aussi bien que possible, si les réparations répliquées sont complètes.
++
+
+NOTE: Des incohérences de Cassandra peuvent être présentes et les réparations ayant échoué ne sont pas suivies.
+
++
+*** *Réparations tentées (XRPA)* : utilisez cet attribut pour suivre la progression des réparations répliquées.  Cet attribut augmente chaque fois qu'un nœud de stockage tente de réparer un objet à haut risque.  Lorsque cet attribut n'augmente pas pendant une période supérieure à la période d'analyse actuelle (fournie par l'attribut *Période d'analyse -- Estimée*), cela signifie que l'analyse ILM n'a trouvé aucun objet à haut risque devant être réparé sur aucun nœud.
++
+
+NOTE: Les objets à haut risque sont des objets qui risquent d’être complètement perdus.  Cela n'inclut pas les objets qui ne satisfont pas à leur configuration ILM.
+
+*** *Période d'analyse – Estimée (XSCM)* : utilisez cet attribut pour estimer quand un changement de politique sera appliqué aux objets précédemment ingérés.  Si l'attribut *Réparations tentées* n'augmente pas pendant une période supérieure à la période d'analyse actuelle, il est probable que des réparations répliquées sont effectuées.  Notez que la période d'analyse peut changer.  L'attribut *Période d'analyse -- Estimée (XSCM)* s'applique à l'ensemble de la grille et correspond au maximum de toutes les périodes d'analyse des nœuds.  Vous pouvez interroger l'historique de l'attribut *Période d'analyse -- Estimée* pour la grille afin de déterminer une période appropriée.
+
+
+
+
+
+
+--
+.Données codées par effacement (EC)
+--
+Pour surveiller la réparation des données codées par effacement et réessayer toutes les demandes qui auraient échoué :
+
+. Déterminer l’état des réparations des données codées par effacement :
++
+** Sélectionnez *SUPPORT* > *Outils* > *Métriques* pour afficher le temps estimé jusqu'à l'achèvement et le pourcentage d'achèvement de la tâche en cours. Ensuite, sélectionnez *EC Overview* dans la section Grafana. Consultez les tableaux de bord *Temps estimé d'achèvement du travail EC de la grille* et *Pourcentage d'achèvement du travail EC de la grille*.
+** Utilisez cette commande pour voir l'état d'un élément spécifique `repair-data` opération:
++
+`repair-data show-ec-repair-status --repair-id repair ID`
+
+** Utilisez cette commande pour lister toutes les réparations :
++
+`repair-data show-ec-repair-status`
+
++
+La sortie répertorie les informations, y compris `repair ID` , pour toutes les réparations effectuées et en cours.
+
+
+
+. Si la sortie indique que l'opération de réparation a échoué, utilisez le `--repair-id` possibilité de réessayer la réparation.
++
+Cette commande réessaie une réparation de nœud ayant échoué, en utilisant l'ID de réparation 6949309319275667690 :
+
++
+`repair-data start-ec-node-repair --repair-id 6949309319275667690`
+
++
+Cette commande réessaie une réparation de volume ayant échoué, en utilisant l'ID de réparation 6949309319275667690 :
+
++
+`repair-data start-ec-volume-repair --repair-id 6949309319275667690`
+
+
+
+--
+====
+.Après avoir terminé
+Dès que les nœuds déconnectés ont été mis hors service et que toutes les tâches de réparation des données ont été terminées, vous pouvez mettre hors service tous les nœuds de réseau connectés selon vos besoins.
+
+Ensuite, effectuez ces étapes après avoir terminé la procédure de mise hors service :
+
+* Assurez-vous que les disques du nœud de réseau mis hors service sont nettoyés.  Utilisez un outil ou un service d’effacement de données disponible dans le commerce pour supprimer définitivement et en toute sécurité les données des lecteurs.
+* Si vous avez mis hors service un nœud d'appliance et que les données sur l'appliance étaient protégées à l'aide du chiffrement de nœud, utilisez le programme d'installation de l'appliance StorageGRID pour effacer la configuration du serveur de gestion des clés (Clear KMS).  Vous devez effacer la configuration KMS si vous souhaitez ajouter l'appareil à une autre grille. Pour les instructions, voir https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/monitoring-node-encryption-in-maintenance-mode.html["Surveiller le chiffrement des nœuds en mode maintenance"^] .
+

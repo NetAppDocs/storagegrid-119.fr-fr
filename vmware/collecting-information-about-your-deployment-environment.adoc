@@ -1,0 +1,106 @@
+---
+permalink: vmware/collecting-information-about-your-deployment-environment.html 
+sidebar: sidebar 
+keywords: how to collect information about your deployment environment 
+summary: Avant de déployer des nœuds de grille, vous devez collecter des informations sur votre configuration réseau et votre environnement VMware. 
+---
+= Collectez des informations sur votre environnement de déploiement
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avant de déployer des nœuds de grille, vous devez collecter des informations sur votre configuration réseau et votre environnement VMware.
+
+
+NOTE: Il est plus efficace d'effectuer une seule installation de tous les nœuds, plutôt que d'installer certains nœuds maintenant et certains nœuds plus tard.
+
+
+
+== Informations VMware
+
+Vous devez accéder à l'environnement de déploiement et collecter des informations sur l'environnement VMware ; les réseaux créés pour les réseaux Grid, Admin et Client ; et les types de volumes de stockage que vous prévoyez d'utiliser pour les nœuds de stockage.
+
+Vous devez collecter des informations sur votre environnement VMware, notamment les suivantes :
+
+* Le nom d’utilisateur et le mot de passe d’un compte VMware vSphere disposant des autorisations appropriées pour terminer le déploiement.
+* Informations de configuration de l'hôte, de la banque de données et du réseau pour chaque machine virtuelle de nœud StorageGRID .
+
+
+
+NOTE: VMware Live vMotion provoque un saut de l'heure de l'horloge de la machine virtuelle et n'est pas pris en charge pour les nœuds de grille de tout type.  Bien que rares, des heures d'horloge incorrectes peuvent entraîner une perte de données ou des mises à jour de configuration.
+
+
+
+== Informations sur le réseau de grille
+
+Vous devez collecter des informations sur le réseau VMware créé pour le réseau StorageGRID Grid (obligatoire), notamment :
+
+* Le nom du réseau.
+* La méthode utilisée pour attribuer des adresses IP, statiques ou DHCP.
++
+** Si vous utilisez des adresses IP statiques, les détails de mise en réseau requis pour chaque nœud de grille (adresse IP, passerelle, masque de réseau).
+** Si vous utilisez DHCP, l'adresse IP du nœud d'administration principal sur le réseau de grille. Voir link:how-grid-nodes-discover-primary-admin-node.html["Comment les nœuds de grille découvrent le nœud d'administration principal"] pour plus d'informations.
+
+
+
+
+
+
+== Informations sur le réseau d'administration
+
+Pour les nœuds qui seront connectés au réseau d'administration StorageGRID facultatif, vous devez collecter des informations sur le réseau VMware créé pour ce réseau, notamment :
+
+* Le nom du réseau.
+* La méthode utilisée pour attribuer des adresses IP, statiques ou DHCP.
++
+** Si vous utilisez des adresses IP statiques, les détails de mise en réseau requis pour chaque nœud de grille (adresse IP, passerelle, masque de réseau).
+** Si vous utilisez DHCP, l'adresse IP du nœud d'administration principal sur le réseau de grille. Voir link:how-grid-nodes-discover-primary-admin-node.html["Comment les nœuds de grille découvrent le nœud d'administration principal"] pour plus d'informations.
+
+
+* La liste des sous-réseaux externes (ESL) pour le réseau d'administration.
+
+
+
+
+== Informations sur le réseau client
+
+Pour les nœuds qui seront connectés au réseau client StorageGRID facultatif, vous devez collecter des informations sur le réseau VMware créé pour ce réseau, notamment :
+
+* Le nom du réseau.
+* La méthode utilisée pour attribuer des adresses IP, statiques ou DHCP.
+* Si vous utilisez des adresses IP statiques, les détails de mise en réseau requis pour chaque nœud de grille (adresse IP, passerelle, masque de réseau).
+
+
+
+
+== Informations sur les interfaces supplémentaires
+
+Vous pouvez éventuellement ajouter des interfaces de jonction ou d’accès à la machine virtuelle dans vCenter après avoir installé le nœud.  Par exemple, vous souhaiterez peut-être ajouter une interface de jonction à un nœud d'administration ou de passerelle, afin de pouvoir utiliser des interfaces VLAN pour séparer le trafic appartenant à différentes applications ou locataires.  Ou, vous souhaiterez peut-être ajouter une interface d’accès à utiliser dans un groupe de haute disponibilité (HA).
+
+Les interfaces que vous ajoutez sont affichées sur la page Interfaces VLAN et sur la page Groupes HA dans le Gestionnaire de grille.
+
+* Si vous ajoutez une interface trunk, configurez une ou plusieurs interfaces VLAN pour chaque nouvelle interface parent. Voir link:../admin/configure-vlan-interfaces.html["configurer les interfaces VLAN"] .
+* Si vous ajoutez une interface d’accès, vous devez l’ajouter directement aux groupes HA. Voir link:../admin/configure-high-availability-group.html["configurer des groupes de haute disponibilité"] .
+
+
+
+
+== Volumes de stockage pour les nœuds de stockage virtuels
+
+Vous devez collecter les informations suivantes pour les nœuds de stockage basés sur une machine virtuelle :
+
+* Le nombre et la taille des volumes de stockage (LUN) que vous prévoyez d'ajouter. Voirlink:storage-and-performance-requirements.html["Exigences de stockage et de performances"] .
+
+
+
+
+== Informations sur la configuration du réseau
+
+Vous devez collecter des informations pour configurer votre grille :
+
+* Licence de réseau
+* Adresses IP du serveur NTP (Network Time Protocol)
+* Adresses IP du serveur DNS
+

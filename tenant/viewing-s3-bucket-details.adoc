@@ -1,0 +1,108 @@
+---
+permalink: tenant/viewing-s3-bucket-details.html 
+sidebar: sidebar 
+keywords: how to view bucket details 
+summary: Vous pouvez afficher les buckets dans votre compte locataire. 
+---
+= Afficher les détails du godet
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez afficher les buckets dans votre compte locataire.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Accès root, autorisation Gérer tous les buckets ou Afficher tous les buckets"] .  Ces autorisations remplacent les paramètres d’autorisation dans les stratégies de groupe ou de compartiment.
+
+
+.Étapes
+. Sélectionnez *Afficher les buckets* dans le tableau de bord ou sélectionnez *STOCKAGE (S3)* > *Buckets*.
++
+La page Buckets apparaît.
+
+. Consultez le tableau récapitulatif pour chaque compartiment.
++
+Selon vos besoins, vous pouvez trier les informations par colonne ou parcourir la liste en avant et en arrière.
+
++
+
+NOTE: Les valeurs de nombre d'objets, d'espace utilisé et d'utilisation affichées sont des estimations. Ces estimations sont affectées par le moment des ingestions, la connectivité réseau et l’état du nœud.  Si le contrôle de version est activé pour les buckets, les versions d'objet supprimées sont incluses dans le nombre d'objets.
+
++
+Nom:: Le nom unique du bucket, qui ne peut pas être modifié.
+Fonctionnalités activées:: La liste des fonctionnalités activées pour le bucket.
+Verrouillage d'objet S3:: Si le verrouillage d'objet S3 est activé pour le bucket.
++
+--
+Cette colonne apparaît uniquement si le verrouillage d'objet S3 est activé pour la grille.  Cette colonne affiche également des informations sur tous les buckets conformes hérités.
+
+--
+Région:: La région du bucket, qui ne peut pas être modifiée.  Cette colonne est masquée par défaut.
+Nombre d'objets:: Le nombre d'objets dans ce bucket.  Si le contrôle de version est activé pour les buckets, les versions d'objet non actuelles sont incluses dans cette valeur.
++
+--
+Lorsque des objets sont ajoutés ou supprimés, cette valeur peut ne pas être mise à jour immédiatement.
+
+--
+Espace utilisé:: La taille logique de tous les objets dans le bucket.  La taille logique n'inclut pas l'espace réel requis pour les copies répliquées ou codées par effacement ou pour les métadonnées de l'objet.
++
+--
+La mise à jour de cette valeur peut prendre jusqu'à 10 minutes.
+
+--
+Usage:: Le pourcentage utilisé de la limite de capacité du bucket, si elle a été définie.
++
+--
+La valeur d'utilisation est basée sur des estimations internes et peut être dépassée dans certains cas.  Par exemple, StorageGRID vérifie la limite de capacité (si définie) lorsqu'un locataire commence à télécharger des objets et rejette les nouvelles ingestions dans ce bucket si le locataire a dépassé la limite de capacité.  Cependant, StorageGRID ne prend pas en compte la taille du téléchargement actuel pour déterminer si la limite de capacité a été dépassée.  Si des objets sont supprimés, un locataire peut être temporairement empêché de télécharger de nouveaux objets dans ce bucket jusqu'à ce que l'utilisation de la limite de capacité soit recalculée.  Les calculs peuvent prendre 10 minutes ou plus.
+
+Cette valeur indique la taille logique, et non la taille physique nécessaire pour stocker les objets et leurs métadonnées.
+
+--
+Capacité:: Si défini, la limite de capacité du bucket.
+Date de création:: La date et l'heure de création du bucket.  Cette colonne est masquée par défaut.
+
+
+. Pour afficher les détails d’un bucket spécifique, sélectionnez le nom du bucket dans le tableau.
++
+.. Consultez les informations récapitulatives en haut de la page Web pour confirmer les détails du bucket, tels que la région et le nombre d'objets.
+.. Afficher la barre d’utilisation de la limite de capacité.  Si l'utilisation est de 100 % ou proche de 100 %, envisagez d'augmenter la limite ou de supprimer certains objets.
+.. Si nécessaire, sélectionnez *Supprimer les objets dans le bucket* et *Supprimer le bucket*.
++
+[CAUTION]
+====
+Portez une attention particulière aux avertissements qui s’affichent lorsque vous sélectionnez chacune de ces options. Pour plus d'informations, reportez-vous à :
+
+*** link:deleting-s3-bucket-objects.html["Supprimer tous les objets d'un bucket"]
+*** link:deleting-s3-bucket.html["Supprimer un bucket"](le seau doit être vide)
+
+
+====
+.. Affichez ou modifiez les paramètres du bucket dans chacun des onglets selon vos besoins.
++
+*** *Console S3* : Afficher les objets du bucket. Pour plus d'informations, reportez-vous à link:use-s3-console.html["Utiliser la console S3"] .
+*** *Options du bucket* : afficher ou modifier les paramètres des options.  Certains paramètres, tels que le verrouillage d'objet S3, ne peuvent pas être modifiés une fois le bucket créé.
++
+**** link:manage-bucket-consistency.html["Gérer la cohérence des buckets"]
+**** link:enabling-or-disabling-last-access-time-updates.html["Mises à jour de l'heure du dernier accès"]
+**** link:../tenant/creating-s3-bucket.html#capacity-limit["Limite de capacité"]
+**** link:changing-bucket-versioning.html["Versionnage d'objet"]
+**** link:using-s3-object-lock.html["Verrouillage d'objet S3"]
+**** link:update-default-retention-settings.html["Rétention du bucket par défaut"]
+**** link:grid-federation-manage-cross-grid-replication.html["Gérer la réplication inter-réseaux"](si autorisé pour le locataire)
+
+
+*** *Services de la plateforme*:link:considerations-for-platform-services.html["Gérer les services de la plateforme"] (si autorisé pour le locataire)
+*** *Accès au bucket* : afficher ou modifier les paramètres des options.  Vous devez disposer d'autorisations d'accès spécifiques.
++
+**** Configurelink:configuring-cross-origin-resource-sharing-cors.html["Partage des ressources inter-origines (CORS)"] ainsi, le bucket et les objets qu'il contient seront accessibles aux applications Web dans d'autres domaines.
+**** link:../tenant/manage-bucket-policy.html["Contrôler l'accès des utilisateurs"]pour un bucket S3 et les objets dans ce bucket.
+
+
+
+
+
+
+

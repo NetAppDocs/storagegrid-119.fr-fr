@@ -1,0 +1,31 @@
+---
+permalink: rhel/troubleshooting-installation-issues.html 
+sidebar: sidebar 
+keywords: how to troubleshoot red hat linux installation 
+summary: 'Si des problèmes surviennent lors de l"installation de votre système StorageGRID , vous pouvez accéder aux fichiers journaux d"installation.  Le support technique peut également avoir besoin d’utiliser les fichiers journaux d’installation pour résoudre les problèmes.' 
+---
+= Résoudre les problèmes d'installation
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si des problèmes surviennent lors de l'installation de votre système StorageGRID , vous pouvez accéder aux fichiers journaux d'installation.  Le support technique peut également avoir besoin d’utiliser les fichiers journaux d’installation pour résoudre les problèmes.
+
+Les fichiers journaux d’installation suivants sont disponibles à partir du conteneur qui exécute chaque nœud :
+
+* `/var/local/log/install.log`(trouvé sur tous les nœuds de la grille)
+* `/var/local/log/gdu-server.log`(trouvé sur le nœud d'administration principal)
+
+
+Les fichiers journaux d’installation suivants sont disponibles auprès de l’hôte :
+
+* `/var/log/storagegrid/daemon.log`
+* `/var/log/storagegrid/nodes/node-name.log`
+
+
+Pour savoir comment accéder aux fichiers journaux, consultezlink:../monitor/collecting-log-files-and-system-data.html["Collecter les fichiers journaux et les données système"] .
+
+.Informations connexes
+link:../troubleshoot/index.html["Dépanner un système StorageGRID"]

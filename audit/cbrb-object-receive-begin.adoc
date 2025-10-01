@@ -1,0 +1,98 @@
+---
+permalink: audit/cbrb-object-receive-begin.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, CBRB, Object Receive Begin 
+summary: 'Lors du fonctionnement normal du système, les blocs de contenu sont continuellement transférés entre différents nœuds à mesure que les données sont consultées, répliquées et conservées.  Lorsque le transfert d"un bloc de contenu d"un nœud à un autre est initié, ce message est émis par l"entité de destination.' 
+---
+= CBRB : Début de la réception de l'objet
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lors du fonctionnement normal du système, les blocs de contenu sont continuellement transférés entre différents nœuds à mesure que les données sont consultées, répliquées et conservées.  Lorsque le transfert d'un bloc de contenu d'un nœud à un autre est initié, ce message est émis par l'entité de destination.
+
+[cols="1a,1a,4a"]
+|===
+| Code | Champ | Description 
+
+
+ a| 
+CNID
+ a| 
+Identifiant de connexion
+ a| 
+L'identifiant unique de la session/connexion nœud à nœud.
+
+
+
+ a| 
+CBID
+ a| 
+Identifiant du bloc de contenu
+ a| 
+L'identifiant unique du bloc de contenu en cours de transfert.
+
+
+
+ a| 
+CTDR
+ a| 
+Direction de transfert
+ a| 
+Indique si le transfert CBID a été initié par push ou par pull :
+
+PUSH : L'opération de transfert a été demandée par l'entité émettrice.
+
+PULL : L'opération de transfert a été demandée par l'entité réceptrice.
+
+
+
+ a| 
+CTSR
+ a| 
+Entité source
+ a| 
+L'ID du nœud de la source (expéditeur) du transfert CBID.
+
+
+
+ a| 
+CTDS
+ a| 
+Entité de destination
+ a| 
+L'ID du nœud de destination (récepteur) du transfert CBID.
+
+
+
+ a| 
+CTSS
+ a| 
+Démarrage du comptage de séquences
+ a| 
+Indique le premier nombre de séquences demandé.  En cas de succès, le transfert commence à partir de ce décompte de séquence.
+
+
+
+ a| 
+CTES
+ a| 
+Nombre de séquences de fin attendu
+ a| 
+Indique le dernier nombre de séquences demandé.  En cas de réussite, le transfert est considéré comme terminé lorsque ce nombre de séquences a été reçu.
+
+
+
+ a| 
+RSLT
+ a| 
+Statut de début de transfert
+ a| 
+Statut au moment du début du transfert :
+
+SUCS : Le transfert a démarré avec succès.
+
+|===
+Ce message d'audit signifie qu'une opération de transfert de données de nœud à nœud a été lancée sur un seul élément de contenu, tel qu'identifié par son identifiant de bloc de contenu.  L'opération demande des données allant du « Nombre de séquences de début » au « Nombre de séquences de fin attendu ».  Les nœuds d’envoi et de réception sont identifiés par leurs identifiants de nœud.  Ces informations peuvent être utilisées pour suivre le flux de données du système et, lorsqu'elles sont combinées avec des messages d'audit de stockage, pour vérifier le nombre de réplicas.

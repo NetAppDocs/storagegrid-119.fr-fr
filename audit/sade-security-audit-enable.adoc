@@ -1,0 +1,47 @@
+---
+permalink: audit/sade-security-audit-enable.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, SADE, Security Audit Enable 
+summary: 'Ce message indique que le service d"origine (ID de nœud) a restauré la journalisation des messages d"audit ; les messages d"audit sont à nouveau collectés et livrés.' 
+---
+= SADE : Activation de l'audit de sécurité
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ce message indique que le service d'origine (ID de nœud) a restauré la journalisation des messages d'audit ; les messages d'audit sont à nouveau collectés et livrés.
+
+[cols="1a,1a,4a"]
+|===
+| Code | Champ | Description 
+
+
+ a| 
+AETM
+ a| 
+Méthode d'activation
+ a| 
+La méthode utilisée pour permettre l'audit.
+
+
+
+ a| 
+AEUN
+ a| 
+Nom d'utilisateur
+ a| 
+Le nom d’utilisateur qui a exécuté la commande pour activer la journalisation d’audit.
+
+
+
+ a| 
+RSLT
+ a| 
+Résultat
+ a| 
+Ce champ a la valeur AUCUN.  RSLT est un champ de message obligatoire, mais n'est pas pertinent pour ce message.  NONE est utilisé plutôt que SUCS afin que ce message ne soit pas filtré.
+
+|===
+Le message implique que la journalisation était auparavant désactivée (SADD), mais qu'elle a maintenant été restaurée.  Ceci est généralement utilisé uniquement lors de l'ingestion en masse pour améliorer les performances du système.  Après l'activité en masse, l'audit est restauré et la possibilité de désactiver l'audit est alors définitivement bloquée.

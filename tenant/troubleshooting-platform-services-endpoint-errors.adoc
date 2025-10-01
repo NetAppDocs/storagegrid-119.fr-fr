@@ -1,0 +1,73 @@
+---
+permalink: tenant/troubleshooting-platform-services-endpoint-errors.html 
+sidebar: sidebar 
+keywords: how to troubleshoot platform services endpoint 
+summary: 'Si une erreur se produit lorsque StorageGRID tente de communiquer avec un point de terminaison de services de plateforme, un message s"affiche sur le tableau de bord.  Sur la page Points de terminaison des services de la plateforme, la colonne Dernière erreur indique depuis combien de temps l’erreur s’est produite.  Aucune erreur ne s"affiche si les autorisations associées aux informations d"identification d"un point de terminaison sont incorrectes.' 
+---
+= Résoudre les erreurs de point de terminaison des services de plateforme
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si une erreur se produit lorsque StorageGRID tente de communiquer avec un point de terminaison de services de plateforme, un message s'affiche sur le tableau de bord.  Sur la page Points de terminaison des services de la plateforme, la colonne Dernière erreur indique depuis combien de temps l’erreur s’est produite.  Aucune erreur ne s'affiche si les autorisations associées aux informations d'identification d'un point de terminaison sont incorrectes.
+
+
+
+== Déterminer si une erreur s'est produite
+
+Si des erreurs de point de terminaison des services de plateforme se sont produites au cours des 7 derniers jours, le tableau de bord du gestionnaire de locataires affiche un message d'alerte.  Vous pouvez accéder à la page Points de terminaison des services de la plateforme pour voir plus de détails sur l'erreur.
+
+image::../media/tenant_dashboard_endpoint_error.png[message d'erreur du point de terminaison sur le tableau de bord]
+
+La même erreur qui apparaît sur le tableau de bord apparaît également en haut de la page Points de terminaison des services de la plateforme.  Pour afficher un message d’erreur plus détaillé :
+
+.Étapes
+. Dans la liste des points de terminaison, sélectionnez le point de terminaison qui présente l’erreur.
+. Sur la page des détails du point de terminaison, sélectionnez *Connexion*.  Cet onglet affiche uniquement l’erreur la plus récente pour un point de terminaison et indique depuis combien de temps l’erreur s’est produite.  Erreurs qui incluent l'icône X rougeimage:../media/icon_alert_red_critical.png["Icône X rouge"] survenu au cours des 7 derniers jours.
+
+
+
+
+== Vérifiez si l'erreur est toujours d'actualité
+
+Certaines erreurs peuvent continuer à s'afficher dans la colonne *Dernière erreur* même après avoir été résolues.  Pour voir si une erreur est actuelle ou pour forcer la suppression d'une erreur résolue du tableau :
+
+.Étapes
+. Sélectionnez le point de terminaison.
++
+La page des détails du point de terminaison s’affiche.
+
+. Sélectionnez *Connexion* > *Tester la connexion*.
+
+
+La sélection de *Tester la connexion* amène StorageGRID à valider que le point de terminaison des services de la plateforme existe et qu'il est accessible avec les informations d'identification actuelles.  La connexion au point de terminaison est validée à partir d’un nœud sur chaque site.
+
+
+
+== Résoudre les erreurs de point de terminaison
+
+Vous pouvez utiliser le message *Dernière erreur* sur la page des détails du point de terminaison pour vous aider à déterminer la cause de l'erreur.  Certaines erreurs peuvent nécessiter de modifier le point de terminaison pour résoudre le problème.  Par exemple, une erreur CloudMirroring peut se produire si StorageGRID ne peut pas accéder au bucket S3 de destination car il ne dispose pas des autorisations d’accès appropriées ou si la clé d’accès a expiré.  Le message est « Les informations d'identification du point de terminaison ou l'accès à la destination doivent être mis à jour » et les détails sont « AccessDenied » ou « InvalidAccessKeyId ».
+
+Si vous devez modifier le point de terminaison pour résoudre une erreur, la sélection de *Tester et enregistrer les modifications* amène StorageGRID à valider le point de terminaison mis à jour et à confirmer qu'il est accessible avec les informations d'identification actuelles.  La connexion au point de terminaison est validée à partir d’un nœud sur chaque site.
+
+.Étapes
+. Sélectionnez le point de terminaison.
+. Sur la page des détails du point de terminaison, sélectionnez *Configuration*.
+. Modifiez la configuration du point de terminaison selon vos besoins.
+. Sélectionnez *Connexion* > *Tester la connexion*.
+
+
+
+
+== Informations d'identification du point de terminaison avec des autorisations insuffisantes
+
+Lorsque StorageGRID valide un point de terminaison de services de plateforme, il confirme que les informations d'identification du point de terminaison peuvent être utilisées pour contacter la ressource de destination et effectue une vérification des autorisations de base.  Cependant, StorageGRID ne valide pas toutes les autorisations requises pour certaines opérations de services de plateforme.  Pour cette raison, si vous recevez une erreur lorsque vous tentez d'utiliser un service de plateforme (par exemple « 403 Forbidden »), vérifiez les autorisations associées aux informations d'identification du point de terminaison.
+
+.Informations connexes
+* link:../admin/troubleshooting-platform-services.html["Administrer StorageGRID > Résoudre les problèmes des services de la plateforme"]
+* link:creating-platform-services-endpoint.html["Créer un point de terminaison des services de plateforme"]
+* link:testing-connection-for-platform-services-endpoint.html["Tester la connexion pour le point de terminaison des services de la plateforme"]
+* link:editing-platform-services-endpoint.html["Modifier le point de terminaison des services de la plateforme"]
+

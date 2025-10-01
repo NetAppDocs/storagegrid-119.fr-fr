@@ -1,0 +1,44 @@
+---
+permalink: admin/networking-and-ports-for-platform-services.html 
+sidebar: sidebar 
+keywords: platform services, ports for platform services, 443, 80 
+summary: Si vous autorisez un locataire S3 à utiliser les services de plateforme, vous devez configurer la mise en réseau de la grille pour garantir que les messages des services de plateforme peuvent être livrés à leurs destinations. 
+---
+= Réseau et ports pour les services de la plateforme
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si vous autorisez un locataire S3 à utiliser les services de plateforme, vous devez configurer la mise en réseau de la grille pour garantir que les messages des services de plateforme peuvent être livrés à leurs destinations.
+
+Vous pouvez activer les services de plateforme pour un compte locataire S3 lorsque vous créez ou mettez à jour le compte locataire.  Si les services de plateforme sont activés, le locataire peut créer des points de terminaison qui servent de destination pour la réplication CloudMirror, les notifications d'événements ou les messages d'intégration de recherche à partir de ses compartiments S3.  Ces messages de services de plateforme sont envoyés depuis les nœuds de stockage qui exécutent le service ADC vers les points de terminaison de destination.
+
+Par exemple, les locataires peuvent configurer les types de points de terminaison de destination suivants :
+
+* Un cluster Elasticsearch hébergé localement
+* Une application locale qui prend en charge la réception de messages Amazon Simple Notification Service
+* Un cluster Kafka hébergé localement
+* Un bucket S3 hébergé localement sur la même instance ou sur une autre instance de StorageGRID
+* Un point de terminaison externe, tel qu'un point de terminaison sur Amazon Web Services.
+
+
+Pour garantir que les messages des services de plateforme peuvent être délivrés, vous devez configurer le ou les réseaux contenant les nœuds de stockage ADC.  Vous devez vous assurer que les ports suivants peuvent être utilisés pour envoyer des messages de services de plateforme aux points de terminaison de destination.
+
+Par défaut, les messages des services de la plateforme sont envoyés sur les ports suivants :
+
+* *80* : pour les URI de point de terminaison commençant par http (la plupart des points de terminaison)
+* *443* : pour les URI de point de terminaison commençant par https (la plupart des points de terminaison)
+* *9092* : pour les URI de point de terminaison commençant par http ou https (points de terminaison Kafka uniquement)
+
+
+Les locataires peuvent spécifier un port différent lorsqu'ils créent ou modifient un point de terminaison.
+
+
+NOTE: Si un déploiement StorageGRID est utilisé comme destination pour la réplication CloudMirror, les messages de réplication peuvent être reçus sur un port autre que 80 ou 443.  Assurez-vous que le port utilisé pour S3 par le déploiement StorageGRID de destination est spécifié dans le point de terminaison.
+
+Si vous utilisez un serveur proxy non transparent, vous devez égalementlink:configuring-storage-proxy-settings.html["configurer les paramètres du proxy de stockage"] pour permettre l'envoi de messages à des points de terminaison externes, tels qu'un point de terminaison sur Internet.
+
+.Informations connexes
+link:../tenant/index.html["Utiliser un compte locataire"]

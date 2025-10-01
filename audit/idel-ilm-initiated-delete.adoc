@@ -1,0 +1,161 @@
+---
+permalink: audit/idel-ilm-initiated-delete.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, IDEL, ILM Initiated Delete 
+summary: 'Ce message est généré lorsque ILM démarre le processus de suppression d"un objet.' 
+---
+= IDEL : suppression initiée par ILM
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ce message est généré lorsque ILM démarre le processus de suppression d'un objet.
+
+Le message IDEL est généré dans l’une de ces situations :
+
+* *Pour les objets dans les compartiments S3 conformes* : ce message est généré lorsque ILM démarre le processus de suppression automatique d'un objet car sa période de conservation a expiré (en supposant que le paramètre de suppression automatique est activé et que la conservation légale est désactivée).
+* *Pour les objets dans les buckets S3 non conformes*.  Ce message est généré lorsque ILM démarre le processus de suppression d'un objet car aucune instruction de placement dans les stratégies ILM actives ne s'applique actuellement à l'objet.
+
+
+[cols="1a,1a,4a"]
+|===
+| Code | Champ | Description 
+
+
+ a| 
+CBID
+ a| 
+Identifiant du bloc de contenu
+ a| 
+Le CBID de l'objet.
+
+
+
+ a| 
+CMPA
+ a| 
+Conformité : Suppression automatique
+ a| 
+Pour les objets dans les buckets S3 conformes uniquement.  0 (faux) ou 1 (vrai), indiquant si un objet conforme doit être supprimé automatiquement à la fin de sa période de conservation, à moins que le bucket ne soit soumis à une suspension légale.
+
+
+
+ a| 
+CMPL
+ a| 
+Conformité : Conservation légale
+ a| 
+Pour les objets dans les buckets S3 conformes uniquement.  0 (faux) ou 1 (vrai), indiquant si le bucket est actuellement sous une suspension légale.
+
+
+
+ a| 
+CMPR
+ a| 
+Conformité : Durée de conservation
+ a| 
+Pour les objets dans les buckets S3 conformes uniquement.  La durée de la période de rétention de l'objet en minutes.
+
+
+
+ a| 
+CTME
+ a| 
+Conformité : Heure d'ingestion
+ a| 
+Pour les objets dans les buckets S3 conformes uniquement.  L'heure d'ingestion de l'objet.  Vous pouvez ajouter la période de conservation en minutes à cette valeur pour déterminer quand l'objet peut être supprimé du bucket.
+
+
+
+ a| 
+DMRK
+ a| 
+Supprimer l'ID de version du marqueur
+ a| 
+L'ID de version du marqueur de suppression créé lors de la suppression d'un objet d'un bucket versionné.  Les opérations sur les buckets n'incluent pas ce champ.
+
+
+
+ a| 
+CSIZ
+ a| 
+Taille du contenu
+ a| 
+La taille de l'objet en octets.
+
+
+
+ a| 
+LOC
+ a| 
+Emplacements
+ a| 
+L'emplacement de stockage des données d'objet dans le système StorageGRID .  La valeur de LOCS est "" si l'objet n'a aucun emplacement (par exemple, il a été supprimé).
+
+CLEC : pour les objets à codage d'effacement, l'ID de profil de codage d'effacement et l'ID de groupe de codage d'effacement appliqué aux données de l'objet.
+
+CLDI : pour les objets répliqués, l'ID du nœud LDR et l'ID du volume de l'emplacement de l'objet.
+
+CLNL : ID du nœud ARC de l'emplacement de l'objet si les données de l'objet sont archivées.
+
+
+
+ a| 
+CHEMIN
+ a| 
+Seau/clé S3
+ a| 
+Le nom du compartiment S3 et le nom de la clé S3.
+
+
+
+ a| 
+RSLT
+ a| 
+Résultat
+ a| 
+Le résultat de l'opération ILM.
+
+SUCS : L'opération ILM a réussi.
+
+
+
+ a| 
+RÈGLE
+ a| 
+Étiquette des règles
+ a| 
+* Si un objet dans un compartiment S3 conforme est supprimé automatiquement parce que sa période de conservation a expiré, ce champ est vide.
+* Si l'objet est supprimé parce qu'il n'existe plus d'instructions de placement qui s'appliquent actuellement à l'objet, ce champ affiche l'étiquette lisible par l'homme de la dernière règle ILM qui s'appliquait à l'objet.
+
+
+
+
+ a| 
+SGRP
+ a| 
+Site (Groupe)
+ a| 
+Si présent, l'objet a été supprimé sur le site spécifié, qui n'est pas le site où l'objet a été ingéré.
+
+
+
+ a| 
+UUID
+ a| 
+Identifiant unique universel
+ a| 
+L'identifiant de l'objet dans le système StorageGRID .
+
+
+
+ a| 
+VSID
+ a| 
+ID de version
+ a| 
+L'ID de version de la version spécifique d'un objet qui a été supprimé.  Les opérations sur les buckets et les objets dans les buckets non versionnés n'incluent pas ce champ.
+
+|===

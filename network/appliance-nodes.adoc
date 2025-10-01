@@ -1,0 +1,29 @@
+---
+permalink: network/appliance-nodes.html 
+sidebar: sidebar 
+keywords: networking for appliance, port bond mode 
+summary: Vous pouvez configurer les ports réseau sur les appliances StorageGRID pour utiliser les modes de liaison de port qui répondent à vos exigences en matière de débit, de redondance et de basculement. 
+---
+= Nœuds d'appareils
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez configurer les ports réseau sur les appliances StorageGRID pour utiliser les modes de liaison de port qui répondent à vos exigences en matière de débit, de redondance et de basculement.
+
+Les ports 10/25 GbE des appliances StorageGRID peuvent être configurés en mode de liaison fixe ou agrégée pour les connexions au réseau Grid et au réseau client.
+
+Les ports du réseau d'administration 1 GbE peuvent être configurés en mode indépendant ou de sauvegarde active pour les connexions au réseau d'administration.
+
+Consultez les informations sur les modes de liaison de port pour votre appareil :
+
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/gathering-installation-information-sg6100.html#port-bond-modes["Modes de liaison des ports (SG6160)"^]
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/gathering-installation-information-sg6100.html#port-bond-modes["Modes de liaison des ports (SGF6112)"^]
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/gathering-installation-information-sg6000.html#port-bond-modes["Modes de liaison de port (contrôleur SG6000-CN)"^]
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/gathering-installation-information-sg5800.html#port-bond-modes["Modes de liaison de port (contrôleur SG5800)"^]
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/gathering-installation-information-sg5700.html#port-bond-modes["Modes de liaison de port (contrôleur E5700SG)"^]
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/gathering-installation-information-sg110-and-sg1100.html#port-bond-modes["Modes de liaison des ports (SG110 et SG1100)"^]
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/gathering-installation-information-sg100-and-sg1000.html#port-bond-modes["Modes de liaison des ports (SG100 et SG1000)"^]
+

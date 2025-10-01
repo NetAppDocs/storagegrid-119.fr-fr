@@ -1,0 +1,98 @@
+---
+permalink: audit/using-audit-explain-tool.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, tool, audit-explain, audit explain, translate audit messages, translate messages, translate audit message, translate message 
+summary: 'Vous pouvez utiliser l"outil audit-explain pour traduire les messages d"audit du journal d"audit dans un format facile à lire.' 
+---
+= Utiliser l'outil d'audit-explication
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser le `audit-explain` outil permettant de traduire les messages d'audit du journal d'audit dans un format facile à lire.
+
+.Avant de commencer
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+* Vous devez avoir le `Passwords.txt` déposer.
+* Vous devez connaître l’adresse IP du nœud d’administration principal.
+
+
+.À propos de cette tâche
+Le `audit-explain` L'outil, disponible sur le nœud d'administration principal, fournit des résumés simplifiés des messages d'audit dans un journal d'audit.
+
+
+NOTE: Le `audit-explain` L'outil est principalement destiné à être utilisé par le support technique lors des opérations de dépannage.  Traitement `audit-explain` les requêtes peuvent consommer une grande quantité de puissance CPU, ce qui peut avoir un impact sur les opérations StorageGRID .
+
+Cet exemple montre une sortie typique de la `audit-explain` outil.  Ces quatrelink:sput-s3-put.html["CRACHER"] des messages d'audit ont été générés lorsque le locataire S3 avec l'ID de compte 92484777680322627870 a utilisé des requêtes S3 PUT pour créer un bucket nommé « bucket1 » et ajouter trois objets à ce bucket.
+
+[listing]
+----
+SPUT S3 PUT bucket bucket1 account:92484777680322627870 usec:124673
+SPUT S3 PUT object bucket1/part1.txt tenant:92484777680322627870  cbid:9DCB157394F99FE5 usec:101485
+SPUT S3 PUT object bucket1/part2.txt tenant:92484777680322627870  cbid:3CFBB07AB3D32CA9 usec:102804
+SPUT S3 PUT object bucket1/part3.txt tenant:92484777680322627870  cbid:5373D73831ECC743 usec:93874
+----
+Le `audit-explain` L'outil peut effectuer les opérations suivantes :
+
+* Traiter les journaux d’audit simples ou compressés. Par exemple:
++
+`audit-explain audit.log`
+
++
+`audit-explain 2019-08-12.txt.gz`
+
+* Traiter plusieurs fichiers simultanément. Par exemple:
++
+`audit-explain audit.log 2019-08-12.txt.gz 2019-08-13.txt.gz`
+
++
+`audit-explain /var/local/log/*`
+
+* Acceptez l'entrée d'un tube, ce qui vous permet de filtrer et de prétraiter l'entrée à l'aide du `grep` commandement ou autres moyens. Par exemple:
++
+`grep SPUT audit.log | audit-explain`
+
++
+`grep bucket-name audit.log | audit-explain`
+
+
+
+Étant donné que les journaux d'audit peuvent être très volumineux et lents à analyser, vous pouvez gagner du temps en filtrant les parties que vous souhaitez consulter et en les exécutant. `audit-explain` sur les parties, au lieu du fichier entier.
+
+[NOTE]
+====
+Le `audit-explain` l'outil n'accepte pas les fichiers compressés comme entrée canalisée. Pour traiter les fichiers compressés, fournissez leurs noms de fichiers comme arguments de ligne de commande ou utilisez le `zcat` outil pour décompresser les fichiers en premier. Par exemple:
+
+`zcat audit.log.gz | audit-explain`
+
+====
+Utilisez le `help (-h)` option pour voir les options disponibles. Par exemple:
+
+`$ audit-explain -h`
+
+.Étapes
+. Connectez-vous au nœud d’administration principal :
++
+.. Entrez la commande suivante : `ssh admin@_primary_Admin_Node_IP_`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
++
+Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+
+
+. Entrez la commande suivante, où `/var/local/log/audit.log` représente le nom et l'emplacement du ou des fichiers que vous souhaitez analyser :
++
+`$ audit-explain /var/local/log/audit.log`
+
++
+Le `audit-explain` L'outil imprime des interprétations lisibles par l'homme de tous les messages dans le ou les fichiers spécifiés.
+
++
+
+NOTE: Pour réduire la longueur des lignes et améliorer la lisibilité, les horodatages ne sont pas affichés par défaut.  Si vous souhaitez voir les horodatages, utilisez l'horodatage(`-t` ) option.
+
+

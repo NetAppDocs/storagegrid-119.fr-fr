@@ -1,0 +1,106 @@
+---
+permalink: fabricpool/creating-tenant-account-for-fabricpool.html 
+sidebar: sidebar 
+keywords: fabricPool, tenant, SSO 
+summary: Vous devez créer un compte locataire dans Grid Manager pour utiliser FabricPool . 
+---
+= Créer un compte locataire pour FabricPool
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez créer un compte locataire dans Grid Manager pour utiliser FabricPool .
+
+Les comptes locataires permettent aux applications clientes de stocker et de récupérer des objets sur StorageGRID.  Chaque compte locataire possède son propre ID de compte, ses propres groupes et utilisateurs autorisés, ses compartiments et ses objets.
+
+Pour plus de détails sur cette tâche, voirlink:../admin/creating-tenant-account.html["Créer un compte locataire"] .  Pour utiliser l'assistant de configuration FabricPool pour effectuer cette tâche, accédez àlink:use-fabricpool-setup-wizard-steps.html["Accéder et terminer l'assistant de configuration de FabricPool"] .
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+
+
+.Étapes
+. Sélectionnez *LOCATAIRES*.
+. Sélectionnez *Créer*.
+. Pour les étapes de saisie des détails, saisissez les informations suivantes.
++
+[cols="1a,3a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Nom
+ a| 
+Un nom pour le compte locataire.  Les noms des locataires n'ont pas besoin d'être uniques.  Lorsque le compte locataire est créé, il reçoit un ID de compte numérique unique.
+
+
+
+ a| 
+Description (facultatif)
+ a| 
+Une description pour aider à identifier le locataire.
+
+
+
+ a| 
+Type de client
+ a| 
+Doit être *S3* pour FabricPool.
+
+
+
+ a| 
+Quota de stockage (facultatif)
+ a| 
+Laissez ce champ vide pour FabricPool.
+
+|===
+. Pour l’étape Sélectionner les autorisations :
++
+.. Ne sélectionnez pas *Autoriser les services de plateforme*.
++
+Les locataires FabricPool n'ont généralement pas besoin d'utiliser des services de plateforme, tels que la réplication CloudMirror.
+
+.. En option, sélectionnez *Utiliser votre propre source d'identité*.
+.. Ne sélectionnez pas *Autoriser la sélection S3*.
++
+Les locataires FabricPool n'ont généralement pas besoin d'utiliser S3 Select.
+
+.. En option, sélectionnez *Utiliser la connexion à la fédération de grille* pour permettre au locataire d'utiliser unelink:../admin/grid-federation-overview.html["connexion à la fédération de réseau"] pour le clonage de compte et la réplication inter-grille.  Ensuite, sélectionnez la connexion de fédération de grille à utiliser.
+
+
+. Pour l'étape Définir l'accès root, spécifiez quel utilisateur disposera de l'autorisation d'accès root initiale pour le compte locataire, selon que votre système StorageGRID utiliselink:../admin/using-identity-federation.html["fédération d'identité"] ,link:../admin/configuring-sso.html["authentification unique (SSO)"] , ou les deux.
++
+[cols="1a,2a"]
+|===
+| Option | Fais ceci 
+
+
+ a| 
+Si la fédération d'identité n'est pas activée
+ a| 
+Spécifiez le mot de passe à utiliser lors de la connexion au locataire en tant qu’utilisateur root local.
+
+
+
+ a| 
+Si la fédération d'identité est activée
+ a| 
+.. Sélectionnez un groupe fédéré existant pour disposer de l’autorisation d’accès root pour le locataire.
+.. Vous pouvez également spécifier le mot de passe à utiliser lors de la connexion au locataire en tant qu’utilisateur root local.
+
+
+
+
+ a| 
+Si la fédération d'identité et l'authentification unique (SSO) sont activées
+ a| 
+Sélectionnez un groupe fédéré existant pour disposer de l’autorisation d’accès root pour le locataire.  Aucun utilisateur local ne peut se connecter.
+
+|===
+. Sélectionnez *Créer un locataire*.
+

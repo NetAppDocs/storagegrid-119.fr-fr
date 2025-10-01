@@ -1,0 +1,246 @@
+---
+permalink: maintain/step-6-monitor-decommission.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, monitor decommission, decommission 
+summary: 'À partir de l"étape 6 (Surveiller la mise hors service) de l"assistant de la page Mise hors service du site, vous pouvez surveiller la progression à mesure que le site est supprimé.' 
+---
+= Étape 6 : Surveiller la mise hors service
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+À partir de l'étape 6 (Surveillance de la mise hors service) de l'assistant de la page Mise hors service du site, vous pouvez surveiller la progression à mesure que le site est supprimé.
+
+.À propos de cette tâche
+Lorsque StorageGRID supprime un site connecté, il supprime les nœuds dans cet ordre :
+
+. Nœuds de passerelle
+. Nœuds d'administration
+. Nœuds de stockage
+
+
+Lorsque StorageGRID supprime un site déconnecté, il supprime les nœuds dans cet ordre :
+
+. Nœuds de passerelle
+. Nœuds de stockage
+. Nœuds d'administration
+
+
+Chaque nœud de passerelle ou nœud d'administration peut ne nécessiter que quelques minutes ou une heure pour être supprimé ; cependant, les nœuds de stockage peuvent prendre des jours ou des semaines.
+
+.Étapes
+. Dès qu'un nouveau package de récupération a été généré, téléchargez le fichier.
++
+image::../media/decommission_site_step_6_recovery_package.png[Paquet de récupération de l'étape 6 de déclassement du site]
+
++
+
+NOTE: Téléchargez le package de récupération dès que possible pour vous assurer de pouvoir récupérer votre réseau en cas de problème lors de la procédure de mise hors service.
+
++
+.. Sélectionnez le lien dans le message ou sélectionnez *MAINTENANCE* > *Système* > *Pack de récupération*.
+.. Téléchargez le `.zip` déposer.
++
+Voir les instructions pourlink:downloading-recovery-package.html["téléchargement du package de récupération"] .
+
+
+
++
+
+NOTE: Le fichier du package de récupération doit être sécurisé car il contient des clés de chiffrement et des mots de passe qui peuvent être utilisés pour obtenir des données à partir du système StorageGRID .
+
+. À l’aide du graphique de mouvement des données, surveillez le mouvement des données d’objet de ce site vers d’autres sites.
++
+Le déplacement des données a commencé lorsque vous avez activé la nouvelle politique ILM à l’étape 3 (Réviser la politique ILM).  Le déplacement des données se produira tout au long de la procédure de mise hors service.
+
++
+image::../media/decommission_site_step_6_data_movement.png[Déplacement des données de l'étape 6 du site de déclassement]
+
+. Dans la section Progression du nœud de la page, surveillez la progression de la procédure de mise hors service à mesure que les nœuds sont supprimés.
++
+Lorsqu'un nœud de stockage est supprimé, chaque nœud passe par une série d'étapes.  Bien que la plupart de ces étapes se produisent rapidement, voire imperceptiblement, vous devrez peut-être attendre des jours, voire des semaines, pour que d'autres étapes se terminent, en fonction de la quantité de données à déplacer.  Un délai supplémentaire est nécessaire pour gérer les données codées par effacement et réévaluer l’ILM.
+
++
+image::../media/decommission_site_step_6_storage_node.png[Site de déclassement Étape 6 Nœud de stockage]
+
++
+Si vous surveillez la progression de la mise hors service d'un site connecté, reportez-vous à ce tableau pour comprendre les étapes de mise hors service d'un nœud de stockage :
+
++
+[cols="1a,2a"]
+|===
+| Scène | Durée estimée 
+
+
+ a| 
+En attente
+ a| 
+Minute ou moins
+
+
+
+ a| 
+Attendre les écluses
+ a| 
+Minutes
+
+
+
+ a| 
+Préparer la tâche
+ a| 
+Minute ou moins
+
+
+
+ a| 
+Marquage LDR déclassé
+ a| 
+Minutes
+
+
+
+ a| 
+Mise hors service des données répliquées et codées par effacement
+ a| 
+Heures, jours ou semaines en fonction de la quantité de données
+
+*Remarque* : si vous devez effectuer d’autres activités de maintenance, vous pouvez suspendre la mise hors service du site pendant cette étape.
+
+
+
+ a| 
+État de l'ensemble LDR
+ a| 
+Minutes
+
+
+
+ a| 
+Vider les files d'attente d'audit
+ a| 
+De quelques minutes à quelques heures, en fonction du nombre de messages et de la latence du réseau.
+
+
+
+ a| 
+Complet
+ a| 
+Minutes
+
+|===
++
+Si vous surveillez la progression de la mise hors service d'un site déconnecté, reportez-vous à ce tableau pour comprendre les étapes de mise hors service d'un nœud de stockage :
+
++
+[cols="1a,1a"]
+|===
+| Scène | Durée estimée 
+
+
+ a| 
+En attente
+ a| 
+Minute ou moins
+
+
+
+ a| 
+Attendre les écluses
+ a| 
+Minutes
+
+
+
+ a| 
+Préparer la tâche
+ a| 
+Minute ou moins
+
+
+
+ a| 
+Désactiver les services externes
+ a| 
+Minutes
+
+
+
+ a| 
+Révocation du certificat
+ a| 
+Minutes
+
+
+
+ a| 
+Désinscription du nœud
+ a| 
+Minutes
+
+
+
+ a| 
+Désenregistrement du niveau de stockage
+ a| 
+Minutes
+
+
+
+ a| 
+Suppression du groupe de stockage
+ a| 
+Minutes
+
+
+
+ a| 
+Suppression d'entité
+ a| 
+Minutes
+
+
+
+ a| 
+Complet
+ a| 
+Minutes
+
+|===
+. Une fois que tous les nœuds ont atteint l’étape Terminé, attendez que les opérations de mise hors service du site restantes soient terminées.
++
+** Au cours de l'étape *Réparer Cassandra*, StorageGRID effectue les réparations nécessaires sur les clusters Cassandra qui restent dans votre grille.  Ces réparations peuvent prendre plusieurs jours, voire plus, selon le nombre de nœuds de stockage restants dans votre réseau.
++
+image::../media/decommission_site_step_6_repair_cassandra.png[Site de déclassement Étape 6 Réparation Cassandra]
+
+** Au cours de l'étape *Désactiver les profils EC et supprimer les pools de stockage*, les modifications ILM suivantes sont apportées :
++
+*** Tous les profils de codage d'effacement faisant référence au site sont désactivés.
+*** Tous les pools de stockage faisant référence au site sont supprimés.
++
+
+NOTE: Le pool de stockage Tous les nœuds de stockage (StorageGRID 11.6 et versions antérieures) est également supprimé car il utilise le site Tous les sites.
+
+
+
+** Enfin, lors de l’étape *Supprimer la configuration*, toutes les références restantes au site et à ses nœuds sont supprimées du reste de la grille.
++
+image::../media/decommission_site_step_6_remove_configuration.png[Étape 6 du site de mise hors service Supprimer la configuration]
+
+
+
+. Une fois la procédure de mise hors service terminée, la page Site de mise hors service affiche un message de réussite et le site supprimé n'est plus affiché.
++
+image::../media/decommission_site_success_message.png[Message de réussite du déclassement du site]
+
+
+
+.Après avoir terminé
+Effectuez ces tâches après avoir terminé la procédure de déclassement du site :
+
+* Assurez-vous que les lecteurs de tous les nœuds de stockage du site mis hors service sont nettoyés.  Utilisez un outil ou un service d’effacement de données disponible dans le commerce pour supprimer définitivement et en toute sécurité les données des lecteurs.
+* Si le site comprend un ou plusieurs nœuds d'administration et que l'authentification unique (SSO) est activée pour votre système StorageGRID , supprimez toutes les approbations de parties de confiance pour le site des services de fédération Active Directory (AD FS).
+* Une fois les nœuds mis hors tension automatiquement dans le cadre de la procédure de mise hors service du site connecté, supprimez les machines virtuelles associées.
+

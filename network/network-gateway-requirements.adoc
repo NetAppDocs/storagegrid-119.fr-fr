@@ -1,0 +1,19 @@
+---
+permalink: network/network-gateway-requirements.html 
+sidebar: sidebar 
+keywords: network gateway requirements 
+summary: Suivez ces exigences et directives pour les passerelles ou routeurs réseau. 
+---
+= Exigences relatives à la passerelle réseau
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Suivez ces exigences et directives pour les passerelles ou routeurs réseau.
+
+* Si cette option est définie, la passerelle d'un réseau donné doit se trouver dans le sous-réseau du réseau spécifique.
+* Si vous configurez une interface à l’aide d’un adressage statique, vous devez spécifier une adresse de passerelle autre que 0.0.0.0.
+* Si vous n’avez pas de passerelle, la meilleure pratique consiste à définir l’adresse de la passerelle comme étant l’adresse IP de l’interface réseau.
+

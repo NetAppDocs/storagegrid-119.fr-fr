@@ -1,0 +1,37 @@
+---
+section: upgrade
+title: Mettre à niveau le logiciel StorageGRID
+entries:
+- title: Avant de commencer
+  pdf-filename: Mettre à niveau le logiciel StorageGRID
+  url: "/upgrade/index.html"
+- title: Quoi de neuf dans StorageGRID 11.9
+  url: "/upgrade/whats-new.html"
+- title: Fonctionnalités supprimées ou obsolètes
+  url: "/upgrade/removed-or-deprecated-features.html"
+- title: Modifications apportées à l'API de gestion de la grille
+  url: "/upgrade/changes-to-grid-management-api.html"
+- title: Modifications apportées à l'API de gestion des locataires
+  url: "/upgrade/changes-to-tenant-management-api.html"
+- title: Planifier et préparer la mise à niveau
+  entries:
+  - title: Estimer le temps nécessaire pour terminer la mise à niveau
+    url: "/upgrade/estimating-time-to-complete-upgrade.html"
+  - title: Comment votre système est affecté pendant la mise à niveau
+    url: "/upgrade/how-your-system-is-affected-during-upgrade.html"
+  - title: Vérifier la version de StorageGRID installée
+    url: "/upgrade/verifying-installed-version-of-storagegrid.html"
+  - title: Obtenir le matériel nécessaire
+    url: "/upgrade/obtaining-required-materials-for-software-upgrade.html"
+  - title: Vérifier le système
+    url: "/upgrade/checking-systems-condition-before-upgrading-software.html"
+- title: Mettre à niveau le logiciel
+  entries:
+  - title: Démarrage rapide de la mise à niveau
+    url: "/upgrade/upgrade-workflow.html"
+  - title: 'Linux : téléchargez et installez le package RPM ou DEB'
+    url: "/upgrade/linux-installing-rpm-or-deb-package-on-all-hosts.html"
+  - title: Effectuer la mise à niveau
+    url: "/upgrade/performing-upgrade.html"
+- title: Résoudre les problèmes de mise à niveau
+  url: "/upgrade/troubleshooting-upgrade-issues.html"

@@ -1,0 +1,1382 @@
+---
+permalink: monitor/alerts-reference.html 
+sidebar: sidebar 
+keywords: alerts reference 
+summary: Cette référence répertorie les alertes par défaut qui apparaissent dans le gestionnaire de grille.  Les actions recommandées sont dans le message d’alerte que vous recevez. 
+---
+= Référence des alertes
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Cette référence répertorie les alertes par défaut qui apparaissent dans le gestionnaire de grille.  Les actions recommandées sont dans le message d’alerte que vous recevez.
+
+Selon vos besoins, vous pouvez créer des règles d’alerte personnalisées adaptées à votre approche de gestion du système.
+
+Certaines des alertes par défaut utilisentlink:commonly-used-prometheus-metrics.html["Métriques Prometheus"] .
+
+
+
+== Alertes sur les appareils électroménagers
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+La batterie de l'appareil est expirée
+ a| 
+La batterie du contrôleur de stockage de l'appareil est épuisée.
+
+
+
+ a| 
+La batterie de l'appareil est défectueuse
+ a| 
+La batterie du contrôleur de stockage de l'appareil est défectueuse.
+
+
+
+ a| 
+La batterie de l'appareil a une capacité d'apprentissage insuffisante
+ a| 
+La batterie du contrôleur de stockage de l'appareil a une capacité d'apprentissage insuffisante.
+
+
+
+ a| 
+Batterie d'appareil presque expirée
+ a| 
+La batterie du contrôleur de stockage de l'appareil est sur le point d'expirer.
+
+
+
+ a| 
+Batterie de l'appareil retirée
+ a| 
+La batterie du contrôleur de stockage de l'appareil est manquante.
+
+
+
+ a| 
+La batterie de l'appareil est trop chaude
+ a| 
+La batterie du contrôleur de stockage de l'appareil est surchauffée.
+
+
+
+ a| 
+Erreur de communication du BMC de l'appareil
+ a| 
+La communication avec le contrôleur de gestion de la carte mère (BMC) a été perdue.
+
+
+
+ a| 
+Défaut du périphérique de démarrage de l'appareil détecté
+ a| 
+Un problème a été détecté avec le périphérique de démarrage de l'appareil.
+
+
+
+ a| 
+Échec du périphérique de sauvegarde du cache de l'appareil
+ a| 
+Un périphérique de sauvegarde de cache persistant est tombé en panne.
+
+
+
+ a| 
+Capacité insuffisante du périphérique de sauvegarde du cache de l'appareil
+ a| 
+La capacité du périphérique de sauvegarde du cache est insuffisante.
+
+
+
+ a| 
+Dispositif de sauvegarde du cache de l'appareil protégé en écriture
+ a| 
+Un périphérique de sauvegarde de cache est protégé en écriture.
+
+
+
+ a| 
+Incompatibilité de taille de mémoire cache de l'appareil
+ a| 
+Les deux contrôleurs de l'appareil ont des tailles de cache différentes.
+
+
+
+ a| 
+Défaut de batterie CMOS de l'appareil
+ a| 
+Un problème a été détecté avec la batterie CMOS de l'appareil.
+
+
+
+ a| 
+La température du châssis du contrôleur de calcul de l'appareil est trop élevée
+ a| 
+La température du contrôleur de calcul d'un dispositif StorageGRID a dépassé un seuil nominal.
+
+
+
+ a| 
+La température du processeur du contrôleur de calcul de l'appareil est trop élevée
+ a| 
+La température du processeur dans le contrôleur de calcul d'un dispositif StorageGRID a dépassé un seuil nominal.
+
+
+
+ a| 
+Le contrôleur de calcul de l'appareil nécessite une attention particulière
+ a| 
+Une panne matérielle a été détectée dans le contrôleur de calcul d'un dispositif StorageGRID .
+
+
+
+ a| 
+L'alimentation du contrôleur de calcul de l'appareil A présente un problème
+ a| 
+L'alimentation A du contrôleur de calcul présente un problème.
+
+
+
+ a| 
+L'alimentation B du contrôleur de calcul de l'appareil présente un problème
+ a| 
+L'alimentation B du contrôleur de calcul présente un problème.
+
+
+
+ a| 
+Le service de surveillance du matériel informatique de l'appareil est bloqué
+ a| 
+Le service qui surveille l’état du matériel de stockage est bloqué.
+
+
+
+ a| 
+Le lecteur DAS de l'appareil dépasse la limite de données écrites par jour
+ a| 
+Une quantité excessive de données est écrite sur un lecteur chaque jour, ce qui peut annuler sa garantie.
+
+
+
+ a| 
+Défaut détecté sur le lecteur DAS de l'appareil
+ a| 
+Un problème a été détecté avec un lecteur de stockage à connexion directe (DAS) dans l'appareil.
+
+
+
+ a| 
+Voyant de localisation du lecteur DAS de l'appareil allumé
+ a| 
+Le voyant de localisation de lecteur pour un ou plusieurs lecteurs de stockage à connexion directe (DAS) dans un nœud de stockage d'appliance est allumé.
+
+
+
+ a| 
+Reconstruction du lecteur DAS de l'appareil
+ a| 
+Un lecteur de stockage à connexion directe (DAS) est en cours de reconstruction.  Ceci est attendu s'il a été récemment remplacé ou retiré/réinséré.
+
+
+
+ a| 
+Défaut du ventilateur de l'appareil détecté
+ a| 
+Un problème avec un bloc ventilateur de l'appareil a été détecté.
+
+
+
+ a| 
+Défaut de l'appareil Fibre Channel détecté
+ a| 
+Un problème de liaison Fibre Channel a été détecté entre le contrôleur de stockage de l'appliance et le contrôleur de calcul
+
+
+
+ a| 
+Défaillance du port HBA Fibre Channel de l'appareil
+ a| 
+Un port HBA Fibre Channel est défaillant ou a échoué.
+
+
+
+ a| 
+Les lecteurs de cache flash de l'appareil ne sont pas optimaux
+ a| 
+Les disques utilisés pour le cache SSD ne sont pas optimaux.
+
+
+
+ a| 
+Boîtier d'interconnexion/de batterie de l'appareil retiré
+ a| 
+Le boîtier d'interconnexion/batterie est manquant.
+
+
+
+ a| 
+Port LACP de l'appareil manquant
+ a| 
+Un port sur un dispositif StorageGRID ne participe pas à la liaison LACP.
+
+
+
+ a| 
+Défaut de carte réseau de l'appareil détecté
+ a| 
+Un problème avec une carte d'interface réseau (NIC) dans l'appareil a été détecté.
+
+
+
+ a| 
+Alimentation électrique globale de l'appareil dégradée
+ a| 
+La puissance d'un appareil StorageGRID s'écarte de la tension de fonctionnement recommandée.
+
+
+
+ a| 
+Avertissement critique du SSD de l'appareil
+ a| 
+Un SSD d'appareil signale un avertissement critique.
+
+
+
+ a| 
+Défaillance du contrôleur de stockage de l'appareil A
+ a| 
+Le contrôleur de stockage A d’un dispositif StorageGRID est tombé en panne.
+
+
+
+ a| 
+Défaillance du contrôleur de stockage de l'appareil B
+ a| 
+Le contrôleur de stockage B d’un dispositif StorageGRID est en panne.
+
+
+
+ a| 
+Panne du lecteur du contrôleur de stockage de l'appareil
+ a| 
+Un ou plusieurs disques d'un dispositif StorageGRID sont en panne ou ne sont pas optimaux.
+
+
+
+ a| 
+Problème matériel du contrôleur de stockage de l'appareil
+ a| 
+Le logiciel SANtricity signale « Nécessite une attention particulière » pour un composant d'un dispositif StorageGRID .
+
+
+
+ a| 
+Panne d'alimentation du contrôleur de stockage de l'appareil
+ a| 
+L'alimentation A d'un dispositif StorageGRID s'écarte de la tension de fonctionnement recommandée.
+
+
+
+ a| 
+Panne d'alimentation du contrôleur de stockage de l'appareil B
+ a| 
+L'alimentation B d'un dispositif StorageGRID s'écarte de la tension de fonctionnement recommandée.
+
+
+
+ a| 
+Le service de surveillance du matériel de stockage des appareils est bloqué
+ a| 
+Le service qui surveille l’état du matériel de stockage est bloqué.
+
+
+
+ a| 
+Étagères de rangement des appareils dégradées
+ a| 
+L'état de l'un des composants de l'étagère de stockage d'un dispositif de stockage est dégradé.
+
+
+
+ a| 
+Température de l'appareil dépassée
+ a| 
+La température nominale ou maximale du contrôleur de stockage de l'appareil a été dépassée.
+
+
+
+ a| 
+Capteur de température de l'appareil retiré
+ a| 
+Un capteur de température a été retiré.
+
+
+
+ a| 
+Erreur de démarrage sécurisé UEFI de l'appareil
+ a| 
+Un appareil n’a pas été démarré en toute sécurité.
+
+
+
+ a| 
+Les E/S du disque sont très lentes
+ a| 
+Des E/S de disque très lentes peuvent avoir un impact sur les performances de la grille.
+
+
+
+ a| 
+Défaut de ventilateur de l'appareil de stockage détecté
+ a| 
+Un problème avec une unité de ventilation dans le contrôleur de stockage d'un appareil a été détecté.
+
+
+
+ a| 
+Connectivité de stockage dégradée
+ a| 
+Il y a un problème avec une ou plusieurs connexions entre le contrôleur de calcul et le contrôleur de stockage.
+
+
+
+ a| 
+Périphérique de stockage inaccessible
+ a| 
+Impossible d'accéder à un périphérique de stockage.
+
+|===
+
+
+== Alertes d'audit et de syslog
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Les journaux d'audit sont ajoutés à la file d'attente en mémoire
+ a| 
+Le nœud ne peut pas envoyer de journaux au serveur syslog local et la file d'attente en mémoire se remplit.
+
+
+
+ a| 
+Erreur de transfert du serveur syslog externe
+ a| 
+Le nœud ne peut pas transférer les journaux vers le serveur syslog externe.
+
+
+
+ a| 
+Grande file d'attente d'audit
+ a| 
+La file d'attente du disque pour les messages d'audit est pleine. Si cette condition n’est pas résolue, les opérations S3 ou Swift peuvent échouer.
+
+
+
+ a| 
+Les journaux sont ajoutés à la file d'attente sur disque
+ a| 
+Le nœud ne peut pas transférer les journaux vers le serveur syslog externe et la file d'attente sur disque se remplit.
+
+|===
+
+
+== Alertes de seau
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Le bucket FabricPool a un paramètre de cohérence de bucket non pris en charge
+ a| 
+Un bucket FabricPool utilise le niveau de cohérence Disponible ou Site fort, qui n'est pas pris en charge.
+
+
+
+ a| 
+Le bucket FabricPool a un paramètre de contrôle de version non pris en charge
+ a| 
+Un bucket FabricPool a le contrôle de version ou le verrouillage d'objet S3 activé, qui ne sont pas pris en charge.
+
+|===
+
+
+== Alertes Cassandra
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Erreur du compacteur automatique Cassandra
+ a| 
+Le compacteur automatique Cassandra a rencontré une erreur.
+
+
+
+ a| 
+Les mesures du compacteur automatique Cassandra sont obsolètes
+ a| 
+Les métriques qui décrivent l'auto-compacteur Cassandra sont obsolètes.
+
+
+
+ a| 
+Erreur de communication Cassandra
+ a| 
+Les nœuds qui exécutent le service Cassandra ont des difficultés à communiquer entre eux.
+
+
+
+ a| 
+Les compactions de Cassandra sont surchargées
+ a| 
+Le processus de compactage de Cassandra est surchargé.
+
+
+
+ a| 
+Erreur d'écriture surdimensionnée de Cassandra
+ a| 
+Un processus StorageGRID interne a envoyé une demande d’écriture à Cassandra qui était trop volumineuse.
+
+
+
+ a| 
+Les mesures de réparation de Cassandra sont obsolètes
+ a| 
+Les métriques qui décrivent les travaux de réparation de Cassandra sont obsolètes.
+
+
+
+ a| 
+La réparation de Cassandra progresse lentement
+ a| 
+La progression des réparations de la base de données Cassandra est lente.
+
+
+
+ a| 
+Service de réparation Cassandra non disponible
+ a| 
+Le service de réparation Cassandra n'est pas disponible.
+
+
+
+ a| 
+Corruption de la table Cassandra
+ a| 
+Cassandra a détecté une corruption de table.  Cassandra redémarre automatiquement s'il détecte une corruption de table.
+
+|===
+
+
+== Alertes du pool de stockage cloud
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Erreur de connectivité du pool de stockage cloud
+ a| 
+Le contrôle d’intégrité des pools de stockage cloud a détecté une ou plusieurs nouvelles erreurs.
+
+
+
+ a| 
+Expiration de la certification d'entité finale IAM Roles Anywhere
+ a| 
+Le certificat d’entité finale IAM Roles Anywhere est sur le point d’expirer.
+
+|===
+
+
+== Alertes de réplication inter-réseaux
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Échec permanent de la réplication inter-réseau
+ a| 
+Une erreur de réplication inter-grille s'est produite et nécessite l'intervention de l'utilisateur pour être résolue.
+
+
+
+ a| 
+Ressources de réplication inter-réseaux indisponibles
+ a| 
+Les demandes de réplication inter-grille sont en attente car une ressource n'est pas disponible.
+
+|===
+
+
+== Alertes DHCP
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Le bail DHCP a expiré
+ a| 
+Le bail DHCP sur une interface réseau a expiré.
+
+
+
+ a| 
+Le bail DHCP expire bientôt
+ a| 
+Le bail DHCP sur une interface réseau expire bientôt.
+
+
+
+ a| 
+Serveur DHCP indisponible
+ a| 
+Le serveur DHCP n'est pas disponible.
+
+|===
+
+
+== Alertes de débogage et de traçage
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Impact sur les performances de débogage
+ a| 
+Lorsque le mode de débogage est activé, les performances du système peuvent être affectées négativement.
+
+
+
+ a| 
+Configuration de trace activée
+ a| 
+Lorsque la configuration de trace est activée, les performances du système peuvent être affectées négativement.
+
+|===
+
+
+== Alertes par e-mail et AutoSupport
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Échec de l'envoi du message AutoSupport
+ a| 
+Le message AutoSupport le plus récent n'a pas pu être envoyé.
+
+
+
+ a| 
+Échec de la résolution du nom de domaine
+ a| 
+Le nœud StorageGRID n'a pas pu résoudre les noms de domaine.
+
+
+
+ a| 
+Échec de la notification par e-mail
+ a| 
+La notification par e-mail d'une alerte n'a pas pu être envoyée.
+
+
+
+ a| 
+SNMP informe les erreurs
+ a| 
+Erreurs lors de l'envoi de notifications d'information SNMP à une destination d'interruption.
+
+
+
+ a| 
+Connexion SSH ou console détectée
+ a| 
+Au cours des dernières 24 heures, un utilisateur s'est connecté avec la console Web ou SSH.
+
+|===
+
+
+== Alertes de codage d'effacement (EC)
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Échec du rééquilibrage de l'EC
+ a| 
+La procédure de rééquilibrage de la CE a échoué ou a été arrêtée.
+
+
+
+ a| 
+Échec de la réparation de l'EC
+ a| 
+Une tâche de réparation des données EC a échoué ou a été arrêtée.
+
+
+
+ a| 
+Réparation de l'EC bloquée
+ a| 
+Une tâche de réparation des données EC est bloquée.
+
+
+
+ a| 
+Erreur de vérification des fragments codés par effacement
+ a| 
+Les fragments codés par effacement ne peuvent plus être vérifiés.  Les fragments corrompus peuvent ne pas être réparés.
+
+|===
+
+
+== Alertes d'expiration des certificats
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Expiration du certificat CA du proxy administrateur
+ a| 
+Un ou plusieurs certificats du groupe CA du serveur proxy d'administration sont sur le point d'expirer.
+
+
+
+ a| 
+Expiration du certificat client
+ a| 
+Un ou plusieurs certificats clients sont sur le point d’expirer.
+
+
+
+ a| 
+Expiration du certificat de serveur global pour S3 et Swift
+ a| 
+Le certificat de serveur global pour S3 et Swift est sur le point d’expirer.
+
+
+
+ a| 
+Expiration du certificat du point de terminaison de l'équilibreur de charge
+ a| 
+Un ou plusieurs certificats de point de terminaison d’équilibrage de charge sont sur le point d’expirer.
+
+
+
+ a| 
+Expiration du certificat du serveur pour l'interface de gestion
+ a| 
+Le certificat du serveur utilisé pour l'interface de gestion est sur le point d'expirer.
+
+
+
+ a| 
+Expiration du certificat CA syslog externe
+ a| 
+Le certificat de l'autorité de certification (CA) utilisé pour signer le certificat du serveur syslog externe est sur le point d'expirer.
+
+
+
+ a| 
+Expiration du certificat client syslog externe
+ a| 
+Le certificat client d’un serveur syslog externe est sur le point d’expirer.
+
+
+
+ a| 
+Expiration du certificat du serveur syslog externe
+ a| 
+Le certificat du serveur présenté par le serveur syslog externe est sur le point d'expirer.
+
+|===
+
+
+== Alertes du réseau Grid
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Inadéquation du MTU du réseau de grille
+ a| 
+Le paramètre MTU pour l'interface du réseau de grille (eth0) diffère considérablement selon les nœuds de la grille.
+
+|===
+
+
+== Alertes de la fédération du réseau
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Expiration du certificat de fédération de réseau
+ a| 
+Un ou plusieurs certificats de fédération de grille sont sur le point d’expirer.
+
+
+
+ a| 
+Échec de la connexion à la fédération de réseau
+ a| 
+La connexion de fédération de réseau entre le réseau local et le réseau distant ne fonctionne pas.
+
+|===
+
+
+== Alertes d'utilisation élevée ou de latence élevée
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Utilisation élevée du tas Java
+ a| 
+Un pourcentage élevé de l'espace du tas Java est utilisé.
+
+
+
+ a| 
+Latence élevée pour les requêtes de métadonnées
+ a| 
+Le temps moyen des requêtes de métadonnées Cassandra est trop long.
+
+|===
+
+
+== Alertes de fédération d'identité
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Échec de la synchronisation de la fédération d'identité
+ a| 
+Impossible de synchroniser les groupes fédérés et les utilisateurs à partir de la source d'identité.
+
+
+
+ a| 
+Échec de la synchronisation de la fédération d'identité pour un locataire
+ a| 
+Impossible de synchroniser les groupes fédérés et les utilisateurs à partir de la source d’identité configurée par un locataire.
+
+|===
+
+
+== Alertes de gestion du cycle de vie de l'information (ILM)
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Placement ILM irréalisable
+ a| 
+Une instruction de placement dans une règle ILM ne peut pas être réalisée pour certains objets.
+
+
+
+ a| 
+Taux de balayage ILM faible
+ a| 
+Le taux de numérisation ILM est défini sur moins de 100 objets/seconde.
+
+|===
+
+
+== Alertes du serveur de gestion des clés (KMS)
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Expiration du certificat KMS CA
+ a| 
+Le certificat de l’autorité de certification (CA) utilisé pour signer le certificat du serveur de gestion de clés (KMS) est sur le point d’expirer.
+
+
+
+ a| 
+Expiration du certificat client KMS
+ a| 
+Le certificat client d'un serveur de gestion de clés est sur le point d'expirer
+
+
+
+ a| 
+Échec du chargement de la configuration KMS
+ a| 
+La configuration du serveur de gestion des clés existe mais n'a pas pu être chargée.
+
+
+
+ a| 
+Erreur de connectivité KMS
+ a| 
+Un nœud d’appareil n’a pas pu se connecter au serveur de gestion des clés de son site.
+
+
+
+ a| 
+Nom de la clé de chiffrement KMS introuvable
+ a| 
+Le serveur de gestion de clés configuré ne dispose pas de clé de chiffrement correspondant au nom fourni.
+
+
+
+ a| 
+Échec de la rotation de la clé de chiffrement KMS
+ a| 
+Tous les volumes de l'appareil ont été déchiffrés avec succès, mais un ou plusieurs volumes n'ont pas pu pivoter vers la dernière clé.
+
+
+
+ a| 
+KMS n'est pas configuré
+ a| 
+Aucun serveur de gestion de clés n'existe pour ce site.
+
+
+
+ a| 
+La clé KMS n'a pas réussi à déchiffrer un volume d'appareil
+ a| 
+Un ou plusieurs volumes sur un appareil avec chiffrement de nœud activé n'ont pas pu être déchiffrés avec la clé KMS actuelle.
+
+
+
+ a| 
+Expiration du certificat du serveur KMS
+ a| 
+Le certificat de serveur utilisé par le serveur de gestion des clés (KMS) est sur le point d'expirer.
+
+
+
+ a| 
+Échec de connectivité du serveur KMS
+ a| 
+Un nœud d’appareil n’a pas pu se connecter à un ou plusieurs serveurs du cluster de serveurs de gestion de clés pour son site.
+
+|===
+
+
+== Alertes de l'équilibreur de charge
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Connexions d'équilibrage de charge sans demande élevée
+ a| 
+Un pourcentage élevé de connexions aux points de terminaison de l'équilibreur de charge se sont déconnectées sans exécuter de requêtes.
+
+|===
+
+
+== Alertes de décalage d'horloge locale
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Grand décalage horaire de l'horloge locale
+ a| 
+Le décalage entre l'horloge locale et l'heure du protocole NTP (Network Time Protocol) est trop important.
+
+|===
+
+
+== Alertes de faible mémoire ou d'espace insuffisant
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Faible capacité du disque du journal d'audit
+ a| 
+L'espace disponible pour les journaux d'audit est faible. Si cette condition n’est pas résolue, les opérations S3 ou Swift peuvent échouer.
+
+
+
+ a| 
+Faible mémoire de nœud disponible
+ a| 
+La quantité de RAM disponible sur un nœud est faible.
+
+
+
+ a| 
+Faible espace libre pour le pool de stockage
+ a| 
+L'espace disponible pour stocker les données d'objet dans le nœud de stockage est faible.
+
+
+
+ a| 
+Faible mémoire de nœud installée
+ a| 
+La quantité de mémoire installée sur un nœud est faible.
+
+
+
+ a| 
+Stockage de métadonnées faibles
+ a| 
+L'espace disponible pour stocker les métadonnées des objets est faible.
+
+
+
+ a| 
+Faible capacité de disque métrique
+ a| 
+L'espace disponible pour la base de données des métriques est faible.
+
+
+
+ a| 
+Faible stockage de données d'objets
+ a| 
+L'espace disponible pour stocker les données des objets est faible.
+
+
+
+ a| 
+Remplacement du filigrane en lecture seule
+ a| 
+Le remplacement du filigrane en lecture seule du volume de stockage est inférieur au filigrane optimisé minimum pour un nœud de stockage.
+
+
+
+ a| 
+Faible capacité du disque racine
+ a| 
+L'espace disponible sur le disque racine est faible.
+
+
+
+ a| 
+Faible capacité de données du système
+ a| 
+L'espace disponible pour /var/local est faible. Si cette condition n’est pas résolue, les opérations S3 ou Swift peuvent échouer.
+
+
+
+ a| 
+Espace libre dans le répertoire tmp faible
+ a| 
+L'espace disponible dans le répertoire /tmp est faible.
+
+|===
+
+
+== Alertes de nœud ou de réseau de nœuds
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Utilisation de réception du réseau d'administration
+ a| 
+L'utilisation de réception sur le réseau d'administration est élevée.
+
+
+
+ a| 
+Utilisation de la transmission du réseau administrateur
+ a| 
+L'utilisation de la transmission sur le réseau d'administration est élevée.
+
+
+
+ a| 
+Échec de la configuration du pare-feu
+ a| 
+Échec de l'application de la configuration du pare-feu.
+
+
+
+ a| 
+Points de terminaison de l'interface de gestion en mode de secours
+ a| 
+Tous les points de terminaison de l’interface de gestion reviennent depuis trop longtemps aux ports par défaut.
+
+
+
+ a| 
+Erreur de connectivité du réseau de nœuds
+ a| 
+Des erreurs se sont produites lors du transfert de données entre les nœuds.
+
+
+
+ a| 
+Erreur de trame de réception du réseau de nœuds
+ a| 
+Un pourcentage élevé de trames réseau reçues par un nœud comportaient des erreurs.
+
+
+
+ a| 
+Le nœud n'est pas synchronisé avec le serveur NTP
+ a| 
+Le nœud n'est pas synchronisé avec le serveur de protocole de temps réseau (NTP).
+
+
+
+ a| 
+Nœud non verrouillé avec le serveur NTP
+ a| 
+Le nœud n'est pas verrouillé sur un serveur de protocole de temps réseau (NTP).
+
+
+
+ a| 
+Réseau de nœuds non-appareils en panne
+ a| 
+Un ou plusieurs périphériques réseau sont en panne ou déconnectés.
+
+
+
+ a| 
+Liaison de l'appareil de services en panne sur le réseau d'administration
+ a| 
+L'interface de l'appareil avec le réseau d'administration (eth1) est en panne ou déconnectée.
+
+
+
+ a| 
+Liaison de l'appareil de services interrompue sur le port 1 du réseau d'administration
+ a| 
+Le port réseau administrateur 1 de l'appareil est en panne ou déconnecté.
+
+
+
+ a| 
+Liaison de l'appareil de services en panne sur le réseau client
+ a| 
+L'interface de l'appareil avec le réseau client (eth2) est en panne ou déconnectée.
+
+
+
+ a| 
+Liaison de l'appareil de services interrompue sur le port réseau 1
+ a| 
+Le port réseau 1 de l'appareil est hors service ou déconnecté.
+
+
+
+ a| 
+Liaison de l'appareil de services interrompue sur le port réseau 2
+ a| 
+Le port réseau 2 de l'appareil est hors service ou déconnecté.
+
+
+
+ a| 
+Liaison de l'appareil de services interrompue sur le port réseau 3
+ a| 
+Le port réseau 3 de l'appareil est hors service ou déconnecté.
+
+
+
+ a| 
+Liaison de l'appareil de services interrompue sur le port réseau 4
+ a| 
+Le port réseau 4 de l'appareil est hors service ou déconnecté.
+
+
+
+ a| 
+Liaison du dispositif de stockage interrompue sur le réseau d'administration
+ a| 
+L'interface de l'appareil avec le réseau d'administration (eth1) est en panne ou déconnectée.
+
+
+
+ a| 
+Liaison du dispositif de stockage interrompue sur le port 1 du réseau administrateur
+ a| 
+Le port réseau administrateur 1 de l'appareil est en panne ou déconnecté.
+
+
+
+ a| 
+Liaison du dispositif de stockage interrompue sur le réseau client
+ a| 
+L'interface de l'appareil avec le réseau client (eth2) est en panne ou déconnectée.
+
+
+
+ a| 
+Liaison du dispositif de stockage interrompue sur le port réseau 1
+ a| 
+Le port réseau 1 de l'appareil est hors service ou déconnecté.
+
+
+
+ a| 
+Liaison du dispositif de stockage interrompue sur le port réseau 2
+ a| 
+Le port réseau 2 de l'appareil est hors service ou déconnecté.
+
+
+
+ a| 
+Liaison du dispositif de stockage interrompue sur le port réseau 3
+ a| 
+Le port réseau 3 de l'appareil est hors service ou déconnecté.
+
+
+
+ a| 
+Liaison du dispositif de stockage interrompue sur le port réseau 4
+ a| 
+Le port réseau 4 de l'appareil est hors service ou déconnecté.
+
+
+
+ a| 
+Le nœud de stockage n'est pas dans l'état de stockage souhaité
+ a| 
+Le service LDR sur un nœud de stockage ne peut pas passer à l'état souhaité en raison d'une erreur interne ou d'un problème lié au volume
+
+
+
+ a| 
+Utilisation de la connexion TCP
+ a| 
+Le nombre de connexions TCP sur ce nœud approche le nombre maximum pouvant être suivi.
+
+
+
+ a| 
+Impossible de communiquer avec le nœud
+ a| 
+Un ou plusieurs services ne répondent pas ou le nœud ne peut pas être atteint.
+
+
+
+ a| 
+Redémarrage inattendu du nœud
+ a| 
+Un nœud a redémarré de manière inattendue au cours des dernières 24 heures.
+
+|===
+
+
+== Alertes d'objets
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+La vérification de l'existence de l'objet a échoué
+ a| 
+La tâche de vérification de l’existence de l’objet a échoué.
+
+
+
+ a| 
+Vérification de l'existence de l'objet bloquée
+ a| 
+Le travail de vérification de l'existence de l'objet est bloqué.
+
+
+
+ a| 
+Objets perdus
+ a| 
+Un ou plusieurs objets ont été perdus de la grille.
+
+
+
+ a| 
+S3 PUT taille de l'objet trop grande
+ a| 
+Un client tente une opération PUT Object qui dépasse les limites de taille S3.
+
+
+
+ a| 
+Objet corrompu non identifié détecté
+ a| 
+Un fichier a été trouvé dans le stockage d’objets répliqués qui n’a pas pu être identifié comme un objet répliqué.
+
+|===
+
+
+== Alertes des services de la plateforme
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Faible capacité des demandes en attente des services de la plateforme
+ a| 
+Le nombre de demandes de services de plateforme en attente approche de sa capacité.
+
+
+
+ a| 
+Services de plateforme indisponibles
+ a| 
+Trop peu de nœuds de stockage avec le service RSM sont en cours d'exécution ou disponibles sur un site.
+
+|===
+
+
+== Alertes de volume de stockage
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Le volume de stockage nécessite une attention particulière
+ a| 
+Un volume de stockage est hors ligne et nécessite une attention particulière.
+
+
+
+ a| 
+Le volume de stockage doit être restauré
+ a| 
+Un volume de stockage a été récupéré et doit être restauré.
+
+
+
+ a| 
+Volume de stockage hors ligne
+ a| 
+Un volume de stockage est hors ligne depuis plus de 5 minutes.
+
+
+
+ a| 
+Tentative de remontage du volume de stockage
+ a| 
+Un volume de stockage était hors ligne et a déclenché un remontage automatique.  Cela pourrait indiquer un problème de lecteur ou des erreurs de système de fichiers.
+
+
+
+ a| 
+La restauration du volume n'a pas réussi à démarrer la réparation des données répliquées
+ a| 
+La réparation des données répliquées pour un volume réparé n'a pas pu être démarrée automatiquement.
+
+|===
+
+
+== Alertes des services StorageGRID
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+service nginx utilisant la configuration de sauvegarde
+ a| 
+La configuration du service nginx n'est pas valide.  La configuration précédente est désormais utilisée.
+
+
+
+ a| 
+service nginx-gw utilisant la configuration de sauvegarde
+ a| 
+La configuration du service nginx-gw n'est pas valide.  La configuration précédente est désormais utilisée.
+
+
+
+ a| 
+Redémarrage requis pour désactiver FIPS
+ a| 
+La politique de sécurité ne nécessite pas le mode FIPS, mais le module de sécurité cryptographique NetApp est activé.
+
+
+
+ a| 
+Redémarrage requis pour activer FIPS
+ a| 
+La politique de sécurité nécessite le mode FIPS, mais le module de sécurité cryptographique NetApp est désactivé.
+
+
+
+ a| 
+Service SSH utilisant la configuration de sauvegarde
+ a| 
+La configuration du service SSH n'est pas valide.  La configuration précédente est désormais utilisée.
+
+|===
+
+
+== Alertes locataires
+
+[cols="1a,2a"]
+|===
+| Nom de l'alerte | Description 
+
+
+ a| 
+Utilisation élevée des quotas des locataires
+ a| 
+Un pourcentage élevé d'espace de quota est utilisé.  Cette règle est désactivée par défaut car elle pourrait entraîner trop de notifications.
+
+|===

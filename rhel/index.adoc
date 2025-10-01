@@ -1,0 +1,59 @@
+---
+permalink: rhel/index.html 
+sidebar: sidebar 
+keywords: red hat enterprise linux, rhel, quick start 
+summary: 'Suivez ces étapes de haut niveau pour installer un nœud Linux StorageGRID Red Hat Enterprise Linux \(RHEL\).' 
+---
+= Démarrage rapide pour l'installation de StorageGRID sur Red Hat Enterprise Linux
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Suivez ces étapes de haut niveau pour installer un nœud Linux StorageGRID Red Hat Enterprise Linux (RHEL).
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["Un"]Préparation
+[role="quick-margin-list"]
+* En savoir plus surlink:../primer/storagegrid-architecture-and-network-topology.html["Architecture et topologie du réseau StorageGRID"] .
+* Renseignez-vous sur les spécificités delink:../network/index.html["Réseau StorageGRID"] .
+* Rassemblez et préparez leslink:required-materials.html["Informations et matériel requis"] .
+* Préparez le nécessairelink:cpu-and-ram-requirements.html["CPU et RAM"] .
+* Prévoirlink:storage-and-performance-requirements.html["exigences de stockage et de performances"] .
+* link:how-host-wide-settings-change.html["Préparer les serveurs Linux"]qui hébergera vos nœuds StorageGRID .
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-2.png["Deux"]Déploiement
+[role="quick-margin-para"]
+Déployer des nœuds de grille.  Lorsque vous déployez des nœuds de grille, ils sont créés dans le cadre du système StorageGRID et connectés à un ou plusieurs réseaux.
+
+[role="quick-margin-list"]
+* Pour déployer des nœuds de grille basés sur des logiciels sur les hôtes que vous avez préparés à l'étape 1, utilisez la ligne de commande Linux etlink:creating-node-configuration-files.html["fichiers de configuration des nœuds"] .
+* Pour déployer les nœuds d'appliance StorageGRID , suivez les instructions https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/index.html["Démarrage rapide pour l'installation du matériel"^] .
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["Trois"]Configuration
+[role="quick-margin-para"]
+Lorsque tous les nœuds ont été déployés, utilisez le gestionnaire de grille pourlink:navigating-to-grid-manager.html["configurer la grille et terminer l'installation"] .
+
+
+
+== Automatiser l'installation
+
+Pour gagner du temps et assurer la cohérence, vous pouvez automatiser l'installation du service hôte StorageGRID et la configuration des nœuds de grille.
+
+* Utilisez un framework d'orchestration standard tel qu'Ansible, Puppet ou Chef pour automatiser :
++
+** Installation de RHEL
+** Configuration du réseau et du stockage
+** Installation du moteur de conteneur et du service hôte StorageGRID
+** Déploiement de nœuds de réseau virtuels
+
+
++
+Voir link:automating-installation.html#automate-the-installation-and-configuration-of-the-storagegrid-host-service["Automatiser l'installation et la configuration du service hôte StorageGRID"] .
+
+* Après avoir déployé les nœuds de grille,link:automating-installation.html#automate-the-configuration-of-storagegrid["automatiser la configuration du système StorageGRID"] en utilisant le script de configuration Python fourni dans l'archive d'installation.
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/automating-appliance-installation-and-configuration.html["Automatiser l'installation et la configuration des nœuds de réseau d'appareils"^]
+* Si vous êtes un développeur avancé de déploiements StorageGRID , automatisez l'installation des nœuds de grille en utilisant lelink:overview-of-installation-rest-api.html["installation de l'API REST"] .
+

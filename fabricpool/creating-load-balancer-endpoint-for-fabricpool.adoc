@@ -1,0 +1,169 @@
+---
+permalink: fabricpool/creating-load-balancer-endpoint-for-fabricpool.html 
+sidebar: sidebar 
+keywords: fabricPool, load balancer, endpoint, load balancing, create, creating, certificate 
+summary: 'StorageGRID utilise un équilibreur de charge pour gérer la charge de travail des applications clientes, telles que FabricPool.  L"équilibrage de charge maximise la vitesse et la capacité de connexion sur plusieurs nœuds de stockage.' 
+---
+= Créer un point de terminaison d'équilibrage de charge pour FabricPool
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID utilise un équilibreur de charge pour gérer la charge de travail des applications clientes, telles que FabricPool.  L'équilibrage de charge maximise la vitesse et la capacité de connexion sur plusieurs nœuds de stockage.
+
+Lors de la configuration de StorageGRID pour une utilisation avec FabricPool, vous devez configurer un point de terminaison d'équilibrage de charge et télécharger ou générer un certificat de point de terminaison d'équilibrage de charge, qui est utilisé pour sécuriser la connexion entre ONTAP et StorageGRID.
+
+Pour utiliser l'assistant de configuration FabricPool pour effectuer cette tâche, accédez àlink:use-fabricpool-setup-wizard-steps.html["Accéder et terminer l'assistant de configuration de FabricPool"] .
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:../admin/admin-group-permissions.html["Autorisation d'accès root"] .
+* Vous avez examiné le générallink:../admin/managing-load-balancing.html["considérations pour l'équilibrage de charge"] ainsi que lelink:best-practices-for-load-balancing.html["meilleures pratiques d'équilibrage de charge pour FabricPool"] .
+
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Réseau* > *Points de terminaison de l'équilibreur de charge*.
+. Sélectionnez *Créer*.
+. Pour l’étape *Saisir les détails du point de terminaison*, remplissez les champs suivants.
++
+[cols="1a,2a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Nom
+ a| 
+Un nom descriptif pour le point de terminaison.
+
+
+
+ a| 
+Port
+ a| 
+Le port StorageGRID que vous souhaitez utiliser pour l’équilibrage de charge.  Ce champ est défini par défaut sur 10433 pour le premier point de terminaison que vous créez, mais vous pouvez saisir n'importe quel port externe inutilisé.  Si vous entrez 80 ou 443, le point de terminaison est configuré uniquement sur les nœuds de passerelle.  Ces ports sont réservés sur les nœuds d’administration.
+
+*Remarque :* les ports utilisés par d’autres services de grille ne sont pas autorisés. Voir lelink:../network/internal-grid-node-communications.html["Référence du port réseau"] .
+
+Vous fournirez ce numéro à ONTAP lorsque vous attachez StorageGRID en tant que niveau cloud FabricPool .
+
+
+
+ a| 
+Type de client
+ a| 
+Sélectionnez *S3*.
+
+
+
+ a| 
+Protocole réseau
+ a| 
+Sélectionnez *HTTPS*.
+
+*Remarque* : la communication avec StorageGRID sans chiffrement TLS est prise en charge mais non recommandée.
+
+|===
+. Pour l’étape *Sélectionner le mode de liaison*, spécifiez le mode de liaison.  Le mode de liaison contrôle la manière dont le point de terminaison est accessible à l'aide de n'importe quelle adresse IP ou à l'aide d'adresses IP et d'interfaces réseau spécifiques.
++
+[cols="1a,3a"]
+|===
+| Mode | Description 
+
+
+ a| 
+Global (par défaut)
+ a| 
+Les clients peuvent accéder au point de terminaison à l'aide de l'adresse IP de n'importe quel nœud de passerelle ou nœud d'administration, de l'adresse IP virtuelle (VIP) de n'importe quel groupe HA sur n'importe quel réseau ou d'un nom de domaine complet correspondant.
+
+Utilisez le paramètre *Global* (par défaut) sauf si vous devez restreindre l'accessibilité de ce point de terminaison.
+
+
+
+ a| 
+IP virtuelles des groupes HA
+ a| 
+Les clients doivent utiliser une adresse IP virtuelle (ou un nom de domaine complet correspondant) d’un groupe HA pour accéder à ce point de terminaison.
+
+Les points de terminaison avec ce mode de liaison peuvent tous utiliser le même numéro de port, à condition que les groupes HA que vous sélectionnez pour les points de terminaison ne se chevauchent pas.
+
+
+
+ a| 
+Interfaces de nœuds
+ a| 
+Les clients doivent utiliser les adresses IP (ou les noms de domaine complets correspondants) des interfaces de nœuds sélectionnées pour accéder à ce point de terminaison.
+
+
+
+ a| 
+Type de nœud
+ a| 
+En fonction du type de nœud que vous sélectionnez, les clients doivent utiliser soit l'adresse IP (ou le nom de domaine complet correspondant) de n'importe quel nœud d'administration, soit l'adresse IP (ou le nom de domaine complet correspondant) de n'importe quel nœud de passerelle pour accéder à ce point de terminaison.
+
+|===
+. Pour l'étape *Accès locataire*, sélectionnez l'une des options suivantes :
++
+[cols="1a,2a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Autoriser tous les locataires (par défaut)
+ a| 
+Tous les comptes locataires peuvent utiliser ce point de terminaison pour accéder à leurs buckets.
+
+*Autoriser tous les locataires* est presque toujours l'option appropriée pour le point de terminaison de l'équilibreur de charge utilisé pour FabricPool.
+
+Vous devez sélectionner cette option si vous n’avez pas encore créé de compte locataire.
+
+
+
+ a| 
+Autoriser les locataires sélectionnés
+ a| 
+Seuls les comptes locataires sélectionnés peuvent utiliser ce point de terminaison pour accéder à leurs compartiments.
+
+
+
+ a| 
+Bloquer les locataires sélectionnés
+ a| 
+Les comptes locataires sélectionnés ne peuvent pas utiliser ce point de terminaison pour accéder à leurs compartiments.  Tous les autres locataires peuvent utiliser ce point de terminaison.
+
+|===
+. Pour l’étape *Joindre le certificat*, sélectionnez l’une des options suivantes :
++
+[cols="1a,2a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Télécharger le certificat (recommandé)
+ a| 
+Utilisez cette option pour télécharger un certificat de serveur signé par une autorité de certification, une clé privée de certificat et un ensemble d'autorité de certification facultatif.
+
+
+
+ a| 
+Générer un certificat
+ a| 
+Utilisez cette option pour générer un certificat auto-signé.  Voirlink:../admin/configuring-load-balancer-endpoints.html["Configurer les points de terminaison de l'équilibreur de charge"] pour plus de détails sur ce qu'il faut saisir.
+
+
+
+ a| 
+Utiliser le certificat StorageGRID S3
+ a| 
+Cette option n'est disponible que si vous avez déjà téléchargé ou généré une version personnalisée du certificat global StorageGRID . Voirlink:../admin/configuring-custom-server-certificate-for-storage-node.html["Configurer les certificats API S3"] pour plus de détails.
+
+|===
+. Sélectionnez *Créer*.
+
+
+
+NOTE: Les modifications apportées à un certificat de point de terminaison peuvent prendre jusqu'à 15 minutes pour être appliquées à tous les nœuds.

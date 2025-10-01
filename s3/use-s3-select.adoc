@@ -1,0 +1,152 @@
+---
+permalink: s3/use-s3-select.html 
+sidebar: sidebar 
+keywords: use S3 Select, S3 Select 
+summary: StorageGRID prend en charge les clauses, types de données, opérateurs et mots clés réservés Amazon S3 Select suivants pour la commande SelectObjectContent. 
+---
+= Utiliser S3 Select
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID prend en charge les clauses, types de données et opérateurs Amazon S3 Select suivants pour lelink:select-object-content.html["Commande SelectObjectContent"] .
+
+
+NOTE: Tous les éléments non répertoriés ne sont pas pris en charge.
+
+Pour la syntaxe, voirlink:select-object-content.html["Sélectionner le contenu de l'objet"] .  Pour plus d'informations sur S3 Select, consultez le https://docs.aws.amazon.com/AmazonS3/latest/userguide/selecting-content-from-objects.html["Documentation AWS pour S3 Select"^] .
+
+Seuls les comptes locataires pour lesquels S3 Select est activé peuvent émettre des requêtes SelectObjectContent. Voir lelink:../admin/manage-s3-select-for-tenant-accounts.html["considérations et exigences pour l'utilisation de S3 Select"] .
+
+
+
+== Clauses
+
+* Liste SELECT
+* Clause FROM
+* Clause WHERE
+* Clause LIMIT
+
+
+
+
+== Types de données
+
+* booléen
+* entier
+* chaîne
+* flotter
+* décimal, numérique
+* horodatage
+
+
+
+
+== Opérateurs
+
+
+
+=== Opérateurs logiques
+
+* ET
+* PAS
+* OU
+
+
+
+
+=== Opérateurs de comparaison
+
+* <
+* >
+* <=
+* >=
+* =
+* =
+* <>
+* !=
+* ENTRE
+* DANS
+
+
+
+
+=== Opérateurs de recherche de motifs
+
+* COMME
+* _
+* %
+
+
+
+
+=== opérateurs unitaires
+
+* EST NUL
+* N'EST PAS NUL
+
+
+
+
+=== opérateurs mathématiques
+
+* +
+* -
+* *
+* /
+* %
+
+
+StorageGRID suit la priorité de l'opérateur Amazon S3 Select.
+
+
+
+== Fonctions d'agrégation
+
+* MOYENNE()
+* COMPTER(*)
+* MAX()
+* MIN()
+* SOMME()
+
+
+
+
+== Fonctions conditionnelles
+
+* CAS
+* SE FONDRE
+* NULLIF
+
+
+
+
+== Fonctions de conversion
+
+* CAST (pour le type de données pris en charge)
+
+
+
+
+== Fonctions de date
+
+* DATE_ADD
+* DATE_DIFF
+* EXTRAIT
+* TO_STRING
+* À_HORODATAGE
+* UTCNOW
+
+
+
+
+== Fonctions de chaîne
+
+* LONGUEUR_CARACTÈRE, LONGUEUR_CARACTÈRE
+* INFÉRIEUR
+* SOUS-CHAÎNE
+* GARNITURE
+* SUPÉRIEUR
+

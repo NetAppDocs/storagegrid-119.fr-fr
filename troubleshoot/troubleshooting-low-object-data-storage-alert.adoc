@@ -1,0 +1,84 @@
+---
+permalink: troubleshoot/troubleshooting-low-object-data-storage-alert.html 
+sidebar: sidebar 
+keywords: how to troubleshoot the Low object data storage alert 
+summary: 'L"alerte *Faible stockage de données d"objet* surveille la quantité d"espace disponible pour stocker les données d"objet sur chaque nœud de stockage.' 
+---
+= Dépannage de l'alerte de faible stockage de données d'objet
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'alerte *Faible stockage de données d'objet* surveille la quantité d'espace disponible pour stocker les données d'objet sur chaque nœud de stockage.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+
+
+.À propos de cette tâche
+L'alerte *Faible stockage de données d'objet* est déclenchée lorsque la quantité totale de données d'objet répliquées et codées par effacement sur un nœud de stockage répond à l'une des conditions configurées dans la règle d'alerte.
+
+Par défaut, une alerte majeure est déclenchée lorsque cette condition est évaluée comme vraie :
+
+[listing]
+----
+(storagegrid_storage_utilization_data_bytes/
+(storagegrid_storage_utilization_data_bytes + storagegrid_storage_utilization_usable_space_bytes)) >=0.90
+----
+Dans cet état :
+
+* `storagegrid_storage_utilization_data_bytes`est une estimation de la taille totale des données d'objet répliquées et codées par effacement pour un nœud de stockage.
+* `storagegrid_storage_utilization_usable_space_bytes`est la quantité totale d'espace de stockage d'objets restant pour un nœud de stockage.
+
+
+Si une alerte majeure ou mineure de *Faible stockage de données d'objet* est déclenchée, vous devez effectuer une procédure d'extension dès que possible.
+
+.Étapes
+. Sélectionnez *ALERTES* > *Actuel*.
++
+La page Alertes apparaît.
+
+. Dans le tableau des alertes, développez le groupe d’alertes *Faible stockage de données d’objet*, si nécessaire, et sélectionnez l’alerte que vous souhaitez afficher.
++
+
+NOTE: Sélectionnez l’alerte, pas l’en-tête d’un groupe d’alertes.
+
+. Vérifiez les détails dans la boîte de dialogue et notez les points suivants :
++
+** Le temps déclenché
+** Le nom du site et du nœud
+** Les valeurs actuelles des métriques pour cette alerte
+
+
+. Sélectionnez *NODES* > *_Storage Node ou Site_* > *Storage*.
+. Placez votre curseur sur le graphique Stockage utilisé - Données de l'objet.
++
+Les valeurs suivantes sont affichées :
+
++
+** *Utilisé (%)* : Le pourcentage de l'espace total utilisable qui a été utilisé pour les données de l'objet.
+** *Utilisé* : la quantité d'espace total utilisable qui a été utilisée pour les données de l'objet.
+** *Données répliquées* : une estimation de la quantité de données d’objet répliquées sur ce nœud, ce site ou cette grille.
+** *Données codées par effacement* : une estimation de la quantité de données d'objet codées par effacement sur ce nœud, ce site ou cette grille.
+** *Total*: La quantité totale d'espace utilisable sur ce nœud, ce site ou cette grille.  La valeur utilisée est la `storagegrid_storage_utilization_data_bytes` métrique.
+
+
++
+image::../media/nodes_page_storage_used_object_data.png[Nœuds Page Stockage Objet Données utilisées]
+
+. Sélectionnez les contrôles de temps au-dessus du graphique pour afficher l'utilisation du stockage sur différentes périodes.
++
+L'analyse de l'utilisation du stockage au fil du temps peut vous aider à comprendre la quantité de stockage utilisée avant et après le déclenchement de l'alerte et peut vous aider à estimer le temps nécessaire pour que l'espace restant du nœud soit plein.
+
+. Dès que possible,link:../expand/guidelines-for-adding-object-capacity.html["ajouter de la capacité de stockage"] à votre réseau.
++
+Vous pouvez ajouter des volumes de stockage (LUN) aux nœuds de stockage existants ou ajouter de nouveaux nœuds de stockage.
+
++
+
+NOTE: Pour plus d'informations, consultez la section link:../admin/managing-full-storage-nodes.html["Gérer des nœuds de stockage complets"] .
+
+

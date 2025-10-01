@@ -1,0 +1,85 @@
+---
+permalink: maintain/step-2-view-details.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, view details 
+summary: 'À partir de l"étape 2 (Afficher les détails) de l"assistant de mise hors service du site, vous pouvez vérifier les nœuds inclus sur le site, voir la quantité d"espace utilisée sur chaque nœud de stockage et évaluer la quantité d"espace libre disponible sur les autres sites de votre grille.' 
+---
+= Étape 2 : Afficher les détails
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+À partir de l'étape 2 (Afficher les détails) de l'assistant de mise hors service du site, vous pouvez vérifier les nœuds inclus sur le site, voir la quantité d'espace utilisée sur chaque nœud de stockage et évaluer la quantité d'espace libre disponible sur les autres sites de votre grille.
+
+.Avant de commencer
+Avant de mettre hors service un site, vous devez vérifier la quantité de données d’objets existantes sur le site.
+
+* Si vous effectuez une mise hors service d'un site connecté, vous devez comprendre la quantité de données d'objets actuellement présentes sur le site avant de mettre à jour ILM.  En fonction des capacités du site et de vos besoins en matière de protection des données, vous pouvez créer de nouvelles règles ILM pour déplacer des données vers d'autres sites ou pour supprimer des données d'objet du site.
+* Effectuez toutes les extensions de nœud de stockage requises avant de démarrer la procédure de mise hors service, si possible.
+* Si vous effectuez une mise hors service d'un site déconnecté, vous devez comprendre la quantité de données d'objet qui deviendront définitivement inaccessibles lorsque vous supprimerez le site.
+
+
+
+CAUTION: Si vous effectuez une mise hors service d'un site déconnecté, ILM ne peut pas déplacer ou supprimer les données d'objet.  Toutes les données restantes sur le site seront perdues.  Cependant, si votre politique ILM a été conçue pour protéger contre la perte d’un seul site, des copies de vos données d’objet existent toujours sur les sites restants. Voir link:../ilm/using-multiple-storage-pools-for-cross-site-replication.html["Activer la protection contre la perte de site"] .
+
+.Étapes
+. À partir de l’étape 2 (Afficher les détails), examinez tous les avertissements liés au site que vous avez choisi de supprimer.
++
+image::../media/decommission_site_step_2_site_warnings.png[Avertissements du site de déclassement Étape 2]
+
++
+Un avertissement apparaît dans ces cas :
+
++
+** Le site comprend un nœud de passerelle.  Si des clients S3 se connectent actuellement à ce nœud, vous devez configurer un nœud équivalent sur un autre site.  Assurez-vous que les clients peuvent se connecter au nœud de remplacement avant de poursuivre la procédure de mise hors service.
+** Le site contient un mélange de sites connectés (image:../media/icon_alert_green_checkmark.png["Icône d'alerte Coche verte"] ) et les nœuds déconnectés (image:../media/icon_alarm_gray_administratively_down.png["Icône d'alarme grise administrativement en panne"] ouimage:../media/icon_alarm_blue_unknown.png["Icône Alarme Bleue Inconnue"] ).  Avant de pouvoir supprimer ce site, vous devez remettre tous les nœuds hors ligne en ligne.
+
+
+. Consultez les détails du site que vous avez choisi de supprimer.
++
+image::../media/decommission_site_step_2_view_details.png[Site de déclassement Étape 2 Voir les détails]
+
++
+Les informations suivantes sont incluses pour le site sélectionné :
+
++
+** Nombre de nœuds
+** L'espace total utilisé, l'espace libre et la capacité de tous les nœuds de stockage du site.
++
+*** Pour la mise hors service d'un site connecté, la valeur *Espace utilisé* représente la quantité de données d'objet qui doivent être déplacées vers d'autres sites ou supprimées avec ILM.
+*** Pour une mise hors service d'un site déconnecté, la valeur *Espace utilisé* indique la quantité de données d'objet qui deviendront inaccessibles lorsque vous supprimerez le site.
+
+
+** Noms de nœuds, types et états de connexion :
++
+*** image:../media/icon_alert_green_checkmark.png["Icône d'alerte Coche verte"](Connecté)
+*** image:../media/icon_alarm_gray_administratively_down.png["Icône d'alarme grise administrativement en panne"](Administrativement en panne)
+*** image:../media/icon_alarm_blue_unknown.png["Icône Alarme Bleue Inconnue"](Inconnu)
+
+
+** Détails sur chaque nœud :
++
+*** Pour chaque nœud de stockage, la quantité d’espace qui a été utilisée pour les données d’objet.
+*** Pour les nœuds d'administration et les nœuds de passerelle, indique si le nœud est actuellement utilisé dans un groupe haute disponibilité (HA).  Vous ne pouvez pas désactiver un nœud d’administration ou un nœud de passerelle utilisé dans un groupe HA.  Avant de commencer la mise hors service, modifiez les groupes HA pour supprimer tous les nœuds du site ou supprimez le groupe HA s'il inclut uniquement des nœuds de ce site. Pour les instructions, voirlink:../admin/managing-high-availability-groups.html["Gérer les groupes de haute disponibilité (HA)"] .
+
+
+
+
+. Dans la section Détails des autres sites de la page, évaluez la quantité d’espace disponible sur les autres sites de votre grille.
++
+image::../media/decommission_site_step_2_view_details_for_other_sites.png[Site de déclassement Étape 2 Voir les détails des autres sites]
+
++
+Si vous effectuez la mise hors service d'un site connecté et que vous prévoyez d'utiliser ILM pour déplacer les données d'objet du site sélectionné (au lieu de simplement les supprimer), vous devez vous assurer que les autres sites disposent d'une capacité suffisante pour accueillir les données déplacées et qu'une capacité adéquate reste disponible pour la croissance future.
+
++
+
+NOTE: Un avertissement s'affiche si l'*Espace utilisé* pour le site que vous souhaitez supprimer est supérieur à l'*Espace libre total pour les autres sites*.  Pour garantir qu'une capacité de stockage adéquate est disponible après la suppression du site, vous devrez peut-être effectuer une extension avant d'exécuter cette procédure.
+
+. Sélectionnez *Suivant*.
++
+L’étape 3 (Réviser la politique ILM) apparaît.
+
+

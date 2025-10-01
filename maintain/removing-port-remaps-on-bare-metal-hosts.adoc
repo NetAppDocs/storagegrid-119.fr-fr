@@ -1,0 +1,92 @@
+---
+permalink: maintain/removing-port-remaps-on-bare-metal-hosts.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, linux, linux host, bare metal host, baremetal host, remove port remap, removing port remap, port remap 
+summary: 'Si vous souhaitez configurer un point de terminaison pour le service Load Balancer et que vous souhaitez utiliser un port qui a déjà été configuré comme port mappé d"un remappage de port, vous devez d"abord supprimer le remappage de port existant, sinon le point de terminaison ne sera pas efficace.' 
+---
+= Supprimer les remappages de ports sur les hôtes bare metal
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si vous souhaitez configurer un point de terminaison pour le service Load Balancer et que vous souhaitez utiliser un port qui a déjà été configuré comme port mappé d'un remappage de port, vous devez d'abord supprimer le remappage de port existant, sinon le point de terminaison ne sera pas efficace.
+
+.À propos de cette tâche
+Si vous exécutez StorageGRID sur des hôtes bare metal, suivez cette procédure au lieu de la procédure générale de suppression des remappages de ports.  Vous devez modifier le fichier de configuration de nœud pour chaque nœud d'administration et nœud de passerelle qui possède des ports remappés en conflit pour supprimer tous les remappages de ports du nœud et redémarrer le nœud.
+
+
+CAUTION: Cette procédure supprime tous les remappages de ports.  Si vous devez conserver certains remappages, contactez le support technique.
+
+Pour plus d'informations sur la configuration des points de terminaison de l'équilibreur de charge, consultez les instructions d'administration de StorageGRID.
+
+
+NOTE: Cette procédure peut entraîner une perte temporaire de service lors du redémarrage des nœuds.
+
+.Étapes
+. Connectez-vous à l’hôte prenant en charge le nœud.  Connectez-vous en tant que root ou avec un compte disposant de l'autorisation sudo.
+. Exécutez la commande suivante pour désactiver temporairement le nœud : `sudo storagegrid node stop _node-name_`
+. À l’aide d’un éditeur de texte tel que vim ou pico, modifiez le fichier de configuration du nœud.
++
+Le fichier de configuration du nœud se trouve à l'adresse `/etc/storagegrid/nodes/_node-name_.conf` .
+
+. Localisez la section du fichier de configuration du nœud qui contient les remappages de port.
++
+Voir les deux dernières lignes de l’exemple suivant.
+
++
+[listing, subs="specialcharacters,quotes"]
+----
+ADMIN_NETWORK_CONFIG = STATIC
+ADMIN_NETWORK_ESL = 10.0.0.0/8, 172.19.0.0/16, 172.21.0.0/16
+ADMIN_NETWORK_GATEWAY = 10.224.0.1
+ADMIN_NETWORK_IP = 10.224.5.140
+ADMIN_NETWORK_MASK = 255.255.248.0
+ADMIN_NETWORK_MTU = 1400
+ADMIN_NETWORK_TARGET = eth1
+ADMIN_NETWORK_TARGET_TYPE = Interface
+BLOCK_DEVICE_VAR_LOCAL = /dev/sda2
+CLIENT_NETWORK_CONFIG = STATIC
+CLIENT_NETWORK_GATEWAY = 47.47.0.1
+CLIENT_NETWORK_IP = 47.47.5.140
+CLIENT_NETWORK_MASK = 255.255.248.0
+CLIENT_NETWORK_MTU = 1400
+CLIENT_NETWORK_TARGET = eth2
+CLIENT_NETWORK_TARGET_TYPE = Interface
+GRID_NETWORK_CONFIG = STATIC
+GRID_NETWORK_GATEWAY = 192.168.0.1
+GRID_NETWORK_IP = 192.168.5.140
+GRID_NETWORK_MASK = 255.255.248.0
+GRID_NETWORK_MTU = 1400
+GRID_NETWORK_TARGET = eth0
+GRID_NETWORK_TARGET_TYPE = Interface
+NODE_TYPE = VM_API_Gateway
+*PORT_REMAP = client/tcp/8082/443*
+*PORT_REMAP_INBOUND = client/tcp/8082/443*
+----
+. Modifiez les entrées PORT_REMAP et PORT_REMAP_INBOUND pour supprimer les remappages de port.
++
+[listing]
+----
+PORT_REMAP =
+PORT_REMAP_INBOUND =
+----
+. Exécutez la commande suivante pour valider vos modifications apportées au fichier de configuration du nœud :``sudo storagegrid node validate _node-name_``
++
+Corrigez les erreurs ou les avertissements avant de passer à l’étape suivante.
+
+. Exécutez la commande suivante pour redémarrer le nœud sans remappage de port : `sudo storagegrid node start _node-name_`
+. Connectez-vous au nœud en tant qu'administrateur en utilisant le mot de passe répertorié dans le `Passwords.txt` déposer.
+. Vérifiez que les services démarrent correctement.
++
+.. Afficher une liste des statuts de tous les services sur le serveur :``sudo storagegrid-status``
++
+Le statut est mis à jour automatiquement.
+
+.. Attendez que tous les services aient le statut « En cours d’exécution » ou « Vérifié ».
+.. Quitter l'écran d'état :``Ctrl+C``
+
+
+. Répétez ces étapes sur chaque nœud d’administration et nœud de passerelle comportant des ports remappés en conflit.
+

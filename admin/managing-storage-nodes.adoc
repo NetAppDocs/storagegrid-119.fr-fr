@@ -1,0 +1,22 @@
+---
+permalink: admin/managing-storage-nodes.html 
+sidebar: sidebar 
+keywords: storage nodes, what is a storage node 
+summary: 'Les nœuds de stockage fournissent une capacité de stockage sur disque et des services.  La gestion des nœuds de stockage implique la surveillance de la quantité d"espace utilisable sur chaque nœud, l"utilisation de paramètres de filigrane et l"application des paramètres de configuration des nœuds de stockage.' 
+---
+= Gérer les nœuds de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les nœuds de stockage fournissent une capacité de stockage sur disque et des services.  La gestion des nœuds de stockage implique les opérations suivantes :
+
+* Gestion des options de stockage
+* Comprendre ce que sont les filigranes de volume de stockage et comment vous pouvez utiliser les remplacements de filigrane pour contrôler le moment où les nœuds de stockage deviennent en lecture seule
+* Surveillance et gestion de l'espace utilisé pour les métadonnées des objets
+* Configuration des paramètres globaux pour les objets stockés
+* Application des paramètres de configuration du nœud de stockage
+* Gestion des nœuds de stockage complets
+

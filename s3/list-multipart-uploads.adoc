@@ -1,0 +1,32 @@
+---
+permalink: s3/list-multipart-uploads.html 
+sidebar: sidebar 
+keywords: ListMultipartUploads, uploads, multipart uploads, bucket 
+summary: 'L"opération ListMultipartUploads répertorie les téléchargements multipartites en cours pour un bucket.' 
+---
+= ListeMultipartUploads
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'opération ListMultipartUploads répertorie les téléchargements multipartites en cours pour un bucket.
+
+Les paramètres de requête suivants sont pris en charge :
+
+* `encoding-type`
+* `key-marker`
+* `max-uploads`
+* `prefix`
+* `upload-id-marker`
+* `Host`
+* `Date`
+* `Authorization`
+
+
+
+
+== Gestion des versions
+
+Le téléchargement en plusieurs parties consiste en des opérations distinctes pour lancer le téléchargement, répertorier les téléchargements, télécharger des parties, assembler les parties téléchargées et terminer le téléchargement.  Les objets sont créés (et versionnés si applicable) lorsque l'opération CompleteMultipartUpload est effectuée.

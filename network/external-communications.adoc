@@ -1,0 +1,581 @@
+---
+permalink: network/external-communications.html 
+sidebar: sidebar 
+keywords: storagegrid, network port, external communications, ports, TCP, UDP, client communications 
+summary: 'Les clients doivent communiquer avec les nœuds de la grille pour ingérer et récupérer du contenu.  Les ports utilisés dépendent des protocoles de stockage d"objets choisis.  Ces ports doivent être accessibles au client.' 
+---
+= Communications externes
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les clients doivent communiquer avec les nœuds de la grille pour ingérer et récupérer du contenu.  Les ports utilisés dépendent des protocoles de stockage d'objets choisis.  Ces ports doivent être accessibles au client.
+
+
+
+== Accès restreint aux ports
+
+Si les politiques de réseau d’entreprise restreignent l’accès à l’un des ports, vous pouvez effectuer l’une des opérations suivantes :
+
+* Utiliserlink:../admin/configuring-load-balancer-endpoints.html["points de terminaison de l'équilibreur de charge"] pour permettre l'accès sur les ports définis par l'utilisateur.
+* Remappez les ports lors du déploiement des nœuds.  Cependant, vous ne devez pas remapper les points de terminaison de l'équilibreur de charge.  Consultez les informations sur le remappage des ports pour votre nœud StorageGRID :
++
+** link:../rhel/creating-node-configuration-files.html#port-remap-keys["Clés de remappage de port pour StorageGRID sur Red Hat Enterprise Linux"]
+** link:../ubuntu/creating-node-configuration-files.html#port-remap-keys["Clés de remappage de port pour StorageGRID sur Ubuntu ou Debian"]
+** link:../vmware/deploying-storagegrid-node-as-virtual-machine.html#vmware-remap-ports["Remapper les ports pour StorageGRID sur VMware"]
+** https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/optional-remapping-network-ports-for-appliance.html["Facultatif : Remapper les ports réseau de l'appareil"^]
+
+
+
+
+
+
+== Ports utilisés pour les communications externes
+
+Le tableau suivant montre les ports utilisés pour le trafic vers les nœuds.
+
+
+NOTE: Cette liste n'inclut pas les ports qui pourraient être configurés commelink:../admin/configuring-load-balancer-endpoints.html["points de terminaison de l'équilibreur de charge"] .
+
+[cols="1a,1a,1a,1a,1a,4a"]
+|===
+| Port | TCP ou UDP | Protocole | Depuis | À | Détails 
+
+
+ a| 
+22
+ a| 
+TCP
+ a| 
+SSH
+ a| 
+Ordinateur portable de service
+ a| 
+Tous les nœuds
+ a| 
+L'accès SSH ou à la console est requis pour les procédures comportant des étapes de console.  En option, vous pouvez utiliser le port 2022 au lieu du 22.
+
+
+
+ a| 
+25
+ a| 
+TCP
+ a| 
+SMTP
+ a| 
+Nœuds d'administration
+ a| 
+Serveur de messagerie
+ a| 
+Utilisé pour les alertes et AutoSupport par e-mail.  Vous pouvez remplacer le paramètre de port par défaut de 25 à l'aide de la page Serveurs de messagerie.
+
+
+
+ a| 
+53
+ a| 
+TCP/UDP
+ a| 
+DNS
+ a| 
+Tous les nœuds
+ a| 
+serveurs DNS
+ a| 
+Utilisé pour le DNS.
+
+
+
+ a| 
+67
+ a| 
+UDP
+ a| 
+DHCP
+ a| 
+Tous les nœuds
+ a| 
+Service DHCP
+ a| 
+Utilisé en option pour prendre en charge la configuration réseau basée sur DHCP.  Le service dhclient ne fonctionne pas pour les grilles configurées de manière statique.
+
+
+
+ a| 
+68
+ a| 
+UDP
+ a| 
+DHCP
+ a| 
+Service DHCP
+ a| 
+Tous les nœuds
+ a| 
+Utilisé en option pour prendre en charge la configuration réseau basée sur DHCP.  Le service dhclient ne fonctionne pas pour les grilles qui utilisent des adresses IP statiques.
+
+
+
+ a| 
+80
+ a| 
+TCP
+ a| 
+HTTP
+ a| 
+Navigateur
+ a| 
+Nœuds d'administration
+ a| 
+Le port 80 redirige vers le port 443 pour l'interface utilisateur du nœud d'administration.
+
+
+
+ a| 
+80
+ a| 
+TCP
+ a| 
+HTTP
+ a| 
+Navigateur
+ a| 
+appareils électroménagers
+ a| 
+Le port 80 redirige vers le port 8443 pour le programme d'installation de l'appliance StorageGRID .
+
+
+
+ a| 
+80
+ a| 
+TCP
+ a| 
+HTTP
+ a| 
+Nœuds de stockage avec ADC
+ a| 
+AWS
+ a| 
+Utilisé pour les messages de services de plateforme envoyés à AWS ou à d'autres services externes qui utilisent HTTP.  Les locataires peuvent remplacer le paramètre de port HTTP par défaut de 80 lors de la création d'un point de terminaison.
+
+
+
+ a| 
+80
+ a| 
+TCP
+ a| 
+HTTP
+ a| 
+Nœuds de stockage
+ a| 
+AWS
+ a| 
+Les requêtes Cloud Storage Pools sont envoyées aux cibles AWS qui utilisent HTTP.  Les administrateurs de grille peuvent remplacer le paramètre de port HTTP par défaut de 80 lors de la configuration d'un pool de stockage cloud.
+
+
+
+ a| 
+111
+ a| 
+TCP/UDP
+ a| 
+RPCBind
+ a| 
+Client NFS
+ a| 
+Nœuds d'administration
+ a| 
+Utilisé par l'exportation d'audit basée sur NFS (portmap).
+
+*Remarque :* ce port est requis uniquement si l’exportation d’audit basée sur NFS est activée.
+
+*Remarque :* la prise en charge de NFS est obsolète et sera supprimée dans une prochaine version.
+
+
+
+ a| 
+123
+ a| 
+UDP
+ a| 
+NTP
+ a| 
+Nœuds NTP primaires
+ a| 
+NTP externe
+ a| 
+Service de protocole de temps réseau.  Les nœuds sélectionnés comme sources NTP principales synchronisent également les heures d'horloge avec les sources de temps NTP externes.
+
+
+
+ a| 
+161
+ a| 
+TCP/UDP
+ a| 
+SNMP
+ a| 
+Client SNMP
+ a| 
+Tous les nœuds
+ a| 
+Utilisé pour l'interrogation SNMP.  Tous les nœuds fournissent des informations de base ; les nœuds d’administration fournissent également des données d’alerte.  La valeur par défaut est le port UDP 161 lors de la configuration.
+
+*Remarque :* ce port n'est requis et n'est ouvert sur le pare-feu du nœud que si SNMP est configuré.  Si vous prévoyez d’utiliser SNMP, vous pouvez configurer des ports alternatifs.
+
+*Remarque :* pour plus d’informations sur l’utilisation de SNMP avec StorageGRID, contactez votre représentant de compte NetApp .
+
+
+
+ a| 
+162
+ a| 
+TCP/UDP
+ a| 
+Notifications SNMP
+ a| 
+Tous les nœuds
+ a| 
+Destinations de notification
+ a| 
+Les notifications et interruptions SNMP sortantes sont par défaut sur le port UDP 162.
+
+*Remarque :* ce port n'est requis que si SNMP est activé et que les destinations de notification sont configurées.  Si vous prévoyez d’utiliser SNMP, vous pouvez configurer des ports alternatifs.
+
+*Remarque :* pour plus d’informations sur l’utilisation de SNMP avec StorageGRID, contactez votre représentant de compte NetApp .
+
+
+
+ a| 
+389
+ a| 
+TCP/UDP
+ a| 
+LDAP
+ a| 
+Nœuds de stockage avec ADC
+ a| 
+Active Directory/LDAP
+ a| 
+Utilisé pour se connecter à un serveur Active Directory ou LDAP pour la fédération d'identité.
+
+
+
+ a| 
+443
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Navigateur
+ a| 
+Nœuds d'administration
+ a| 
+Utilisé par les navigateurs Web et les clients API de gestion pour accéder au Grid Manager et au Tenant Manager.
+
+*Remarque* : si vous fermez les ports 443 ou 8443 de Grid Manager, tous les utilisateurs actuellement connectés sur un port bloqué, y compris vous, perdront l'accès à Grid Manager, sauf si leur adresse IP a été ajoutée à la liste d'adresses privilégiées.  Voirlink:../admin/configure-firewall-controls.html["Configurer les contrôles du pare-feu"] pour configurer des adresses IP privilégiées.
+
+
+
+ a| 
+443
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Nœuds d'administration
+ a| 
+Active Directory
+ a| 
+Utilisé par les nœuds d'administration se connectant à Active Directory si l'authentification unique (SSO) est activée.
+
+
+
+ a| 
+443
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Nœuds de stockage avec ADC
+ a| 
+AWS
+ a| 
+Utilisé pour les messages de services de plateforme envoyés à AWS ou à d'autres services externes qui utilisent HTTPS.  Les locataires peuvent remplacer le paramètre de port HTTP par défaut de 443 lors de la création d'un point de terminaison.
+
+
+
+ a| 
+443
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Nœuds de stockage
+ a| 
+AWS
+ a| 
+Les requêtes Cloud Storage Pools sont envoyées aux cibles AWS qui utilisent HTTPS.  Les administrateurs de grille peuvent remplacer le paramètre de port HTTPS par défaut de 443 lors de la configuration d'un pool de stockage cloud.
+
+
+
+ a| 
+903
+ a| 
+TCP
+ a| 
+NFS
+ a| 
+Client NFS
+ a| 
+Nœuds d'administration
+ a| 
+Utilisé par l'exportation d'audit basée sur NFS(`rpc.mountd` ).
+
+*Remarque :* ce port est requis uniquement si l’exportation d’audit basée sur NFS est activée.
+
+*Remarque :* la prise en charge de NFS est obsolète et sera supprimée dans une prochaine version.
+
+
+
+ a| 
+2022
+ a| 
+TCP
+ a| 
+SSH
+ a| 
+Ordinateur portable de service
+ a| 
+Tous les nœuds
+ a| 
+L'accès SSH ou à la console est requis pour les procédures comportant des étapes de console.  En option, vous pouvez utiliser le port 22 au lieu du 2022.
+
+
+
+ a| 
+2049
+ a| 
+TCP
+ a| 
+NFS
+ a| 
+Client NFS
+ a| 
+Nœuds d'administration
+ a| 
+Utilisé par l'exportation d'audit basée sur NFS (nfs).
+
+*Remarque :* ce port est requis uniquement si l’exportation d’audit basée sur NFS est activée.
+
+*Remarque :* la prise en charge de NFS est obsolète et sera supprimée dans une prochaine version.
+
+
+
+ a| 
+5353
+ a| 
+UDP
+ a| 
+mDNS
+ a| 
+Tous les nœuds
+ a| 
+Tous les nœuds
+ a| 
+Fournit le service DNS multidiffusion (mDNS) utilisé pour les modifications d'adresse IP de grille complète et pour la découverte du nœud d'administration principal lors de l'installation, de l'extension et de la récupération.
+
+
+
+ a| 
+5696
+ a| 
+TCP
+ a| 
+KMIP
+ a| 
+Appareil
+ a| 
+KMS
+ a| 
+Trafic externe du protocole d'interopérabilité de gestion des clés (KMIP) provenant d'appareils configurés pour le chiffrement des nœuds vers le serveur de gestion des clés (KMS), sauf si un port différent est spécifié sur la page de configuration KMS du programme d'installation de l'appareil StorageGRID .
+
+
+
+ a| 
+8022
+ a| 
+TCP
+ a| 
+SSH
+ a| 
+Ordinateur portable de service
+ a| 
+Tous les nœuds
+ a| 
+SSH sur le port 8022 accorde l'accès au système d'exploitation de base sur les plates-formes d'appareils et de nœuds virtuels pour l'assistance et le dépannage.  Ce port n'est pas utilisé pour les nœuds basés sur Linux (bare metal) et n'a pas besoin d'être accessible entre les nœuds de grille ou pendant les opérations normales.
+
+
+
+ a| 
+8443
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Navigateur
+ a| 
+Nœuds d'administration
+ a| 
+Facultatif.  Utilisé par les navigateurs Web et les clients API de gestion pour accéder au Grid Manager.  Peut être utilisé pour séparer les communications de Grid Manager et de Tenant Manager.
+
+*Remarque* : si vous fermez les ports 443 ou 8443 de Grid Manager, tous les utilisateurs actuellement connectés sur un port bloqué, y compris vous, perdront l'accès à Grid Manager, sauf si leur adresse IP a été ajoutée à la liste d'adresses privilégiées.  Voirlink:../admin/configure-firewall-controls.html["Configurer les contrôles du pare-feu"] pour configurer des adresses IP privilégiées.
+
+
+
+ a| 
+9022
+ a| 
+TCP
+ a| 
+SSH
+ a| 
+Ordinateur portable de service
+ a| 
+appareils électroménagers
+ a| 
+Accorde l'accès aux appliances StorageGRID en mode de préconfiguration pour l'assistance et le dépannage.  Il n’est pas nécessaire que ce port soit accessible entre les nœuds du réseau ou pendant les opérations normales.
+
+
+
+ a| 
+9091
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Service externe Grafana
+ a| 
+Nœuds d'administration
+ a| 
+Utilisé par les services Grafana externes pour un accès sécurisé au service StorageGRID Prometheus.
+
+*Remarque :* ce port est requis uniquement si l’accès Prometheus basé sur un certificat est activé.
+
+
+
+ a| 
+9092
+ a| 
+TCP
+ a| 
+Kafka
+ a| 
+Nœuds de stockage avec ADC
+ a| 
+cluster Kafka
+ a| 
+Utilisé pour les messages de services de plateforme envoyés à un cluster Kafka.  Les locataires peuvent remplacer le paramètre de port Kafka par défaut de 9092 lors de la création d'un point de terminaison.
+
+
+
+ a| 
+9443
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Navigateur
+ a| 
+Nœuds d'administration
+ a| 
+Facultatif.  Utilisé par les navigateurs Web et les clients API de gestion pour accéder au gestionnaire de locataires.  Peut être utilisé pour séparer les communications de Grid Manager et de Tenant Manager.
+
+
+
+ a| 
+18082
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Clients S3
+ a| 
+Nœuds de stockage
+ a| 
+Trafic client S3 directement vers les nœuds de stockage (HTTPS).
+
+
+
+ a| 
+18083
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Clients Swift
+ a| 
+Nœuds de stockage
+ a| 
+Trafic client Swift directement vers les nœuds de stockage (HTTPS).
+
+
+
+ a| 
+18084
+ a| 
+TCP
+ a| 
+HTTP
+ a| 
+Clients S3
+ a| 
+Nœuds de stockage
+ a| 
+Trafic client S3 directement vers les nœuds de stockage (HTTP).
+
+
+
+ a| 
+18085
+ a| 
+TCP
+ a| 
+HTTP
+ a| 
+Clients Swift
+ a| 
+Nœuds de stockage
+ a| 
+Trafic client Swift directement vers les nœuds de stockage (HTTP).
+
+
+
+ a| 
+23000-23999
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Tous les nœuds de la grille source pour la réplication inter-grille
+ a| 
+Nœuds d'administration et nœuds de passerelle sur la grille de destination pour la réplication inter-grille
+ a| 
+Cette gamme de ports est réservée aux connexions de fédération de grille.  Les deux grilles d’une connexion donnée utilisent le même port.
+
+|===

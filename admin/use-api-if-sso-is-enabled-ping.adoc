@@ -1,0 +1,280 @@
+---
+permalink: admin/use-api-if-sso-is-enabled-ping.html 
+sidebar: sidebar 
+keywords: how to access storagegrid API if SSO is enabled with PingFederate 
+summary: 'Si vous avez configuré et activé l"authentification unique (SSO) et que vous utilisez PingFederate comme fournisseur SSO, vous devez émettre une série de requêtes API pour obtenir un jeton d"authentification valide pour l"API de gestion de la grille ou l"API de gestion des locataires.' 
+---
+= Utiliser l'API si l'authentification unique est activée (PingFederate)
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si vous avezlink:../admin/configuring-sso.html["configuré et activé l'authentification unique (SSO)"] et que vous utilisez PingFederate comme fournisseur SSO, vous devez émettre une série de requêtes API pour obtenir un jeton d'authentification valide pour l'API de gestion de grille ou l'API de gestion des locataires.
+
+
+
+== Sign in à l'API si l'authentification unique est activée
+
+Ces instructions s'appliquent si vous utilisez PingFederate comme fournisseur d'identité SSO
+
+.Avant de commencer
+* Vous connaissez le nom d’utilisateur et le mot de passe SSO d’un utilisateur fédéré qui appartient à un groupe d’utilisateurs StorageGRID .
+* Si vous souhaitez accéder à l’API de gestion des locataires, vous connaissez l’ID du compte locataire.
+
+
+.À propos de cette tâche
+Pour obtenir un jeton d’authentification, vous pouvez utiliser l’un des exemples suivants :
+
+* Le `storagegrid-ssoauth.py` Script Python, situé dans le répertoire des fichiers d'installation de StorageGRID(`./rpms` pour Red Hat Enterprise Linux, `./debs` pour Ubuntu ou Debian, et `./vsphere` pour VMware).
+* Un exemple de flux de travail de requêtes curl.
++
+Le flux de travail curl peut expirer si vous l'exécutez trop lentement.  Vous pourriez voir l’erreur : `A valid SubjectConfirmation was not found on this Response` .
+
++
+
+NOTE: L'exemple de workflow curl ne protège pas le mot de passe contre toute visualisation par d'autres utilisateurs.
+
++
+Si vous avez un problème d'encodage d'URL, vous pourriez voir l'erreur : `Unsupported SAML version` .
+
+
+
+.Étapes
+. Sélectionnez l’une des méthodes suivantes pour obtenir un jeton d’authentification :
++
+** Utilisez le `storagegrid-ssoauth.py` Script Python.  Passez à l’étape 2.
+** Utilisez les requêtes curl.  Passez à l’étape 3.
+
+
+. Si vous souhaitez utiliser le `storagegrid-ssoauth.py` script, transmettez le script à l'interpréteur Python et exécutez le script.
++
+Lorsque vous y êtes invité, saisissez des valeurs pour les arguments suivants :
+
++
+** La méthode SSO.  Vous pouvez saisir n'importe quelle variante de « pingfederate » (PINGFEDERATE, pingfederate, etc.).
+** Le nom d'utilisateur SSO
+** Le domaine où StorageGRID est installé.  Ce champ n'est pas utilisé pour PingFederate.  Vous pouvez le laisser vide ou saisir n'importe quelle valeur.
+** L'adresse de StorageGRID
+** L'ID du compte locataire, si vous souhaitez accéder à l'API de gestion des locataires.
++
+image::../media/sso_auth_python_script_ping.png[Script d'authentification SSO pour Ping Federate]
+
++
+Le jeton d’autorisation StorageGRID est fourni dans la sortie.  Vous pouvez désormais utiliser le jeton pour d’autres requêtes, de la même manière que vous utiliseriez l’API si SSO n’était pas utilisé.
+
+
+
+. Si vous souhaitez utiliser des requêtes curl, utilisez la procédure suivante.
++
+.. Déclarez les variables nécessaires à la connexion.
++
+[source, bash]
+----
+export SAMLUSER='my-sso-username'
+export SAMLPASSWORD='my-password'
+export TENANTACCOUNTID='12345'
+export STORAGEGRID_ADDRESS='storagegrid.example.com'
+----
++
+
+NOTE: Pour accéder à l'API de gestion de grille, utilisez 0 comme `TENANTACCOUNTID` .
+
+.. Pour recevoir une URL d’authentification signée, émettez une requête POST à `/api/v3/authorize-saml` et supprimez l’encodage JSON supplémentaire de la réponse.
++
+Cet exemple montre une requête POST pour une URL d'authentification signée pour TENANTACCOUNTID.  Les résultats seront transmis à python -m json.tool pour supprimer l'encodage JSON.
+
++
+[source, bash]
+----
+curl -X POST "https://$STORAGEGRID_ADDRESS/api/v3/authorize-saml" \
+  -H "accept: application/json" -H  "Content-Type: application/json" \
+  --data "{\"accountId\": \"$TENANTACCOUNTID\"}" | python -m json.tool
+----
++
+La réponse pour cet exemple inclut une URL signée qui est codée en URL, mais elle n'inclut pas la couche de codage JSON supplémentaire.
+
++
+[listing]
+----
+{
+    "apiVersion": "3.0",
+    "data": "https://my-pf-baseurl/idp/SSO.saml2?...",
+    "responseTime": "2018-11-06T16:30:23.355Z",
+    "status": "success"
+}
+----
+.. Sauver le `SAMLRequest` à partir de la réponse à utiliser dans les commandes suivantes.
++
+[listing]
+----
+export SAMLREQUEST="https://my-pf-baseurl/idp/SSO.saml2?..."
+----
+.. Exportez la réponse et le cookie, et faites écho à la réponse :
++
+[source, bash]
+----
+RESPONSE=$(curl -c - "$SAMLREQUEST")
+----
++
+[source, bash]
+----
+echo "$RESPONSE" | grep 'input type="hidden" name="pf.adapterId" id="pf.adapterId"'
+----
+.. Exportez la valeur « pf.adapterId » et renvoyez la réponse :
++
+[listing]
+----
+export ADAPTER='myAdapter'
+----
++
+[source, bash]
+----
+echo "$RESPONSE" | grep 'base'
+----
+.. Exportez la valeur « href » (supprimez la barre oblique /) et affichez la réponse :
++
+[listing]
+----
+export BASEURL='https://my-pf-baseurl'
+----
++
+[source, bash]
+----
+echo "$RESPONSE" | grep 'form method="POST"'
+----
+.. Exporter la valeur « action » :
++
+[listing]
+----
+export SSOPING='/idp/.../resumeSAML20/idp/SSO.ping'
+----
+.. Envoyer des cookies avec les informations d'identification :
++
+[source, bash]
+----
+curl -b <(echo "$RESPONSE") -X POST "$BASEURL$SSOPING" \
+--data "pf.username=$SAMLUSER&pf.pass=$SAMLPASSWORD&pf.ok=clicked&pf.cancel=&pf.adapterId=$ADAPTER" --include
+----
+.. Sauver le `SAMLResponse` du champ caché :
++
+[source, bash]
+----
+export SAMLResponse='PHNhbWxwOlJlc3BvbnN...1scDpSZXNwb25zZT4='
+----
+.. Utilisation de la sauvegarde `SAMLResponse` , créer un StorageGRID``/api/saml-response`` demande de génération d'un jeton d'authentification StorageGRID .
++
+Pour `RelayState` , utilisez l'ID de compte locataire ou utilisez 0 si vous souhaitez vous connecter à l'API Grid Management.
+
++
+[source, bash]
+----
+curl -X POST "https://$STORAGEGRID_ADDRESS:443/api/saml-response" \
+  -H "accept: application/json" \
+  --data-urlencode "SAMLResponse=$SAMLResponse" \
+  --data-urlencode "RelayState=$TENANTACCOUNTID" \
+  | python -m json.tool
+----
++
+La réponse inclut le jeton d’authentification.
+
++
+[listing]
+----
+{
+    "apiVersion": "3.0",
+    "data": "56eb07bf-21f6-40b7-af0b-5c6cacfb25e7",
+    "responseTime": "2018-11-07T21:32:53.486Z",
+    "status": "success"
+}
+----
+.. Enregistrez le jeton d'authentification dans la réponse sous `MYTOKEN` .
++
+[source, bash]
+----
+export MYTOKEN="56eb07bf-21f6-40b7-af0b-5c6cacfb25e7"
+----
++
+Vous pouvez désormais utiliser `MYTOKEN` pour d'autres demandes, de la même manière que vous utiliseriez l'API si SSO n'était pas utilisé.
+
+
+
+
+
+
+
+== Déconnectez-vous de l'API si l'authentification unique est activée
+
+Si l'authentification unique (SSO) a été activée, vous devez émettre une série de requêtes API pour vous déconnecter de l'API Grid Management ou de l'API Tenant Management.  Ces instructions s'appliquent si vous utilisez PingFederate comme fournisseur d'identité SSO
+
+.À propos de cette tâche
+Si nécessaire, vous pouvez vous déconnecter de l'API StorageGRID en vous déconnectant de la page de déconnexion unique de votre organisation.  Vous pouvez également déclencher une déconnexion unique (SLO) à partir de StorageGRID, ce qui nécessite un jeton porteur StorageGRID valide.
+
+.Étapes
+. Pour générer une demande de déconnexion signée, transmettez `cookie "sso=true" à l'API SLO :
++
+[source, bash]
+----
+curl -k -X DELETE "https://$STORAGEGRID_ADDRESS/api/v3/authorize" \
+-H "accept: application/json" \
+-H "Authorization: Bearer $MYTOKEN" \
+--cookie "sso=true" \
+| python -m json.tool
+----
++
+Une URL de déconnexion est renvoyée :
+
++
+[listing]
+----
+{
+    "apiVersion": "3.0",
+    "data": "https://my-ping-url/idp/SLO.saml2?SAMLRequest=fZDNboMwEIRfhZ...HcQ%3D%3D",
+    "responseTime": "2021-10-12T22:20:30.839Z",
+    "status": "success"
+}
+----
+. Enregistrez l'URL de déconnexion.
++
+[source, bash]
+----
+export LOGOUT_REQUEST='https://my-ping-url/idp/SLO.saml2?SAMLRequest=fZDNboMwEIRfhZ...HcQ%3D%3D'
+----
+. Envoyez une demande à l'URL de déconnexion pour déclencher SLO et rediriger vers StorageGRID.
++
+[source, bash]
+----
+curl --include "$LOGOUT_REQUEST"
+----
++
+La réponse 302 est renvoyée.  L'emplacement de redirection ne s'applique pas à la déconnexion de l'API uniquement.
+
++
+[listing]
+----
+HTTP/1.1 302 Found
+Location: https://$STORAGEGRID_ADDRESS:443/api/saml-logout?SAMLResponse=fVLLasMwEPwVo7ss%...%23rsa-sha256
+Set-Cookie: PF=QoKs...SgCC; Path=/; Secure; HttpOnly; SameSite=None
+----
+. Supprimez le jeton porteur StorageGRID .
++
+La suppression du jeton porteur StorageGRID fonctionne de la même manière que sans SSO.  Si `cookie "sso=true" n'est pas fourni, l'utilisateur est déconnecté de StorageGRID sans affecter l'état SSO.
+
++
+[source, bash]
+----
+curl -X DELETE "https://$STORAGEGRID_ADDRESS/api/v3/authorize" \
+-H "accept: application/json" \
+-H "Authorization: Bearer $MYTOKEN" \
+--include
+----
++
+UN `204 No Content` la réponse indique que l'utilisateur est maintenant déconnecté.
+
++
+[listing]
+----
+HTTP/1.1 204 No Content
+----
+

@@ -1,0 +1,25 @@
+---
+permalink: monitor/viewing-ilm-tab.html 
+sidebar: sidebar 
+keywords: ilm tab 
+summary: 'L"onglet ILM fournit des informations sur les opérations de gestion du cycle de vie des informations (ILM).' 
+---
+= Afficher l'onglet ILM
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'onglet ILM fournit des informations sur les opérations de gestion du cycle de vie des informations (ILM).
+
+L'onglet ILM s'affiche pour chaque nœud de stockage, chaque site et la grille entière.  Pour chaque site et la grille, l'onglet ILM affiche un graphique de la file d'attente ILM au fil du temps.  Pour la grille, cet onglet fournit également le temps estimé pour effectuer une analyse ILM complète de tous les objets.
+
+Pour les nœuds de stockage, l'onglet ILM fournit des détails sur l'évaluation ILM et la vérification en arrière-plan des objets à code d'effacement.
+
+image::../media/nodes_page_ilm_tab.png[Page Nœuds, onglet ILM]
+
+.Informations connexes
+* link:monitoring-information-lifecycle-management.html["Surveiller la gestion du cycle de vie des informations"]
+* link:../admin/index.html["Administrer StorageGRID"]
+

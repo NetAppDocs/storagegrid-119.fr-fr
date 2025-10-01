@@ -1,0 +1,124 @@
+---
+permalink: upgrade/how-your-system-is-affected-during-upgrade.html 
+sidebar: sidebar 
+keywords: upgrade, firmware, appliance, alert 
+summary: Découvrez comment votre système StorageGRID sera affecté lors de la mise à niveau. 
+---
+= Comment votre système est affecté pendant la mise à niveau
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Découvrez comment votre système StorageGRID sera affecté lors de la mise à niveau.
+
+
+
+== Les mises à niveau de StorageGRID ne provoquent aucune interruption
+
+Le système StorageGRID peut ingérer et récupérer des données à partir des applications clientes tout au long du processus de mise à niveau.  Si vous approuvez la mise à niveau de tous les nœuds du même type (par exemple, les nœuds de stockage), les nœuds sont arrêtés un par un, de sorte qu'il n'y a aucun moment où tous les nœuds de grille ou tous les nœuds de grille d'un certain type sont indisponibles.
+
+Pour permettre une disponibilité continue, assurez-vous que votre politique ILM contient des règles qui spécifient le stockage de plusieurs copies de chaque objet.  Vous devez également vous assurer que tous les clients S3 externes sont configurés pour envoyer des requêtes à l’un des éléments suivants :
+
+* Une adresse IP virtuelle de groupe haute disponibilité (HA)
+* Un équilibreur de charge tiers à haute disponibilité
+* Plusieurs nœuds de passerelle pour chaque client
+* Plusieurs nœuds de stockage pour chaque client
+
+
+
+
+== Les applications clientes peuvent subir des perturbations à court terme
+
+Le système StorageGRID peut ingérer et récupérer des données à partir d'applications clientes tout au long du processus de mise à niveau. Cependant, les connexions clientes aux nœuds de passerelle ou aux nœuds de stockage individuels peuvent être temporairement interrompues si la mise à niveau doit redémarrer les services sur ces nœuds.  La connectivité sera restaurée une fois le processus de mise à niveau terminé et les services reprendront sur les nœuds individuels.
+
+Vous devrez peut-être planifier un temps d'arrêt pour appliquer une mise à niveau si la perte de connectivité pendant une courte période n'est pas acceptable.  Vous pouvez utiliser l’approbation sélective pour planifier le moment où certains nœuds sont mis à jour.
+
+
+NOTE: Vous pouvez utiliser plusieurs passerelles et groupes de haute disponibilité (HA) pour assurer un basculement automatique pendant le processus de mise à niveau. Voir les instructions pourlink:../admin/configure-high-availability-group.html["configuration des groupes de haute disponibilité"] .
+
+
+
+== Le micrologiciel de l'appareil est mis à niveau
+
+Pendant la mise à niveau vers StorageGRID 11.9 :
+
+* Tous les nœuds d'appliance StorageGRID sont automatiquement mis à niveau vers la version 3.9 du micrologiciel du programme d'installation de l'appliance StorageGRID .
+* Les appareils SG6060 et SGF6024 sont automatiquement mis à niveau vers la version 3B08.EX du micrologiciel du BIOS et la version 4.00.07 du micrologiciel BMC .
+* Les appareils SG100 et SG1000 sont automatiquement mis à niveau vers la version 3B13.EC du micrologiciel du BIOS et la version 4.74.07 du micrologiciel BMC .
+* Les appareils SGF6112, SG6160, SG110 et SG1100 sont automatiquement mis à niveau vers la version 3.16.07 du micrologiciel BMC .
+
+
+
+
+== Les politiques ILM sont traitées différemment selon leur statut
+
+* La politique active restera la même après la mise à niveau.
+* Seules les 10 dernières politiques historiques sont conservées lors de la mise à niveau.
+* S'il existe une politique proposée, elle sera supprimée lors de la mise à niveau.
+
+
+
+
+== Des alertes peuvent être déclenchées
+
+Des alertes peuvent être déclenchées lorsque les services démarrent et s'arrêtent et lorsque le système StorageGRID fonctionne dans un environnement à versions mixtes (certains nœuds de grille exécutant une version antérieure, tandis que d'autres ont été mis à niveau vers une version ultérieure).  D'autres alertes peuvent être déclenchées une fois la mise à niveau terminée.
+
+Par exemple, vous pouvez voir l'alerte *Impossible de communiquer avec le nœud* lorsque les services sont arrêtés, ou vous pouvez voir l'alerte *Erreur de communication Cassandra* lorsque certains nœuds ont été mis à niveau vers StorageGRID 11.9 mais que d'autres nœuds exécutent toujours StorageGRID 11.8. En général, ces alertes disparaissent une fois la mise à niveau terminée.
+
+L'alerte *Placement ILM impossible* peut être déclenchée lorsque les nœuds de stockage sont arrêtés pendant la mise à niveau vers StorageGRID 11.9. Cette alerte peut persister pendant 1 jour après la fin de la mise à niveau.
+
+Une fois la mise à niveau terminée, vous pouvez consulter toutes les alertes liées à la mise à niveau en sélectionnant *Alertes récemment résolues* ou *Alertes actuelles* dans le tableau de bord du gestionnaire de grille.
+
+
+
+== De nombreuses notifications SNMP sont générées
+
+Sachez qu’un grand nombre de notifications SNMP peuvent être générées lorsque les nœuds de grille sont arrêtés et redémarrés pendant la mise à niveau.  Pour éviter les notifications excessives, décochez la case *Activer les notifications de l'agent SNMP* (*CONFIGURATION* > *Surveillance* > *Agent SNMP*) pour désactiver les notifications SNMP avant de démarrer la mise à niveau.  Ensuite, réactivez les notifications une fois la mise à niveau terminée.
+
+
+
+== Les modifications de configuration sont restreintes
+
+
+NOTE: Cette liste s'applique spécifiquement aux mises à niveau de StorageGRID 11.8 vers StorageGRID 11.9. Si vous effectuez une mise à niveau vers une autre version de StorageGRID , reportez-vous à la liste des modifications restreintes dans les instructions de mise à niveau de cette version.
+
+Jusqu'à ce que la tâche *Activer la nouvelle fonctionnalité* soit terminée :
+
+* N'apportez aucune modification à la configuration de la grille.
+* N'activez ni ne désactivez aucune nouvelle fonctionnalité.
+* Ne mettez pas à jour la configuration ILM.  Dans le cas contraire, vous risquez de rencontrer un comportement ILM incohérent et inattendu.
+* N'appliquez pas de correctif ni ne récupérez un nœud de grille.
++
+
+NOTE: Contactez le support technique si vous devez récupérer un nœud pendant la mise à niveau.
+
+* Vous ne devez pas gérer les groupes HA, les interfaces VLAN ou les points de terminaison d'équilibrage de charge pendant la mise à niveau vers StorageGRID 11.9.
+* Ne supprimez aucun groupe HA tant que la mise à niveau vers StorageGRID 11.9 n'est pas terminée. Les adresses IP virtuelles dans d’autres groupes HA peuvent devenir inaccessibles.
+
+
+Jusqu'à ce que la tâche *Étapes de mise à niveau finales* soit terminée :
+
+* N'effectuez pas de procédure d'expansion.
+* N'effectuez pas de procédure de mise hors service.
+
+
+
+
+== Vous ne pouvez pas afficher les détails des buckets ni les gérer à partir du gestionnaire de locataires.
+
+Lors de la mise à niveau vers StorageGRID 11.9 (c'est-à-dire lorsque le système fonctionne comme un environnement de version mixte), vous ne pouvez pas afficher les détails des buckets ni gérer les buckets à l'aide du gestionnaire de locataires.  L’une des erreurs suivantes apparaît sur la page Buckets dans Tenant Manager :
+
+* Vous ne pouvez pas utiliser cette API pendant la mise à niveau vers la version 11.9.
+* Vous ne pouvez pas afficher les détails de version du bucket dans le gestionnaire de locataires pendant que vous effectuez une mise à niveau vers la version 11.9.
+
+
+Cette erreur sera résolue une fois la mise à niveau vers la version 11.9 terminée.
+
+.Solution de contournement
+Pendant que la mise à niveau vers la version 11.9 est en cours, utilisez les outils suivants pour afficher les détails des buckets ou gérer les buckets, au lieu d'utiliser le gestionnaire de locataires :
+
+* Pour effectuer des opérations S3 standard sur un bucket, utilisez soit lelink:../s3/operations-on-buckets.html["API REST S3"] ou lelink:../tenant/understanding-tenant-management-api.html["API de gestion des locataires"] .
+* Pour effectuer des opérations personnalisées StorageGRID sur un bucket (par exemple, afficher et modifier la cohérence du bucket, activer ou désactiver les mises à jour de l'heure du dernier accès ou configurer l'intégration de la recherche), utilisez l'API de gestion des locataires.
+

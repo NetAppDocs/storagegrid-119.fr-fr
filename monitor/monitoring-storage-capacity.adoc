@@ -1,0 +1,205 @@
+---
+permalink: monitor/monitoring-storage-capacity.html 
+sidebar: sidebar 
+keywords: how to monitor storage capacity 
+summary: 'Surveillez l"espace utilisable total disponible pour garantir que le système StorageGRID ne manque pas d"espace de stockage pour les objets ou pour les métadonnées des objets.' 
+---
+= Surveiller la capacité de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Surveillez l'espace utilisable total disponible pour garantir que le système StorageGRID ne manque pas d'espace de stockage pour les objets ou pour les métadonnées des objets.
+
+StorageGRID stocke les données d'objet et les métadonnées d'objet séparément et réserve une quantité spécifique d'espace pour une base de données Cassandra distribuée contenant des métadonnées d'objet.  Surveillez la quantité totale d’espace consommée pour les objets et pour les métadonnées des objets, ainsi que les tendances de la quantité d’espace consommée pour chacun.  Cela vous permettra de planifier à l’avance l’ajout de nœuds et d’éviter toute interruption de service.
+
+Tu peuxlink:viewing-storage-tab.html["afficher les informations sur la capacité de stockage"] pour l'ensemble de la grille, pour chaque site et pour chaque nœud de stockage de votre système StorageGRID .
+
+
+
+== Surveiller la capacité de stockage de l'ensemble du réseau
+
+Surveillez la capacité de stockage globale de votre grille pour garantir qu'il reste suffisamment d'espace libre pour les données d'objet et les métadonnées d'objet.  Comprendre comment la capacité de stockage évolue au fil du temps peut vous aider à planifier l'ajout de nœuds de stockage ou de volumes de stockage avant que la capacité de stockage utilisable du réseau ne soit consommée.
+
+Le tableau de bord Grid Manager vous permet d'évaluer rapidement la quantité de stockage disponible pour l'ensemble du réseau et pour chaque centre de données.  La page Nœuds fournit des valeurs plus détaillées pour les données d’objet et les métadonnées d’objet.
+
+.Étapes
+. Évaluez la quantité de stockage disponible pour l’ensemble du réseau et pour chaque centre de données.
++
+.. Sélectionnez *Tableau de bord > Aperçu*.
+.. Notez les valeurs sur les cartes de répartition de l'utilisation de l'espace de données et de répartition de l'utilisation de l'espace autorisé des métadonnées.  Chaque carte répertorie un pourcentage d'utilisation du stockage, la capacité de l'espace utilisé et l'espace total disponible ou autorisé par le site.
++
+
+NOTE: Le résumé n'inclut pas les supports d'archives.
+
++
+image::../media/dashboard_data_and_metadata_space_usage_breakdown.png[Répartition de l'utilisation de l'espace de données et de métadonnées]
+
+.. Notez le tableau sur la carte Stockage au fil du temps.  Utilisez la liste déroulante de la période pour vous aider à déterminer la vitesse à laquelle le stockage est consommé.
++
+image::../media/dashboard_storage_over_time.png[Graphique du stockage au fil du temps]
+
+
+
+. Utilisez la page Nœuds pour obtenir des détails supplémentaires sur la quantité de stockage utilisée et la quantité de stockage restant disponible sur la grille pour les données d'objet et les métadonnées d'objet.
++
+.. Sélectionnez *NODES*.
+.. Sélectionnez *_grid_* > *Stockage*.
++
+image::../media/nodes_deployment_storage_tab.png[Onglet Stockage de déploiement de nœuds]
+
+.. Placez votre curseur sur les graphiques *Stockage utilisé - données d'objet* et *Stockage utilisé - métadonnées d'objet* pour voir la quantité de stockage d'objet et de stockage de métadonnées d'objet disponible pour l'ensemble de la grille, et la quantité utilisée au fil du temps.
++
+
+NOTE: Les valeurs totales d'un site ou de la grille n'incluent pas les nœuds qui n'ont pas signalé de mesures depuis au moins cinq minutes, tels que les nœuds hors ligne.
+
+
+
+. Prévoyez d'effectuer une extension pour ajouter des nœuds de stockage ou des volumes de stockage avant que la capacité de stockage utilisable du réseau ne soit consommée.
++
+Lorsque vous planifiez le calendrier d’une extension, tenez compte du temps qu’il faudra pour acquérir et installer un stockage supplémentaire.
+
++
+
+NOTE: Si votre stratégie ILM utilise le codage d'effacement, vous préférerez peut-être étendre lorsque les nœuds de stockage existants sont remplis à environ 70 % pour réduire le nombre de nœuds à ajouter.
+
++
+Pour plus d'informations sur la planification d'une extension de stockage, consultez lelink:../expand/index.html["instructions pour étendre StorageGRID"] .
+
+
+
+
+
+== Surveiller la capacité de stockage pour chaque nœud de stockage
+
+Surveillez l’espace utilisable total pour chaque nœud de stockage pour vous assurer que le nœud dispose de suffisamment d’espace pour les nouvelles données d’objet.
+
+.À propos de cette tâche
+L'espace utilisable est la quantité d'espace de stockage disponible pour stocker des objets.  L'espace utilisable total pour un nœud de stockage est calculé en additionnant l'espace disponible sur tous les magasins d'objets au sein du nœud.
+
+image::../media/calculating_watermarks.gif[Dessin conceptuel de l'espace utilisable total]
+
+.Étapes
+. Sélectionnez *NODES* > *_Storage Node_* > *Storage*.
++
+Les graphiques et les tableaux du nœud apparaissent.
+
+. Positionnez votre curseur sur le graphique Stockage utilisé - données de l'objet.
++
+Les valeurs suivantes sont affichées :
+
++
+** *Utilisé (%)* : Le pourcentage de l'espace total utilisable qui a été utilisé pour les données de l'objet.
+** *Utilisé* : la quantité d'espace total utilisable qui a été utilisée pour les données de l'objet.
+** *Données répliquées* : une estimation de la quantité de données d’objet répliquées sur ce nœud, ce site ou cette grille.
+** *Données codées par effacement* : une estimation de la quantité de données d'objet codées par effacement sur ce nœud, ce site ou cette grille.
+** *Total*: La quantité totale d'espace utilisable sur ce nœud, ce site ou cette grille.  La valeur utilisée est la `storagegrid_storage_utilization_data_bytes` métrique.
++
+image::../media/nodes_page_storage_used_object_data.png[Nœuds Page Stockage Objet Données utilisées]
+
+
+
+. Consultez les valeurs disponibles dans les tableaux Volumes et Magasins d’objets, sous les graphiques.
++
+
+NOTE: Pour afficher les graphiques de ces valeurs, cliquez sur les icônes de graphiqueimage:../media/icon_chart_new_for_11_5.png["Icône de graphique"] dans les colonnes Disponibles.
+
++
+image::../media/nodes_page_storage_tables.png[Tables de magasins d'objets]
+
+. Surveillez les valeurs au fil du temps pour estimer la vitesse à laquelle l’espace de stockage utilisable est consommé.
+. Pour maintenir le fonctionnement normal du système, ajoutez des nœuds de stockage, ajoutez des volumes de stockage ou archivez les données d'objet avant que l'espace utilisable ne soit consommé.
++
+Lorsque vous planifiez le calendrier d’une extension, tenez compte du temps qu’il faudra pour acquérir et installer un stockage supplémentaire.
+
++
+
+NOTE: Si votre stratégie ILM utilise le codage d'effacement, vous préférerez peut-être étendre lorsque les nœuds de stockage existants sont remplis à environ 70 % pour réduire le nombre de nœuds à ajouter.
+
++
+Pour plus d'informations sur la planification d'une extension de stockage, consultez lelink:../expand/index.html["instructions pour étendre StorageGRID"] .
+
++
+Lelink:../troubleshoot/troubleshooting-low-object-data-storage-alert.html["Faible stockage de données d'objets"] l'alerte est déclenchée lorsqu'il ne reste pas suffisamment d'espace pour stocker les données d'objet sur un nœud de stockage.
+
+
+
+
+
+== Surveiller la capacité des métadonnées des objets pour chaque nœud de stockage
+
+Surveillez l’utilisation des métadonnées pour chaque nœud de stockage afin de garantir qu’un espace suffisant reste disponible pour les opérations de base de données essentielles.  Vous devez ajouter de nouveaux nœuds de stockage sur chaque site avant que les métadonnées de l'objet ne dépassent 100 % de l'espace de métadonnées autorisé.
+
+.À propos de cette tâche
+StorageGRID conserve trois copies des métadonnées d'objet sur chaque site pour assurer la redondance et protéger les métadonnées d'objet contre la perte.  Les trois copies sont réparties uniformément sur tous les nœuds de stockage de chaque site à l'aide de l'espace réservé aux métadonnées sur le volume de stockage 0 de chaque nœud de stockage.
+
+Dans certains cas, la capacité des métadonnées d'objet de la grille peut être consommée plus rapidement que sa capacité de stockage d'objet.  Par exemple, si vous ingérez généralement un grand nombre de petits objets, vous devrez peut-être ajouter des nœuds de stockage pour augmenter la capacité des métadonnées, même si la capacité de stockage d'objets reste suffisante.
+
+Certains des facteurs qui peuvent augmenter l’utilisation des métadonnées incluent la taille et la quantité de métadonnées et de balises utilisateur, le nombre total de parties dans un téléchargement en plusieurs parties et la fréquence des modifications des emplacements de stockage ILM.
+
+.Étapes
+. Sélectionnez *NODES* > *_Storage Node_* > *Storage*.
+. Placez votre curseur sur le graphique Stockage utilisé - métadonnées de l'objet pour voir les valeurs pour une période spécifique.
++
+image::../media/storage_used_object_metadata.png[Stockage utilisé - Métadonnées de l'objet]
+
++
+Utilisé (%):: Le pourcentage de l'espace de métadonnées autorisé qui a été utilisé sur ce nœud de stockage.
++
+--
+Métriques Prometheus : `storagegrid_storage_utilization_metadata_bytes` et `storagegrid_storage_utilization_metadata_allowed_bytes`
+
+--
+Utilisé:: Les octets de l'espace de métadonnées autorisé qui ont été utilisés sur ce nœud de stockage.
++
+--
+Métrique Prometheus : `storagegrid_storage_utilization_metadata_bytes`
+
+--
+Autorisé:: L'espace autorisé pour les métadonnées d'objet sur ce nœud de stockage.  Pour savoir comment cette valeur est déterminée pour chaque nœud de stockage, consultez lelink:../admin/managing-object-metadata-storage.html#allowed-metadata-space["description complète de l'espace de métadonnées autorisé"] .
++
+--
+Métrique Prometheus : `storagegrid_storage_utilization_metadata_allowed_bytes`
+
+--
+Réel réservé:: L'espace réel réservé aux métadonnées sur ce nœud de stockage.  Comprend l'espace autorisé et l'espace requis pour les opérations de métadonnées essentielles.  Pour savoir comment cette valeur est calculée pour chaque nœud de stockage, consultez lelink:../admin/managing-object-metadata-storage.html#actual-reserved-space-for-metadata["description complète de l'espace réservé réel pour les métadonnées"] .
++
+--
+_La métrique Prometheus sera ajoutée dans une prochaine version._
+
+--
+
+
++
+
+NOTE: Les valeurs totales d'un site ou de la grille n'incluent pas les nœuds qui n'ont pas signalé de mesures depuis au moins cinq minutes, tels que les nœuds hors ligne.
+
+. Si la valeur *Utilisé (%)* est de 70 % ou plus, développez votre système StorageGRID en ajoutant des nœuds de stockage à chaque site.
++
+
+CAUTION: L'alerte *Faible stockage de métadonnées* est déclenchée lorsque la valeur *Utilisé (%)* atteint certains seuils.  Des résultats indésirables peuvent se produire si les métadonnées de l’objet utilisent plus de 100 % de l’espace autorisé.
+
++
+Lorsque vous ajoutez les nouveaux nœuds, le système rééquilibre automatiquement les métadonnées des objets sur tous les nœuds de stockage du site. Voir lelink:../expand/index.html["instructions pour étendre un système StorageGRID"] .
+
+
+
+
+
+== Surveiller les prévisions d'utilisation de l'espace
+
+Surveillez les prévisions d'utilisation de l'espace pour les données utilisateur et les métadonnées afin d'estimer quand vous en aurez besoin.link:../expand/index.html["étendre une grille"] .
+
+Si vous remarquez que le taux de consommation change au fil du temps, sélectionnez une plage plus courte dans le menu déroulant *Moyenne sur* pour refléter uniquement les modèles d'ingestion les plus récents.  Si vous remarquez des tendances saisonnières, sélectionnez une plage plus longue.
+
+Si vous disposez d'une nouvelle installation StorageGRID , laissez les données et les métadonnées s'accumuler avant d'évaluer les prévisions d'utilisation de l'espace.
+
+.Étapes
+. Sur le tableau de bord, sélectionnez *Stockage*.
+. Consultez les cartes du tableau de bord, les prévisions d'utilisation des données par pool de stockage et les prévisions d'utilisation des métadonnées par site.
+. Utilisez ces valeurs pour estimer quand vous devrez ajouter de nouveaux nœuds de stockage pour le stockage des données et des métadonnées.
+
+
+image::../media/forecast-metadata-usage.png[Prévision de l'utilisation des métadonnées par site]

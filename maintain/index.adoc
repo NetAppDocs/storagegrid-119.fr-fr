@@ -1,0 +1,33 @@
+---
+permalink: maintain/index.html 
+sidebar: sidebar 
+keywords: maintain overview, maintenance overview, about maintain, about maintenance 
+summary: 'Les tâches de maintenance du réseau incluent la mise hors service d"un nœud ou d"un site, le changement de nom d"un réseau, d"un nœud ou d"un site et la maintenance du réseau.  Vous pouvez également exécuter des procédures d"hôte et de middleware ainsi que des procédures de nœud de grille.' 
+---
+= Maintenance du réseau
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les tâches de maintenance du réseau incluent la mise hors service d'un nœud ou d'un site, le changement de nom d'un réseau, d'un nœud ou d'un site et la maintenance des réseaux.  Vous pouvez également exécuter des procédures d'hôte et de middleware ainsi que des procédures de nœud de grille.
+
+
+NOTE: Dans ces instructions, « Linux » fait référence à un déploiement Red Hat® Enterprise Linux®, Ubuntu® ou Debian®. Pour une liste des versions prises en charge, consultez le https://imt.netapp.com/matrix/#welcome["Outil de matrice d'interopérabilité NetApp"^] .
+
+
+
+== Avant de commencer
+
+* Vous avez une compréhension approfondie du système StorageGRID .
+* Vous avez examiné la topologie de votre système StorageGRID et vous comprenez la configuration de la grille.
+* Vous comprenez que vous devez suivre toutes les instructions à la lettre et tenir compte de tous les avertissements.
+* Vous comprenez que les procédures de maintenance non décrites ne sont pas prises en charge ou nécessitent un engagement de services.
+
+
+
+
+== Procédures d'entretien des appareils
+
+Pour les procédures matérielles, voir le https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/index.html["instructions de maintenance pour votre appliance StorageGRID"^] .

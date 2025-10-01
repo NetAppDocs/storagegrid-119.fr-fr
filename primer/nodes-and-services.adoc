@@ -1,0 +1,302 @@
+---
+permalink: primer/nodes-and-services.html 
+sidebar: sidebar 
+keywords: services, grid nodes, primary admin, storage, gateway 
+summary: 'L"élément de base d"un système StorageGRID est le nœud de grille.  Les nœuds contiennent des services, qui sont des modules logiciels qui fournissent un ensemble de fonctionnalités à un nœud de grille.' 
+---
+= Nœuds et services de grille
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'élément de base d'un système StorageGRID est le nœud de grille.  Les nœuds contiennent des services, qui sont des modules logiciels qui fournissent un ensemble de fonctionnalités à un nœud de grille.
+
+
+
+== Types de nœuds de grille
+
+Le système StorageGRID utilise quatre types de nœuds de grille :
+
+Nœuds d'administration:: Fournir des services de gestion tels que la configuration du système, la surveillance et la journalisation.  Lorsque vous vous connectez au Grid Manager, vous vous connectez à un nœud d’administration.  Chaque grille doit avoir un nœud d'administration principal et peut avoir des nœuds d'administration non principaux supplémentaires pour la redondance. Vous pouvez vous connecter à n’importe quel nœud d’administration, et chaque nœud d’administration affiche une vue similaire du système StorageGRID .  Cependant, les procédures de maintenance doivent être effectuées à l’aide du nœud d’administration principal.
++
+--
+Les nœuds d’administration peuvent également être utilisés pour équilibrer la charge du trafic client S3.
+
+Voirlink:what-admin-node-is.html["Qu'est-ce qu'un nœud d'administration ?"]
+
+--
+Nœuds de stockage:: Gérer et stocker les données et métadonnées des objets.  Chaque site de votre système StorageGRID doit disposer d’au moins trois nœuds de stockage.
++
+--
+Voirlink:what-storage-node-is.html["Qu'est-ce qu'un nœud de stockage ?"]
+
+--
+Nœuds de passerelle (facultatif):: Fournissez une interface d'équilibrage de charge que les applications clientes peuvent utiliser pour se connecter à StorageGRID.  Un équilibreur de charge dirige de manière transparente les clients vers un nœud de stockage optimal, de sorte que la défaillance des nœuds ou même d'un site entier soit transparente.
++
+--
+Voirlink:what-gateway-node-is.html["Qu'est-ce qu'un nœud de passerelle ?"]
+
+--
+
+
+
+
+== Nœuds matériels et logiciels
+
+Les nœuds StorageGRID peuvent être déployés en tant que nœuds d’appliance StorageGRID ou en tant que nœuds logiciels.
+
+
+
+=== Nœuds d'appliance StorageGRID
+
+Les appareils matériels StorageGRID sont spécialement conçus pour être utilisés dans un système StorageGRID .  Certains appareils peuvent être utilisés comme nœuds de stockage.  D’autres appareils peuvent être utilisés comme nœuds d’administration ou nœuds de passerelle.  Vous pouvez combiner des nœuds d'appliance avec des nœuds logiciels ou déployer des grilles entièrement conçues et entièrement composées d'appliances qui ne dépendent pas d'hyperviseurs externes, de stockage ou de matériel de calcul.
+
+Consultez les éléments suivants pour en savoir plus sur les appareils disponibles :
+
+* https://docs.netapp.com/us-en/storagegrid-appliances/["Documentation de l'appliance StorageGRID"^]
+* https://hwu.netapp.com["Hardware Universe NetApp"^]
+
+
+
+
+=== Nœuds basés sur des logiciels
+
+Les nœuds de grille basés sur des logiciels peuvent être déployés en tant que machines virtuelles VMware ou dans des moteurs de conteneurs sur un hôte Linux.
+
+* Machine virtuelle (VM) dans VMware vSphere : voirlink:../vmware/index.html["Installer StorageGRID sur VMware"] .
+* Dans un moteur de conteneur sur Red Hat Enterprise Linux : Voirlink:../rhel/index.html["Installer StorageGRID sur Red Hat Enterprise Linux"] .
+* Au sein d'un moteur de conteneur sur Ubuntu ou Debian : Voirlink:../ubuntu/index.html["Installer StorageGRID sur Ubuntu ou Debian"] .
+
+
+Utilisez le https://imt.netapp.com/matrix/#welcome["Outil de matrice d'interopérabilité NetApp (IMT)"^] pour déterminer les versions prises en charge.
+
+Lors de l'installation initiale d'un nouveau nœud de stockage basé sur un logiciel, vous pouvez spécifier qu'il soit utilisé uniquement pourlink:../primer/what-storage-node-is.html#types-of-storage-nodes["stocker les métadonnées"] .
+
+
+
+== Services StorageGRID
+
+Voici une liste complète des services StorageGRID .
+
+[cols="2a,3a,2a"]
+|===
+| Service | Description | Pays 
+
+
+ a| 
+Transitaire de service de compte
+ a| 
+Fournit une interface permettant au service Load Balancer d'interroger le service de compte sur des hôtes distants et fournit des notifications des modifications de configuration du point de terminaison Load Balancer au service Load Balancer.
+ a| 
+Service d'équilibrage de charge sur les nœuds d'administration et les nœuds de passerelle
+
+
+
+ a| 
+ADC (contrôleur de domaine administratif)
+ a| 
+Maintient les informations de topologie, fournit des services d'authentification et répond aux requêtes des services LDR et CMN.
+ a| 
+Au moins trois nœuds de stockage contenant le service ADC sur chaque site
+
+
+
+ a| 
+AMS (Système de gestion des audits)
+ a| 
+Surveille et enregistre tous les événements et transactions système audités dans un fichier journal texte.
+ a| 
+Nœuds d'administration
+
+
+
+ a| 
+Cassandra Reaper
+ a| 
+Effectue des réparations automatiques des métadonnées des objets.
+ a| 
+Nœuds de stockage
+
+
+
+ a| 
+Service de morceaux
+ a| 
+Gère les données codées par effacement et les fragments de parité.
+ a| 
+Nœuds de stockage
+
+
+
+ a| 
+CMN (nœud de gestion de configuration)
+ a| 
+Gère les configurations à l'échelle du système et les tâches de grille.  Chaque grille dispose d'un service CMN.
+ a| 
+Nœud d'administration principal
+
+
+
+ a| 
+DDS (magasin de données distribué)
+ a| 
+Interfaces avec la base de données Cassandra pour gérer les métadonnées des objets.
+ a| 
+Nœuds de stockage
+
+
+
+ a| 
+DMV (transporteur de données)
+ a| 
+Déplace les données vers les points de terminaison cloud.
+ a| 
+Nœuds de stockage
+
+
+
+ a| 
+IP dynamique (dynip)
+ a| 
+Surveille la grille pour les changements IP dynamiques et met à jour les configurations locales.
+ a| 
+Tous les nœuds
+
+
+
+ a| 
+Grafana
+ a| 
+Utilisé pour la visualisation des métriques dans le gestionnaire de grille.
+ a| 
+Nœuds d'administration
+
+
+
+ a| 
+Haute disponibilité
+ a| 
+Gère les adresses IP virtuelles haute disponibilité sur les nœuds configurés sur la page Groupes haute disponibilité.  Ce service est également connu sous le nom de service keepalived.
+ a| 
+Nœuds d'administration et de passerelle
+
+
+
+ a| 
+Identité (idnt)
+ a| 
+Fédère les identités des utilisateurs de LDAP et Active Directory.
+ a| 
+Nœuds de stockage qui utilisent le service ADC
+
+
+
+ a| 
+Arbitre Lambda
+ a| 
+Gère les requêtes S3 Select SelectObjectContent.
+ a| 
+Tous les nœuds
+
+
+
+ a| 
+Équilibreur de charge (nginx-gw)
+ a| 
+Fournit un équilibrage de charge du trafic S3 des clients vers les nœuds de stockage.  Le service Load Balancer peut être configuré via la page de configuration des points de terminaison Load Balancer.  Ce service est également connu sous le nom de service nginx-gw.
+ a| 
+Nœuds d'administration et de passerelle
+
+
+
+ a| 
+LDR (routeur de distribution local)
+ a| 
+Gère le stockage et le transfert de contenu au sein de la grille.
+ a| 
+Nœuds de stockage
+
+
+
+ a| 
+Démon de contrôle du service d'information MISCd
+ a| 
+Fournit une interface pour interroger et gérer les services sur d'autres nœuds et pour gérer les configurations environnementales sur le nœud, telles que l'interrogation de l'état des services exécutés sur d'autres nœuds.
+ a| 
+Tous les nœuds
+
+
+
+ a| 
+nginx
+ a| 
+Agit comme un mécanisme d'authentification et de communication sécurisé pour divers services de grille (tels que Prometheus et Dynamic IP) pour pouvoir communiquer avec des services sur d'autres nœuds via des API HTTPS.
+ a| 
+Tous les nœuds
+
+
+
+ a| 
+nginx-gw
+ a| 
+Alimente le service Load Balancer.
+ a| 
+Nœuds d'administration et de passerelle
+
+
+
+ a| 
+NMS (Système de gestion de réseau)
+ a| 
+Alimente les options de surveillance, de création de rapports et de configuration affichées via le gestionnaire de grille.
+ a| 
+Nœuds d'administration
+
+
+
+ a| 
+Persistance
+ a| 
+Gère les fichiers sur le disque racine qui doivent persister après un redémarrage.
+ a| 
+Tous les nœuds
+
+
+
+ a| 
+Prométhée
+ a| 
+Collecte les métriques de séries chronologiques des services sur tous les nœuds.
+ a| 
+Nœuds d'administration
+
+
+
+ a| 
+RSM (machine à états répliquée)
+ a| 
+Garantit que les demandes de service de la plateforme sont envoyées à leurs points de terminaison respectifs.
+ a| 
+Nœuds de stockage qui utilisent le service ADC
+
+
+
+ a| 
+SSM (moniteur d'état du serveur)
+ a| 
+Surveille les conditions du matériel et les signale au service NMS.
+ a| 
+Une instance est présente sur chaque nœud de grille
+
+
+
+ a| 
+Collecteur de traces
+ a| 
+Effectue une collecte de traces pour recueillir des informations à utiliser par le support technique.  Le service de collecte de traces utilise le logiciel open source Jaeger.
+ a| 
+Nœuds d'administration
+
+|===

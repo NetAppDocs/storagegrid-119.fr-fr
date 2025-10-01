@@ -1,0 +1,127 @@
+---
+permalink: ubuntu/downloading-and-extracting-storagegrid-installation-files.html 
+sidebar: sidebar 
+keywords: how to download ubuntu or debian installation files 
+summary: 'Vous devez télécharger l"archive d"installation de StorageGRID et extraire les fichiers requis. En option, vous pouvez vérifier manuellement les fichiers dans le package d"installation.' 
+---
+= Téléchargez et extrayez les fichiers d'installation de StorageGRID
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez télécharger l'archive d'installation de StorageGRID et extraire les fichiers requis. En option, vous pouvez vérifier manuellement les fichiers dans le package d'installation.
+
+.Étapes
+. Aller à la https://mysupport.netapp.com/site/products/all/details/storagegrid/downloads-tab["Page de téléchargement NetApp pour StorageGRID"^] .
+. Sélectionnez le bouton pour télécharger la dernière version ou sélectionnez une autre version dans le menu déroulant et sélectionnez *Aller*.
+. Sign in avec le nom d’utilisateur et le mot de passe de votre compte NetApp .
+. Si une mention d’avertissement/à lire absolument apparaît, lisez-la et cochez la case.
++
+
+CAUTION: Vous devez appliquer tous les correctifs requis après avoir installé la version StorageGRID . Pour plus d'informations, consultez lelink:../maintain/storagegrid-hotfix-procedure.html["procédure de correctif dans les instructions de récupération et de maintenance"]
+
+. Lisez le contrat de licence utilisateur final, cochez la case, puis sélectionnez *Accepter et continuer*.
+. Dans la colonne *Installer StorageGRID*, sélectionnez l'archive d'installation .tgz ou .zip pour Ubuntu ou Debian.
++
+
+NOTE: Sélectionnez le `.zip` fichier si vous exécutez Windows sur l'ordinateur portable de service.
+
+. Enregistrez l'archive d'installation.
+. [[ubuntu-download-verification-package]]Si vous devez vérifier l'archive d'installation :
++
+.. Téléchargez le package de vérification de signature de code StorageGRID .  Le nom de fichier de ce package utilise le format `StorageGRID_<version-number>_Code_Signature_Verification_Package.tar.gz` , où `<version-number>` est la version du logiciel StorageGRID .
+.. Suivez les étapes pourlink:../ubuntu/download-files-verify.html["vérifier manuellement les fichiers d'installation"] .
+
+
+. Extraire les fichiers de l'archive d'installation.
+. Choisissez les fichiers dont vous avez besoin.
++
+Les fichiers dont vous avez besoin dépendent de la topologie de grille prévue et de la manière dont vous allez déployer votre système StorageGRID .
+
++
+
+NOTE: Les chemins répertoriés dans le tableau sont relatifs au répertoire de niveau supérieur installé par l'archive d'installation extraite.
+
+
+
+[cols="1a,1a"]
+|===
+| Chemin et nom du fichier | Description 
+
+
+| ./debs/README  a| 
+Un fichier texte qui décrit tous les fichiers contenus dans le fichier de téléchargement StorageGRID .
+
+
+
+| ./debs/NLF000000.txt  a| 
+Un fichier de licence NetApp non destiné à la production que vous pouvez utiliser pour les tests et les déploiements de preuve de concept.
+
+
+
+| ./debs/storagegrid-webscale-images-version-SHA.deb  a| 
+Paquet DEB pour l'installation des images de nœuds StorageGRID sur les hôtes Ubuntu ou Debian.
+
+
+
+| ./debs/storagegrid-webscale-images-version-SHA.deb.md5  a| 
+Somme de contrôle MD5 pour le fichier `/debs/storagegrid-webscale-images-version-SHA.deb` .
+
+
+
+| ./debs/storagegrid-webscale-service-version-SHA.deb  a| 
+Paquet DEB pour l'installation du service hôte StorageGRID sur les hôtes Ubuntu ou Debian.
+
+
+
+| Outil de script de déploiement | Description 
+
+
+| ./debs/configure-storagegrid.py  a| 
+Un script Python utilisé pour automatiser la configuration d'un système StorageGRID .
+
+
+
+| ./debs/configure-sga.py  a| 
+Un script Python utilisé pour automatiser la configuration des appliances StorageGRID .
+
+
+
+| ./debs/storagegrid-ssoauth.py  a| 
+Un exemple de script Python que vous pouvez utiliser pour vous connecter à l’API Grid Management lorsque l’authentification unique est activée.  Vous pouvez également utiliser ce script pour l'intégration de Ping Federate.
+
+
+
+| ./debs/configure-storagegrid.sample.json  a| 
+Un exemple de fichier de configuration à utiliser avec le `configure-storagegrid.py` scénario.
+
+
+
+| ./debs/configure-storagegrid.blank.json  a| 
+Un fichier de configuration vierge à utiliser avec le `configure-storagegrid.py` scénario.
+
+
+
+| ./debs/extras/ansible  a| 
+Exemple de rôle Ansible et de playbook pour la configuration des hôtes Ubuntu ou Debian pour le déploiement du conteneur StorageGRID .  Vous pouvez personnaliser le rôle ou le manuel selon vos besoins.
+
+
+
+| ./debs/storagegrid-ssoauth-azure.py  a| 
+Un exemple de script Python que vous pouvez utiliser pour vous connecter à l’API Grid Management lorsque l’authentification unique (SSO) est activée à l’aide d’Active Directory ou de Ping Federate.
+
+
+
+| ./debs/storagegrid-ssoauth-azure.js  a| 
+Un script d'aide appelé par le compagnon `storagegrid-ssoauth-azure.py` Script Python pour effectuer des interactions SSO avec Azure.
+
+
+
+| ./debs/extras/schémas-api  a| 
+Schémas d'API pour StorageGRID.
+
+*Remarque* : avant d'effectuer une mise à niveau, vous pouvez utiliser ces schémas pour confirmer que tout code que vous avez écrit pour utiliser les API de gestion StorageGRID sera compatible avec la nouvelle version de StorageGRID si vous ne disposez pas d'un environnement StorageGRID hors production pour les tests de compatibilité de mise à niveau.
+
+|===

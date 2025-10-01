@@ -1,0 +1,259 @@
+---
+permalink: monitor/monitoring-system-health.html 
+sidebar: sidebar 
+keywords: how to monitor system health, how to view system health 
+summary: Surveillez quotidiennement l’état de santé général de votre système StorageGRID . 
+---
+= Surveiller la santé du système
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Surveillez quotidiennement l’état de santé général de votre système StorageGRID .
+
+.À propos de cette tâche
+Le système StorageGRID peut continuer à fonctionner lorsque certaines parties de la grille ne sont pas disponibles.  Les problèmes potentiels indiqués par les alertes ne sont pas nécessairement des problèmes liés aux opérations du système.  Enquêter sur les problèmes résumés sur la carte d’état de santé du tableau de bord du gestionnaire de grille.
+
+Pour être averti des alertes dès qu'elles sont déclenchées, vous pouvez https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/setting-up-email-notifications-for-alerts.html["configurer des notifications par e-mail pour les alertes"^] oulink:using-snmp-monitoring.html["configurer les interruptions SNMP"] .
+
+image::../media/health_status_card.png[Carte d'état de santé - tableau de bord]
+
+Lorsque des problèmes surviennent, des liens apparaissent qui vous permettent d'afficher des détails supplémentaires :
+
+[cols="1a,2a"]
+|===
+| Lien | Apparaît lorsque... 
+
+
+ a| 
+Détails de la grille
+ a| 
+Tous les nœuds sont déconnectés (état de connexion inconnu ou administrativement hors service).
+
+
+
+ a| 
+Alertes actuelles (critiques, majeures, mineures)
+ a| 
+Les alertes sont<<Afficher les alertes actuelles et résolues,actuellement actif>> .
+
+
+
+ a| 
+Alertes récemment résolues
+ a| 
+Alertes déclenchées la semaine dernière<<Afficher les alertes actuelles et résolues,sont maintenant résolus>> .
+
+
+
+ a| 
+Licence
+ a| 
+Il y a un problème avec la licence du logiciel pour ce système StorageGRID . Vous pouvez link:../admin/updating-storagegrid-license-information.html["mettre à jour les informations de licence selon les besoins"] .
+
+|===
+
+
+== Surveiller les états de connexion des nœuds
+
+Si un ou plusieurs nœuds sont déconnectés de la grille, les opérations critiques de StorageGRID peuvent être affectées.  Surveillez les états de connexion des nœuds et résolvez rapidement tout problème.
+
+[cols="1a,3a,3a"]
+|===
+| Icône | Description | Action requise 
+
+
+ a| 
+image:../media/icon_alarm_blue_unknown.png["icône de point d'interrogation bleu"]
+ a| 
+*Non connecté - Inconnu*
+
+Pour une raison inconnue, un nœud est déconnecté ou les services sur le nœud sont interrompus de manière inattendue.  Par exemple, un service sur le nœud peut être arrêté ou le nœud peut avoir perdu sa connexion réseau en raison d’une panne de courant ou d’une panne inattendue.
+
+L'alerte *Impossible de communiquer avec le nœud* peut également être déclenchée.  D'autres alertes peuvent également être actives.
+ a| 
+Nécessite une attention immédiate. <<Afficher les alertes actuelles et résolues,Sélectionnez chaque alerte>> et suivez les actions recommandées.
+
+Par exemple, vous devrez peut-être redémarrer un service qui s’est arrêté ou redémarrer l’hôte du nœud.
+
+*Remarque* : un nœud peut apparaître comme inconnu lors des opérations d’arrêt géré.  Vous pouvez ignorer l’état Inconnu dans ces cas.
+
+
+
+ a| 
+image:../media/icon_alarm_gray_administratively_down.png["icône de point d'interrogation gris"]
+ a| 
+*Non connecté - Administrativement en panne*
+
+Pour une raison attendue, le nœud n'est pas connecté au réseau.
+
+Par exemple, le nœud ou les services sur le nœud ont été arrêtés correctement, le nœud redémarre ou le logiciel est en cours de mise à niveau.  Une ou plusieurs alertes peuvent également être actives.
+
+En fonction du problème sous-jacent, ces nœuds reviennent souvent en ligne sans intervention.
+ a| 
+Déterminez si des alertes affectent ce nœud.
+
+Si une ou plusieurs alertes sont actives,<<Afficher les alertes actuelles et résolues,sélectionnez chaque alerte>> et suivez les actions recommandées.
+
+
+
+ a| 
+image:../media/icon_alert_green_checkmark.png["icône d'alerte coche verte"]
+ a| 
+*Connecté*
+
+Le nœud est connecté au réseau.
+ a| 
+Aucune action requise.
+
+|===
+
+
+== Afficher les alertes actuelles et résolues
+
+*Alertes actuelles* : Lorsqu'une alerte est déclenchée, une icône d'alerte s'affiche sur le tableau de bord.  Une icône d’alerte est également affichée pour le nœud sur la page Nœuds.  Silink:email-alert-notifications.html["les notifications par e-mail d'alerte sont configurées"] , une notification par e-mail sera également envoyée, sauf si l'alerte a été désactivée.
+
+*Alertes résolues* : Vous pouvez rechercher et afficher un historique des alertes qui ont été résolues.
+
+En option, vous avez regardé la vidéo : https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=2eea81c5-8323-417f-b0a0-b1ff008506c1["Vidéo : Aperçu des alertes"^]
+
+[link=https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=2eea81c5-8323-417f-b0a0-b1ff008506c1]
+image::../media/video-screenshot-alert-overview-118.png[Vidéo : Aperçu des alertes]
+
+Le tableau suivant décrit les informations affichées dans le gestionnaire de grille pour les alertes actuelles et résolues.
+
+[cols="1a,3a"]
+|===
+| En-tête de colonne | Description 
+
+
+ a| 
+Nom ou titre
+ a| 
+Le nom de l'alerte et sa description.
+
+
+
+ a| 
+Gravité
+ a| 
+La gravité de l'alerte.  Pour les alertes actuelles, si plusieurs alertes sont regroupées, la ligne de titre indique le nombre d'instances de cette alerte qui se produisent à chaque niveau de gravité.
+
+image:../media/icon_alert_red_critical.png["Icône d'alerte rouge critique"]*Critique* : une condition anormale existe qui a arrêté les opérations normales d’un nœud ou d’un service StorageGRID .  Vous devez résoudre le problème sous-jacent immédiatement.  Une interruption de service et une perte de données peuvent survenir si le problème n'est pas résolu.
+
+image:../media/icon_alert_orange_major.png["Icône Alerte Orange Majeure"]*Majeur* : Une condition anormale existe qui affecte les opérations en cours ou approche le seuil d'une alerte critique.  Vous devez enquêter sur les alertes majeures et résoudre tous les problèmes sous-jacents pour garantir que la condition anormale n’arrête pas le fonctionnement normal d’un nœud ou d’un service StorageGRID .
+
+image:../media/icon_alert_yellow_minor.png["Icône d'alerte mineure jaune"]*Mineur* : Le système fonctionne normalement, mais une condition anormale existe qui pourrait affecter la capacité du système à fonctionner si elle persiste.  Vous devez surveiller et résoudre les alertes mineures qui ne disparaissent pas d'elles-mêmes pour vous assurer qu'elles n'entraînent pas un problème plus grave.
+
+
+
+ a| 
+Le temps déclenché
+ a| 
+*Alertes actuelles* : La date et l'heure auxquelles l'alerte a été déclenchée dans votre heure locale et en UTC.  Si plusieurs alertes sont regroupées, la ligne de titre affiche les heures de l'instance la plus récente de l'alerte (_newest_) et de l'instance la plus ancienne de l'alerte (_oldest_).
+
+*Alertes résolues* : Il y a combien de temps l'alerte a été déclenchée.
+
+
+
+ a| 
+Site/Nœud
+ a| 
+Le nom du site et du nœud où l'alerte se produit ou s'est produite.
+
+
+
+ a| 
+Statut
+ a| 
+Que l'alerte soit active, silencieuse ou résolue.  Si plusieurs alertes sont regroupées et que *Toutes les alertes* est sélectionné dans la liste déroulante, la ligne de titre indique combien d'instances de cette alerte sont actives et combien d'instances ont été désactivées.
+
+
+
+ a| 
+Temps résolu (alertes résolues uniquement)
+ a| 
+Il y a combien de temps l'alerte a été résolue.
+
+
+
+ a| 
+Valeurs actuelles ou _valeurs de données_
+ a| 
+La valeur de la métrique qui a provoqué le déclenchement de l’alerte.  Pour certaines alertes, des valeurs supplémentaires sont affichées pour vous aider à comprendre et à examiner l'alerte.  Par exemple, les valeurs affichées pour une alerte *Faible stockage de données d'objet* incluent le pourcentage d'espace disque utilisé, la quantité totale d'espace disque et la quantité d'espace disque utilisée.
+
+*Remarque :* si plusieurs alertes actuelles sont regroupées, les valeurs actuelles ne sont pas affichées dans la ligne de titre.
+
+
+
+ a| 
+Valeurs déclenchées (alertes résolues uniquement)
+ a| 
+La valeur de la métrique qui a provoqué le déclenchement de l’alerte.  Pour certaines alertes, des valeurs supplémentaires sont affichées pour vous aider à comprendre et à examiner l'alerte.  Par exemple, les valeurs affichées pour une alerte *Faible stockage de données d'objet* incluent le pourcentage d'espace disque utilisé, la quantité totale d'espace disque et la quantité d'espace disque utilisée.
+
+|===
+.Étapes
+. Sélectionnez le lien *Alertes actuelles* ou *Alertes résolues* pour afficher une liste des alertes dans ces catégories.  Vous pouvez également afficher les détails d'une alerte en sélectionnant *Nœuds* > *_node_* > *Aperçu*, puis en sélectionnant l'alerte dans le tableau Alertes.
++
+Par défaut, les alertes actuelles sont affichées comme suit :
+
++
+** Les alertes déclenchées le plus récemment sont affichées en premier.
+** Plusieurs alertes du même type sont affichées sous forme de groupe.
+** Les alertes qui ont été désactivées ne sont pas affichées.
+** Pour une alerte spécifique sur un nœud spécifique, si les seuils sont atteints pour plusieurs niveaux de gravité, seule l'alerte la plus grave est affichée.  Autrement dit, si les seuils d’alerte sont atteints pour les niveaux de gravité mineur, majeur et critique, seule l’alerte critique est affichée.
++
+La page Alertes actuelles est actualisée toutes les deux minutes.
+
+
+
+. Pour développer des groupes d'alertes, sélectionnez le curseur vers le basimage:../media/icon_alert_caret_down.png["icône de curseur vers le bas"] .  Pour réduire les alertes individuelles dans un groupe, sélectionnez le curseur vers le hautimage:../media/icon_alert_caret_up.png["Icône du curseur vers le haut"] , ou sélectionnez le nom du groupe.
+. Pour afficher des alertes individuelles au lieu de groupes d'alertes, décochez la case *Alertes de groupe*.
+. Pour trier les alertes actuelles ou les groupes d'alertes, sélectionnez les flèches haut/basimage:../media/icon_alert_sort_column.png["Icône de flèches de tri"] dans chaque en-tête de colonne.
++
+** Lorsque *Alertes de groupe* est sélectionné, les groupes d'alertes et les alertes individuelles au sein de chaque groupe sont triés.  Par exemple, vous souhaiterez peut-être trier les alertes d'un groupe par *Heure de déclenchement* pour trouver l'instance la plus récente d'une alerte spécifique.
+** Lorsque *Alertes de groupe* est effacé, la liste entière des alertes est triée.  Par exemple, vous souhaiterez peut-être trier toutes les alertes par *Nœud/Site* pour voir toutes les alertes affectant un nœud spécifique.
+
+
+. Pour filtrer les alertes actuelles par statut (*Toutes les alertes*, *Actif* ou *Silencieux*), utilisez le menu déroulant en haut du tableau.
++
+Voir link:silencing-alert-notifications.html["Notifications d'alerte silencieuses"] .
+
+. Pour trier les alertes résolues :
++
+** Sélectionnez une période dans le menu déroulant *Lors du déclenchement*.
+** Sélectionnez une ou plusieurs gravités dans le menu déroulant *Gravité*.
+** Sélectionnez une ou plusieurs règles d'alerte par défaut ou personnalisées dans le menu déroulant *Règle d'alerte* pour filtrer les alertes résolues liées à une règle d'alerte spécifique.
+** Sélectionnez un ou plusieurs nœuds dans le menu déroulant *Nœud* pour filtrer les alertes résolues liées à un nœud spécifique.
+
+
+. Pour afficher les détails d’une alerte spécifique, sélectionnez l’alerte.  Une boîte de dialogue fournit des détails et des actions recommandées pour l'alerte que vous avez sélectionnée.
+. (Facultatif) Pour une alerte spécifique, sélectionnez « Désactiver cette alerte » pour désactiver la règle d'alerte qui a provoqué le déclenchement de cette alerte.
++
+Vous devez avoir lelink:../admin/admin-group-permissions.html["Gérer les alertes ou l'autorisation d'accès root"] pour faire taire une règle d'alerte.
+
++
+
+CAUTION: Soyez prudent lorsque vous décidez de désactiver une règle d’alerte.  Si une règle d’alerte est désactivée, vous risquez de ne pas détecter un problème sous-jacent jusqu’à ce qu’il empêche une opération critique de se terminer.
+
+. Pour afficher les conditions actuelles de la règle d’alerte :
++
+.. Dans les détails de l’alerte, sélectionnez *Afficher les conditions*.
++
+Une fenêtre contextuelle apparaît, répertoriant l’expression Prometheus pour chaque gravité définie.
+
+.. Pour fermer la fenêtre contextuelle, cliquez n’importe où en dehors de la fenêtre contextuelle.
+
+
+. Vous pouvez également sélectionner *Modifier la règle* pour modifier la règle d’alerte qui a provoqué le déclenchement de cette alerte.
++
+Vous devez avoir lelink:../admin/admin-group-permissions.html["Gérer les alertes ou l'autorisation d'accès root"] pour modifier une règle d'alerte.
+
++
+
+CAUTION: Soyez prudent lorsque vous décidez de modifier une règle d’alerte.  Si vous modifiez les valeurs de déclenchement, vous risquez de ne pas détecter un problème sous-jacent jusqu'à ce qu'il empêche une opération critique de se terminer.
+
+. Pour fermer les détails de l’alerte, sélectionnez *Fermer*.
+

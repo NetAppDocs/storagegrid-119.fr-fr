@@ -1,0 +1,282 @@
+---
+permalink: ilm/creating-ilm-policy.html 
+sidebar: sidebar 
+keywords: how to create ILM policy 
+summary: Créez une ou plusieurs politiques ILM pour répondre à vos exigences de qualité de service. 
+---
+= Créer des politiques ILM
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Créez une ou plusieurs politiques ILM pour répondre à vos exigences de qualité de service.
+
+Disposer d’une seule politique ILM active vous permet d’appliquer les mêmes règles ILM à tous les locataires et compartiments.
+
+Le fait de disposer de plusieurs stratégies ILM actives vous permet d'appliquer les règles ILM appropriées à des locataires et des compartiments spécifiques pour répondre à plusieurs exigences de qualité de service.
+
+
+
+== Créer une politique ILM
+
+.À propos de cette tâche
+Avant de créer votre propre politique, vérifiez que lelink:ilm-policy-overview.html#default-ilm-policy["politique ILM par défaut"] ne répond pas à vos besoins de stockage.
+
+
+NOTE: Utilisez uniquement les politiques fournies par le système, 2 copies de politique (pour les grilles à un seul site) ou 1 copie par site (pour les grilles multi-sites), dans les systèmes de test.  Pour StorageGRID 11.6 et les versions antérieures, la règle par défaut de cette stratégie utilise le pool de stockage Tous les nœuds de stockage, qui contient tous les sites.  Si votre système StorageGRID possède plusieurs sites, deux copies d'un objet peuvent être placées sur le même site.
+
+
+NOTE: Si lelink:enabling-s3-object-lock-globally.html["le paramètre global de verrouillage des objets S3 a été activé"] , vous devez vous assurer que la politique ILM est conforme aux exigences des buckets pour lesquels le verrouillage d'objet S3 est activé.  Dans cette section, suivez les instructions qui mentionnent l’activation du verrouillage d’objet S3.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:../admin/admin-group-permissions.html["autorisations d'accès requises"] .
+* Tu aslink:access-create-ilm-rule-wizard.html["règles ILM créées"] selon que le verrouillage d'objet S3 est activé.
++
+[role="tabbed-block"]
+====
+.Le verrouillage des objets S3 n'est pas activé
+--
+** Tu aslink:what-ilm-rule-is.html["créé les règles ILM"] vous souhaitez ajouter à la politique.  Si nécessaire, vous pouvez enregistrer une politique, créer des règles supplémentaires, puis modifier la politique pour ajouter les nouvelles règles.
+** Tu aslink:creating-default-ilm-rule.html["créé une règle ILM par défaut"] qui ne contient aucun filtre.
+
+
+--
+.Verrouillage d'objet S3 activé
+--
+** Lelink:enabling-s3-object-lock-globally.html["le paramètre global de verrouillage des objets S3 est déjà activé"] pour le système StorageGRID .
+** Tu aslink:what-ilm-rule-is.html["créé les règles ILM conformes et non conformes"] vous souhaitez ajouter à la politique.  Si nécessaire, vous pouvez enregistrer une politique, créer des règles supplémentaires, puis modifier la politique pour ajouter les nouvelles règles.
+** Tu aslink:creating-default-ilm-rule.html["créé une règle ILM par défaut"] pour la politique qui est conforme.
+
+
+--
+====
+* En option, vous avez regardé la vidéo : https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=e768d4da-da88-413c-bbaa-b1ff00874d10["Vidéo : Présentation des politiques ILM"^]
++
+[link=https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=e768d4da-da88-413c-bbaa-b1ff00874d10]
+image::../media/video-screenshot-ilm-policies-118.png[Vidéo : Présentation des politiques ILM]
+
+
+
+Voir aussi link:ilm-policy-overview.html["Utiliser les politiques ILM"] .
+
+.Étapes
+. Sélectionnez *ILM* > *Politiques*.
++
+Si le paramètre global de verrouillage d'objet S3 est activé, la page des stratégies ILM indique quelles règles ILM sont conformes.
+
+. Déterminez comment vous souhaitez créer la politique ILM.
++
+[role="tabbed-block"]
+====
+.Créer une nouvelle politique
+--
+.. Sélectionnez *Créer une politique*.
+
+
+--
+.Cloner la politique existante
+--
+.. Cochez la case correspondant à la politique avec laquelle vous souhaitez commencer, puis sélectionnez *Cloner*.
+
+
+--
+.Modifier la politique existante
+.. Si une politique est inactive, vous pouvez la modifier.  Cochez la case correspondant à la politique inactive avec laquelle vous souhaitez commencer, puis sélectionnez *Modifier*.
+
+
+====
+
+
+. Dans le champ *Nom de la politique*, saisissez un nom unique pour la politique.
+. Si vous le souhaitez, dans le champ *Raison du changement*, saisissez la raison pour laquelle vous créez une nouvelle politique.
+. Pour ajouter des règles à la politique, sélectionnez *Sélectionner les règles*.  Sélectionnez un nom de règle pour afficher les paramètres de cette règle.
++
+--
+Si vous clonez une politique :
+
+** Les règles utilisées par la politique que vous clonez sont sélectionnées.
+** Si la politique que vous clonez utilisait des règles sans filtres qui n'étaient pas la règle par défaut, vous êtes invité à supprimer toutes ces règles sauf une.
+** Si la règle par défaut utilise un filtre, vous êtes invité à sélectionner une nouvelle règle par défaut.
+** Si la règle par défaut n’était pas la dernière règle, vous pouvez déplacer la règle à la fin de la nouvelle politique.
+
+
+--
++
+[role="tabbed-block"]
+====
+.Le verrouillage des objets S3 n'est pas activé
+--
+.. Sélectionnez une règle par défaut pour la politique.  Pour créer une nouvelle règle par défaut, sélectionnez *Page de règles ILM*.
++
+La règle par défaut s’applique à tous les objets qui ne correspondent pas à une autre règle de la politique.  La règle par défaut ne peut utiliser aucun filtre et est toujours évaluée en dernier.
+
++
+
+NOTE: N'utilisez pas la règle « Créer 2 copies » comme règle par défaut pour une stratégie.  La règle Créer 2 copies utilise un pool de stockage unique, Tous les nœuds de stockage, qui contient tous les sites.  Si votre système StorageGRID possède plusieurs sites, deux copies d'un objet peuvent être placées sur le même site.
+
+
+
+--
+.Verrouillage d'objet S3 activé
+--
+.. Sélectionnez une règle par défaut pour la politique.  Pour créer une nouvelle règle par défaut, sélectionnez *Page de règles ILM*.
++
+La liste des règles contient uniquement les règles conformes et n'utilise aucun filtre.
+
++
+
+NOTE: N'utilisez pas la règle « Créer 2 copies » comme règle par défaut pour une stratégie.  La règle Créer 2 copies utilise un pool de stockage unique, Tous les nœuds de stockage, qui contient tous les sites.  Si vous utilisez cette règle, plusieurs copies d’un objet peuvent être placées sur le même site.
+
+.. Si vous avez besoin d'une règle « par défaut » différente pour les objets dans les compartiments S3 non conformes, sélectionnez *Inclure une règle sans filtres pour les compartiments S3 non conformes* et sélectionnez une règle non conforme qui n'utilise pas de filtre.
++
+Par exemple, vous souhaiterez peut-être utiliser un pool de stockage cloud pour stocker des objets dans des buckets pour lesquels le verrouillage d'objet S3 n'est pas activé.
+
++
+
+NOTE: Vous ne pouvez sélectionner qu'une seule règle non conforme qui n'utilise pas de filtre.
+
+
+
+Voir aussi link:example-7-compliant-ilm-policy-for-s3-object-lock.html["Exemple 7 : Politique ILM conforme pour le verrouillage d'objet S3"] .
+
+--
+====
+
+
+. Lorsque vous avez terminé de sélectionner la règle par défaut, sélectionnez *Continuer*.
+. Pour l’étape Autres règles, sélectionnez toutes les autres règles que vous souhaitez ajouter à la politique.  Ces règles utilisent au moins un filtre (compte locataire, nom de bucket, filtre avancé ou heure de référence non actuelle).  Sélectionnez ensuite *Sélectionner*.
++
+La fenêtre Créer une politique répertorie désormais les règles que vous avez sélectionnées.  La règle par défaut se trouve à la fin, avec les autres règles au-dessus.
+
++
+Si le verrouillage d'objet S3 est activé et que vous avez également sélectionné une règle « par défaut » non conforme, cette règle est ajoutée comme avant-dernière règle de la politique.
+
++
+
+NOTE: Un avertissement apparaît si une règle ne conserve pas les objets pour toujours.  Lorsque vous activez cette stratégie, vous devez confirmer que vous souhaitez que StorageGRID supprime les objets lorsque les instructions de placement de la règle par défaut expirent (à moins qu'un cycle de vie de compartiment ne conserve les objets pendant une période plus longue).
+
+. Faites glisser les lignes des règles non par défaut pour déterminer l’ordre dans lequel ces règles seront évaluées.
++
+Vous ne pouvez pas déplacer la règle par défaut.  Si le verrouillage d'objet S3 est activé, vous ne pouvez pas non plus déplacer la règle « par défaut » non conforme si elle a été sélectionnée.
+
++
+
+NOTE: Vous devez confirmer que les règles ILM sont dans le bon ordre.  Lorsque la politique est activée, les objets nouveaux et existants sont évalués par les règles dans l'ordre répertorié, en commençant par le haut.
+
+. Si nécessaire, sélectionnez *Sélectionner des règles* pour ajouter ou supprimer des règles.
+. Lorsque vous avez terminé, sélectionnez *Enregistrer*.
+. Répétez ces étapes pour créer des stratégies ILM supplémentaires.
+. <<simulate-ilm-policy,Simuler une politique ILM>> . Vous devez toujours simuler une politique avant de l’activer pour vous assurer qu’elle fonctionne comme prévu.
+
+
+
+
+== Simuler une politique
+
+Simulez une politique sur des objets de test avant d’activer la politique et de l’appliquer à vos données de production.
+
+.Avant de commencer
+* Vous connaissez le bucket/la clé d'objet S3 pour chaque objet que vous souhaitez tester.
+
+
+.Étapes
+. En utilisant un client S3 ou lelink:../tenant/use-s3-console.html["Console S3"] , ingérer les objets nécessaires pour tester chaque règle.
+. Sur la page des politiques ILM, cochez la case correspondant à la politique, puis sélectionnez *Simuler*.
+. Dans le champ *Objet*, saisissez le S3 `bucket/object-key` pour un objet de test. Par exemple :  `bucket-01/filename.png` .
+. Si le contrôle de version S3 est activé, saisissez éventuellement un ID de version pour l'objet dans le champ *ID de version*.
+. Sélectionnez *Simuler*.
+. Dans la section Résultats de la simulation, confirmez que chaque objet correspond à la règle correcte.
+. Pour déterminer quel pool de stockage ou quel profil de codage d'effacement est en vigueur, sélectionnez le nom de la règle correspondante pour accéder à la page des détails de la règle.
+
+
+
+CAUTION: Examinez toutes les modifications apportées au placement des objets répliqués et codés par effacement existants.  La modification de l'emplacement d'un objet existant peut entraîner des problèmes de ressources temporaires lorsque les nouveaux emplacements sont évalués et mis en œuvre.
+
+.Résultats
+Toutes les modifications apportées aux règles de la politique seront reflétées dans les résultats de la simulation et afficheront la nouvelle correspondance et la correspondance précédente.  La fenêtre de stratégie Simuler conserve les objets que vous avez testés jusqu'à ce que vous sélectionniez *Effacer tout* ou l'icône de suppressionimage:../media/icon-x-to-remove.png["Supprimer l'icône"] pour chaque objet dans la liste des résultats de simulation.
+
+.Informations connexes
+link:simulating-ilm-policy-examples.html["Exemples de simulations de politiques ILM"]
+
+
+
+== Activer une politique
+
+Lorsque vous activez une nouvelle stratégie ILM unique, les objets existants et les objets nouvellement ingérés sont gérés par cette stratégie.  Lorsque vous activez plusieurs stratégies, les balises de stratégie ILM attribuées aux compartiments déterminent les objets à gérer.
+
+Avant d’activer une nouvelle politique :
+
+. Simulez la politique pour confirmer qu’elle se comporte comme prévu.
+. Examinez toutes les modifications apportées au placement des objets répliqués et codés par effacement existants.  La modification de l'emplacement d'un objet existant peut entraîner des problèmes de ressources temporaires lorsque les nouveaux emplacements sont évalués et mis en œuvre.
+
+
+
+CAUTION: Des erreurs dans une politique ILM peuvent entraîner une perte de données irrécupérable.
+
+.À propos de cette tâche
+Lorsque vous activez une politique ILM, le système distribue la nouvelle politique à tous les nœuds.  Toutefois, la nouvelle politique active pourrait ne pas prendre effet tant que tous les nœuds de la grille ne seront pas disponibles pour recevoir la nouvelle politique.  Dans certains cas, le système attend d'implémenter une nouvelle politique active pour garantir que les objets de la grille ne sont pas supprimés accidentellement.  Spécifiquement:
+
+* Si vous apportez des modifications de politique qui *augmentent la redondance ou la durabilité des données*, ces modifications sont mises en œuvre immédiatement.  Par exemple, si vous activez une nouvelle politique qui inclut une règle à trois copies au lieu d’une règle à deux copies, cette politique sera mise en œuvre immédiatement car elle augmente la redondance des données.
+* Si vous apportez des modifications de politique qui *pourraient réduire la redondance ou la durabilité des données*, ces modifications ne seront pas mises en œuvre tant que tous les nœuds de la grille ne seront pas disponibles.  Par exemple, si vous activez une nouvelle politique qui utilise une règle à deux copies au lieu d'une règle à trois copies, la nouvelle politique apparaîtra dans l'onglet Politique active, mais elle ne prendra effet que lorsque tous les nœuds seront en ligne et disponibles.
+
+
+.Étapes
+Suivez les étapes pour activer une ou plusieurs politiques :
+
+[role="tabbed-block"]
+====
+.Activer une politique
+--
+Suivez ces étapes si vous n’avez qu’une seule politique active.  Si vous disposez déjà d’une ou plusieurs politiques actives et que vous activez des politiques supplémentaires, suivez les étapes pour activer plusieurs politiques.
+
+. Lorsque vous êtes prêt à activer une politique, sélectionnez *ILM* > *Politiques*.
++
+Vous pouvez également activer une seule politique à partir de la page *ILM* > *Balises de politique*.
+
+. Dans l’onglet Politiques, cochez la case correspondant à la politique que vous souhaitez activer, puis sélectionnez *Activer*.
+. Suivez l’étape appropriée :
++
+** Si un message d’avertissement vous invite à confirmer que vous souhaitez activer la politique, sélectionnez *OK*.
+** Si un message d’avertissement contenant des détails sur la politique s’affiche :
++
+... Passez en revue les détails pour vous assurer que la politique gérera les données comme prévu.
+... Si la règle par défaut stocke les objets pendant un nombre limité de jours, examinez le diagramme de rétention, puis saisissez ce nombre de jours dans la zone de texte.
+... Si la règle par défaut stocke les objets pour toujours, mais qu'une ou plusieurs autres règles ont une conservation limitée, saisissez *oui* dans la zone de texte.
+... Sélectionnez *Activer la politique*.
+
+
+
+
+
+
+--
+.Activer plusieurs politiques
+--
+Pour activer plusieurs politiques, vous devez créer des balises et attribuer une politique à chaque balise.
+
+
+TIP: Lorsque plusieurs balises sont utilisées, si les locataires réaffectent fréquemment les balises de stratégie aux compartiments, les performances de la grille peuvent être affectées.  Si vous avez des locataires non approuvés, envisagez d’utiliser uniquement la balise par défaut.
+
+. Sélectionnez *ILM* > *Balises de politique*.
+. Sélectionnez *Créer*.
+. Dans la boîte de dialogue Créer une balise de stratégie, saisissez un nom de balise et, éventuellement, une description pour la balise.
++
+
+NOTE: Les noms et descriptions des balises sont visibles par les locataires.  Choisissez des valeurs qui aideront les locataires à prendre une décision éclairée lors de la sélection des balises de stratégie à attribuer à leurs compartiments.  Par exemple, si la politique attribuée supprime des objets après une période donnée, vous pouvez le communiquer dans la description.  N'incluez pas d'informations sensibles dans ces champs.
+
+. Sélectionnez *Créer une balise*.
+. Dans le tableau des balises de stratégie ILM, utilisez le menu déroulant pour sélectionner une stratégie à attribuer à la balise.
+. Si des avertissements apparaissent dans la colonne Limitations de la politique, sélectionnez *Afficher les détails de la politique* pour consulter la politique.
+. Assurez-vous que chaque politique gère les données comme prévu.
+. Sélectionnez *Activer les politiques attribuées*.  Ou sélectionnez *Effacer les modifications* pour supprimer l’attribution de stratégie.
+. Dans la boîte de dialogue Activer les stratégies avec de nouvelles balises, examinez les descriptions de la manière dont chaque balise, stratégie et règle gérera les objets.  Apportez les modifications nécessaires pour garantir que les politiques géreront les objets comme prévu.
+. Lorsque vous êtes sûr de vouloir activer les politiques, saisissez *oui* dans la zone de texte, puis sélectionnez *Activer les politiques*.
+
+
+--
+====
+.Informations connexes
+link:example-6-changing-ilm-policy.html["Exemple 6 : Modification d'une politique ILM"]

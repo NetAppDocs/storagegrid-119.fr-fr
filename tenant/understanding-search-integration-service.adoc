@@ -1,0 +1,57 @@
+---
+permalink: tenant/understanding-search-integration-service.html 
+sidebar: sidebar 
+keywords: how to understand search integration service 
+summary: 'Vous pouvez activer l"intégration de la recherche pour un compartiment S3 si vous souhaitez utiliser un service de recherche et d"analyse de données externe pour les métadonnées de votre objet.' 
+---
+= Comprendre le service d'intégration de recherche
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez activer l'intégration de la recherche pour un compartiment S3 si vous souhaitez utiliser un service de recherche et d'analyse de données externe pour les métadonnées de votre objet.
+
+Le service d'intégration de recherche est un service StorageGRID personnalisé qui envoie automatiquement et de manière asynchrone les métadonnées d'objet S3 à un point de terminaison de destination chaque fois qu'un objet est créé ou supprimé, ou que ses métadonnées ou balises sont mises à jour.  Vous pouvez ensuite utiliser des outils sophistiqués de recherche, d’analyse de données, de visualisation ou d’apprentissage automatique fournis par le service de destination pour rechercher, analyser et obtenir des informations à partir des données de vos objets.
+
+Par exemple, vous pouvez configurer vos buckets pour envoyer des métadonnées d’objet S3 à un service Elasticsearch distant.  Vous pouvez ensuite utiliser Elasticsearch pour effectuer des recherches dans plusieurs compartiments et effectuer des analyses sophistiquées des modèles présents dans les métadonnées de votre objet.
+
+Bien que l'intégration Elasticsearch puisse être configurée sur un bucket avec S3 Object Lock activé, les métadonnées S3 Object Lock (y compris la date de conservation et le statut de conservation légale) des objets ne seront pas incluses dans les métadonnées envoyées à Elasticsearch.
+
+
+NOTE: Étant donné que le service d'intégration de recherche provoque l'envoi des métadonnées d'objet vers une destination, sa configuration XML est appelée « XML de configuration de notification _metadata_ ».  Ce XML de configuration est différent du « XML de configuration de notification » utilisé pour activer les notifications d'événements.
+
+
+
+== Intégration de la recherche et buckets S3
+
+Vous pouvez activer le service d'intégration de recherche pour n'importe quel bucket versionné ou non versionné.  L'intégration de la recherche est configurée en associant la configuration XML de notification de métadonnées au bucket qui spécifie les objets sur lesquels agir et la destination des métadonnées de l'objet.
+
+Les notifications de métadonnées sont générées sous la forme d'un document JSON nommé avec le nom du bucket, le nom de l'objet et l'ID de version, le cas échéant.  Chaque notification de métadonnées contient un ensemble standard de métadonnées système pour l'objet en plus de toutes les balises de l'objet et des métadonnées utilisateur.
+
+
+NOTE: Pour les balises et les métadonnées utilisateur, StorageGRID transmet des dates et des nombres à Elasticsearch sous forme de chaînes ou de notifications d'événements S3.  Pour configurer Elasticsearch afin d'interpréter ces chaînes comme des dates ou des nombres, suivez les instructions Elasticsearch pour le mappage de champs dynamiques et pour le mappage des formats de date.  Vous devez activer les mappages de champs dynamiques sur l’index avant de configurer le service d’intégration de recherche.  Une fois qu'un document est indexé, vous ne pouvez pas modifier les types de champs du document dans l'index.
+
+
+
+== Notifications de recherche
+
+Les notifications de métadonnées sont générées et mises en file d'attente pour être envoyées chaque fois que :
+
+* Un objet est créé.
+* Un objet est supprimé, y compris lorsque des objets sont supprimés suite au fonctionnement de la politique ILM de la grille.
+* Les métadonnées ou balises d'objet sont ajoutées, mises à jour ou supprimées.  L'ensemble complet des métadonnées et des balises est toujours envoyé lors de la mise à jour, pas seulement les valeurs modifiées.
+
+
+Une fois que vous avez ajouté une configuration XML de notification de métadonnées à un bucket, des notifications sont envoyées pour tous les nouveaux objets que vous créez et pour tous les objets que vous modifiez en mettant à jour ses données, ses métadonnées utilisateur ou ses balises.  Cependant, les notifications ne sont pas envoyées pour les objets qui se trouvaient déjà dans le bucket.  Pour garantir que les métadonnées d’objet pour tous les objets du bucket sont envoyées à la destination, vous devez effectuer l’une des opérations suivantes :
+
+* Configurez le service d’intégration de recherche immédiatement après la création du bucket et avant d’ajouter des objets.
+* Exécutez une action sur tous les objets déjà présents dans le bucket qui déclenchera l’envoi d’un message de notification de métadonnées à la destination.
+
+
+
+
+== Service d'intégration de recherche et Elasticsearch
+
+Le service d’intégration de recherche StorageGRID prend en charge un cluster Elasticsearch comme destination.  Comme pour les autres services de plateforme, la destination est spécifiée dans le point de terminaison dont l'URN est utilisée dans le XML de configuration du service.  Utilisez le https://imt.netapp.com/matrix/#welcome["Outil de matrice d'interopérabilité NetApp"^] pour déterminer les versions prises en charge d'Elasticsearch.

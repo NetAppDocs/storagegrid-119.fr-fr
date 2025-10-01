@@ -1,0 +1,130 @@
+---
+permalink: admin/manage-firewall-controls.html 
+sidebar: sidebar 
+keywords: firewall controls, untrusted client network, privileged address, manage external access 
+summary: 'StorageGRID inclut un pare-feu interne sur chaque nœud qui améliore la sécurité de votre grille en vous permettant de personnaliser l"accès au réseau de grille, au réseau d"administration et au réseau client.' 
+---
+= Gérer les contrôles du pare-feu interne
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID inclut un pare-feu interne sur chaque nœud qui améliore la sécurité de votre grille en vous permettant de contrôler l'accès réseau au nœud.  Utilisez le pare-feu pour empêcher l’accès au réseau sur tous les ports, à l’exception de ceux nécessaires à votre déploiement de grille spécifique.  Les modifications de configuration que vous effectuez sur la page de contrôle du pare-feu sont déployées sur chaque nœud.
+
+Utilisez les trois onglets de la page de contrôle du pare-feu pour personnaliser l’accès dont vous avez besoin pour votre grille.
+
+* *Liste d'adresses privilégiées* : utilisez cet onglet pour autoriser l'accès sélectionné aux ports fermés.  Vous pouvez ajouter des adresses IP ou des sous-réseaux en notation CIDR qui peuvent accéder aux ports fermés à l’aide de l’onglet Gérer l’accès externe.
+* *Gérer l'accès externe* : utilisez cet onglet pour fermer les ports ouverts par défaut ou rouvrir les ports précédemment fermés.
+* *Réseau client non approuvé* : utilisez cet onglet pour spécifier si un nœud approuve le trafic entrant provenant du réseau client.
++
+Les paramètres de cet onglet remplacent les paramètres de l’onglet Gérer l’accès externe.
+
++
+** Un nœud avec un réseau client non approuvé acceptera uniquement les connexions sur les ports de point de terminaison de l'équilibreur de charge configurés sur ce nœud (points de terminaison globaux, d'interface de nœud et de type de nœud).
+** Les ports de point de terminaison de l'équilibreur de charge _sont les seuls ports ouverts_ sur les réseaux clients non approuvés, quels que soient les paramètres de l'onglet Gérer les réseaux externes.
+** Lorsqu'ils sont approuvés, tous les ports ouverts sous l'onglet Gérer l'accès externe sont accessibles, ainsi que tous les points de terminaison d'équilibrage de charge ouverts sur le réseau client.
+
+
+
+
+
+NOTE: Les paramètres que vous définissez sur un onglet peuvent affecter les modifications d’accès que vous effectuez sur un autre onglet.  Assurez-vous de vérifier les paramètres de tous les onglets pour vous assurer que votre réseau se comporte comme vous l’attendez.
+
+Pour configurer les contrôles du pare-feu interne, voirlink:../admin/configure-firewall-controls.html["Configurer les contrôles du pare-feu"] .
+
+Pour plus d'informations sur les pare-feu externes et la sécurité du réseau, consultezlink:../admin/controlling-access-through-firewalls.html["Contrôler l'accès au pare-feu externe"] .
+
+
+
+== Liste d'adresses privilégiées et onglets Gérer les accès externes
+
+L'onglet Liste d'adresses privilégiées vous permet d'enregistrer une ou plusieurs adresses IP auxquelles l'accès aux ports de grille fermés est accordé.  L'onglet Gérer l'accès externe vous permet de fermer l'accès externe aux ports externes sélectionnés ou à tous les ports externes ouverts (les ports externes sont des ports accessibles par défaut par les nœuds non-grille).  Ces deux onglets peuvent souvent être utilisés ensemble pour personnaliser l'accès réseau exact dont vous avez besoin pour autoriser votre grille.
+
+
+NOTE: Les adresses IP privilégiées n'ont pas d'accès au port de grille interne par défaut.
+
+
+
+=== Exemple 1 : Utiliser un hôte de saut pour les tâches de maintenance
+
+Supposons que vous souhaitiez utiliser un hôte de saut (un hôte renforcé en termes de sécurité) pour l’administration du réseau.  Vous pouvez utiliser ces étapes générales :
+
+. Utilisez l’onglet Liste d’adresses privilégiées pour ajouter l’adresse IP de l’hôte de saut.
+. Utilisez l’onglet Gérer l’accès externe pour bloquer tous les ports.
+
+
+
+CAUTION: Ajoutez l’adresse IP privilégiée avant de bloquer les ports 443 et 8443.  Tous les utilisateurs actuellement connectés sur un port bloqué, y compris vous, perdront l'accès à Grid Manager, sauf si leur adresse IP a été ajoutée à la liste d'adresses privilégiées.
+
+Après avoir enregistré votre configuration, tous les ports externes du nœud d'administration de votre grille seront bloqués pour tous les hôtes, à l'exception de l'hôte de saut.  Vous pouvez ensuite utiliser l'hôte de saut pour effectuer des tâches de maintenance sur votre réseau de manière plus sécurisée.
+
+
+
+=== Exemple 2 : Verrouiller les ports sensibles
+
+Supposons que vous souhaitiez verrouiller les ports sensibles et le service sur ce port (par exemple, SSH sur le port 22). Vous pouvez utiliser les étapes générales suivantes :
+
+. Utilisez l’onglet Liste d’adresses privilégiées pour accorder l’accès uniquement aux hôtes qui ont besoin d’accéder au service.
+. Utilisez l’onglet Gérer l’accès externe pour bloquer tous les ports.
+
+
+
+CAUTION: Ajoutez l'adresse IP privilégiée avant de bloquer l'accès à tous les ports attribués pour accéder à Grid Manager et Tenant Manager (les ports prédéfinis sont 443 et 8443).  Tous les utilisateurs actuellement connectés sur un port bloqué, y compris vous, perdront l'accès à Grid Manager, sauf si leur adresse IP a été ajoutée à la liste d'adresses privilégiées.
+
+Après avoir enregistré votre configuration, le port 22 et le service SSH seront disponibles pour les hôtes de la liste d’adresses privilégiées.  Tous les autres hôtes se verront refuser l’accès au service, quelle que soit l’interface d’où provient la demande.
+
+
+
+=== Exemple 3 : Désactiver l’accès aux services inutilisés
+
+Au niveau du réseau, vous pouvez désactiver certains services que vous n'avez pas l'intention d'utiliser.  Par exemple, pour bloquer le trafic client HTTP S3, vous utiliseriez le bouton bascule de l’onglet Gérer l’accès externe pour bloquer le port 18084.
+
+
+
+== Onglet Réseaux de clients non approuvés
+
+Si vous utilisez un réseau client, vous pouvez contribuer à sécuriser StorageGRID contre les attaques hostiles en acceptant le trafic client entrant uniquement sur les points de terminaison explicitement configurés.
+
+Par défaut, le réseau client sur chaque nœud de grille est _fiable_.  Autrement dit, par défaut, StorageGRID approuve les connexions entrantes vers chaque nœud de grille sur tous leslink:../network/external-communications.html["ports externes disponibles"] .
+
+Vous pouvez réduire la menace d'attaques hostiles sur votre système StorageGRID en spécifiant que le réseau client sur chaque nœud doit être _non fiable_.  Si le réseau client d'un nœud n'est pas approuvé, le nœud accepte uniquement les connexions entrantes sur les ports explicitement configurés comme points de terminaison d'équilibrage de charge. Voirlink:../admin/configuring-load-balancer-endpoints.html["Configurer les points de terminaison de l'équilibreur de charge"] etlink:../admin/configure-firewall-controls.html["Configurer les contrôles du pare-feu"] .
+
+
+
+=== Exemple 1 : le nœud de passerelle accepte uniquement les requêtes HTTPS S3
+
+Supposons que vous souhaitiez qu'un nœud de passerelle refuse tout le trafic entrant sur le réseau client, à l'exception des requêtes HTTPS S3.  Vous effectueriez ces étapes générales :
+
+. De lalink:../admin/configuring-load-balancer-endpoints.html["Points de terminaison de l'équilibreur de charge"] page, configurez un point de terminaison d'équilibrage de charge pour S3 via HTTPS sur le port 443.
+. Dans la page de contrôle du pare-feu, sélectionnez Non approuvé pour spécifier que le réseau client sur le nœud de passerelle n'est pas approuvé.
+
+
+Une fois votre configuration enregistrée, tout le trafic entrant sur le réseau client du nœud de passerelle est supprimé, à l'exception des requêtes HTTPS S3 sur le port 443 et des requêtes d'écho ICMP (ping).
+
+
+
+=== Exemple 2 : Le nœud de stockage envoie des demandes de services de la plateforme S3
+
+Supposons que vous souhaitiez activer le trafic sortant des services de la plateforme S3 à partir d'un nœud de stockage, mais que vous souhaitiez empêcher toute connexion entrante vers ce nœud de stockage sur le réseau client.  Vous effectueriez cette étape générale :
+
+* Dans l’onglet Réseaux clients non approuvés de la page de contrôle du pare-feu, indiquez que le réseau client sur le nœud de stockage n’est pas approuvé.
+
+
+Une fois votre configuration enregistrée, le nœud de stockage n'accepte plus aucun trafic entrant sur le réseau client, mais il continue d'autoriser les demandes sortantes vers les destinations des services de plate-forme configurées.
+
+
+
+=== Exemple 3 : Limitation de l'accès à Grid Manager à un sous-réseau
+
+Supposons que vous souhaitiez autoriser l’accès de Grid Manager uniquement sur un sous-réseau spécifique.  Vous effectuerez les étapes suivantes :
+
+. Connectez le réseau client de vos nœuds d’administration au sous-réseau.
+. Utilisez l’onglet Réseau client non approuvé pour configurer le réseau client comme non approuvé.
+. Lorsque vous créez un point de terminaison d’équilibrage de charge d’interface de gestion, entrez le port et sélectionnez l’interface de gestion à laquelle le port accédera.
+. Sélectionnez *Oui* pour le réseau client non approuvé.
+. Utilisez l’onglet Gérer l’accès externe pour bloquer tous les ports externes (avec ou sans adresses IP privilégiées définies pour les hôtes en dehors de ce sous-réseau).
+
+
+Une fois votre configuration enregistrée, seuls les hôtes du sous-réseau que vous avez spécifié peuvent accéder au gestionnaire de grille.  Tous les autres hôtes sont bloqués.

@@ -1,0 +1,23 @@
+---
+permalink: maintain/recovering-from-admin-node-failures.html 
+sidebar: sidebar 
+keywords: recover, admin node failure, workflow 
+summary: Le processus de récupération d’un nœud d’administration dépend du fait qu’il s’agisse du nœud d’administration principal ou d’un nœud d’administration non principal. 
+---
+= Récupération du nœud d'administration principal ou non principal
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Le processus de récupération d’un nœud d’administration dépend du fait qu’il s’agisse du nœud d’administration principal ou d’un nœud d’administration non principal.
+
+Les étapes de haut niveau pour récupérer un nœud d’administration principal ou non principal sont les mêmes, bien que les détails des étapes diffèrent.
+
+Suivez toujours la procédure de récupération appropriée pour le nœud d’administration que vous récupérez.  Les procédures semblent identiques à un niveau élevé, mais diffèrent dans les détails.
+
+.Choix
+* link:recovering-from-primary-admin-node-failures.html["Récupérer après une panne du nœud d'administration principal"]
+* link:recovering-from-non-primary-admin-node-failures.html["Récupérer après une panne d'un nœud d'administration non principal"]
+

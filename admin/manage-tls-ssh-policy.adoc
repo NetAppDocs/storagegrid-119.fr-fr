@@ -1,0 +1,135 @@
+---
+permalink: admin/manage-tls-ssh-policy.html 
+sidebar: sidebar 
+keywords: TLS and SSH policy, secure connection, FIPS, Common Criteria 
+summary: La politique TLS et SSH détermine les protocoles et chiffrements utilisés pour établir des connexions TLS sécurisées avec les applications clientes et des connexions SSH sécurisées aux services StorageGRID internes. 
+---
+= Gérer la politique TLS et SSH
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+La politique TLS et SSH détermine les protocoles et chiffrements utilisés pour établir des connexions TLS sécurisées avec les applications clientes et des connexions SSH sécurisées aux services StorageGRID internes.
+
+La politique de sécurité contrôle la manière dont TLS et SSH chiffrent les données en mouvement. En général, utilisez la politique de compatibilité moderne (par défaut), sauf si votre système doit être conforme aux critères communs ou si vous devez utiliser d’autres chiffrements.
+
+
+NOTE: Certains services StorageGRID n'ont pas été mis à jour pour utiliser les chiffrements dans ces politiques.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:admin-group-permissions.html["Autorisation d'accès root"] .
+
+
+
+
+== Sélectionnez une politique de sécurité
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Sécurité* > *Paramètres de sécurité*.
++
+L'onglet *Politiques TLS et SSH* affiche les politiques disponibles.  La politique actuellement active est indiquée par une coche verte sur la vignette de la politique.
+
++
+image::../media/securitysettings_tls_ssh_policies_current.png[Politiques TLS et SSH]
+
+. Consultez les tuiles pour en savoir plus sur les politiques disponibles.
++
+[cols="1a,2a"]
+|===
+| Politique | Description 
+
+
+ a| 
+Compatibilité moderne (par défaut)
+ a| 
+Utilisez la politique par défaut si vous avez besoin d’un cryptage fort et à moins que vous n’ayez des exigences particulières. Cette politique est compatible avec la plupart des clients TLS et SSH.
+
+
+
+ a| 
+Compatibilité héritée
+ a| 
+Utilisez cette politique si vous avez besoin d’options de compatibilité supplémentaires pour les clients plus anciens. Les options supplémentaires de cette politique peuvent la rendre moins sécurisée que la politique de compatibilité moderne.
+
+
+
+ a| 
+Critères communs
+ a| 
+Utilisez cette politique si vous avez besoin d’une certification Critères communs.
+
+
+
+ a| 
+FIPS strict
+ a| 
+Utilisez cette politique si vous avez besoin d'une certification Common Criteria et devez utiliser le module de sécurité cryptographique NetApp 3.0.8 pour les connexions client externes aux points de terminaison de l'équilibreur de charge, au gestionnaire de locataires et au gestionnaire de grille. L’utilisation de cette politique peut réduire les performances.
+
+*Remarque* : après avoir sélectionné cette politique, tous les nœuds doivent êtrelink:../maintain/rolling-reboot-procedure.html["redémarré de manière continue"] pour activer le module de sécurité cryptographique NetApp . Utilisez *Maintenance* > *Redémarrage progressif* pour lancer et surveiller les redémarrages.
+
+
+
+ a| 
+Coutume
+ a| 
+Créez une politique personnalisée si vous devez appliquer vos propres chiffrements.
+
+|===
+. Pour voir les détails sur les chiffrements, les protocoles et les algorithmes de chaque politique, sélectionnez *Afficher les détails*.
+. Pour modifier la politique actuelle, sélectionnez *Utiliser la politique*.
++
+Une coche verte apparaît à côté de *Politique actuelle* sur la vignette de la politique.
+
+
+
+
+
+== Créer une politique de sécurité personnalisée
+
+Vous pouvez créer une politique personnalisée si vous devez appliquer vos propres chiffrements.
+
+.Étapes
+. À partir de la vignette de la politique la plus similaire à la politique personnalisée que vous souhaitez créer, sélectionnez *Afficher les détails*.
+. Sélectionnez *Copier dans le presse-papiers*, puis sélectionnez *Annuler*.
++
+image::../media/securitysettings-custom-security-policy-copy.png[copier une politique existante pour créer une politique personnalisée]
+
+. Dans la mosaïque *Politique personnalisée*, sélectionnez *Configurer et utiliser*.
+. Collez le JSON que vous avez copié et apportez les modifications nécessaires.
+. Sélectionnez *Utiliser la politique*.
++
+Une coche verte apparaît à côté de *Politique actuelle* sur la mosaïque Politique personnalisée.
+
+. Vous pouvez également sélectionner *Modifier la configuration* pour apporter d’autres modifications à la nouvelle politique personnalisée.
+
+
+
+
+== Revenir temporairement à la politique de sécurité par défaut
+
+Si vous avez configuré une politique de sécurité personnalisée, vous ne pourrez peut-être pas vous connecter au Grid Manager si la politique TLS configurée est incompatible avec lalink:global-certificate-types.html["certificat de serveur configuré"] .
+
+Vous pouvez revenir temporairement à la politique de sécurité par défaut.
+
+.Étapes
+. Connectez-vous à un nœud d'administration :
++
+.. Entrez la commande suivante : `ssh admin@_Admin_Node_IP_`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
++
+Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+
+
+. Exécutez la commande suivante :
++
+`restore-default-cipher-configurations`
+
+. À partir d’un navigateur Web, accédez au gestionnaire de grille sur le même nœud d’administration.
+. Suivez les étapes dans<<select-a-security-policy,Sélectionnez une politique de sécurité>> pour configurer à nouveau la politique.
+

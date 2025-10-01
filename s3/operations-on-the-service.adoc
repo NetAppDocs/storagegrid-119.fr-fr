@@ -1,0 +1,42 @@
+---
+permalink: s3/operations-on-the-service.html 
+sidebar: sidebar 
+keywords: listbuckets, get service, operations on the service 
+summary: Le système StorageGRID prend en charge les opérations sur le service. 
+---
+= Opérations sur le service
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Le système StorageGRID prend en charge les opérations suivantes sur le service.
+
+[cols="1a,2a"]
+|===
+| Opération | Mise en œuvre 
+
+
+ a| 
+Listes de seaux
+
+(anciennement nommé service GET)
+ a| 
+Implémenté avec tous les comportements de l'API REST Amazon S3.  Sous réserve de modifications sans préavis.
+
+
+
+ a| 
+Utilisation du stockage GET
+ a| 
+Le StorageGRIDlink:get-storage-usage-request.html["Utilisation du stockage GET"] La demande vous indique la quantité totale de stockage utilisée par un compte et pour chaque compartiment associé au compte.  Il s'agit d'une opération sur le service avec un chemin de / et un paramètre de requête personnalisé(`?x-ntap-sg-usage` ) ajouté.
+
+
+
+ a| 
+OPTIONS /
+ a| 
+Les applications clientes peuvent émettre `OPTIONS /` demandes adressées au port S3 sur un nœud de stockage, sans fournir les informations d'identification d'authentification S3, pour déterminer si le nœud de stockage est disponible.  Vous pouvez utiliser cette demande pour la surveillance ou pour permettre aux équilibreurs de charge externes d'identifier quand un nœud de stockage est en panne.
+
+|===

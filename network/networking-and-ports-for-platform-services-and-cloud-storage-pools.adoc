@@ -1,0 +1,52 @@
+---
+permalink: network/networking-and-ports-for-platform-services-and-cloud-storage-pools.html 
+sidebar: sidebar 
+keywords: networking for platform services, networking for cloud storage pools 
+summary: 'Si vous prévoyez d"utiliser les services de la plateforme StorageGRID ou les pools de stockage cloud, vous devez configurer la mise en réseau de grille et les pare-feu pour garantir que les points de terminaison de destination peuvent être atteints.' 
+---
+= Réseaux et ports pour les services de plateforme et les pools de stockage cloud
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si vous prévoyez d'utiliser les services de la plateforme StorageGRID ou les pools de stockage cloud, vous devez configurer la mise en réseau de grille et les pare-feu pour garantir que les points de terminaison de destination peuvent être atteints.
+
+
+
+== Mise en réseau des services de plateforme
+
+Comme décrit danslink:../admin/manage-platform-services-for-tenants.html["Gérer les services de la plateforme pour les locataires"] etlink:../tenant/considerations-for-platform-services.html["Gérer les services de la plateforme"] , les services de plateforme incluent des services externes qui fournissent l'intégration de la recherche, la notification d'événements et la réplication CloudMirror.
+
+Les services de plateforme nécessitent un accès depuis les nœuds de stockage qui hébergent le service StorageGRID ADC aux points de terminaison de service externes.  Voici quelques exemples de mesures d’accès :
+
+* Sur les nœuds de stockage avec services ADC, configurez des réseaux d’administration uniques avec des entrées AESL qui acheminent vers les points de terminaison cibles.
+* Fiez-vous à l’itinéraire par défaut fourni par un réseau client.  Si vous utilisez l'itinéraire par défaut, vous pouvez utiliser lelink:../admin/manage-firewall-controls.html["fonctionnalité de réseau client non fiable"] pour restreindre les connexions entrantes.
+
+
+
+
+== Mise en réseau pour les pools de stockage cloud
+
+Les pools de stockage cloud nécessitent également un accès depuis les nœuds de stockage aux points de terminaison fournis par le service externe utilisé, tel qu'Amazon S3 Glacier ou le stockage Microsoft Azure Blob. Pour plus d'informations, voirlink:../ilm/what-cloud-storage-pool-is.html["Qu'est-ce qu'un pool de stockage cloud"] .
+
+
+
+== Ports pour les services de plateforme et les pools de stockage cloud
+
+Par défaut, les services de plateforme et les communications du Cloud Storage Pool utilisent les ports suivants :
+
+* *80* : pour les URI de point de terminaison qui commencent par `http`
+* *443* : pour les URI de point de terminaison qui commencent par `https`
+
+
+Un port différent peut être spécifié lors de la création ou de la modification du point de terminaison. Voir link:internal-grid-node-communications.html["Référence du port réseau"] .
+
+Si vous utilisez un serveur proxy non transparent, vous devez égalementlink:../admin/configuring-storage-proxy-settings.html["configurer les paramètres du proxy de stockage"] pour permettre l'envoi de messages à des points de terminaison externes, tels qu'un point de terminaison sur Internet.
+
+
+
+== VLAN et services de plateforme et pools de stockage cloud
+
+Vous ne pouvez pas utiliser les réseaux VLAN pour les services de plateforme ou les pools de stockage cloud.  Les points de terminaison de destination doivent être accessibles via le réseau Grid, Admin ou Client.

@@ -1,0 +1,218 @@
+---
+permalink: admin/configure-high-availability-group.html 
+sidebar: sidebar 
+keywords: how to configure high availability group, node priority order, failover 
+summary: 'Vous pouvez configurer des groupes haute disponibilité (HA) pour fournir un accès hautement disponible aux services sur les nœuds d"administration ou les nœuds de passerelle.' 
+---
+= Configurer des groupes de haute disponibilité
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez configurer des groupes de haute disponibilité (HA) pour fournir un accès hautement disponible aux services sur les nœuds d'administration ou les nœuds de passerelle.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:admin-group-permissions.html["Autorisation d'accès root"] .
+* Si vous prévoyez d’utiliser une interface VLAN dans un groupe HA, vous avez créé l’interface VLAN. Voir link:../admin/configure-vlan-interfaces.html["Configurer les interfaces VLAN"] .
+* Si vous prévoyez d’utiliser une interface d’accès pour un nœud dans un groupe HA, vous avez créé l’interface :
++
+** *Red Hat Enterprise Linux (avant l'installation du nœud)*:link:../rhel/creating-node-configuration-files.html["Créer des fichiers de configuration de nœud"]
+** *Ubuntu ou Debian (avant d'installer le nœud)* :link:../ubuntu/creating-node-configuration-files.html["Créer des fichiers de configuration de nœud"]
+** *Linux (après l'installation du nœud)*:link:../maintain/linux-adding-trunk-or-access-interfaces-to-node.html["Linux : ajouter des interfaces trunk ou d'accès à un nœud"]
+** *VMware (après l'installation du nœud)*:link:../maintain/vmware-adding-trunk-or-access-interfaces-to-node.html["VMware : ajouter des interfaces de jonction ou d'accès à un nœud"]
+
+
+
+
+
+
+== Créer un groupe de haute disponibilité
+
+Lorsque vous créez un groupe de haute disponibilité, vous sélectionnez une ou plusieurs interfaces et les organisez par ordre de priorité.  Ensuite, vous attribuez une ou plusieurs adresses VIP au groupe.
+
+Une interface doit être disponible pour qu'un nœud de passerelle ou un nœud d'administration soit inclus dans un groupe HA.  Un groupe HA ne peut utiliser qu'une seule interface pour un nœud donné ; cependant, d'autres interfaces pour le même nœud peuvent être utilisées dans d'autres groupes HA.
+
+
+
+=== Accéder à l'assistant
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Réseau* > *Groupes de haute disponibilité*.
+. Sélectionnez *Créer*.
+
+
+
+
+=== Entrez les détails du groupe HA
+
+.Étapes
+. Fournissez un nom unique pour le groupe HA.
+. Si vous le souhaitez, saisissez une description pour le groupe HA.
+. Sélectionnez *Continuer*.
+
+
+
+
+=== Ajouter des interfaces au groupe HA
+
+.Étapes
+. Sélectionnez une ou plusieurs interfaces à ajouter à ce groupe HA.
++
+Utilisez les en-têtes de colonnes pour trier les lignes ou saisissez un terme de recherche pour localiser les interfaces plus rapidement.
+
++
+image::../media/ha_group_add_interfaces.png[Les groupes HA ajoutent des interfaces]
+
++
+
+NOTE: Après avoir créé une interface VLAN, attendez jusqu'à 5 minutes pour que la nouvelle interface apparaisse dans le tableau.
+
++
+.Lignes directrices pour la sélection des interfaces
+** Vous devez sélectionner au moins une interface.
+** Vous ne pouvez sélectionner qu'une seule interface pour un nœud.
+** Si le groupe HA est destiné à la protection HA des services du nœud d'administration, qui incluent le gestionnaire de grille et le gestionnaire de locataires, sélectionnez les interfaces sur les nœuds d'administration uniquement.
+** Si le groupe HA est destiné à la protection HA du trafic client S3, sélectionnez les interfaces sur les nœuds d'administration, les nœuds de passerelle ou les deux.
+** Si vous sélectionnez des interfaces sur différents types de nœuds, une note d’information s’affiche.  Il est rappelé qu’en cas de basculement, les services fournis par le nœud précédemment actif peuvent ne pas être disponibles sur le nœud nouvellement actif.  Par exemple, un nœud de passerelle de sauvegarde ne peut pas fournir une protection HA des services du nœud d'administration.  De même, un nœud d’administration de sauvegarde ne peut pas effectuer toutes les procédures de maintenance que le nœud d’administration principal peut fournir.
+** Si vous ne pouvez pas sélectionner une interface, sa case à cocher est désactivée.  L'info-bulle fournit plus d'informations.
++
+image::../media/vlan_parent_interface_tooltip.png[Info-bulle sur l'interface VLAN]
+
+** Vous ne pouvez pas sélectionner une interface si sa valeur de sous-réseau ou sa passerelle est en conflit avec une autre interface sélectionnée.
+** Vous ne pouvez pas sélectionner une interface configurée si elle ne possède pas d’adresse IP statique.
+
+
+. Sélectionnez *Continuer*.
+
+
+
+
+=== Déterminer l'ordre de priorité
+
+Si le groupe HA comprend plusieurs interfaces, vous pouvez déterminer quelle est l'interface principale et quelles sont les interfaces de sauvegarde (basculement).  Si l'interface principale échoue, les adresses VIP se déplacent vers l'interface de priorité la plus élevée disponible.  Si cette interface échoue, les adresses VIP se déplacent vers l'interface de priorité la plus élevée disponible, et ainsi de suite.
+
+.Étapes
+. Faites glisser les lignes dans la colonne *Ordre de priorité* pour déterminer l'interface principale et toutes les interfaces de sauvegarde.
++
+La première interface de la liste est l’interface principale.  L'interface principale est l'interface active sauf en cas de panne.
+
++
+image::../media/ha_group_determine_failover.png[Les groupes HA déterminent l'ordre de priorité]
+
++
+
+TIP: Si le groupe HA fournit un accès au gestionnaire de grille, vous devez sélectionner une interface sur le nœud d'administration principal pour être l'interface principale.  Certaines procédures de maintenance ne peuvent être effectuées qu'à partir du nœud d'administration principal.
+
+. Sélectionnez *Continuer*.
+
+
+
+
+=== Entrez les adresses IP
+
+.Étapes
+. Dans le champ *Sous-réseau CIDR*, spécifiez le sous-réseau VIP en notation CIDR : une adresse IPv4 suivie d'une barre oblique et de la longueur du sous-réseau (0-32).
++
+L'adresse réseau ne doit avoir aucun bit d'hôte défini. Par exemple :  `192.16.0.0/22` .
+
++
+
+NOTE: Si vous utilisez un préfixe 32 bits, l’adresse réseau VIP sert également d’adresse de passerelle et d’adresse VIP.
+
++
+image::../media/ha_group_select_virtual_ips.png[Les groupes HA entrent en VIP]
+
+. En option, si des clients administratifs ou locataires S3 accèdent à ces adresses VIP à partir d'un sous-réseau différent, saisissez l'*adresse IP de la passerelle*.  L'adresse de la passerelle doit être dans le sous-réseau VIP.
++
+Les utilisateurs clients et administrateurs utiliseront cette passerelle pour accéder aux adresses IP virtuelles.
+
+. Saisissez au moins une et pas plus de dix adresses VIP pour l'interface active dans le groupe HA.  Toutes les adresses VIP doivent se trouver dans le sous-réseau VIP et toutes seront actives en même temps sur l'interface active.
++
+Vous devez fournir au moins une adresse IPv4.  En option, vous pouvez spécifier des adresses IPv4 et IPv6 supplémentaires.
+
+. Sélectionnez *Créer un groupe HA* et sélectionnez *Terminer*.
++
+Le groupe HA est créé et vous pouvez désormais utiliser les adresses IP virtuelles configurées.
+
+
+
+
+
+=== Prochaines étapes
+
+Si vous utilisez ce groupe HA pour l’équilibrage de charge, créez un point de terminaison d’équilibrage de charge pour déterminer le port et le protocole réseau et pour joindre tous les certificats requis. Voir link:configuring-load-balancer-endpoints.html["Configurer les points de terminaison de l'équilibreur de charge"] .
+
+
+
+== Modifier un groupe de haute disponibilité
+
+Vous pouvez modifier un groupe haute disponibilité (HA) pour changer son nom et sa description, ajouter ou supprimer des interfaces, modifier l'ordre de priorité ou ajouter ou mettre à jour des adresses IP virtuelles.
+
+Par exemple, vous devrez peut-être modifier un groupe HA si vous souhaitez supprimer le nœud associé à une interface sélectionnée dans une procédure de mise hors service d'un site ou d'un nœud.
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Réseau* > *Groupes de haute disponibilité*.
++
+La page Groupes de haute disponibilité affiche tous les groupes HA existants.
+
+. Cochez la case correspondant au groupe HA que vous souhaitez modifier.
+. Effectuez l’une des opérations suivantes, en fonction de ce que vous souhaitez mettre à jour :
++
+** Sélectionnez *Actions* > *Modifier l'adresse IP virtuelle* pour ajouter ou supprimer des adresses VIP.
+** Sélectionnez *Actions* > *Modifier le groupe HA* pour mettre à jour le nom ou la description du groupe, ajouter ou supprimer des interfaces, modifier l'ordre de priorité ou ajouter ou supprimer des adresses VIP.
+
+
+. Si vous avez sélectionné *Modifier l'adresse IP virtuelle* :
++
+.. Mettre à jour les adresses IP virtuelles pour le groupe HA.
+.. Sélectionnez *Enregistrer*.
+.. Sélectionnez *Terminer*.
+
+
+. Si vous avez sélectionné *Modifier le groupe HA* :
++
+.. Vous pouvez également mettre à jour le nom ou la description du groupe.
+.. Vous pouvez également cocher ou décocher les cases pour ajouter ou supprimer des interfaces.
++
+
+NOTE: Si le groupe HA fournit un accès au gestionnaire de grille, vous devez sélectionner une interface sur le nœud d'administration principal pour être l'interface principale.  Certaines procédures de maintenance ne peuvent être effectuées qu'à partir du nœud d'administration principal
+
+.. Vous pouvez également faire glisser les lignes pour modifier l’ordre de priorité de l’interface principale et de toutes les interfaces de sauvegarde pour ce groupe HA.
+.. En option, mettez à jour les adresses IP virtuelles.
+.. Sélectionnez *Enregistrer* puis *Terminer*.
+
+
+
+
+
+
+== Supprimer un groupe de haute disponibilité
+
+Vous pouvez supprimer un ou plusieurs groupes de haute disponibilité (HA) à la fois.
+
+
+TIP: Vous ne pouvez pas supprimer un groupe HA s’il est lié à un point de terminaison d’équilibrage de charge.  Pour supprimer un groupe HA, vous devez le supprimer de tous les points de terminaison d’équilibrage de charge qui l’utilisent.
+
+Pour éviter toute interruption du client, mettez à jour toutes les applications clientes S3 concernées avant de supprimer un groupe HA.  Mettez à jour chaque client pour se connecter à l’aide d’une autre adresse IP, par exemple, l’adresse IP virtuelle d’un groupe HA différent ou l’adresse IP configurée pour une interface lors de l’installation.
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Réseau* > *Groupes de haute disponibilité*.
+. Consultez la colonne *Points de terminaison de l’équilibreur de charge* pour chaque groupe HA que vous souhaitez supprimer.  Si des points de terminaison d’équilibrage de charge sont répertoriés :
++
+.. Accédez à *CONFIGURATION* > *Réseau* > *Points de terminaison de l'équilibreur de charge*.
+.. Cochez la case correspondant au point de terminaison.
+.. Sélectionnez *Actions* > *Modifier le mode de liaison du point de terminaison*.
+.. Mettez à jour le mode de liaison pour supprimer le groupe HA.
+.. Sélectionnez *Enregistrer les modifications*.
+
+
+. Si aucun point de terminaison d’équilibrage de charge n’est répertorié, cochez la case correspondant à chaque groupe HA que vous souhaitez supprimer.
+. Sélectionnez *Actions* > *Supprimer le groupe HA*.
+. Consultez le message et sélectionnez *Supprimer le groupe HA* pour confirmer votre sélection.
++
+Tous les groupes HA que vous avez sélectionnés sont supprimés.  Une bannière de réussite verte apparaît sur la page Groupes de haute disponibilité.
+
+

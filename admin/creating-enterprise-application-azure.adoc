@@ -1,0 +1,102 @@
+---
+permalink: admin/creating-enterprise-application-azure.html 
+sidebar: sidebar 
+keywords: enterprise application, azure ad, single sign on, sso 
+summary: Vous utilisez Azure AD pour créer une application d’entreprise pour chaque nœud d’administration de votre système. 
+---
+= Créer des applications d'entreprise dans Azure AD
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous utilisez Azure AD pour créer une application d’entreprise pour chaque nœud d’administration de votre système.
+
+.Avant de commencer
+* Vous avez commencé à configurer l’authentification unique pour StorageGRID et vous avez sélectionné *Azure* comme type d’authentification unique.
+* Le *mode Sandbox* est sélectionné sur la page d'authentification unique dans Grid Manager. Voir link:../admin/using-sandbox-mode.html["Utiliser le mode sandbox"] .
+* Vous disposez du *nom de l'application d'entreprise* pour chaque nœud d'administration de votre système. Vous pouvez copier ces valeurs à partir du tableau des détails du nœud d’administration sur la page d’authentification unique StorageGRID .
++
+
+NOTE: Vous devez créer une application d’entreprise pour chaque nœud d’administration de votre système StorageGRID .  Disposer d'une application d'entreprise pour chaque nœud d'administration garantit que les utilisateurs peuvent se connecter et se déconnecter en toute sécurité de n'importe quel nœud d'administration.
+
+* Vous avez de l’expérience dans la création d’applications d’entreprise dans Azure Active Directory.
+* Vous disposez d’un compte Azure avec un abonnement actif.
+* Vous disposez de l’un des rôles suivants dans le compte Azure : administrateur général, administrateur d’applications cloud, administrateur d’applications ou propriétaire du principal du service.
+
+
+
+
+== Accéder à Azure AD
+
+.Étapes
+. Connectez-vous à la https://portal.azure.com["Portail Azure"^] .
+. Accéder à https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade["Azure Active Directory"^] .
+. Sélectionner https://portal.azure.com/#blade/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/Overview/menuId/["Applications d'entreprise"^] .
+
+
+
+
+== Créez des applications d'entreprise et enregistrez la configuration SSO de StorageGRID
+
+Pour enregistrer la configuration SSO pour Azure dans StorageGRID, vous devez utiliser Azure pour créer une application d’entreprise pour chaque nœud d’administration.  Vous copierez les URL de métadonnées de fédération depuis Azure et les collerez dans les champs *URL de métadonnées de fédération* correspondants sur la page d’authentification unique StorageGRID .
+
+.Étapes
+. Répétez les étapes suivantes pour chaque nœud d’administration.
++
+.. Dans le volet Applications Azure Enterprise, sélectionnez *Nouvelle application*.
+.. Sélectionnez *Créer votre propre application*.
+.. Pour le nom, saisissez le *Nom de l'application d'entreprise* que vous avez copié à partir du tableau des détails du nœud d'administration sur la page d'authentification unique StorageGRID .
+.. Laissez le bouton radio *Intégrer toute autre application que vous ne trouvez pas dans la galerie (Hors galerie)* sélectionné.
+.. Sélectionnez *Créer*.
+.. Sélectionnez le lien *Commencer* dans le *2.  Configurer l'authentification unique* ou sélectionner le lien *Authentification unique* dans la marge de gauche.
+.. Sélectionnez la case *SAML*.
+.. Copiez l'*URL des métadonnées de la fédération d'applications*, que vous pouvez trouver sous *Étape 3 Certificat de signature SAML*.
+.. Accédez à la page d’authentification unique StorageGRID et collez l’URL dans le champ *URL des métadonnées de la fédération* qui correspond au *nom de l’application d’entreprise* que vous avez utilisé.
+
+
+. Après avoir collé une URL de métadonnées de fédération pour chaque nœud d'administration et apporté toutes les autres modifications nécessaires à la configuration SSO, sélectionnez *Enregistrer* sur la page d'authentification unique StorageGRID .
+
+
+
+
+== Téléchargez les métadonnées SAML pour chaque nœud d'administration
+
+Une fois la configuration SSO enregistrée, vous pouvez télécharger un fichier de métadonnées SAML pour chaque nœud d'administration de votre système StorageGRID .
+
+.Étapes
+. Répétez ces étapes pour chaque nœud d’administration.
++
+.. Sign in à StorageGRID à partir du nœud d’administration.
+.. Sélectionnez *CONFIGURATION* > *Contrôle d'accès* > *Authentification unique*.
+.. Sélectionnez le bouton pour télécharger les métadonnées SAML pour ce nœud d’administration.
+.. Enregistrez le fichier que vous téléchargerez dans Azure AD.
+
+
+
+
+
+
+== Télécharger les métadonnées SAML vers chaque application d'entreprise
+
+Après avoir téléchargé un fichier de métadonnées SAML pour chaque nœud d’administration StorageGRID , effectuez les étapes suivantes dans Azure AD :
+
+.Étapes
+. Revenez au portail Azure.
+. Répétez ces étapes pour chaque application d’entreprise :
++
+
+NOTE: Vous devrez peut-être actualiser la page Applications d’entreprise pour voir les applications que vous avez précédemment ajoutées dans la liste.
+
++
+.. Accédez à la page Propriétés de l’application d’entreprise.
+.. Définissez *Affectation requise* sur *Non* (sauf si vous souhaitez configurer les affectations séparément).
+.. Accédez à la page d’authentification unique.
+.. Terminez la configuration SAML.
+.. Sélectionnez le bouton *Télécharger le fichier de métadonnées* et sélectionnez le fichier de métadonnées SAML que vous avez téléchargé pour le nœud d'administration correspondant.
+.. Une fois le fichier chargé, sélectionnez *Enregistrer* puis sélectionnez *X* pour fermer le volet.  Vous êtes redirigé vers la page Configurer l’authentification unique avec SAML.
+
+
+. Suivez les étapes danslink:../admin/using-sandbox-mode.html["Utiliser le mode sandbox"] pour tester chaque application.
+

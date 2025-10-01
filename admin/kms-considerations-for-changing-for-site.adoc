@@ -1,0 +1,75 @@
+---
+permalink: admin/kms-considerations-for-changing-for-site.html 
+sidebar: sidebar 
+keywords: kms cluster, copy kms encryption key 
+summary: 'Chaque serveur de gestion de clés (KMS) ou cluster KMS fournit une clé de chiffrement à tous les nœuds d"appliance sur un seul site ou sur un groupe de sites.  Si vous devez modifier le KMS utilisé pour un site, vous devrez peut-être copier la clé de chiffrement d"un KMS à un autre.' 
+---
+= Considérations relatives à la modification du KMS d'un site
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Chaque serveur de gestion de clés (KMS) ou cluster KMS fournit une clé de chiffrement à tous les nœuds d'appliance sur un site unique ou sur un groupe de sites.  Si vous devez modifier le KMS utilisé pour un site, vous devrez peut-être copier la clé de chiffrement d'un KMS à un autre.
+
+Si vous modifiez le KMS utilisé pour un site, vous devez vous assurer que les nœuds d'appliance précédemment chiffrés sur ce site peuvent être déchiffrés à l'aide de la clé stockée sur le nouveau KMS.  Dans certains cas, vous devrez peut-être copier la version actuelle de la clé de chiffrement du KMS d'origine vers le nouveau KMS.  Vous devez vous assurer que le KMS dispose de la clé correcte pour déchiffrer les nœuds d'appliance chiffrés sur le site.
+
+Par exemple:
+
+. Vous configurez initialement un KMS par défaut qui s'applique à tous les sites qui ne disposent pas d'un KMS dédié.
+. Une fois le KMS enregistré, tous les nœuds d'appliance dont le paramètre *Chiffrement de nœud* est activé se connectent au KMS et demandent la clé de chiffrement.  Cette clé est utilisée pour crypter les nœuds de l’appliance sur tous les sites.  Cette même clé doit également être utilisée pour décrypter ces appareils.
++
+image::../media/kms_default_key.png[Clé par défaut KMS]
+
+. Vous décidez d'ajouter un KMS spécifique au site pour un site (Data Center 3 sur la figure).  Cependant, étant donné que les nœuds de l'appliance sont déjà chiffrés, une erreur de validation se produit lorsque vous tentez d'enregistrer la configuration du KMS spécifique au site.  L'erreur se produit car le KMS spécifique au site ne dispose pas de la clé correcte pour déchiffrer les nœuds de ce site.
++
+image::../media/kms_wrong_key.png[Clé KMS incorrecte]
+
+. Pour résoudre le problème, copiez la version actuelle de la clé de chiffrement du KMS par défaut vers le nouveau KMS.  (Techniquement, vous copiez la clé d'origine sur une nouvelle clé avec le même alias.  La clé d'origine devient une version antérieure de la nouvelle clé.)  Le KMS spécifique au site dispose désormais de la clé correcte pour déchiffrer les nœuds de l'appliance dans le centre de données 3, afin qu'il puisse être enregistré dans StorageGRID.
++
+image::../media/kms_copied_key.png[Clé copiée KMS]
+
+
+
+
+
+== Cas d'utilisation pour modifier le KMS utilisé pour un site
+
+Le tableau résume les étapes requises pour les cas les plus courants de modification du KMS d'un site.
+
+[cols="1a,2a"]
+|===
+| Cas d'utilisation pour modifier le KMS d'un site | Étapes requises 
+
+
+ a| 
+Vous disposez d'une ou plusieurs entrées KMS spécifiques au site et vous souhaitez utiliser l'une d'entre elles comme KMS par défaut.
+ a| 
+Modifier le KMS spécifique au site.  Dans le champ *Gère les clés pour*, sélectionnez *Sites non gérés par un autre KMS (KMS par défaut)*.  Le KMS spécifique au site sera désormais utilisé comme KMS par défaut.  Cela s'appliquera à tous les sites qui ne disposent pas d'un KMS dédié.
+
+link:kms-editing.html["Modifier un serveur de gestion de clés (KMS)"]
+
+
+
+ a| 
+Vous disposez d'un KMS par défaut et vous ajoutez un nouveau site dans une extension.  Vous ne souhaitez pas utiliser le KMS par défaut pour le nouveau site.
+ a| 
+. Si les nœuds de l'appliance sur le nouveau site ont déjà été chiffrés par le KMS par défaut, utilisez le logiciel KMS pour copier la version actuelle de la clé de chiffrement du KMS par défaut vers un nouveau KMS.
+. À l’aide du gestionnaire de grille, ajoutez le nouveau KMS et sélectionnez le site.
+
+
+link:kms-adding.html["Ajouter un serveur de gestion de clés (KMS)"]
+
+
+
+ a| 
+Vous souhaitez que le KMS d’un site utilise un serveur différent.
+ a| 
+. Si les nœuds d'appareils du site ont déjà été chiffrés par le KMS existant, utilisez le logiciel KMS pour copier la version actuelle de la clé de chiffrement du KMS existant vers le nouveau KMS.
+. À l’aide du gestionnaire de grille, modifiez la configuration KMS existante et entrez le nouveau nom d’hôte ou la nouvelle adresse IP.
+
+
+link:kms-adding.html["Ajouter un serveur de gestion de clés (KMS)"]
+
+|===

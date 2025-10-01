@@ -1,0 +1,79 @@
+---
+permalink: ilm/using-multiple-storage-pools-for-cross-site-replication.html 
+sidebar: sidebar 
+keywords: site-loss protection, cross-site replication, storage pools 
+summary: 'Si votre déploiement StorageGRID inclut plusieurs sites, vous pouvez utiliser la réplication et le codage d"effacement avec des pools de stockage correctement configurés pour activer la protection contre la perte de site.' 
+---
+= Activer la protection contre la perte de site
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si votre déploiement StorageGRID inclut plusieurs sites, vous pouvez utiliser la réplication et le codage d'effacement avec des pools de stockage correctement configurés pour activer la protection contre la perte de site.
+
+La réplication et le codage d'effacement nécessitent des configurations de pool de stockage différentes :
+
+* Pour utiliser la réplication pour la protection contre la perte de site, utilisez les pools de stockage spécifiques au site qui sont automatiquement créés lors de l'installation de StorageGRID .  Créez ensuite des règles ILM aveclink:create-ilm-rule-define-placements.html["instructions de placement"] qui spécifient plusieurs pools de stockage afin qu'une copie de chaque objet soit placée sur chaque site.
+* Pour utiliser le codage d'effacement pour la protection contre la perte de site,link:guidelines-for-creating-storage-pools.html#guidelines-for-storage-pools-used-for-erasure-coded-copies["créer des pools de stockage composés de plusieurs sites"] .  Créez ensuite des règles ILM qui utilisent un pool de stockage composé de plusieurs sites et tout schéma de codage d’effacement disponible.
+
+
+
+CAUTION: Lors de la configuration de votre déploiement StorageGRID pour la protection contre la perte de site, vous devez également prendre en compte les effets delink:data-protection-options-for-ingest.html["options d'ingestion"] etlink:../s3/consistency-controls.html["cohérence"] .
+
+
+
+== Exemple de réplication
+
+Par défaut, un pool de stockage est créé pour chaque site lors de l'installation de StorageGRID .  Le fait de disposer de pools de stockage constitués d'un seul site vous permet de configurer des règles ILM qui utilisent la réplication pour la protection contre la perte de site. Dans cet exemple :
+
+* Le pool de stockage 1 contient le site 1
+* Le pool de stockage 2 contient le site 2
+* La règle ILM contient deux placements :
++
+** Stocker les objets en répliquant 1 copie sur le site 1
+** Stocker les objets en répliquant 1 copie sur le site 2
+
+
+
+
+Placements des règles ILM :
+
+image::../media/ilm_replication_at_2_sites.png[Réplication d'une copie sur chacun des deux sites]
+
+image::../media/ilm_replication_make_2_copies_2_pools_2_sites.png[Effectuez 1 copie sur chacun des 2 sites - pool de stockage spécifique au site]
+
+Si un site est perdu, des copies des objets sont disponibles sur l’autre site.
+
+
+
+== Exemple de codage d'effacement
+
+Disposer de pools de stockage composés de plusieurs sites par pool de stockage vous permet de configurer des règles ILM qui utilisent le codage d'effacement pour la protection contre la perte de site. Dans cet exemple :
+
+* Le pool de stockage 1 contient les sites 1 à 3
+* La règle ILM contient un placement : stocker les objets par codage d'effacement à l'aide d'un schéma EC 4+2 dans le pool de stockage 1, qui contient trois sites
+
+
+Placements des règles ILM :
+
+image::../media/ilm_erasure_coding_site_loss_protection_4+2.png[EC 1 pool de stockage 9 nœuds de stockage 3 sites]
+
+Dans cet exemple :
+
+* La règle ILM utilise un schéma de codage d'effacement 4+2.
+* Chaque objet est divisé en quatre fragments de données égaux et deux fragments de parité sont calculés à partir des données de l'objet.
+* Chacun des six fragments est stocké sur un nœud différent sur trois sites de centres de données pour assurer la protection des données en cas de panne de nœud ou de perte de site.
+
+
+
+NOTE: Le codage d'effacement est autorisé dans les pools de stockage contenant n'importe quel nombre de sites _à l'exception_ de deux sites.
+
+Règle ILM utilisant le schéma de codage d'effacement 4+2 :
+
+image::../media/ec_three_sites_4_plus_2_site_loss_example_template.png[Stocker des objets par codage d'effacement à l'aide d'un schéma EC 4+2 sur 3 sites]
+
+Si un site est perdu, les données peuvent toujours être récupérées :
+
+image::../media/ec_three_sites_4_plus_2_site_loss_example.png[Codage d'effacement 4+2 schéma EC 1 site perdu]

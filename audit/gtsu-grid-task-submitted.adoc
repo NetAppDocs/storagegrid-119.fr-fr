@@ -1,0 +1,114 @@
+---
+permalink: audit/gtsu-grid-task-submitted.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, GTSU, Grid Task Submitted 
+summary: 'Ce message d"audit indique qu"une tâche de grille a été soumise au service CMN.' 
+---
+= GTSU : tâche de grille soumise
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ce message d'audit indique qu'une tâche de grille a été soumise au service CMN.
+
+[cols="1a,1a,4a"]
+|===
+| Code | Champ | Description 
+
+
+ a| 
+TSID
+ a| 
+ID de tâche
+ a| 
+Identifie de manière unique une tâche de grille générée et permet de gérer la tâche tout au long de son cycle de vie.
+
+*Remarque :* l'ID de tâche est attribué au moment où une tâche de grille est générée, et non au moment où elle est soumise.  Il est possible qu'une tâche de grille donnée soit soumise plusieurs fois et, dans ce cas, le champ ID de tâche n'est pas suffisant pour lier de manière unique les messages d'audit Soumis, Démarré et Terminé.
+
+
+
+ a| 
+TTYP
+ a| 
+Type de tâche
+ a| 
+Le type de tâche de grille.
+
+
+
+ a| 
+TVER
+ a| 
+Version de la tâche
+ a| 
+Un numéro indiquant la version de la tâche de grille.
+
+
+
+ a| 
+TDSC
+ a| 
+Description de la tâche
+ a| 
+Une description lisible par l’homme de la tâche de grille.
+
+
+
+ a| 
+TVA
+ a| 
+Valide après l'horodatage
+ a| 
+L'heure la plus ancienne (UINT64 microsecondes à partir du 1er janvier 1970 - heure UNIX) à laquelle la tâche de grille est valide.
+
+
+
+ a| 
+VBTS
+ a| 
+Valide avant l'horodatage
+ a| 
+La dernière heure (UINT64 microsecondes à partir du 1er janvier 1970 - heure UNIX) à laquelle la tâche de grille est valide.
+
+
+
+ a| 
+TSRC
+ a| 
+Source
+ a| 
+La source de la tâche :
+
+* TXTB : la tâche de grille a été soumise via le système StorageGRID sous la forme d'un bloc de texte signé.
+* GRILLE : la tâche de grille a été soumise via le service de soumission de tâches de grille interne.
+
+
+
+
+ a| 
+ACTV
+ a| 
+Type d'activation
+ a| 
+Le type d'activation :
+
+* AUTO : La tâche de grille a été soumise à une activation automatique.
+* PEND : la tâche de grille a été soumise dans la table en attente.  C'est la seule possibilité pour la source TXTB.
+
+
+
+
+ a| 
+RSLT
+ a| 
+Résultat
+ a| 
+Le résultat de la soumission :
+
+* SUCS : la tâche de grille a été soumise avec succès.
+* ÉCHEC : La tâche a été déplacée directement vers la table historique.
+
+
+|===

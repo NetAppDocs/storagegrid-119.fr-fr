@@ -1,0 +1,96 @@
+---
+permalink: maintain/monitor-repairs.html 
+sidebar: sidebar 
+keywords: restore replicated data, restore erasure-coded data, recover appliance storage node, recover storage volume 
+summary: 'Vous pouvez surveiller l’état des travaux de réparation en utilisant le `repair-data` script depuis la ligne de commande.' 
+---
+= Surveiller les tâches de réparation des données
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez surveiller l’état des travaux de réparation en utilisant le `repair-data` script depuis la ligne de commande.
+
+Il s'agit notamment des tâches que vous avez lancées manuellement ou des tâches que StorageGRID a lancées automatiquement dans le cadre d'une procédure de mise hors service.
+
+
+NOTE: Si vous exécutez des tâches de restauration de volume,link:../maintain/restoring-volume.html["surveiller la progression et afficher un historique de ces tâches dans le gestionnaire de grille"] plutôt.
+
+Surveiller l'état de `repair-data` tâches en fonction de l'utilisation de *données répliquées*, de *données codées par effacement (EC)* ou des deux.
+
+[role="tabbed-block"]
+====
+.Données répliquées
+--
+* Pour obtenir une estimation du pourcentage d'achèvement de la réparation répliquée, ajoutez le `show-replicated-repair-status` option à la commande repair-data.
++
+`repair-data show-replicated-repair-status`
+
+* Pour déterminer si les réparations sont terminées :
++
+.. Sélectionnez *NODES* > *_Nœud de stockage en cours de réparation_* > *ILM*.
+.. Passez en revue les attributs dans la section Évaluation.  Lorsque les réparations sont terminées, l'attribut *En attente - Tout* indique 0 objet.
+
+
+* Pour suivre la réparation plus en détail :
++
+.. Sélectionnez *SUPPORT* > *Outils* > *Topologie de grille*.
+.. Sélectionnez *_grid_* > *_Nœud de stockage en cours de réparation_* > *LDR* > *Data Store*.
+.. Utilisez une combinaison des attributs suivants pour déterminer, aussi bien que possible, si les réparations répliquées sont complètes.
++
+
+NOTE: Des incohérences de Cassandra peuvent être présentes et les réparations ayant échoué ne sont pas suivies.
+
++
+*** *Réparations tentées (XRPA)* : utilisez cet attribut pour suivre la progression des réparations répliquées.  Cet attribut augmente chaque fois qu'un nœud de stockage tente de réparer un objet à haut risque.  Lorsque cet attribut n'augmente pas pendant une période supérieure à la période d'analyse actuelle (fournie par l'attribut *Période d'analyse -- Estimée*), cela signifie que l'analyse ILM n'a trouvé aucun objet à haut risque devant être réparé sur aucun nœud.
++
+
+NOTE: Les objets à haut risque sont des objets qui risquent d’être complètement perdus.  Cela n'inclut pas les objets qui ne satisfont pas à leur configuration ILM.
+
+*** *Période d'analyse – Estimée (XSCM)* : utilisez cet attribut pour estimer quand un changement de politique sera appliqué aux objets précédemment ingérés.  Si l'attribut *Réparations tentées* n'augmente pas pendant une période supérieure à la période d'analyse actuelle, il est probable que des réparations répliquées sont effectuées.  Notez que la période d'analyse peut changer.  L'attribut *Période d'analyse -- Estimée (XSCM)* s'applique à l'ensemble de la grille et correspond au maximum de toutes les périodes d'analyse des nœuds.  Vous pouvez interroger l'historique de l'attribut *Période d'analyse -- Estimée* pour la grille afin de déterminer une période appropriée.
+
+
+
+
+
+
+--
+.Données codées par effacement (EC)
+--
+Pour surveiller la réparation des données codées par effacement et réessayer toutes les demandes qui auraient échoué :
+
+. Déterminer l’état des réparations des données codées par effacement :
++
+** Sélectionnez *SUPPORT* > *Outils* > *Métriques* pour afficher le temps estimé jusqu'à l'achèvement et le pourcentage d'achèvement de la tâche en cours. Ensuite, sélectionnez *EC Overview* dans la section Grafana. Consultez les tableaux de bord *Temps estimé d'achèvement du travail EC de la grille* et *Pourcentage d'achèvement du travail EC de la grille*.
+** Utilisez cette commande pour voir l'état d'un élément spécifique `repair-data` opération:
++
+`repair-data show-ec-repair-status --repair-id repair ID`
+
+** Utilisez cette commande pour lister toutes les réparations :
++
+`repair-data show-ec-repair-status`
+
++
+La sortie répertorie les informations, y compris `repair ID` , pour toutes les réparations effectuées et en cours.
+
+
+
+. Si la sortie indique que l'opération de réparation a échoué, utilisez le `--repair-id` possibilité de réessayer la réparation.
++
+Cette commande réessaie une réparation de nœud ayant échoué, en utilisant l'ID de réparation 6949309319275667690 :
+
++
+`repair-data start-ec-node-repair --repair-id 6949309319275667690`
+
++
+Cette commande réessaie une réparation de volume ayant échoué, en utilisant l'ID de réparation 6949309319275667690 :
+
++
+`repair-data start-ec-volume-repair --repair-id 6949309319275667690`
+
+
+
+--
+====

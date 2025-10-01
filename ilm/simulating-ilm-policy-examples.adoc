@@ -1,0 +1,113 @@
+---
+permalink: ilm/simulating-ilm-policy-examples.html 
+sidebar: sidebar 
+keywords: simulate ilm policy 
+summary: Les exemples de simulations de politiques ILM fournissent des lignes directrices pour structurer et modifier les simulations pour votre environnement. 
+---
+= Exemples de simulations de politiques ILM
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les exemples de simulations de politiques ILM fournissent des lignes directrices pour structurer et modifier les simulations pour votre environnement.
+
+
+
+== Exemple 1 : Vérifier les règles lors de la simulation d'une politique ILM
+
+Cet exemple décrit comment vérifier les règles lors de la simulation d'une politique.
+
+Dans cet exemple, la *politique ILM d'exemple* est simulée sur les objets ingérés dans deux buckets.  La politique comprend trois règles, comme suit :
+
+* La première règle, *Deux copies, deux ans pour le bucket-a*, s'applique uniquement aux objets du bucket-a.
+* La deuxième règle, *objets EC > 1 Mo*, s'applique à tous les buckets mais filtre sur les objets supérieurs à 1 Mo.
+* La troisième règle, *Deux copies, deux centres de données*, est la règle par défaut.  Il n'inclut aucun filtre et n'utilise pas l'heure de référence non courante.
+
+
+Après avoir simulé la politique, confirmez que chaque objet correspond à la règle correcte.
+
+image::../media/simulate_policy_screen.png[Simuler les résultats des politiques]
+
+Dans cet exemple :
+
+* `bucket-a/bucket-a object.pdf`correspondait correctement à la première règle, qui filtre sur les objets dans `bucket-a` .
+* `bucket-b/test object greater than 1 MB.pdf`est dans `bucket-b` , donc cela ne correspondait pas à la première règle.  Au lieu de cela, il a été correctement mis en correspondance par la deuxième règle, qui filtre les objets supérieurs à 1 Mo.
+* `bucket-b/test object less than 1 MB.pdf`ne correspond pas aux filtres des deux premières règles, il sera donc placé par la règle par défaut, qui n'inclut aucun filtre.
+
+
+
+
+== Exemple 2 : Réorganiser les règles lors de la simulation d'une stratégie ILM
+
+Cet exemple montre comment vous pouvez réorganiser les règles pour modifier les résultats lors de la simulation d'une politique.
+
+Dans cet exemple, la politique *Démo* est simulée.  Cette politique, qui vise à rechercher les objets possédant des métadonnées utilisateur series=x-men, comprend trois règles, comme suit :
+
+* La première règle, *PNGs*, filtre les noms de clés qui se terminent par `.png` .
+* La deuxième règle, *X-men*, s'applique uniquement aux objets du locataire A et filtre pour `series=x-men` métadonnées utilisateur.
+* La dernière règle, *Deux copies de deux centres de données*, est la règle par défaut, qui correspond à tous les objets qui ne correspondent pas aux deux premières règles.
+
+
+.Étapes
+. Après avoir ajouté les règles et enregistré la politique, sélectionnez *Simuler*.
+. Dans le champ *Objet*, saisissez le bucket/la clé d'objet S3 pour un objet de test et sélectionnez *Simuler*.
++
+Les résultats de la simulation apparaissent, montrant que le `Havok.png` l'objet correspondait à la règle *PNGs*.
+
++
+image::../media/simulate_reorder_rules_pngs_result.png[Exemple 2 : Réorganisation des règles lors de la simulation d'une politique ILM]
+
++
+Cependant, `Havok.png` était censé tester la règle des *X-men*.
+
+. Pour résoudre le problème, réorganisez les règles.
++
+.. Sélectionnez *Terminer* pour fermer la fenêtre Simuler la politique ILM.
+.. Sélectionnez *Modifier* pour modifier la politique.
+.. Faites glisser la règle *X-men* vers le haut de la liste.
+.. Sélectionnez *Enregistrer*.
+
+
+. Sélectionnez *Simuler*.
++
+Les objets que vous avez précédemment testés sont réévalués par rapport à la politique mise à jour et les nouveaux résultats de simulation sont affichés.  Dans l'exemple, la colonne Règle correspondante montre que la `Havok.png` l'objet correspond désormais à la règle de métadonnées X-men, comme prévu.  La colonne Correspondance précédente indique que la règle PNG correspond à l'objet dans la simulation précédente.
+
++
+image::../media/simulate_reorder_rules_correct_result.png[Exemple 2 : Réorganisation des règles lors de la simulation d'une politique ILM]
+
+
+
+
+
+== Exemple 3 : Corriger une règle lors de la simulation d'une politique ILM
+
+Cet exemple montre comment simuler une politique, corriger une règle dans la politique et continuer la simulation.
+
+Dans cet exemple, la politique *Démo* est simulée.  Cette politique vise à trouver des objets qui ont `series=x-men` métadonnées utilisateur.  Cependant, des résultats inattendus se sont produits lors de la simulation de cette politique par rapport à la `Beast.jpg` objet.  Au lieu de correspondre à la règle de métadonnées X-men, l'objet correspond à la règle par défaut, Deux copies de deux centres de données.
+
+image::../media/simulate_results_for_object_wrong_metadata.png[Exemple 3 : Correction d'une règle lors de la simulation d'une politique ILM]
+
+Lorsqu'un objet de test ne correspond pas à la règle attendue dans la politique, vous devez examiner chaque règle de la politique et corriger les erreurs.
+
+.Étapes
+. Sélectionnez *Terminer* pour fermer la boîte de dialogue Simuler la politique.  Sur la page des détails de la politique, sélectionnez *Diagramme de rétention*.  Sélectionnez ensuite *Développer tout* ou *Afficher les détails* pour chaque règle selon vos besoins.
+. Consultez le compte locataire de la règle, l’heure de référence et les critères de filtrage.
++
+À titre d’exemple, supposons que les métadonnées de la règle X-men aient été saisies sous la forme « x-men01 » au lieu de « x-men ».
+
+. Pour résoudre l'erreur, corrigez la règle comme suit :
++
+** Si la règle fait partie de la politique, vous pouvez soit cloner la règle, soit supprimer la règle de la politique, puis la modifier.
+** Si la règle fait partie de la politique active, vous devez cloner la règle.  Vous ne pouvez pas modifier ou supprimer une règle de la politique active.
+
+
+. Effectuez à nouveau la simulation.
++
+Dans cet exemple, la règle corrigée des X-men correspond désormais à la `Beast.jpg` objet basé sur le `series=x-men` métadonnées utilisateur, comme prévu.
+
++
+image::../media/simulate_results_for_object_corrected_metadata.png[Exemple 3 : Correction d'une règle lors de la simulation d'une politique ILM]
+
+

@@ -1,0 +1,28 @@
+---
+permalink: monitor/snmp-alert-notifications.html 
+sidebar: sidebar 
+keywords: how to use snmp notifications for alerts 
+summary: 'Si vous souhaitez que StorageGRID envoie des notifications SNMP lorsque des alertes se produisent, vous devez activer l"agent SNMP StorageGRID et configurer une ou plusieurs destinations d"interruption.' 
+---
+= Configurer les notifications SNMP pour les alertes
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si vous souhaitez que StorageGRID envoie des notifications SNMP lorsque des alertes se produisent, vous devez activer l'agent SNMP StorageGRID et configurer une ou plusieurs destinations d'interruption.
+
+Vous pouvez utiliser l'option *CONFIGURATION* > *Surveillance* > *Agent SNMP* dans le gestionnaire de grille ou les points de terminaison SNMP pour l'API de gestion de grille pour activer et configurer l'agent SNMP StorageGRID . L'agent SNMP prend en charge les trois versions du protocole SNMP.
+
+Pour savoir comment configurer l'agent SNMP, consultezlink:using-snmp-monitoring.html["Utiliser la surveillance SNMP"] .
+
+Après avoir configuré l'agent SNMP StorageGRID , deux types de notifications basées sur des événements peuvent être envoyées :
+
+* Les interruptions sont des notifications envoyées par l'agent SNMP qui ne nécessitent pas d'accusé de réception par le système de gestion.  Les interruptions servent à informer le système de gestion qu'un événement s'est produit dans StorageGRID, comme le déclenchement d'une alerte.  Les interruptions sont prises en charge dans les trois versions de SNMP.
+* Les informations sont similaires aux pièges, mais elles nécessitent une reconnaissance par le système de gestion.  Si l'agent SNMP ne reçoit pas d'accusé de réception dans un certain délai, il renvoie l'information jusqu'à ce qu'un accusé de réception soit reçu ou que la valeur de nouvelle tentative maximale soit atteinte.  Les informations sont prises en charge dans SNMPv2c et SNMPv3.
+
+
+Les notifications d'interruption et d'information sont envoyées lorsqu'une alerte par défaut ou personnalisée est déclenchée à n'importe quel niveau de gravité.  Pour supprimer les notifications SNMP pour une alerte, vous devez configurer un silence pour l'alerte. Voir link:silencing-alert-notifications.html["Notifications d'alerte silencieuses"] .
+
+Si votre déploiement StorageGRID inclut plusieurs nœuds d'administration, le nœud d'administration principal est l'expéditeur préféré pour les notifications d'alerte, les packages AutoSupport et les interruptions et informations SNMP.  Si le nœud d’administration principal devient indisponible, des notifications sont temporairement envoyées par d’autres nœuds d’administration. Voir link:../primer/what-admin-node-is.html["Qu'est-ce qu'un nœud d'administration ?"] .

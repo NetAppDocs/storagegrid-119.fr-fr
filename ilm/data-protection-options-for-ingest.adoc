@@ -1,0 +1,59 @@
+---
+permalink: ilm/data-protection-options-for-ingest.html 
+sidebar: sidebar 
+keywords: ingest options, balanced ingest, strict ingest, dual-commit ingest 
+summary: 'Lorsque vous créez une règle ILM, vous spécifiez l"une des trois options de protection des objets lors de l"ingestion : double validation, stricte ou équilibrée.' 
+---
+= Options d'ingestion
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lorsque vous créez une règle ILM, vous spécifiez l'une des trois options de protection des objets lors de l'ingestion : double validation, stricte ou équilibrée.
+
+Selon votre choix, StorageGRID effectue des copies intermédiaires et met en file d'attente les objets pour une évaluation ILM ultérieure, ou il utilise le placement synchrone et effectue immédiatement des copies pour répondre aux exigences ILM.
+
+
+
+== Organigramme des options d'ingestion
+
+L'organigramme montre ce qui se passe lorsque des objets sont mis en correspondance par une règle ILM qui utilise chacune des trois options d'ingestion.
+
+image::../media/ingest_object_lifecycle.png[Diagramme montrant comment l'ingestion d'objets se produit pour chaque option d'ingestion]
+
+
+
+== Double engagement
+
+Lorsque vous sélectionnez l'option Double validation, StorageGRID effectue immédiatement des copies d'objets intermédiaires sur deux nœuds de stockage différents et renvoie un message « ingestion réussie » au client.  L'objet est mis en file d'attente pour l'évaluation ILM, et les copies qui répondent aux instructions de placement de la règle sont effectuées ultérieurement.  Si la politique ILM ne peut pas être traitée immédiatement après la double validation, la protection contre la perte de site peut prendre du temps à être mise en place.
+
+Utilisez l’option Dual commit dans l’un ou l’autre de ces cas :
+
+* Vous utilisez des règles ILM multisites et la latence d’ingestion du client est votre principale considération.  Lorsque vous utilisez la double validation, vous devez vous assurer que votre grille peut effectuer le travail supplémentaire de création et de suppression des copies à double validation si elles ne satisfont pas ILM.  Spécifiquement:
++
+** La charge sur le réseau doit être suffisamment faible pour éviter un retard ILM.
+** La grille doit disposer de ressources matérielles excédentaires (IOPS, CPU, mémoire, bande passante réseau, etc.).
+
+
+* Vous utilisez des règles ILM multisites et la connexion WAN entre les sites présente généralement une latence élevée ou une bande passante limitée.  Dans ce scénario, l’utilisation de l’option Dual commit peut aider à éviter les délais d’expiration du client.  Avant de choisir l’option Double validation, vous devez tester l’application cliente avec des charges de travail réalistes.
+
+
+
+
+== Équilibré (par défaut)
+
+Lorsque vous sélectionnez l'option Équilibré, StorageGRID utilise également le placement synchrone lors de l'ingestion et effectue immédiatement toutes les copies spécifiées dans les instructions de placement de la règle.  Contrairement à l'option Strict, si StorageGRID ne peut pas effectuer immédiatement toutes les copies, il utilise à la place la validation double.  Si la politique ILM utilise des placements sur plusieurs sites et qu'une protection immédiate contre la perte de site ne peut pas être obtenue, l'alerte *Placement ILM irréalisable* est déclenchée.
+
+Utilisez l’option Équilibré pour obtenir la meilleure combinaison de protection des données, de performances de la grille et de réussite d’ingestion.  Équilibré est l’option par défaut dans l’assistant de création de règle ILM.
+
+
+
+== Strict
+
+Lorsque vous sélectionnez l'option Strict, StorageGRID utilise le placement synchrone lors de l'ingestion et effectue immédiatement toutes les copies d'objet spécifiées dans les instructions de placement de la règle.  L'ingestion échoue si StorageGRID ne peut pas créer toutes les copies, par exemple parce qu'un emplacement de stockage requis est temporairement indisponible.  Le client doit réessayer l'opération.
+
+Utilisez l'option Strict si vous avez une exigence opérationnelle ou réglementaire de stocker immédiatement des objets uniquement dans les emplacements décrits dans la règle ILM.  Par exemple, pour satisfaire à une exigence réglementaire, vous devrez peut-être utiliser l'option Strict et un filtre avancé Contrainte d'emplacement pour garantir que les objets ne sont jamais stockés dans certains centres de données.
+
+Voir link:example-5-ilm-rules-and-policy-for-strict-ingest-behavior.html["Exemple 5 : Règles et politique ILM pour un comportement d'ingestion strict"] .

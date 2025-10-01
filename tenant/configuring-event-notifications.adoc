@@ -1,0 +1,136 @@
+---
+permalink: tenant/configuring-event-notifications.html 
+sidebar: sidebar 
+keywords: how to configure event notifications, bucket notification 
+summary: Vous activez les notifications pour un bucket en créant un XML de configuration de notification et en utilisant le gestionnaire de locataires pour appliquer le XML à un bucket. 
+---
+= Configurer les notifications d'événements
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous activez les notifications pour un bucket en créant un XML de configuration de notification et en utilisant le gestionnaire de locataires pour appliquer le XML à un bucket.
+
+.Avant de commencer
+* Les services de plateforme ont été activés pour votre compte locataire par un administrateur StorageGRID .
+* Vous avez déjà créé un bucket pour servir de source de notifications.
+* Le point de terminaison que vous souhaitez utiliser comme destination pour les notifications d’événements existe déjà et vous disposez de son URN.
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Gérer tous les buckets ou l'autorisation d'accès root"] .  Ces autorisations remplacent les paramètres d’autorisation dans les stratégies de groupe ou de compartiment lors de la configuration du compartiment à l’aide du gestionnaire de locataires.
+
+
+.À propos de cette tâche
+Vous configurez les notifications d’événements en associant le XML de configuration de notification à un bucket source. Le XML de configuration de notification suit les conventions S3 pour la configuration des notifications de compartiment, avec la rubrique de destination Kafka ou Amazon SNS spécifiée comme URN d'un point de terminaison.
+
+Pour obtenir des informations générales sur les notifications d'événements et comment les configurer, reportez-vous à la https://docs.aws.amazon.com/s3/["Documentation Amazon"^] .  Pour plus d'informations sur la manière dont StorageGRID implémente l'API de configuration des notifications de compartiment S3, reportez-vous à lalink:../s3/index.html["instructions pour la mise en œuvre des applications clientes S3"] .
+
+Notez les exigences et caractéristiques suivantes lors de la configuration des notifications d’événements pour un bucket :
+
+* Lorsque vous créez et appliquez un XML de configuration de notification valide, il doit utiliser l'URN d'un point de terminaison de notifications d'événements pour chaque destination.
+* Bien que la notification d'événement puisse être configurée sur un bucket avec le verrouillage d'objet S3 activé, les métadonnées du verrouillage d'objet S3 (y compris la date de conservation et le statut de conservation légale) des objets ne seront pas incluses dans les messages de notification.
+* Une fois que vous avez configuré les notifications d'événements, chaque fois qu'un événement spécifié se produit pour un objet dans le compartiment source, une notification est générée et envoyée à la rubrique Amazon SNS ou Kafka utilisée comme point de terminaison de destination.
+* Si vous activez les notifications d'événements pour un compartiment contenant des objets, les notifications sont envoyées uniquement pour les actions effectuées après l'enregistrement de la configuration de notification.
+
+
+.Étapes
+. Activer les notifications pour votre bucket source :
++
+** Utilisez un éditeur de texte pour créer le XML de configuration de notification requis pour activer les notifications d’événements, comme spécifié dans l’API de notification S3.
+** Lors de la configuration du XML, utilisez l’URN d’un point de terminaison de notifications d’événements comme rubrique de destination.
++
+[listing]
+----
+<NotificationConfiguration>
+  <TopicConfiguration>
+     <Id>Image-created</Id>
+     <Filter>
+        <S3Key>
+          <FilterRule>
+            <Name>prefix</Name>
+            <Value>images/</Value>
+          </FilterRule>
+        </S3Key>
+    </Filter>
+    <Topic>arn:aws:sns:us-east-1:050340950352:sgws-topic</Topic>
+    <Event>s3:ObjectCreated:*</Event>
+   </TopicConfiguration>
+ </NotificationConfiguration>
+----
+
+
+. Dans le gestionnaire de locataires, sélectionnez *STOCKAGE (S3)* > *Buckets*.
+. Sélectionnez le nom du bucket source.
++
+La page des détails du bucket apparaît.
+
+. Sélectionnez *Services de plateforme* > *Notifications d'événements*.
+. Cochez la case *Activer les notifications d'événements*.
+. Collez le XML de configuration de notification dans la zone de texte et sélectionnez *Enregistrer les modifications*.
++
+
+NOTE: Les services de plateforme doivent être activés pour chaque compte de locataire par un administrateur StorageGRID à l'aide de Grid Manager ou de l'API Grid Management.  Contactez votre administrateur StorageGRID si une erreur se produit lorsque vous enregistrez le XML de configuration.
+
+. Vérifiez que les notifications d’événements sont correctement configurées :
++
+.. Exécutez une action sur un objet dans le bucket source qui répond aux exigences de déclenchement d’une notification telle que configurée dans le XML de configuration.
++
+Dans l'exemple, une notification d'événement est envoyée chaque fois qu'un objet est créé avec le `images/` préfixe.
+
+.. Confirmez qu’une notification a été envoyée à la rubrique Amazon SNS ou Kafka de destination.
++
+Par exemple, si votre rubrique de destination est hébergée sur Amazon SNS, vous pouvez configurer le service pour qu'il vous envoie un e-mail lorsque la notification est envoyée.
+
++
+[listing]
+----
+{
+   "Records":[
+      {
+         "eventVersion":"2.0",
+         "eventSource":"sgws:s3",
+         "eventTime":"2017-08-08T23:52:38Z",
+         "eventName":"ObjectCreated:Put",
+         "userIdentity":{
+            "principalId":"1111111111111111111"
+         },
+         "requestParameters":{
+            "sourceIPAddress":"193.51.100.20"
+         },
+         "responseElements":{
+            "x-amz-request-id":"122047343"
+         },
+         "s3":{
+            "s3SchemaVersion":"1.0",
+            "configurationId":"Image-created",
+            "bucket":{
+               "name":"test1",
+               "ownerIdentity":{
+                  "principalId":"1111111111111111111"
+               },
+               "arn":"arn:sgws:s3:::test1"
+            },
+            "object":{
+               "key":"images/cat.jpg",
+               "size":0,
+               "eTag":"d41d8cd98f00b204e9800998ecf8427e",
+               "sequencer":"14D90402421461C7"
+            }
+         }
+      }
+   ]
+}
+----
++
+Si la notification est reçue sur la rubrique de destination, vous avez correctement configuré votre bucket source pour les notifications StorageGRID .
+
+
+
+
+
+.Informations connexes
+link:understanding-notifications-for-buckets.html["Comprendre les notifications pour les buckets"]
+
+link:../s3/index.html["Utiliser l'API REST S3"]
+
+link:creating-platform-services-endpoint.html["Créer un point de terminaison des services de plateforme"]

@@ -1,0 +1,166 @@
+---
+permalink: tenant/specifying-urn-for-platform-services-endpoint.html 
+sidebar: sidebar 
+keywords: how to specify platform services urn 
+summary: 'Lorsque vous créez un point de terminaison de services de plateforme, vous devez spécifier un nom de ressource unique (URN).  Vous utiliserez l’URN pour référencer le point de terminaison lorsque vous créerez un XML de configuration pour le service de plateforme.  L"URN de chaque point de terminaison doit être unique.' 
+---
+= Spécifier l'URN pour le point de terminaison des services de la plateforme
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lorsque vous créez un point de terminaison de services de plateforme, vous devez spécifier un nom de ressource unique (URN).  Vous utiliserez l’URN pour référencer le point de terminaison lorsque vous créerez un XML de configuration pour le service de plateforme.  L'URN de chaque point de terminaison doit être unique.
+
+StorageGRID valide les points de terminaison des services de la plateforme au fur et à mesure que vous les créez.  Avant de créer un point de terminaison de services de plateforme, confirmez que la ressource spécifiée dans le point de terminaison existe et qu’elle est accessible.
+
+
+
+== éléments URN
+
+L'URN d'un point de terminaison de services de plateforme doit commencer par `arn:aws` ou `urn:mysite` , comme suit :
+
+* Si le service est hébergé sur Amazon Web Services (AWS), utilisez `arn:aws`
+* Si le service est hébergé sur Google Cloud Platform (GCP), utilisez `arn:aws`
+* Si le service est hébergé localement, utilisez `urn:mysite`
+
+
+Par exemple, si vous spécifiez l'URN d'un point de terminaison CloudMirror hébergé sur StorageGRID, l'URN peut commencer par `urn:sgws` .
+
+L'élément suivant de l'URN spécifie le type de service de plateforme, comme suit :
+
+[cols="2a,1a"]
+|===
+| Service | Type 
+
+
+ a| 
+Réplication CloudMirror
+ a| 
+`s3`
+
+
+
+ a| 
+Notifications
+ a| 
+`sns`ou `kafka`
+
+
+
+ a| 
+Intégration de la recherche
+ a| 
+`es`
+
+|===
+Par exemple, pour continuer à spécifier l'URN d'un point de terminaison CloudMirror hébergé sur StorageGRID, vous devez ajouter `s3` obtenir `urn:sgws:s3` .
+
+L'élément final de l'URN identifie la ressource cible spécifique à l'URI de destination.
+
+[cols="1a,2a"]
+|===
+| Service | Ressource spécifique 
+
+
+ a| 
+Réplication CloudMirror
+ a| 
+`bucket-name`
+
+
+
+ a| 
+Notifications
+ a| 
+`sns-topic-name`ou `kafka-topic-name`
+
+
+
+ a| 
+Intégration de la recherche
+ a| 
+`domain-name/index-name/type-name`
+
+*Remarque :* si le cluster Elasticsearch n'est *pas* configuré pour créer des index automatiquement, vous devez créer l'index manuellement avant de créer le point de terminaison.
+
+|===
+
+
+== URN pour les services hébergés sur AWS et GCP
+
+Pour les entités AWS et GCP, l’URN complet est un ARN AWS valide. Par exemple:
+
+* Réplication CloudMirror :
++
+[listing]
+----
+arn:aws:s3:::bucket-name
+----
+* Notifications:
++
+[listing]
+----
+arn:aws:sns:region:account-id:topic-name
+----
+* Intégration de la recherche :
++
+[listing]
+----
+arn:aws:es:region:account-id:domain/domain-name/index-name/type-name
+----
++
+
+NOTE: Pour un point de terminaison d'intégration de recherche AWS, le `domain-name` doit inclure la chaîne littérale `domain/` , comme indiqué ici.
+
+
+
+
+
+== URN pour les services hébergés localement
+
+Lorsque vous utilisez des services hébergés localement au lieu de services cloud, vous pouvez spécifier l'URN de toute manière qui crée un URN valide et unique, à condition que l'URN inclue les éléments requis dans les troisième et dernière positions.  Vous pouvez laisser les éléments indiqués par facultatif vides, ou vous pouvez les spécifier de toute manière qui vous aide à identifier la ressource et à rendre l'URN unique. Par exemple:
+
+* Réplication CloudMirror :
++
+[listing]
+----
+urn:mysite:s3:optional:optional:bucket-name
+----
++
+Pour un point de terminaison CloudMirror hébergé sur StorageGRID, vous pouvez spécifier un URN valide qui commence par `urn:sgws` :
+
++
+[listing]
+----
+urn:sgws:s3:optional:optional:bucket-name
+----
+* Notifications:
++
+Spécifiez un point de terminaison Amazon Simple Notification Service :
+
++
+[listing]
+----
+urn:mysite:sns:optional:optional:sns-topic-name
+----
++
+Spécifiez un point de terminaison Kafka :
+
++
+[listing]
+----
+urn:mysite:kafka:optional:optional:kafka-topic-name
+----
+* Intégration de la recherche :
++
+[listing]
+----
+urn:mysite:es:optional:optional:domain-name/index-name/type-name
+----
++
+
+NOTE: Pour les points de terminaison d'intégration de recherche hébergés localement, le `domain-name` l'élément peut être n'importe quelle chaîne à condition que l'URN du point de terminaison soit unique.
+
+

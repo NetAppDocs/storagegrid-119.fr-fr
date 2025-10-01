@@ -1,0 +1,150 @@
+---
+permalink: expand/rebalancing-erasure-coded-data-after-adding-storage-nodes.html 
+sidebar: sidebar 
+keywords: erasure coding, EC, rebalancing, site rebalance procedure 
+summary: 'Après avoir ajouté des nœuds de stockage, vous pouvez utiliser la procédure de rééquilibrage du codage d"effacement pour redistribuer les fragments codés par effacement entre les nœuds de stockage existants et nouveaux.' 
+---
+= Rééquilibrer les données codées par effacement après l'ajout de nœuds de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Après avoir ajouté des nœuds de stockage, vous pouvez utiliser la procédure de rééquilibrage du codage d'effacement (EC) pour redistribuer les fragments codés par effacement entre les nœuds de stockage existants et nouveaux.
+
+.Avant de commencer
+* Vous avez terminé les étapes d’extension pour ajouter les nouveaux nœuds de stockage.
+* Vous avez examiné lelink:considerations-for-rebalancing-erasure-coded-data.html["considérations pour le rééquilibrage des données codées par effacement"] .
+* Vous comprenez que les données d'objet répliquées ne seront pas déplacées par cette procédure et que la procédure de rééquilibrage EC ne prend pas en compte l'utilisation des données répliquées sur chaque nœud de stockage lors de la détermination de l'emplacement où déplacer les données codées par effacement.
+* Vous avez le `Passwords.txt` déposer.
+
+
+.Que se passe-t-il lorsque cette procédure s'exécute
+Avant de commencer la procédure, notez les points suivants :
+
+* La procédure de rééquilibrage EC ne démarrera pas si un ou plusieurs volumes sont hors ligne (démontés) ou s'ils sont en ligne (montés) mais dans un état d'erreur.
+* La procédure de rééquilibrage CE réserve temporairement une grande quantité de stockage.  Des alertes de stockage peuvent être déclenchées, mais seront résolues une fois le rééquilibrage terminé.  S'il n'y a pas suffisamment de stockage pour la réservation, la procédure de rééquilibrage EC échouera.  Les réservations de stockage sont libérées lorsque la procédure de rééquilibrage EC est terminée, que la procédure ait échoué ou réussi.
+* Si un volume est hors ligne pendant que la procédure de rééquilibrage EC est en cours, la procédure de rééquilibrage prendra fin.  Tous les fragments de données déjà déplacés resteront à leur nouvel emplacement et aucune donnée ne sera perdue.
++
+Vous pouvez réexécuter la procédure une fois que tous les volumes sont de nouveau en ligne.
+
+* Lorsque la procédure de rééquilibrage EC est en cours d'exécution, les performances des opérations ILM et des opérations client S3 peuvent être affectées.
++
+
+NOTE: Les opérations API S3 pour télécharger des objets (ou des parties d'objet) peuvent échouer pendant la procédure de rééquilibrage EC si elles nécessitent plus de 24 heures pour se terminer.  Les opérations PUT de longue durée échoueront si la règle ILM applicable utilise un placement équilibré ou strict lors de l'ingestion.  L'erreur suivante sera signalée : `500 Internal Server Error` .
+
+* Au cours de cette procédure, tous les nœuds ont une limite de capacité de stockage de 80 %.  Les nœuds qui dépassent cette limite, mais stockent toujours en dessous de la partition de données cible, sont exclus de :
++
+** La valeur du déséquilibre du site
+** Toutes conditions d'achèvement des travaux
++
+
+NOTE: La partition des données cibles est calculée en divisant les données totales d'un site par le nombre de nœuds.
+
+
+
+* *Conditions d'achèvement des travaux*.  La procédure de rééquilibrage de la CE est considérée comme terminée lorsque l’une des conditions suivantes est remplie :
++
+** Il ne peut plus déplacer de données codées par effacement.
+** Les données de tous les nœuds se situent dans un écart de 5 % par rapport à la partition de données cible.
+** La procédure est en cours depuis 30 jours.
+
+
+
+
+.Étapes
+. [[review_object_storage]]Vérifiez les détails actuels du stockage d’objets pour le site que vous prévoyez de rééquilibrer.
++
+.. Sélectionnez *NODES*.
+.. Sélectionnez le premier nœud de stockage sur le site.
+.. Sélectionnez l'onglet *Stockage*.
+.. Placez votre curseur sur le graphique Stockage utilisé - Données d'objet pour voir la quantité actuelle de données répliquées et de données codées par effacement sur le nœud de stockage.
+.. Répétez ces étapes pour afficher les autres nœuds de stockage sur le site.
+
+
+. Connectez-vous au nœud d’administration principal :
++
+.. Entrez la commande suivante : `ssh admin@_primary_Admin_Node_IP_`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
++
+Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+
+
+. Démarrer la procédure :
++
+`rebalance-data start --site "_nom-du-site_"
+
++
+Pour « _site-name_ », spécifiez le premier site sur lequel vous avez ajouté un ou plusieurs nouveaux nœuds de stockage.  Joindre `site-name` entre guillemets.
+
++
+La procédure de rééquilibrage EC démarre et un ID de tâche est renvoyé.
+
+. Copiez l'ID du travail.
+. [[view-status]]Surveillez l'état de la procédure de rééquilibrage de la CE.
++
+** Pour afficher l’état d’une seule procédure de rééquilibrage CE :
++
+`rebalance-data status --job-id _job-id_`
+
++
+Pour `_job-id_` , spécifiez l'ID qui a été renvoyé lorsque vous avez démarré la procédure.
+
+** Pour afficher l'état de la procédure de rééquilibrage CE en cours et de toutes les procédures précédemment terminées :
++
+`rebalance-data status`
+
++
+[NOTE]
+====
+Pour obtenir de l'aide sur la commande rebalance-data :
+
+`rebalance-data --help`
+
+====
+
+
+. Effectuez des étapes supplémentaires, en fonction du statut renvoyé :
++
+** Si `State` est `In progress` , l'opération de rééquilibrage de la CE est toujours en cours.  Vous devez surveiller périodiquement la procédure jusqu’à ce qu’elle soit terminée.
++
+Utilisez le `Site Imbalance` valeur permettant d'évaluer le degré de déséquilibre de l'utilisation des données du code d'effacement sur les nœuds de stockage du site.  Cette valeur peut varier de 1,0 à 0, 0 indiquant que l'utilisation des données de codage d'effacement est complètement équilibrée sur tous les nœuds de stockage du site.
+
++
+Le travail de rééquilibrage EC est considéré comme terminé et s'arrêtera lorsque les données de tous les nœuds se situeront dans un écart de 5 % par rapport à la partition de données cible.
+
+** Si `State` est `Success` , en option<<review_object_storage,examiner le stockage d'objets>> pour voir les détails mis à jour du site.
++
+Les données codées par effacement devraient désormais être plus équilibrées entre les nœuds de stockage du site.
+
+** Si `State` est `Failure` :
++
+... Confirmez que tous les nœuds de stockage du site sont connectés au réseau.
+... Recherchez et résolvez toutes les alertes susceptibles d’affecter ces nœuds de stockage.
+... Redémarrer la procédure de rééquilibrage de la CE :
++
+`rebalance-data start –-job-id _job-id_`
+
+... <<view-status,Voir le statut>>de la nouvelle procédure.  Si `State` est toujours `Failure` , contactez le support technique.
+
+
+
+
+. Si la procédure de rééquilibrage EC génère trop de charge (par exemple, les opérations d'ingestion sont affectées), mettez la procédure en pause.
++
+`rebalance-data pause --job-id _job-id_`
+
+. Si vous devez mettre fin à la procédure de rééquilibrage EC (par exemple, pour pouvoir effectuer une mise à niveau du logiciel StorageGRID ), saisissez ce qui suit :
++
+`rebalance-data terminate --job-id _job-id_`
+
++
+
+NOTE: Lorsque vous terminez une procédure de rééquilibrage EC, tous les fragments de données qui ont déjà été déplacés restent à leurs nouveaux emplacements.  Les données ne sont pas déplacées vers l’emplacement d’origine.
+
+. Si vous utilisez le codage d’effacement sur plusieurs sites, exécutez cette procédure pour tous les autres sites concernés.
+

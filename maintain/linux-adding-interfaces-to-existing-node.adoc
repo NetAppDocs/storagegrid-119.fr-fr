@@ -1,0 +1,53 @@
+---
+permalink: maintain/linux-adding-interfaces-to-existing-node.html 
+sidebar: sidebar 
+keywords: add interfaces, add client network interface, add admin network interface 
+summary: Suivez ces étapes pour ajouter une interface sur le réseau d’administration ou le réseau client à un nœud Linux après son installation. 
+---
+= Linux : ajouter des interfaces d’administration ou de client à un nœud existant
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Suivez ces étapes pour ajouter une interface sur le réseau d’administration ou le réseau client à un nœud Linux après son installation.
+
+Si vous n'avez pas configuré ADMIN_NETWORK_TARGET ou CLIENT_NETWORK_TARGET dans le fichier de configuration du nœud sur l'hôte Linux lors de l'installation, utilisez cette procédure pour ajouter l'interface. Pour plus d’informations sur le fichier de configuration du nœud, consultez les instructions relatives à votre système d’exploitation Linux :
+
+* link:../rhel/index.html["Installer StorageGRID sur Red Hat Enterprise Linux"]
+* link:../ubuntu/index.html["Installer StorageGRID sur Ubuntu ou Debian"]
+
+
+Vous effectuez cette procédure sur le serveur Linux hébergeant le nœud qui a besoin de la nouvelle attribution de réseau, et non à l’intérieur du nœud.  Cette procédure ajoute uniquement l'interface au nœud ; une erreur de validation se produit si vous tentez de spécifier d'autres paramètres réseau.
+
+Pour fournir des informations d’adressage, vous devez utiliser l’outil Modifier l’IP. Voir link:changing-nodes-network-configuration.html["Modifier la configuration du réseau de nœuds"] .
+
+.Étapes
+. Connectez-vous au serveur Linux hébergeant le nœud.
+. Modifier le fichier de configuration du nœud : `/etc/storagegrid/nodes/_node-name_.conf` .
++
+
+NOTE: Ne spécifiez aucun autre paramètre réseau, sinon une erreur de validation se produira.
+
++
+.. Ajoutez une entrée pour la nouvelle cible réseau. Par exemple:
++
+`CLIENT_NETWORK_TARGET = bond0.3206`
+
+.. Facultatif : ajoutez une entrée pour l’adresse MAC. Par exemple:
++
+`CLIENT_NETWORK_MAC = aa:57:61:07:ea:5c`
+
+
+
+. Exécutez la commande de validation du nœud :
++
+`sudo storagegrid node validate _node-name_`
+
+. Résoudre toutes les erreurs de validation.
+. Exécutez la commande de rechargement du nœud :
++
+`sudo storagegrid node reload _node-name_`
+
+

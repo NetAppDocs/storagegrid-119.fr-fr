@@ -1,0 +1,73 @@
+= Qu'est-ce que S3 Object Lock ?
+:allow-uri-read: 
+
+
+
+
+== Qu'est-ce que S3 Object Lock ?
+
+La fonctionnalité StorageGRID S3 Object Lock est une solution de protection d'objets équivalente à S3 Object Lock dans Amazon Simple Storage Service (Amazon S3).
+
+Lorsque le paramètre global de verrouillage d'objet S3 est activé pour un système StorageGRID , un compte de locataire S3 peut créer des buckets avec ou sans verrouillage d'objet S3 activé.  Si le verrouillage d'objet S3 est activé pour un bucket, le contrôle de version du bucket est requis et est activé automatiquement.
+
+*Un bucket sans verrouillage d'objet S3* ne peut contenir que des objets sans paramètres de conservation spécifiés.  Aucun objet ingéré n'aura de paramètres de rétention.
+
+*Un bucket avec verrouillage d'objet S3* peut contenir des objets avec et sans paramètres de rétention spécifiés par les applications clientes S3.  Certains objets ingérés auront des paramètres de rétention.
+
+*Un bucket avec verrouillage d'objet S3 et rétention par défaut configuré* peut contenir des objets téléchargés avec des paramètres de rétention spécifiés et de nouveaux objets sans paramètres de rétention.  Les nouveaux objets utilisent le paramètre par défaut, car le paramètre de rétention n'a pas été configuré au niveau de l'objet.
+
+En effet, tous les objets nouvellement ingérés ont des paramètres de rétention lorsque la rétention par défaut est configurée.  Les objets existants sans paramètres de conservation d'objets restent inchangés.
+
+
+
+=== Modes de rétention
+
+La fonctionnalité de verrouillage d'objet StorageGRID S3 prend en charge deux modes de conservation pour appliquer différents niveaux de protection aux objets.  Ces modes sont équivalents aux modes de rétention d'Amazon S3.
+
+* En mode conformité :
++
+** L'objet ne peut pas être supprimé tant que sa date de conservation n'est pas atteinte.
+** La date de conservation de l'objet peut être augmentée, mais elle ne peut pas être diminuée.
+** La date de conservation de l'objet ne peut pas être supprimée tant que cette date n'est pas atteinte.
+
+
+* En mode gouvernance :
++
+** Les utilisateurs disposant d’une autorisation spéciale peuvent utiliser un en-tête de contournement dans les demandes pour modifier certains paramètres de conservation.
+** Ces utilisateurs peuvent supprimer une version d'objet avant que sa date de conservation ne soit atteinte.
+** Ces utilisateurs peuvent augmenter, diminuer ou supprimer la date de conservation d'un objet.
+
+
+
+
+
+
+=== Paramètres de conservation pour les versions d'objet
+
+Si un compartiment est créé avec le verrouillage d'objet S3 activé, les utilisateurs peuvent utiliser l'application cliente S3 pour spécifier éventuellement les paramètres de conservation suivants pour chaque objet ajouté au compartiment :
+
+* *Mode de conservation* : Soit la conformité, soit la gouvernance.
+* *Date de conservation jusqu'à* : si la date de conservation jusqu'à d'une version d'objet est dans le futur, l'objet peut être récupéré, mais il ne peut pas être supprimé.
+* *Conservation légale* : L'application d'une conservation légale à une version d'objet verrouille immédiatement cet objet.  Par exemple, vous pourriez avoir besoin de suspendre légalement un objet lié à une enquête ou à un litige juridique.  Une conservation légale n’a pas de date d’expiration, mais reste en place jusqu’à ce qu’elle soit explicitement supprimée.  Les conservations légales sont indépendantes de la date de conservation.
++
+
+NOTE: Si un objet est sous conservation légale, personne ne peut supprimer l'objet, quel que soit son mode de conservation.
+
++
+Pour plus de détails sur les paramètres de l'objet, voirlink:../s3/use-s3-api-for-s3-object-lock.html["Utiliser l'API REST S3 pour configurer le verrouillage d'objet S3"] .
+
+
+
+
+
+=== Paramètre de rétention par défaut pour les buckets
+
+Si un bucket est créé avec le verrouillage d'objet S3 activé, les utilisateurs peuvent éventuellement spécifier les paramètres par défaut suivants pour le bucket :
+
+* *Mode de conservation par défaut* : Conformité ou gouvernance.
+* *Période de conservation par défaut* : durée pendant laquelle les nouvelles versions d'objet ajoutées à ce bucket doivent être conservées, à compter du jour de leur ajout.
+
+
+Les paramètres de compartiment par défaut s'appliquent uniquement aux nouveaux objets qui ne disposent pas de leurs propres paramètres de conservation.  Les objets de compartiment existants ne sont pas affectés lorsque vous ajoutez ou modifiez ces paramètres par défaut.
+
+Voirlink:../tenant/creating-s3-bucket.html["Créer un bucket S3"] etlink:../tenant/update-default-retention-settings.html["Mettre à jour la conservation par défaut du verrouillage des objets S3"] .

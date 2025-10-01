@@ -1,0 +1,186 @@
+---
+permalink: expand/linux-adding-direct-attached-or-san-volumes-to-storage-node.html 
+sidebar: sidebar 
+keywords: expansion, Linux, add storage volumes 
+summary: Si un nœud de stockage comprend moins de 48 volumes de stockage, vous pouvez augmenter sa capacité en ajoutant de nouveaux périphériques de stockage en blocs, en les rendant visibles pour les hôtes Linux et en ajoutant les nouveaux mappages de périphériques en blocs au fichier de configuration StorageGRID utilisé pour le nœud de stockage. 
+---
+= Linux : ajouter des volumes à connexion directe ou SAN au nœud de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si un nœud de stockage comprend moins de 48 volumes de stockage, vous pouvez augmenter sa capacité en ajoutant de nouveaux périphériques de stockage en blocs, en les rendant visibles pour les hôtes Linux et en ajoutant les nouveaux mappages de périphériques en blocs au fichier de configuration StorageGRID utilisé pour le nœud de stockage.
+
+.Avant de commencer
+* Vous avez accès aux instructions d'installation de StorageGRID pour votre plateforme Linux.
++
+** link:../rhel/index.html["Installer StorageGRID sur Red Hat Enterprise Linux"]
+** link:../ubuntu/index.html["Installer StorageGRID sur Ubuntu ou Debian"]
+
+
+* Vous avez le `Passwords.txt` déposer.
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+
+
+
+CAUTION: N'essayez pas d'ajouter des volumes de stockage à un nœud de stockage pendant qu'une mise à niveau logicielle, une procédure de récupération ou une autre procédure d'extension est active.
+
+.À propos de cette tâche
+Le nœud de stockage n'est pas disponible pendant une brève période lorsque vous ajoutez des volumes de stockage.  Vous devez effectuer cette procédure sur un nœud de stockage à la fois pour éviter d’impacter les services de grille orientés client.
+
+.Étapes
+. Installez le nouveau matériel de stockage.
++
+Pour plus d'informations, consultez la documentation fournie par votre fournisseur de matériel.
+
+. Créez de nouveaux volumes de stockage de blocs des tailles souhaitées.
++
+** Connectez les nouveaux disques et mettez à jour la configuration du contrôleur RAID selon les besoins, ou allouez les nouveaux LUN SAN sur les baies de stockage partagées et autorisez l'hôte Linux à y accéder.
+** Utilisez le même schéma de nommage persistant que celui utilisé pour les volumes de stockage sur le nœud de stockage existant.
+** Si vous utilisez la fonctionnalité de migration de nœud StorageGRID , rendez les nouveaux volumes visibles pour les autres hôtes Linux qui sont des cibles de migration pour ce nœud de stockage.  Pour plus d’informations, consultez les instructions d’installation de StorageGRID pour votre plate-forme Linux.
+
+
+. Connectez-vous à l'hôte Linux prenant en charge le nœud de stockage en tant que root ou avec un compte disposant de l'autorisation sudo.
+. Confirmez que les nouveaux volumes de stockage sont visibles sur l’hôte Linux.
++
+Vous devrez peut-être effectuer une nouvelle analyse des appareils.
+
+. Exécutez la commande suivante pour désactiver temporairement le nœud de stockage :
++
+`sudo storagegrid node stop <node-name>`
+
+. À l'aide d'un éditeur de texte tel que vim ou pico, modifiez le fichier de configuration du nœud de stockage, qui se trouve à l'adresse `/etc/storagegrid/nodes/<node-name>.conf` .
+. Recherchez la section du fichier de configuration du nœud qui contient les mappages de périphériques de stockage en mode bloc d’objets existants.
++
+Dans l'exemple, `BLOCK_DEVICE_RANGEDB_00` à `BLOCK_DEVICE_RANGEDB_03` sont les mappages de périphériques de stockage d'objets existants.
+
++
+[listing, subs="specialcharacters,quotes"]
+----
+NODE_TYPE = VM_Storage_Node
+ADMIN_IP = 10.1.0.2
+BLOCK_DEVICE_VAR_LOCAL = /dev/mapper/sgws-sn1-var-local
+*BLOCK_DEVICE_RANGEDB_00 = /dev/mapper/sgws-sn1-rangedb-0*
+*BLOCK_DEVICE_RANGEDB_01 = /dev/mapper/sgws-sn1-rangedb-1*
+*BLOCK_DEVICE_RANGEDB_02 = /dev/mapper/sgws-sn1-rangedb-2*
+*BLOCK_DEVICE_RANGEDB_03 = /dev/mapper/sgws-sn1-rangedb-3*
+GRID_NETWORK_TARGET = bond0.1001
+ADMIN_NETWORK_TARGET = bond0.1002
+CLIENT_NETWORK_TARGET = bond0.1003
+GRID_NETWORK_IP = 10.1.0.3
+GRID_NETWORK_MASK = 255.255.255.0
+GRID_NETWORK_GATEWAY = 10.1.0.1
+----
+. Ajoutez de nouveaux mappages de périphériques de stockage en bloc d’objets correspondant aux volumes de stockage en bloc que vous avez ajoutés pour ce nœud de stockage.
++
+Assurez-vous de commencer à la prochaine `BLOCK_DEVICE_RANGEDB_nn` .  Ne laissez pas d'espace.
+
++
+** Sur la base de l’exemple ci-dessus, commencez par `BLOCK_DEVICE_RANGEDB_04` .
+** Dans l'exemple ci-dessous, quatre nouveaux volumes de stockage de blocs ont été ajoutés au nœud : `BLOCK_DEVICE_RANGEDB_04` à `BLOCK_DEVICE_RANGEDB_07` .
+
+
++
+[listing, subs="specialcharacters,quotes"]
+----
+NODE_TYPE = VM_Storage_Node
+ADMIN_IP = 10.1.0.2
+BLOCK_DEVICE_VAR_LOCAL = /dev/mapper/sgws-sn1-var-local
+BLOCK_DEVICE_RANGEDB_00 = /dev/mapper/sgws-sn1-rangedb-0
+BLOCK_DEVICE_RANGEDB_01 = /dev/mapper/sgws-sn1-rangedb-1
+BLOCK_DEVICE_RANGEDB_02 = /dev/mapper/sgws-sn1-rangedb-2
+BLOCK_DEVICE_RANGEDB_03 = /dev/mapper/sgws-sn1-rangedb-3
+*BLOCK_DEVICE_RANGEDB_04 = /dev/mapper/sgws-sn1-rangedb-4*
+*BLOCK_DEVICE_RANGEDB_05 = /dev/mapper/sgws-sn1-rangedb-5*
+*BLOCK_DEVICE_RANGEDB_06 = /dev/mapper/sgws-sn1-rangedb-6*
+*BLOCK_DEVICE_RANGEDB_07 = /dev/mapper/sgws-sn1-rangedb-7*
+GRID_NETWORK_TARGET = bond0.1001
+ADMIN_NETWORK_TARGET = bond0.1002
+CLIENT_NETWORK_TARGET = bond0.1003
+GRID_NETWORK_IP = 10.1.0.3
+GRID_NETWORK_MASK = 255.255.255.0
+GRID_NETWORK_GATEWAY = 10.1.0.1
+----
+. Exécutez la commande suivante pour valider vos modifications apportées au fichier de configuration du nœud pour le nœud de stockage :
++
+`sudo storagegrid node validate <node-name>`
+
++
+Corrigez les erreurs ou les avertissements avant de passer à l’étape suivante.
+
++
+[NOTE]
+====
+Si vous observez une erreur similaire à la suivante, cela signifie que le fichier de configuration du nœud tente de mapper le périphérique de bloc utilisé par `<node-name>` pour `<PURPOSE>` au donné `<path-name>` dans le système de fichiers Linux, mais il n'y a pas de fichier spécial de périphérique de bloc valide (ou de lien logiciel vers un fichier spécial de périphérique de bloc) à cet emplacement.
+
+[listing]
+----
+Checking configuration file for node <node-name>…
+ERROR: BLOCK_DEVICE_<PURPOSE> = <path-name>
+<path-name> is not a valid block device
+----
+Vérifiez que vous avez entré le bon `<path-name>` .
+
+====
+. Exécutez la commande suivante pour redémarrer le nœud avec les nouveaux mappages de périphériques de bloc en place :
++
+`sudo storagegrid node start <node-name>`
+
+. Connectez-vous au nœud de stockage en tant qu'administrateur à l'aide du mot de passe répertorié dans le `Passwords.txt` déposer.
+. Vérifiez que les services démarrent correctement :
++
+.. Afficher une liste de l'état de tous les services sur le serveur : +
+`sudo storagegrid-status`
++
+Le statut est mis à jour automatiquement.
+
+.. Attendez que tous les services soient en cours d’exécution ou vérifiés.
+.. Quitter l'écran d'état :
++
+`Ctrl+C`
+
+
+
+. Configurer le nouveau stockage à utiliser par le nœud de stockage :
++
+.. Configurer les nouveaux volumes de stockage :
++
+`sudo add_rangedbs.rb`
+
++
+Ce script recherche tous les nouveaux volumes de stockage et vous invite à les formater.
+
+.. Entrez *y* pour formater les volumes de stockage.
+.. Si l’un des volumes a déjà été formaté, décidez si vous souhaitez le reformater.
++
+*** Entrez *y* pour reformater.
+*** Entrez *n* pour ignorer le reformatage.
+
+
+
+
++
+Le `setup_rangedbs.sh` le script s'exécute automatiquement.
+
+. Vérifiez que l’état de stockage du nœud de stockage est en ligne :
++
+.. Sign in au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+.. Sélectionnez *SUPPORT* > *Outils* > *Topologie de grille*.
+.. Sélectionnez *_site_* > *_Nœud de stockage_* > *LDR* > *Stockage*.
+.. Sélectionnez l'onglet *Configuration* puis l'onglet *Principal*.
+.. Si la liste déroulante *État de stockage - Souhaité* est définie sur Lecture seule ou Hors ligne, sélectionnez *En ligne*.
+.. Cliquez sur *Appliquer les modifications*.
+
+
+. Pour voir les nouveaux magasins d’objets :
++
+.. Sélectionnez *NODES* > *_site_* > *_Storage Node_* > *Storage*.
+.. Consultez les détails dans le tableau *Magasins d'objets*.
+
+
+
+
+.Résultat
+Vous pouvez désormais utiliser la capacité étendue des nœuds de stockage pour enregistrer les données des objets.

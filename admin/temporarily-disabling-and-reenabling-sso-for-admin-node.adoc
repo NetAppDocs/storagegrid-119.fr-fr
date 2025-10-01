@@ -1,0 +1,86 @@
+---
+permalink: admin/temporarily-disabling-and-reenabling-sso-for-admin-node.html 
+sidebar: sidebar 
+keywords: signing in when sso is down, single sign on failure 
+summary: 'Vous ne pourrez peut-être pas vous connecter au Grid Manager si le système d"authentification unique (SSO) tombe en panne.  Dans ce cas, vous pouvez désactiver et réactiver temporairement SSO pour un nœud d’administration.  Pour désactiver puis réactiver SSO, vous devez accéder à l"interpréteur de commandes du nœud.' 
+---
+= Désactiver et réactiver temporairement l'authentification unique pour un nœud d'administration
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous ne pourrez peut-être pas vous connecter au Grid Manager si le système d'authentification unique (SSO) tombe en panne.  Dans ce cas, vous pouvez désactiver et réactiver temporairement SSO pour un nœud d’administration.  Pour désactiver puis réactiver SSO, vous devez accéder à l'interpréteur de commandes du nœud.
+
+.Avant de commencer
+* Tu aslink:admin-group-permissions.html["autorisations d'accès spécifiques"] .
+* Vous avez le `Passwords.txt` déposer.
+* Vous connaissez le mot de passe de l'utilisateur root local.
+
+
+.À propos de cette tâche
+Après avoir désactivé SSO pour un nœud d’administration, vous pouvez vous connecter au gestionnaire de grille en tant qu’utilisateur root local.  Pour sécuriser votre système StorageGRID , vous devez utiliser l'interpréteur de commandes du nœud pour réactiver SSO sur le nœud d'administration dès que vous vous déconnectez.
+
+
+TIP: La désactivation de SSO pour un nœud d’administration n’affecte pas les paramètres SSO des autres nœuds d’administration de la grille.  La case à cocher *Activer SSO* sur la page Authentification unique dans le Gestionnaire de grille reste sélectionnée et tous les paramètres SSO existants sont conservés, sauf si vous les mettez à jour.
+
+.Étapes
+. Connectez-vous à un nœud d'administration :
++
+.. Entrez la commande suivante : `ssh admin@Admin_Node_IP`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
++
+Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+
+
+. Exécutez la commande suivante :``disable-saml``
++
+Un message indique que la commande s’applique uniquement à ce nœud d’administration.
+
+. Confirmez que vous souhaitez désactiver SSO.
++
+Un message indique que l’authentification unique est désactivée sur le nœud.
+
+. À partir d’un navigateur Web, accédez au gestionnaire de grille sur le même nœud d’administration.
++
+La page de connexion de Grid Manager s'affiche désormais car SSO a été désactivé.
+
+. Sign in avec le nom d'utilisateur root et le mot de passe de l'utilisateur root local.
+. Si vous avez désactivé temporairement SSO parce que vous deviez corriger la configuration SSO :
++
+.. Sélectionnez *CONFIGURATION* > *Contrôle d'accès* > *Authentification unique*.
+.. Modifiez les paramètres SSO incorrects ou obsolètes.
+.. Sélectionnez *Enregistrer*.
++
+La sélection de *Enregistrer* sur la page d'authentification unique réactive automatiquement l'authentification unique pour l'ensemble de la grille.
+
+
+
+. Si vous avez désactivé temporairement SSO parce que vous aviez besoin d'accéder au Grid Manager pour une autre raison :
++
+.. Effectuez la ou les tâches que vous devez effectuer.
+.. Sélectionnez *Déconnexion* et fermez le gestionnaire de grille.
+.. Réactiver SSO sur le nœud d’administration.  Vous pouvez effectuer l’une des étapes suivantes :
++
+*** Exécutez la commande suivante : `enable-saml`
++
+Un message indique que la commande s’applique uniquement à ce nœud d’administration.
+
++
+Confirmez que vous souhaitez activer SSO.
+
++
+Un message indique que l’authentification unique est activée sur le nœud.
+
+*** Redémarrer le nœud de grille : `reboot`
+
+
+
+
+. À partir d’un navigateur Web, accédez au gestionnaire de grille à partir du même nœud d’administration.
+. Confirmez que la page de Sign in StorageGRID s'affiche et que vous devez saisir vos informations d'identification SSO pour accéder au Grid Manager.
+

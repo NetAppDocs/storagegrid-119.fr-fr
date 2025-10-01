@@ -1,0 +1,134 @@
+---
+permalink: ilm/ilm-policy-overview.html 
+sidebar: sidebar 
+keywords: ILM policy, information lifecycle policy considerations 
+summary: 'Une politique de gestion du cycle de vie des informations (ILM) est un ensemble ordonné de règles ILM qui détermine la manière dont le système StorageGRID gère les données des objets au fil du temps.' 
+---
+= Utiliser les politiques ILM
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Une politique de gestion du cycle de vie des informations (ILM) est un ensemble ordonné de règles ILM qui détermine la manière dont le système StorageGRID gère les données des objets au fil du temps.
+
+
+CAUTION: Une stratégie ILM mal configurée peut entraîner une perte de données irrécupérable.  Avant d’activer une stratégie ILM, examinez attentivement la stratégie ILM et ses règles ILM, puis simulez la stratégie ILM.  Confirmez toujours que la politique ILM fonctionnera comme prévu.
+
+
+
+== Politique ILM par défaut
+
+Lorsque vous installez StorageGRID et ajoutez des sites, une stratégie ILM par défaut est automatiquement créée, comme suit :
+
+* Si votre grille contient un site, la politique par défaut contient une règle par défaut qui réplique deux copies de chaque objet sur ce site.
+* Si votre grille contient plusieurs sites, la règle par défaut réplique une copie de chaque objet sur chaque site.
+
+
+Si la politique par défaut ne répond pas à vos besoins de stockage, vous pouvez créer vos propres règles et politiques. Voirlink:what-ilm-rule-is.html["Créer une règle ILM"] etlink:creating-ilm-policy.html["Créer une politique ILM"] .
+
+
+
+== Une ou plusieurs politiques ILM actives ?
+
+Vous pouvez avoir une ou plusieurs politiques ILM actives à la fois.
+
+
+
+=== Une politique
+
+Si votre grille utilise un schéma de protection des données simple avec quelques règles spécifiques au locataire et au bucket, utilisez une seule politique ILM active.  Les règles ILM peuvent contenir des filtres pour gérer différents buckets ou locataires.
+
+image::../media/ilm-policies-single.png[Diagramme des politiques ILM uniques]
+
+Lorsque vous n'avez qu'une seule politique et que les exigences d'un locataire changent, vous devez créer une nouvelle politique ILM ou cloner la politique existante pour appliquer les modifications, simuler, puis activer la nouvelle politique ILM.  Les modifications apportées à la politique ILM peuvent entraîner des déplacements d’objets qui peuvent prendre plusieurs jours et provoquer une latence du système.
+
+
+
+=== Politiques multiples
+
+Pour offrir différentes options de qualité de service aux locataires, vous pouvez avoir plusieurs politiques actives à la fois.  Chaque politique peut gérer des locataires, des compartiments S3 et des objets spécifiques.  Lorsque vous appliquez ou modifiez une stratégie pour un ensemble spécifique de locataires ou d’objets, les stratégies appliquées aux autres locataires et objets ne sont pas affectées.
+
+Balises de politique ILM:: Si vous souhaitez permettre aux locataires de basculer facilement entre plusieurs politiques de protection des données pour chaque compartiment, utilisez plusieurs politiques ILM avec des _balises de politique ILM_.  Vous attribuez chaque stratégie ILM à une balise, puis les locataires balisent un bucket pour appliquer la stratégie à ce bucket.  Vous pouvez définir des balises de stratégie ILM uniquement sur les compartiments S3.
++
+--
+Par exemple, vous pouvez avoir trois balises nommées Or, Argent et Bronze.  Vous pouvez attribuer une politique ILM à chaque balise, en fonction de la durée et de l'endroit où cette politique stocke les objets.  Les locataires peuvent choisir la politique à utiliser en étiquetant leurs seaux.  Un bucket étiqueté Gold est géré par la politique Gold et reçoit le niveau Gold de protection des données et de performance.
+
+--
+Balise de politique ILM par défaut:: Une balise de stratégie ILM par défaut est automatiquement créée lorsque vous installez StorageGRID.  Chaque grille doit avoir une politique active attribuée à la balise par défaut.  La politique par défaut s’applique à tous les buckets S3 non balisés.
+
+
+image::../media/ilm-policies-tags-conceptual.png[Diagramme de politiques ILM multiples]
+
+
+
+== Comment une politique ILM évalue-t-elle les objets ?
+
+Une politique ILM active contrôle le placement, la durée et la protection des données des objets.
+
+Lorsque les clients enregistrent des objets dans StorageGRID, les objets sont évalués par rapport à l'ensemble ordonné de règles ILM dans la politique, comme suit :
+
+. Si les filtres de la première règle de la politique correspondent à un objet, l'objet est ingéré selon le comportement d'ingestion de cette règle et stocké selon les instructions de placement de cette règle.
+. Si les filtres de la première règle ne correspondent pas à l'objet, l'objet est évalué par rapport à chaque règle suivante de la politique jusqu'à ce qu'une correspondance soit établie.
+. Si aucune règle ne correspond à un objet, le comportement d'ingestion et les instructions de placement de la règle par défaut dans la politique sont appliqués.  La règle par défaut est la dernière règle d’une politique.  La règle par défaut doit s'appliquer à tous les locataires, à tous les buckets S3 et à toutes les versions d'objet, et ne peut utiliser aucun filtre avancé.
+
+
+
+
+== Exemple de politique ILM
+
+À titre d’exemple, une politique ILM pourrait contenir trois règles ILM qui spécifient les éléments suivants :
+
+* *Règle 1 : Copies dupliquées pour le locataire A*
++
+** Faites correspondre tous les objets appartenant au locataire A.
+** Stockez ces objets sous forme de trois copies répliquées sur trois sites.
+** Les objets appartenant à d'autres locataires ne correspondent pas à la règle 1, ils sont donc évalués par rapport à la règle 2.
+
+
+* *Règle 2 : Codage d'effacement pour les objets supérieurs à 1 Mo*
++
+** Faites correspondre tous les objets des autres locataires, mais uniquement s'ils sont supérieurs à 1 Mo.  Ces objets plus grands sont stockés à l’aide du codage d’effacement 6+3 sur trois sites.
+** Ne correspond pas aux objets de 1 Mo ou moins, ces objets sont donc évalués par rapport à la règle 3.
+
+
+* *Règle 3 : 2 copies 2 centres de données* (par défaut)
++
+** Il s’agit de la dernière règle par défaut de la politique.  N'utilise pas de filtres.
+** Créez deux copies répliquées de tous les objets ne correspondant pas à la règle 1 ou à la règle 2 (objets n'appartenant pas au locataire A et dont la taille est de 1 Mo ou moins).
+
+
+
+
+image::../media/ilm_policy_and_rules.png[Politique et règles de l'ILM]
+
+
+
+== Quelles sont les politiques actives et inactives ?
+
+Chaque système StorageGRID doit avoir au moins une politique ILM active.  Si vous souhaitez avoir plusieurs stratégies ILM actives, créez des balises de stratégie ILM et attribuez une stratégie à chaque balise.  Les locataires appliquent ensuite des balises aux compartiments S3.  La politique par défaut est appliquée à tous les objets des compartiments auxquels aucune balise de politique n'est attribuée.
+
+Lorsque vous créez une stratégie ILM pour la première fois, vous sélectionnez une ou plusieurs règles ILM et les organisez dans un ordre spécifique.  Après avoir simulé la politique pour confirmer son comportement, vous l'activez.
+
+Lorsque vous activez une stratégie ILM, StorageGRID utilise cette stratégie pour gérer tous les objets, y compris les objets existants et les objets nouvellement ingérés.  Les objets existants peuvent être déplacés vers de nouveaux emplacements lorsque les règles ILM de la nouvelle politique sont implémentées.
+
+Si vous activez plusieurs stratégies ILM à la fois et que les locataires appliquent des balises de stratégie aux compartiments S3, les objets de chaque compartiment sont gérés en fonction de la stratégie attribuée à la balise.
+
+Un système StorageGRID suit l’historique des politiques qui ont été activées ou désactivées.
+
+
+
+== Considérations pour la création d'une politique ILM
+
+* Utilisez uniquement la politique fournie par le système, la politique de base 2 copies, dans les systèmes de test.  Pour StorageGRID 11.6 et les versions antérieures, la règle Créer 2 copies de cette stratégie utilise le pool de stockage Tous les nœuds de stockage, qui contient tous les sites.  Si votre système StorageGRID possède plusieurs sites, deux copies d'un objet peuvent être placées sur le même site.
++
+
+NOTE: Le pool de stockage Tous les nœuds de stockage est automatiquement créé lors de l'installation de StorageGRID 11.6 et versions antérieures.  Si vous effectuez une mise à niveau vers une version ultérieure de StorageGRID, le pool Tous les nœuds de stockage existera toujours.  Si vous installez StorageGRID 11.7 ou une version ultérieure en tant que nouvelle installation, le pool Tous les nœuds de stockage n'est pas créé.
+
+* Lors de la conception d’une nouvelle politique, tenez compte de tous les différents types d’objets susceptibles d’être ingérés dans votre grille.  Assurez-vous que la politique inclut des règles pour faire correspondre et placer ces objets comme requis.
+* Gardez la politique ILM aussi simple que possible.  Cela évite les situations potentiellement dangereuses dans lesquelles les données d'objet ne sont pas protégées comme prévu lorsque des modifications sont apportées au système StorageGRID au fil du temps.
+* Assurez-vous que les règles de la politique sont dans le bon ordre.  Lorsque la politique est activée, les objets nouveaux et existants sont évalués par les règles dans l'ordre répertorié, en commençant par le haut.  Par exemple, si la première règle d’une politique correspond à un objet, cet objet ne sera évalué par aucune autre règle.
+* La dernière règle de chaque politique ILM est la règle ILM par défaut, qui ne peut utiliser aucun filtre.  Si un objet n'a pas été mis en correspondance avec une autre règle, la règle par défaut contrôle où cet objet est placé et pendant combien de temps il est conservé.
+* Avant d’activer une nouvelle politique, examinez toutes les modifications que la politique apporte au placement des objets existants.  La modification de l'emplacement d'un objet existant peut entraîner des problèmes de ressources temporaires lorsque les nouveaux emplacements sont évalués et mis en œuvre.
+

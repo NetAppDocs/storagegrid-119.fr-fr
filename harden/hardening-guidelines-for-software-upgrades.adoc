@@ -1,0 +1,51 @@
+---
+permalink: harden/hardening-guidelines-for-software-upgrades.html 
+sidebar: sidebar 
+keywords: Hardening guidelines, upgrades 
+summary: Vous devez maintenir votre système StorageGRID et les services associés à jour pour vous défendre contre les attaques. 
+---
+= Directives de renforcement pour les mises à niveau logicielles
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez maintenir votre système StorageGRID et les services associés à jour pour vous défendre contre les attaques.
+
+
+
+== Mises à niveau du logiciel StorageGRID
+
+Dans la mesure du possible, vous devez mettre à niveau le logiciel StorageGRID vers la version majeure la plus récente ou vers la version majeure précédente.  Maintenir StorageGRID à jour permet de réduire la durée pendant laquelle les vulnérabilités connues sont actives et réduit la surface d'attaque globale.  De plus, les versions les plus récentes de StorageGRID contiennent souvent des fonctionnalités de renforcement de la sécurité qui ne sont pas incluses dans les versions précédentes.
+
+Consultez le https://imt.netapp.com/matrix/#welcome["Outil de matrice d'interopérabilité NetApp"^] (IMT) pour déterminer quelle version du logiciel StorageGRID vous devez utiliser.  Lorsqu'un correctif est requis, NetApp donne la priorité à la création de mises à jour pour les versions les plus récentes.  Certains correctifs peuvent ne pas être compatibles avec les versions antérieures.
+
+* Pour télécharger les versions et correctifs les plus récents de StorageGRID , accédez à https://mysupport.netapp.com/site/products/all/details/storagegrid/downloads-tab["Téléchargements NetApp : StorageGRID"^] .
+* Pour mettre à niveau le logiciel StorageGRID , consultez lelink:../upgrade/performing-upgrade.html["instructions de mise à niveau"] .
+* Pour appliquer un correctif, consultez lelink:../maintain/storagegrid-hotfix-procedure.html["Procédure de correctif logiciel StorageGRID"] .
+
+
+
+
+== Mises à niveau des services externes
+
+Les services externes peuvent présenter des vulnérabilités qui affectent StorageGRID indirectement. Vous devez vous assurer que les services dont dépend StorageGRID sont maintenus à jour. Ces services incluent LDAP, KMS (ou serveur KMIP), DNS et NTP.
+
+Pour une liste des versions prises en charge, consultez le https://imt.netapp.com/matrix/#welcome["Outil de matrice d'interopérabilité NetApp"^] .
+
+
+
+== Mises à niveau des hyperviseurs
+
+Si vos nœuds StorageGRID s'exécutent sur VMware ou un autre hyperviseur, vous devez vous assurer que le logiciel et le micrologiciel de l'hyperviseur sont à jour.
+
+Pour une liste des versions prises en charge, consultez le https://imt.netapp.com/matrix/#welcome["Outil de matrice d'interopérabilité NetApp"^] .
+
+
+
+== *Mises à niveau vers les nœuds Linux*
+
+Si vos nœuds StorageGRID utilisent des plates-formes hôtes Linux, vous devez vous assurer que les mises à jour de sécurité et les mises à jour du noyau sont appliquées au système d'exploitation hôte.  De plus, vous devez appliquer les mises à jour du micrologiciel au matériel vulnérable lorsque ces mises à jour sont disponibles.
+
+Pour une liste des versions prises en charge, consultez le https://imt.netapp.com/matrix/#welcome["Outil de matrice d'interopérabilité NetApp"^] .

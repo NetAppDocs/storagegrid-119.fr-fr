@@ -1,0 +1,112 @@
+---
+permalink: monitor/types-of-text-reports.html 
+sidebar: sidebar 
+keywords: how to use text reports 
+summary: 'Les rapports textuels affichent une représentation textuelle des valeurs de données d"attribut qui ont été traitées par le service NMS.  Il existe deux types de rapports générés en fonction de la période sur laquelle vous effectuez le rapport : les rapports de texte brut pour les périodes inférieures à une semaine et les rapports de texte agrégé pour les périodes supérieures à une semaine.' 
+---
+= Utiliser des rapports textuels
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les rapports textuels affichent une représentation textuelle des valeurs de données d'attribut qui ont été traitées par le service NMS.  Il existe deux types de rapports générés en fonction de la période sur laquelle vous effectuez le rapport : les rapports de texte brut pour les périodes inférieures à une semaine et les rapports de texte agrégé pour les périodes supérieures à une semaine.
+
+
+
+== Rapports de texte brut
+
+Un rapport de texte brut affiche des détails sur l'attribut sélectionné :
+
+* Heure de réception : date et heure locales auxquelles une valeur d'échantillon des données d'un attribut a été traitée par le service NMS.
+* Heure d'échantillonnage : date et heure locales auxquelles une valeur d'attribut a été échantillonnée ou modifiée à la source.
+* Valeur : valeur de l’attribut au moment de l’échantillonnage.
+
+
+image::../media/raw_text_report.gif[capture d'écran montrant un rapport de texte brut]
+
+
+
+== Rapports de texte agrégés
+
+Un rapport de texte agrégé affiche des données sur une période plus longue (généralement une semaine) qu'un rapport de texte brut.  Chaque entrée est le résultat de la synthèse de plusieurs valeurs d'attribut (un agrégat de valeurs d'attribut) par le service NMS au fil du temps dans une seule entrée avec des valeurs moyennes, maximales et minimales dérivées de l'agrégation.
+
+Chaque entrée affiche les informations suivantes :
+
+* Heure d'agrégation : dernière date et heure locales auxquelles le service NMS a agrégé (collecté) un ensemble de valeurs d'attribut modifiées.
+* Valeur moyenne : la moyenne de la valeur de l'attribut sur la période agrégée.
+* Valeur minimale : la valeur minimale sur la période agrégée.
+* Valeur maximale : la valeur maximale sur la période agrégée.
+
+
+image::../media/aggregate_text_report.gif[capture d'écran montrant le rapport de texte agrégé]
+
+
+
+== Générer des rapports textuels
+
+Les rapports textuels affichent une représentation textuelle des valeurs de données d'attribut qui ont été traitées par le service NMS.  Vous pouvez générer un rapport sur un site de centre de données, un nœud de grille, un composant ou un service.
+
+.Avant de commencer
+* Vous devez être connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+
+
+.À propos de cette tâche
+Pour les données d'attribut qui sont censées changer en permanence, ces données d'attribut sont échantillonnées par le service NMS (à la source) à intervalles réguliers.  Pour les données d'attribut qui changent rarement (par exemple, les données basées sur des événements tels que des changements d'état ou de statut), une valeur d'attribut est envoyée au service NMS lorsque la valeur change.
+
+Le type de rapport affiché dépend de la période configurée.  Par défaut, les rapports de texte agrégés sont générés pour des périodes supérieures à une semaine.
+
+Le texte gris indique que le service était administrativement hors service pendant la période d'échantillonnage.  Le texte bleu indique que le service était dans un état inconnu.
+
+.Étapes
+. Sélectionnez *SUPPORT* > *Outils* > *Topologie de grille*.
+. Sélectionnez *_nœud de grille_* > *_composant ou service_* > *Rapports* > *Texte*.
+. Sélectionnez l'attribut sur lequel générer le rapport dans la liste déroulante *Attribut*.
+. Sélectionnez le nombre de résultats par page dans la liste déroulante *Résultats par page*.
+. Pour arrondir les valeurs à un maximum de trois décimales (par exemple, pour les attributs indiqués sous forme de pourcentages), décochez la case *Données brutes*.
+. Sélectionnez la période sur laquelle porter le rapport dans la liste déroulante *Requête rapide*.
++
+Sélectionnez l’option Requête personnalisée pour sélectionner une plage horaire spécifique.
+
++
+Le rapport apparaît après quelques instants.  Prévoyez quelques minutes pour la tabulation des plages de temps longues.
+
+. Si vous avez sélectionné Requête personnalisée, vous devez personnaliser la période sur laquelle porter le rapport en saisissant la *Date de début* et la *Date de fin*.
++
+Utiliser le format `YYYY/MM/DDHH:MM:SS` en heure locale.  Des zéros non significatifs sont requis pour correspondre au format.  Par exemple, 2017/4/6 7:30:00 échoue à la validation.  Le format correct est : 2017/04/06 07:30:00.
+
+. Cliquez sur *Mettre à jour*.
++
+Un rapport texte est généré après quelques instants.  Prévoyez quelques minutes pour la tabulation des plages de temps longues.  En fonction de la durée définie pour la requête, un rapport de texte brut ou un rapport de texte agrégé s'affiche.
+
+
+
+
+
+== Exporter des rapports de texte
+
+Les rapports de texte exportés ouvrent un nouvel onglet de navigateur, qui vous permet de sélectionner et de copier les données.
+
+.À propos de cette tâche
+Les données copiées peuvent ensuite être enregistrées dans un nouveau document (par exemple, une feuille de calcul) et utilisées pour analyser les performances du système StorageGRID .
+
+.Étapes
+. Sélectionnez *SUPPORT* > *Outils* > *Topologie de grille*.
+. Créer un rapport texte.
+. Cliquez sur *Exporter*image:../media/icon_export.gif["icône d'exportation"] .
++
+image::../media/export_text_report.gif[capture d'écran décrite par le texte environnant]
+
++
+La fenêtre Rapport d'exportation de texte s'ouvre et affiche le rapport.
+
++
+image::../media/export_text_report_data.gif[capture d'écran montrant un exemple de rapport de texte]
+
+. Sélectionnez et copiez le contenu de la fenêtre Rapport de texte d’exportation.
++
+Ces données peuvent désormais être collées dans un document tiers tel qu’une feuille de calcul.
+
+

@@ -1,0 +1,438 @@
+---
+permalink: monitor/configuring-snmp-agent.html 
+sidebar: sidebar 
+keywords: snmp agent, mib, trap, inform 
+summary: 'Vous pouvez configurer l"agent SNMP StorageGRID pour utiliser un système de gestion SNMP tiers pour l"accès MIB en lecture seule et les notifications.' 
+---
+= Configurer l'agent SNMP
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez configurer l'agent SNMP StorageGRID pour utiliser un système de gestion SNMP tiers pour l'accès MIB en lecture seule et les notifications.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:../admin/admin-group-permissions.html["Autorisation d'accès root"] .
+
+
+.À propos de cette tâche
+L'agent SNMP StorageGRID prend en charge SNMPv1, SNMPv2c et SNMPv3.  Vous pouvez configurer l'agent pour une ou plusieurs versions.  Pour SNMPv3, seule l’authentification du modèle de sécurité utilisateur (USM) est prise en charge.
+
+Tous les nœuds de la grille utilisent la même configuration SNMP.
+
+
+
+== Spécifier la configuration de base
+
+Dans un premier temps, activez l’agent SMNP StorageGRID et fournissez des informations de base.
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Surveillance* > *Agent SNMP*.
++
+La page de l’agent SNMP apparaît.
+
+. Pour activer l'agent SNMP sur tous les nœuds de grille, cochez la case *Activer SNMP*.
+. Saisissez les informations suivantes dans la section Configuration de base.
++
+[cols="1a,2a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Contact système
+ a| 
+Facultatif.  Le contact principal du système StorageGRID , qui est renvoyé dans les messages SNMP sous la forme sysContact.
+
+Le contact système est généralement une adresse e-mail.  Cette valeur s'applique à tous les nœuds du système StorageGRID .  *Contact système* peut contenir jusqu'à 255 caractères.
+
+
+
+ a| 
+Emplacement du système
+ a| 
+Facultatif.  L'emplacement du système StorageGRID , qui est renvoyé dans les messages SNMP sous la forme sysLocation.
+
+L'emplacement du système peut être n'importe quelle information utile pour identifier où se trouve votre système StorageGRID .  Par exemple, vous pouvez utiliser l’adresse postale d’un établissement.  Cette valeur s'applique à tous les nœuds du système StorageGRID .  *Emplacement du système* peut contenir jusqu'à 255 caractères.
+
+
+
+ a| 
+Activer les notifications de l'agent SNMP
+ a| 
+** Si cette option est sélectionnée, l'agent SNMP StorageGRID envoie des notifications d'interruption et d'information.
+** Si cette option n'est pas sélectionnée, l'agent SNMP prend en charge l'accès MIB en lecture seule, mais il n'envoie aucune notification SNMP.
+
+
+
+
+ a| 
+Activer les pièges d'authentification
+ a| 
+Si cette option est sélectionnée, l'agent SNMP StorageGRID envoie des interruptions d'authentification s'il reçoit des messages de protocole mal authentifiés.
+
+|===
+
+
+
+
+== Entrez les chaînes de communauté
+
+Si vous utilisez SNMPv1 ou SNMPv2c, complétez la section Chaînes de communauté.
+
+Lorsque le système de gestion interroge le MIB StorageGRID , il envoie une chaîne de communauté.  Si la chaîne de communauté correspond à l’une des valeurs spécifiées ici, l’agent SNMP envoie une réponse au système de gestion.
+
+.Étapes
+. Pour la *Communauté en lecture seule*, saisissez éventuellement une chaîne de communauté pour autoriser l'accès MIB en lecture seule sur les adresses d'agent IPv4 et IPv6.
++
+
+TIP: Pour garantir la sécurité de votre système StorageGRID , n'utilisez pas « public » comme chaîne de communauté.  Si vous laissez ce champ vide, l'agent SNMP utilise l'ID de grille de votre système StorageGRID comme chaîne de communauté.
+
++
+Chaque chaîne de communauté peut comporter un maximum de 32 caractères et ne peut pas contenir de caractères d'espacement.
+
+. Sélectionnez *Ajouter une autre chaîne de communauté* pour ajouter des chaînes supplémentaires.
++
+Jusqu'à cinq chaînes sont autorisées.
+
+
+
+
+
+== [[select_trap_destination]]Créer des destinations de pièges
+
+Utilisez l’onglet Destinations d’interruption dans la section Autres configurations pour définir une ou plusieurs destinations pour les notifications d’interruption ou d’information StorageGRID .  Lorsque vous activez l'agent SNMP et sélectionnez *Enregistrer*, StorageGRID envoie des notifications à chaque destination définie lorsque des alertes sont déclenchées.  Des notifications standard sont également envoyées pour les entités MIB-II prises en charge (par exemple, ifDown et coldStart).
+
+.Étapes
+. Pour le champ *Communauté d'interruption par défaut*, saisissez éventuellement la chaîne de communauté par défaut que vous souhaitez utiliser pour les destinations d'interruption SNMPv1 ou SNMPv2.
++
+Si nécessaire, vous pouvez fournir une chaîne de communauté différente (« personnalisée ») lorsque vous définissez une destination d'interruption spécifique.
+
++
+*La communauté de pièges par défaut* peut contenir un maximum de 32 caractères et ne peut pas contenir de caractères d'espacement.
+
+. Pour ajouter une destination de piège, sélectionnez *Créer*.
+. Sélectionnez la version SNMP qui sera utilisée pour cette destination de trap.
+. Remplissez le formulaire Créer une destination de piège pour la version que vous avez sélectionnée.
++
+[role="tabbed-block"]
+====
+.SNMPv1
+--
+Si vous avez sélectionné SNMPv1 comme version, remplissez ces champs.
+
+[cols="1a,2a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Type
+ a| 
+Doit être Trap pour SNMPv1.
+
+
+
+ a| 
+Hôte
+ a| 
+Une adresse IPv4 ou IPv6 ou un nom de domaine complet (FQDN) pour recevoir le piège.
+
+
+
+ a| 
+Port
+ a| 
+Utilisez 162, qui est le port standard pour les interruptions SNMP, sauf si vous devez utiliser une autre valeur.
+
+
+
+ a| 
+Protocole
+ a| 
+Utilisez UDP, qui est le protocole de trappe SNMP standard, sauf si vous devez utiliser TCP.
+
+
+
+ a| 
+Chaîne communautaire
+ a| 
+Utilisez la communauté d'interruption par défaut, si elle a été spécifiée, ou entrez une chaîne de communauté personnalisée pour cette destination d'interruption.
+
+La chaîne de communauté personnalisée peut comporter au maximum 32 caractères et ne peut pas contenir d'espaces.
+
+|===
+--
+.SNMPv2c
+--
+Si vous avez sélectionné SNMPv2c comme version, remplissez ces champs.
+
+[cols="1a,2a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Type
+ a| 
+Si la destination sera utilisée pour les pièges ou les informations.
+
+
+
+ a| 
+Hôte
+ a| 
+Une adresse IPv4 ou IPv6 ou FQDN pour recevoir le piège.
+
+
+
+ a| 
+Port
+ a| 
+Utilisez 162, qui est le port standard pour les interruptions SNMP, sauf si vous devez utiliser une autre valeur.
+
+
+
+ a| 
+Protocole
+ a| 
+Utilisez UDP, qui est le protocole de trappe SNMP standard, sauf si vous devez utiliser TCP.
+
+
+
+ a| 
+Chaîne communautaire
+ a| 
+Utilisez la communauté d'interruption par défaut, si elle a été spécifiée, ou entrez une chaîne de communauté personnalisée pour cette destination d'interruption.
+
+La chaîne de communauté personnalisée peut comporter au maximum 32 caractères et ne peut pas contenir d'espaces.
+
+|===
+--
+.SNMPv3
+--
+Si vous avez sélectionné SNMPv3 comme version, remplissez ces champs.
+
+[cols="1a,2a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Type
+ a| 
+Si la destination sera utilisée pour les pièges ou les informations.
+
+
+
+ a| 
+Hôte
+ a| 
+Une adresse IPv4 ou IPv6 ou FQDN pour recevoir le piège.
+
+
+
+ a| 
+Port
+ a| 
+Utilisez 162, qui est le port standard pour les interruptions SNMP, sauf si vous devez utiliser une autre valeur.
+
+
+
+ a| 
+Protocole
+ a| 
+Utilisez UDP, qui est le protocole de trappe SNMP standard, sauf si vous devez utiliser TCP.
+
+
+
+ a| 
+Utilisateur USM
+ a| 
+L'utilisateur USM qui sera utilisé pour l'authentification.
+
+** Si vous avez sélectionné *Trap*, seuls les utilisateurs USM sans identifiant de moteur faisant autorité sont affichés.
+** Si vous avez sélectionné *Informer*, seuls les utilisateurs USM avec des ID de moteur faisant autorité sont affichés.
+** Si aucun utilisateur n'est affiché :
++
+... Créez et enregistrez la destination du piège.
+... Aller à<<create-usm-users,Créer des utilisateurs USM>> et créer l'utilisateur.
+... Revenez à l’onglet Destinations des pièges, sélectionnez la destination enregistrée dans le tableau et sélectionnez *Modifier*.
+... Sélectionnez l'utilisateur.
+
+
+
+
+|===
+--
+====
+. Sélectionnez *Créer*.
++
+La destination du piège est créée et ajoutée à la table.
+
+
+
+
+
+== Créer des adresses d'agent
+
+Vous pouvez également utiliser l'onglet Adresses des agents dans la section Autres configurations pour spécifier une ou plusieurs « adresses d'écoute ».  Il s'agit des adresses StorageGRID sur lesquelles l'agent SNMP peut recevoir des requêtes.
+
+Si vous ne configurez pas d’adresse d’agent, l’adresse d’écoute par défaut est le port UDP 161 sur tous les réseaux StorageGRID .
+
+.Étapes
+. Sélectionnez *Créer*.
+. Saisissez les informations suivantes.
++
+[cols="1a,2a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Protocole Internet
+ a| 
+Si cette adresse utilisera IPv4 ou IPv6.
+
+Par défaut, SNMP utilise IPv4.
+
+
+
+ a| 
+Protocole de transport
+ a| 
+Si cette adresse utilisera UDP ou TCP.
+
+Par défaut, SNMP utilise UDP.
+
+
+
+ a| 
+Réseau StorageGRID
+ a| 
+Sur quel réseau StorageGRID l'agent écoutera.
+
+** Réseaux Grid, Admin et Client : l'agent SNMP écoutera les requêtes sur les trois réseaux.
+** Réseau de grille
+** Réseau d'administration
+** Réseau de clients
++
+*Remarque* : si vous utilisez le réseau client pour des données non sécurisées et que vous créez une adresse d’agent pour le réseau client, sachez que le trafic SNMP sera également non sécurisé.
+
+
+
+
+
+ a| 
+Port
+ a| 
+En option, le numéro de port sur lequel l'agent SNMP doit écouter.
+
+Le port UDP par défaut pour un agent SNMP est 161, mais vous pouvez saisir n'importe quel numéro de port inutilisé.
+
+*Remarque* : lorsque vous enregistrez l’agent SNMP, StorageGRID ouvre automatiquement les ports d’adresse de l’agent sur le pare-feu interne.  Vous devez vous assurer que tous les pare-feu externes autorisent l’accès à ces ports.
+
+|===
+. Sélectionnez *Créer*.
++
+L'adresse de l'agent est créée et ajoutée à la table.
+
+
+
+
+
+== [[create-usm-users]]Créer des utilisateurs USM
+
+Si vous utilisez SNMPv3, utilisez l'onglet Utilisateurs USM dans la section Autres configurations pour définir les utilisateurs USM autorisés à interroger la MIB ou à recevoir des interruptions et des informations.
+
+
+NOTE: Les destinations SNMPv3 _inform_ doivent avoir des utilisateurs avec des ID de moteur.  La destination SNMPv3 _trap_ ne peut pas avoir d'utilisateurs avec des ID de moteur.
+
+Ces étapes ne s’appliquent pas si vous utilisez uniquement SNMPv1 ou SNMPv2c.
+
+.Étapes
+. Sélectionnez *Créer*.
+. Saisissez les informations suivantes.
++
+[cols="1a,2a"]
+|===
+| Champ | Description 
+
+
+ a| 
+Nom d'utilisateur
+ a| 
+Un nom unique pour cet utilisateur USM.
+
+Les noms d'utilisateur peuvent comporter un maximum de 32 caractères et ne peuvent pas contenir de caractères d'espacement.  Le nom d'utilisateur ne peut pas être modifié une fois l'utilisateur créé.
+
+
+
+ a| 
+Accès MIB en lecture seule
+ a| 
+Si cette option est sélectionnée, cet utilisateur doit avoir un accès en lecture seule au MIB.
+
+
+
+ a| 
+ID moteur faisant autorité
+ a| 
+Si cet utilisateur doit être utilisé dans une destination d'information, l'ID du moteur faisant autorité pour cet utilisateur.
+
+Saisissez 10 à 64 caractères hexadécimaux (5 à 32 octets) sans espaces.  Cette valeur est requise pour les utilisateurs USM qui seront sélectionnés dans les destinations d'interruption pour les informations.  Cette valeur n'est pas autorisée pour les utilisateurs USM qui seront sélectionnés dans les destinations d'interruption pour les interruptions.
+
+*Remarque* : ce champ n'est pas affiché si vous avez sélectionné *Accès MIB en lecture seule* car les utilisateurs USM qui ont un accès MIB en lecture seule ne peuvent pas avoir d'ID de moteur.
+
+
+
+ a| 
+Niveau de sécurité
+ a| 
+Le niveau de sécurité pour l'utilisateur USM :
+
+** *authPriv* : Cet utilisateur communique avec authentification et confidentialité (cryptage).  Vous devez spécifier un protocole d’authentification et un mot de passe ainsi qu’un protocole de confidentialité et un mot de passe.
+** *authNoPriv* : Cet utilisateur communique avec authentification et sans confidentialité (pas de cryptage).  Vous devez spécifier un protocole d'authentification et un mot de passe.
+
+
+
+
+ a| 
+Protocole d'authentification
+ a| 
+Toujours défini sur SHA, qui est le seul protocole pris en charge (HMAC-SHA-96).
+
+
+
+ a| 
+Mot de passe
+ a| 
+Le mot de passe que cet utilisateur utilisera pour l'authentification.
+
+
+
+ a| 
+Protocole de confidentialité
+ a| 
+Affiché uniquement si vous avez sélectionné *authPriv* et toujours défini sur AES, qui est le seul protocole de confidentialité pris en charge.
+
+
+
+ a| 
+Mot de passe
+ a| 
+Affiché uniquement si vous avez sélectionné *authPriv*.  Le mot de passe que cet utilisateur utilisera pour la confidentialité.
+
+|===
+. Sélectionnez *Créer*.
++
+L'utilisateur USM est créé et ajouté à la table.
+
+. Une fois la configuration de l'agent SNMP terminée, sélectionnez *Enregistrer*.
++
+La nouvelle configuration de l'agent SNMP devient active.
+
+

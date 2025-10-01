@@ -1,0 +1,50 @@
+---
+permalink: vmware/cpu-and-ram-requirements.html 
+sidebar: sidebar 
+keywords: cpu, ram, cpu cores 
+summary: 'Avant d"installer le logiciel StorageGRID , vérifiez et configurez le matériel afin qu"il soit prêt à prendre en charge le système StorageGRID .' 
+---
+= Exigences CPU et RAM
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avant d'installer le logiciel StorageGRID , vérifiez et configurez le matériel afin qu'il soit prêt à prendre en charge le système StorageGRID .
+
+Chaque nœud StorageGRID nécessite les ressources minimales suivantes :
+
+* Cœurs de processeur : 8 par nœud
+* RAM : dépend de la RAM totale disponible et de la quantité de logiciels non StorageGRID exécutés sur le système
++
+** Généralement, au moins 24 Go par nœud et 2 à 16 Go de moins que la RAM totale du système
+** Un minimum de 64 Go pour chaque locataire qui aura environ 5 000 buckets
+
+
+
+
+Les ressources de nœuds basées uniquement sur des métadonnées logicielles doivent correspondre aux ressources de nœuds de stockage existantes. Par exemple:
+
+* Si le site StorageGRID existant utilise des appliances SG6000 ou SG6100, les nœuds de métadonnées uniquement basés sur des logiciels doivent répondre aux exigences minimales suivantes :
++
+** 128 Go de RAM
+** processeur à 8 cœurs
+** SSD de 8 To ou stockage équivalent pour la base de données Cassandra (rangedb/0)
+
+
+* Si le site StorageGRID existant utilise des nœuds de stockage virtuels avec 24 Go de RAM, un processeur à 8 cœurs et 3 To ou 4 To de stockage de métadonnées, les nœuds de métadonnées uniquement basés sur un logiciel doivent utiliser des ressources similaires (24 Go de RAM, un processeur à 8 cœurs et 4 To de stockage de métadonnées (rangedb/0).
+
+
+Lors de l'ajout d'un nouveau site StorageGRID , la capacité totale des métadonnées du nouveau site doit, au minimum, correspondre aux sites StorageGRID existants et les nouvelles ressources du site doivent correspondre aux nœuds de stockage des sites StorageGRID existants.
+
+VMware prend en charge un nœud par machine virtuelle.  Assurez-vous que le nœud StorageGRID ne dépasse pas la RAM physique disponible.  Chaque machine virtuelle doit être dédiée à l’exécution de StorageGRID.
+
+
+CAUTION: Surveillez régulièrement l’utilisation de votre processeur et de votre mémoire pour vous assurer que ces ressources continuent de répondre à votre charge de travail.  Par exemple, doubler l’allocation de RAM et de CPU pour les nœuds de stockage virtuels fournirait des ressources similaires à celles fournies pour les nœuds d’appliance StorageGRID .  De plus, si la quantité de métadonnées par nœud dépasse 500 Go, envisagez d’augmenter la RAM par nœud à 48 Go ou plus.  Pour plus d'informations sur la gestion du stockage des métadonnées d'objet, l'augmentation du paramètre Espace réservé aux métadonnées et la surveillance de l'utilisation du processeur et de la mémoire, consultez les instructions delink:../admin/index.html["administrer"] ,link:../monitor/index.html["surveillance"] , etlink:../upgrade/index.html["mise à niveau"] StorageGRID.
+
+Si l'hyperthreading est activé sur les hôtes physiques sous-jacents, vous pouvez fournir 8 cœurs virtuels (4 cœurs physiques) par nœud.  Si l'hyperthreading n'est pas activé sur les hôtes physiques sous-jacents, vous devez fournir 8 cœurs physiques par nœud.
+
+Si vous utilisez des machines virtuelles comme hôtes et que vous contrôlez la taille et le nombre de machines virtuelles, vous devez utiliser une seule machine virtuelle pour chaque nœud StorageGRID et dimensionner la machine virtuelle en conséquence.
+
+Voir aussi link:storage-and-performance-requirements.html["Exigences de stockage et de performances"] .

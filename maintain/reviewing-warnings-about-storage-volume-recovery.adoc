@@ -1,0 +1,39 @@
+---
+permalink: maintain/reviewing-warnings-about-storage-volume-recovery.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, volume warning 
+summary: Avant de récupérer des volumes de stockage défaillants pour un nœud de stockage, vous devez consulter les avertissements suivants. 
+---
+= Avertissements concernant la récupération du volume de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avant de récupérer des volumes de stockage défaillants pour un nœud de stockage, consultez les avertissements suivants.
+
+Les volumes de stockage (ou rangedbs) d'un nœud de stockage sont identifiés par un nombre hexadécimal, appelé ID de volume.  Par exemple, 0000 est le premier volume et 000F est le seizième volume.  Le premier magasin d'objets (volume 0) sur chaque nœud de stockage utilise jusqu'à 4 To d'espace pour les métadonnées d'objet et les opérations de base de données Cassandra ; tout espace restant sur ce volume est utilisé pour les données d'objet.  Tous les autres volumes de stockage sont utilisés exclusivement pour les données d’objet.
+
+Si le volume 0 échoue et doit être récupéré, la base de données Cassandra peut être reconstruite dans le cadre de la procédure de récupération du volume.  Cassandra pourrait également être reconstruite dans les circonstances suivantes :
+
+* Un nœud de stockage est remis en ligne après avoir été hors ligne pendant plus de 15 jours.
+* Le lecteur système et un ou plusieurs volumes de stockage tombent en panne et sont récupérés.
+
+
+Lorsque Cassandra est reconstruit, le système utilise les informations provenant d’autres nœuds de stockage. Si trop de nœuds de stockage sont hors ligne, certaines données Cassandra peuvent ne pas être disponibles. Si Cassandra a été reconstruit récemment, les données Cassandra peuvent ne pas encore être cohérentes sur l'ensemble de la grille.  Une perte de données peut se produire si Cassandra est reconstruit alors que trop de nœuds de stockage sont hors ligne ou si deux nœuds de stockage ou plus sont reconstruits à 15 jours d'intervalle.
+
+
+CAUTION: Si plusieurs nœuds de stockage sont en panne (ou sont hors ligne), contactez le support technique. N'effectuez pas la procédure de récupération suivante. Une perte de données pourrait survenir.
+
+
+CAUTION: S'il s'agit de la deuxième panne d'un nœud de stockage en moins de 15 jours après une panne ou une récupération d'un nœud de stockage, contactez le support technique.  La reconstruction de Cassandra sur deux nœuds de stockage ou plus dans un délai de 15 jours peut entraîner une perte de données.
+
+
+NOTE: Si plusieurs nœuds de stockage d'un site sont défaillants, une procédure de récupération de site peut être nécessaire. Voir link:how-site-recovery-is-performed-by-technical-support.html["Comment le support technique récupère un site"] .
+
+
+CAUTION: Si les règles ILM sont configurées pour stocker une seule copie répliquée et que la copie existe sur un volume de stockage défaillant, vous ne pourrez pas récupérer l'objet.
+
+.Informations connexes
+link:warnings-and-considerations-for-grid-node-recovery.html["Avertissements et considérations pour la récupération des nœuds de grille"]

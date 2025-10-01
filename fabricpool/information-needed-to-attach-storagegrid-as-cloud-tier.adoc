@@ -1,0 +1,97 @@
+---
+permalink: fabricpool/information-needed-to-attach-storagegrid-as-cloud-tier.html 
+sidebar: sidebar 
+keywords: StorageGRID, fabricPool, ONTAP System Manager, ONTAP CLI, port, FQDN, object store name 
+summary: Avant de pouvoir attacher StorageGRID en tant que niveau cloud pour FabricPool, vous devez effectuer des étapes de configuration dans StorageGRID et obtenir certaines valeurs. 
+---
+= Informations nécessaires pour attacher StorageGRID en tant que niveau cloud
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avant de pouvoir attacher StorageGRID en tant que niveau cloud pour FabricPool, vous devez effectuer des étapes de configuration dans StorageGRID et obtenir certaines valeurs à utiliser dans ONTAP.
+
+
+
+== De quelles valeurs ai-je besoin ?
+
+Le tableau suivant indique les valeurs que vous devez configurer dans StorageGRID et comment ces valeurs sont utilisées par ONTAP et le serveur DNS.
+
+[cols="1a,1a,1a"]
+|===
+| Valeur | Où la valeur est configurée | Où la valeur est utilisée 
+
+
+ a| 
+Adresses IP virtuelles (VIP)
+ a| 
+StorageGRID > Groupe HA
+ a| 
+Entrée DNS
+
+
+
+ a| 
+Port
+ a| 
+StorageGRID > Point de terminaison de l'équilibreur de charge
+ a| 
+Gestionnaire système ONTAP > Ajouter un niveau de cloud
+
+
+
+ a| 
+Certificat SSL
+ a| 
+StorageGRID > Point de terminaison de l'équilibreur de charge
+ a| 
+Gestionnaire système ONTAP > Ajouter un niveau de cloud
+
+
+
+ a| 
+Nom du serveur (FQDN)
+ a| 
+StorageGRID > Point de terminaison de l'équilibreur de charge
+ a| 
+Entrée DNS
+
+
+
+ a| 
+ID de clé d'accès et clé d'accès secrète
+ a| 
+StorageGRID > Locataire et bucket
+ a| 
+Gestionnaire système ONTAP > Ajouter un niveau de cloud
+
+
+
+ a| 
+Nom du seau/conteneur
+ a| 
+StorageGRID > Locataire et bucket
+ a| 
+Gestionnaire système ONTAP > Ajouter un niveau de cloud
+
+|===
+
+
+== Comment puis-je obtenir ces valeurs ?
+
+Selon vos besoins, vous pouvez procéder de l’une des manières suivantes pour obtenir les informations dont vous avez besoin :
+
+* Utilisez lelink:use-fabricpool-setup-wizard.html["Assistant de configuration de FabricPool"] .  L'assistant de configuration FabricPool vous aide à configurer rapidement les valeurs requises dans StorageGRID et génère un fichier que vous pouvez utiliser pour configurer ONTAP System Manager.  L'assistant vous guide à travers les étapes requises et vous aide à garantir que vos paramètres sont conformes aux meilleures pratiques de StorageGRID et FabricPool .
+* Configurez chaque élément manuellement.  Ensuite, saisissez les valeurs dans ONTAP System Manager ou dans l’ ONTAP CLI. Suivez ces étapes :
++
+.. link:creating-ha-group-for-fabricpool.html["Configurer un groupe de haute disponibilité (HA) pour FabricPool"] .
+.. link:creating-load-balancer-endpoint-for-fabricpool.html["Créer un point de terminaison d'équilibrage de charge pour FabricPool"] .
+.. link:creating-tenant-account-for-fabricpool.html["Créer un compte locataire pour FabricPool"] .
+.. Sign in au compte locataire etlink:creating-s3-bucket-and-access-key.html["créer le bucket et les clés d'accès pour l'utilisateur root"] .
+.. Créez une règle ILM pour les données FabricPool et ajoutez-la à vos stratégies ILM actives. Voir link:using-storagegrid-ilm-with-fabricpool-data.html["Configurer ILM pour les données FabricPool"] .
+.. En option,link:creating-traffic-classification-policy-for-fabricpool.html["créer une politique de classification du trafic pour FabricPool"] .
+
+
+

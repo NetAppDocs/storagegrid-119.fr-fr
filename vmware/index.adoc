@@ -1,0 +1,49 @@
+---
+permalink: vmware/index.html 
+sidebar: sidebar 
+keywords: vmware 
+summary: Suivez ces étapes de haut niveau pour installer un nœud VMware StorageGRID . 
+---
+= Démarrage rapide pour l'installation de StorageGRID sur VMware
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Suivez ces étapes de haut niveau pour installer un nœud VMware StorageGRID .
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["Un"]Préparation
+[role="quick-margin-list"]
+* En savoir plus surlink:../primer/storagegrid-architecture-and-network-topology.html["Architecture et topologie du réseau StorageGRID"] .
+* Renseignez-vous sur les spécificités delink:../network/index.html["Réseau StorageGRID"] .
+* Rassemblez et préparez leslink:required-materials.html["Informations et matériel requis"] .
+* Installer et configurerlink:software-requirements.html["Hyperviseur VMware vSphere, vCenter et les hôtes ESX"] .
+* Préparez le nécessairelink:cpu-and-ram-requirements.html["CPU et RAM"] .
+* Prévoirlink:storage-and-performance-requirements.html["exigences de stockage et de performances"] .
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-2.png["Deux"]Déploiement
+[role="quick-margin-para"]
+Déployer des nœuds de grille.  Lorsque vous déployez des nœuds de grille, ils sont créés dans le cadre du système StorageGRID et connectés à un ou plusieurs réseaux.
+
+[role="quick-margin-list"]
+* Utilisez le client Web VMware vSphere, un fichier .vmdk et un ensemble de modèles de fichiers .ovf pourlink:collecting-information-about-your-deployment-environment.html["déployer les nœuds logiciels en tant que machines virtuelles (VM)"] sur les serveurs que vous avez préparés à l'étape 1.
+* Pour déployer les nœuds d'appliance StorageGRID , suivez les instructions https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/index.html["Démarrage rapide pour l'installation du matériel"^] .
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["Trois"]Configuration
+[role="quick-margin-para"]
+Lorsque tous les nœuds ont été déployés, utilisez le gestionnaire de grille pourlink:navigating-to-grid-manager.html["configurer la grille et terminer l'installation"] .
+
+
+
+== Automatiser l'installation
+
+Pour gagner du temps et assurer la cohérence, vous pouvez automatiser le déploiement et la configuration des nœuds de grille ainsi que la configuration du système StorageGRID .
+
+* link:automating-grid-node-deployment-in-vmware-vsphere.html#automate-grid-node-deployment["Automatiser le déploiement des nœuds de grille à l'aide de VMware vSphere"] .
+* Après avoir déployé les nœuds de grille,link:automating-grid-node-deployment-in-vmware-vsphere.html#automate-the-configuration-of-storagegrid["automatiser la configuration du système StorageGRID"] en utilisant le script de configuration Python fourni dans l'archive d'installation.
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/automating-appliance-installation-and-configuration.html["Automatiser l'installation et la configuration des nœuds de réseau d'appareils"^]
+* Si vous êtes un développeur avancé de déploiements StorageGRID , automatisez l'installation des nœuds de grille en utilisant lelink:overview-of-installation-rest-api.html["installation de l'API REST"] .
+

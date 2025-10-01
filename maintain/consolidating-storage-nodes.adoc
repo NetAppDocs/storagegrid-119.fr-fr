@@ -1,0 +1,23 @@
+---
+permalink: maintain/consolidating-storage-nodes.html 
+sidebar: sidebar 
+keywords: storagegrid, storage node, consolidate storage node, consolidating storage node 
+summary: Vous pouvez consolider les nœuds de stockage pour réduire le nombre de nœuds de stockage pour un site ou un déploiement tout en augmentant la capacité de stockage. 
+---
+= Consolider les nœuds de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez consolider les nœuds de stockage pour réduire le nombre de nœuds de stockage pour un site ou un déploiement tout en augmentant la capacité de stockage.
+
+Lorsque vous consolidez les nœuds de stockage, vouslink:../expand/index.html["étendre le système StorageGRID"] en ajoutant de nouveaux nœuds de stockage de plus grande capacité, puis en mettant hors service les anciens nœuds de stockage de plus petite capacité.  Au cours de la procédure de mise hors service, les objets sont migrés des anciens nœuds de stockage vers les nouveaux nœuds de stockage.
+
+
+NOTE: Si vous regroupez des appareils plus anciens et plus petits avec de nouveaux modèles ou des appareils de plus grande capacité, pensez à https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/how-appliance-node-cloning-works.html["clonage du nœud de l'appareil"^] (ou utilisez le clonage de nœud d'appareil et la procédure de mise hors service si vous n'effectuez pas de remplacement un à un).
+
+Par exemple, vous pouvez ajouter deux nouveaux nœuds de stockage de plus grande capacité pour remplacer trois nœuds de stockage plus anciens.  Vous devez d’abord utiliser la procédure d’extension pour ajouter les deux nouveaux nœuds de stockage plus grands, puis utiliser la procédure de mise hors service pour supprimer les trois anciens nœuds de stockage de plus petite capacité.
+
+En ajoutant une nouvelle capacité avant de supprimer les nœuds de stockage existants, vous garantissez une distribution plus équilibrée des données sur le système StorageGRID .  Vous réduisez également la possibilité qu'un nœud de stockage existant soit poussé au-delà du niveau de filigrane de stockage.

@@ -1,0 +1,26 @@
+---
+permalink: admin/what-object-segmentation-is.html 
+sidebar: sidebar 
+keywords: object segmentation, multipart upload 
+summary: 'La segmentation d"objets est le processus de division d"un objet en une collection d"objets plus petits de taille fixe pour optimiser le stockage et l"utilisation des ressources pour les objets volumineux.  Le téléchargement multi-parties S3 crée également des objets segmentés, avec un objet représentant chaque partie.' 
+---
+= Qu'est-ce que la segmentation d'objets ?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+La segmentation d'objets est le processus de division d'un objet en une collection d'objets plus petits de taille fixe pour optimiser le stockage et l'utilisation des ressources pour les objets volumineux.  Le téléchargement multi-parties S3 crée également des objets segmentés, avec un objet représentant chaque partie.
+
+Lorsqu'un objet est ingéré dans le système StorageGRID , le service LDR divise l'objet en segments et crée un conteneur de segments qui répertorie les informations d'en-tête de tous les segments en tant que contenu.
+
+image::../media/object_segmentation_diagram.gif[Flux de travail de segmentation d'objets]
+
+Lors de la récupération d'un conteneur de segments, le service LDR assemble l'objet d'origine à partir de ses segments et renvoie l'objet au client.
+
+Le conteneur et les segments ne sont pas nécessairement stockés sur le même nœud de stockage.  Le conteneur et les segments peuvent être stockés sur n’importe quel nœud de stockage au sein du pool de stockage spécifié dans la règle ILM.
+
+Chaque segment est traité indépendamment par le système StorageGRID et contribue au nombre d'attributs tels que les objets gérés et les objets stockés.  Par exemple, si un objet stocké dans le système StorageGRID est divisé en deux segments, la valeur des objets gérés augmente de trois une fois l'ingestion terminée, comme suit :
+
+`segment container + segment 1 + segment 2 = three stored objects`

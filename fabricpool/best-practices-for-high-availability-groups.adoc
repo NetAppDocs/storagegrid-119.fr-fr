@@ -1,0 +1,36 @@
+---
+permalink: fabricpool/best-practices-for-high-availability-groups.html 
+sidebar: sidebar 
+keywords: fabricPool, high availability group, HA group, active-active, active-backup, cloud tier, best practices 
+summary: 'Avant d’associer StorageGRID en tant que niveau cloud FabricPool , découvrez les groupes haute disponibilité (HA) StorageGRID et examinez les meilleures pratiques d’utilisation des groupes HA avec FabricPool.' 
+---
+= Bonnes pratiques pour les groupes à haute disponibilité (HA)
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avant d’associer StorageGRID en tant que niveau cloud FabricPool , découvrez les groupes haute disponibilité (HA) StorageGRID et examinez les meilleures pratiques d’utilisation des groupes HA avec FabricPool.
+
+
+
+== Qu'est-ce qu'un groupe HA ?
+
+Un groupe haute disponibilité (HA) est un ensemble d'interfaces provenant de plusieurs nœuds de passerelle StorageGRID , nœuds d'administration ou les deux.  Un groupe HA permet de maintenir les connexions de données client disponibles.  Si l’interface active du groupe HA échoue, une interface de sauvegarde peut gérer la charge de travail avec peu d’impact sur les opérations FabricPool .
+
+Chaque groupe HA fournit un accès hautement disponible aux services partagés sur les nœuds associés.  Par exemple, un groupe HA composé d’interfaces uniquement sur des nœuds de passerelle ou sur des nœuds d’administration et des nœuds de passerelle fournit un accès hautement disponible au service d’équilibrage de charge partagé.
+
+Pour en savoir plus sur les groupes de haute disponibilité, consultezlink:../admin/managing-high-availability-groups.html["Gérer les groupes de haute disponibilité (HA)"] .
+
+
+
+== Utilisation des groupes HA
+
+Les meilleures pratiques pour créer un groupe StorageGRID HA pour FabricPool dépendent de la charge de travail.
+
+* Si vous prévoyez d'utiliser FabricPool avec des données de charge de travail principales, vous devez créer un groupe HA qui inclut au moins deux nœuds d'équilibrage de charge pour éviter toute interruption de la récupération des données.
+* Si vous prévoyez d'utiliser la stratégie de hiérarchisation des volumes de snapshots FabricPool uniquement ou des niveaux de performances locaux non principaux (par exemple, des emplacements de reprise après sinistre ou des destinations NetApp SnapMirror®), vous pouvez configurer un groupe HA avec un seul nœud.
+
+
+Ces instructions décrivent la configuration d'un groupe HA pour la HA de sauvegarde active (un nœud est actif et un nœud est de sauvegarde).  Cependant, vous préférerez peut-être utiliser DNS Round Robin ou Active-Active HA.  Pour connaître les avantages de ces autres configurations HA, consultezlink:../admin/configuration-options-for-ha-groups.html["Options de configuration pour les groupes HA"] .

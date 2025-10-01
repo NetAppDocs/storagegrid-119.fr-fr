@@ -1,0 +1,39 @@
+---
+permalink: tenant/testing-connection-for-platform-services-endpoint.html 
+sidebar: sidebar 
+keywords: how to test platform services endpoint connection 
+summary: 'Si la connexion à un service de plateforme a changé, vous pouvez tester la connexion pour le point de terminaison afin de valider que la ressource de destination existe et qu"elle est accessible à l"aide des informations d"identification que vous avez spécifiées.' 
+---
+= Tester la connexion pour le point de terminaison des services de la plateforme
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si la connexion à un service de plateforme a changé, vous pouvez tester la connexion pour le point de terminaison afin de valider que la ressource de destination existe et qu'elle est accessible à l'aide des informations d'identification que vous avez spécifiées.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Gérer les points de terminaison ou l'autorisation d'accès root"] .
+
+
+.À propos de cette tâche
+StorageGRID ne valide pas que les informations d'identification disposent des autorisations correctes.
+
+.Étapes
+. Sélectionnez *STOCKAGE (S3)* > *Points de terminaison des services de plateforme*.
++
+La page Points de terminaison des services de plateforme s’affiche et affiche la liste des points de terminaison des services de plateforme qui ont déjà été configurés.
+
+. Sélectionnez le point de terminaison dont vous souhaitez tester la connexion.
++
+La page des détails du point de terminaison s’affiche.
+
+. Sélectionnez *Tester la connexion*.
++
+** Un message de réussite s'affiche si le point de terminaison peut être atteint à l'aide des informations d'identification spécifiées.  La connexion au point de terminaison est validée à partir d’un nœud sur chaque site.
+** Un message d’erreur s’affiche si la validation du point de terminaison échoue.  Si vous devez modifier le point de terminaison pour corriger l'erreur, sélectionnez *Configuration* et mettez à jour les informations.  Ensuite, sélectionnez *Tester et enregistrer les modifications*.
+
+
+

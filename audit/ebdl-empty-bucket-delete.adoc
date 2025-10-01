@@ -1,0 +1,64 @@
+---
+permalink: audit/ebdl-empty-bucket-delete.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, EBDL, Empty Bucket Delete 
+summary: 'Le scanner ILM a supprimé un objet dans un bucket qui supprime tous les objets (effectuant une opération de bucket vide).' 
+---
+= EBDL : Suppression du bucket vide
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Le scanner ILM a supprimé un objet dans un bucket qui supprime tous les objets (effectuant une opération de bucket vide).
+
+[cols="1a,1a,4a"]
+|===
+| Code | Champ | Description 
+
+
+ a| 
+CSIZ
+ a| 
+Taille de l'objet
+ a| 
+La taille de l'objet en octets.
+
+
+
+ a| 
+CHEMIN
+ a| 
+Seau/clé S3
+ a| 
+Le nom du compartiment S3 et le nom de la clé S3.
+
+
+
+ a| 
+SEGC
+ a| 
+UUID du conteneur
+ a| 
+UUID du conteneur pour l'objet segmenté.  Cette valeur n'est disponible que si l'objet est segmenté.
+
+
+
+ a| 
+UUID
+ a| 
+Identifiant unique universel
+ a| 
+L'identifiant de l'objet dans le système StorageGRID .
+
+
+
+ a| 
+RSLT
+ a| 
+Résultat de l'opération de suppression
+ a| 
+Le résultat d’un événement, d’un processus ou d’une transaction.  Si ce n'est pas pertinent pour un message, NONE est utilisé plutôt que SUCS afin que le message ne soit pas filtré accidentellement.
+
+|===

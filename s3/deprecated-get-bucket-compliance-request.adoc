@@ -1,0 +1,95 @@
+---
+permalink: s3/deprecated-get-bucket-compliance-request.html 
+sidebar: sidebar 
+keywords: S3 REST API, S3 operations, deprecated GET compliance requests 
+summary: La demande de conformité GET Bucket est obsolète.  Toutefois, vous pouvez continuer à utiliser cette demande pour déterminer les paramètres de conformité actuellement en vigueur pour un bucket conforme hérité existant. 
+---
+= Obsolète : demande de conformité GET Bucket
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+La demande de conformité GET Bucket est obsolète.  Toutefois, vous pouvez continuer à utiliser cette demande pour déterminer les paramètres de conformité actuellement en vigueur pour un bucket conforme hérité existant.
+
+[NOTE]
+====
+La fonctionnalité de conformité StorageGRID disponible dans les versions précédentes de StorageGRID est obsolète et a été remplacée par S3 Object Lock.  Voir ce qui suit pour plus de détails :
+
+* link:../s3/use-s3-api-for-s3-object-lock.html["Utiliser l'API REST S3 pour configurer le verrouillage d'objet S3"]
+* https://kb.netapp.com/Advice_and_Troubleshooting/Hybrid_Cloud_Infrastructure/StorageGRID/How_to_manage_legacy_Compliant_buckets_in_StorageGRID_11.5["Base de connaissances NetApp : Gestion des buckets compatibles hérités dans StorageGRID 11.5"^]
+
+
+====
+Vous devez disposer de l'autorisation s3:GetBucketCompliance ou être root du compte pour terminer cette opération.
+
+
+
+== Exemple de demande
+
+Cet exemple de requête vous permet de déterminer les paramètres de conformité pour le bucket nommé `mybucket` .
+
+[listing, subs="specialcharacters,quotes"]
+----
+GET /mybucket/?x-ntap-sg-compliance HTTP/1.1
+Date: _date_
+Authorization: _authorization string_
+Host: _host_
+----
+
+
+== Exemple de réponse
+
+Dans la réponse XML, `<SGCompliance>` répertorie les paramètres de conformité en vigueur pour le bucket.  Cet exemple de réponse montre les paramètres de conformité d'un bucket dans lequel chaque objet sera conservé pendant un an (525 600 minutes), à compter du moment où l'objet est ingéré dans la grille.  Il n'y a actuellement aucune retenue légale sur ce bucket.  Chaque objet sera automatiquement supprimé après un an.
+
+[listing, subs="specialcharacters,quotes"]
+----
+HTTP/1.1 200 OK
+Date: _date_
+Connection: _connection_
+Server: StorageGRID/11.1.0
+x-amz-request-id: _request ID_
+Content-Length: _length_
+Content-Type: application/xml
+
+<SGCompliance>
+  <RetentionPeriodMinutes>525600</RetentionPeriodMinutes>
+  <LegalHold>false</LegalHold>
+  <AutoDelete>true</AutoDelete>
+</SGCompliance>
+----
+[cols="1a,2a"]
+|===
+| Nom | Description 
+
+
+ a| 
+Durée de conservation (minutes)
+ a| 
+Durée de la période de conservation des objets ajoutés à ce bucket, en minutes.  La période de conservation commence lorsque l'objet est ingéré dans la grille.
+
+
+
+ a| 
+Conservation légale
+ a| 
+* Vrai : ce bucket est actuellement sous une suspension légale.  Les objets de ce compartiment ne peuvent pas être supprimés tant que la conservation légale n'est pas levée, même si leur période de conservation a expiré.
+* Faux : Ce bucket n'est actuellement pas soumis à une suspension légale.  Les objets de ce compartiment peuvent être supprimés lorsque leur période de conservation expire.
+
+
+
+
+ a| 
+Suppression automatique
+ a| 
+* Vrai : les objets de ce compartiment seront supprimés automatiquement à l'expiration de leur période de conservation, sauf si le compartiment est soumis à une suspension légale.
+* Faux : les objets de ce bucket ne seront pas supprimés automatiquement à l’expiration de la période de conservation.  Vous devez supprimer ces objets manuellement si vous devez les supprimer.
+
+
+|===
+
+
+== Réponses d'erreur
+
+Si le bucket n'a pas été créé pour être conforme, le code d'état HTTP de la réponse est `404 Not Found` , avec un code d'erreur S3 de `XNoSuchBucketCompliance` .

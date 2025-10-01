@@ -1,0 +1,137 @@
+---
+permalink: troubleshoot/troubleshoot-s3-put-object-size-too-large-alert.html 
+sidebar: sidebar 
+keywords: how to troubleshoot S3 PUT Object size too large alert, S3 PutObject size 
+summary: 'L"alerte de taille d"objet S3 PUT trop grande est déclenchée si un locataire tente une opération PutObject non multipartite qui dépasse la limite de taille S3 de 5 Gio.' 
+---
+= Dépannage de l'alerte S3 PUT : taille de l'objet trop grande
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'alerte de taille d'objet S3 PUT trop grande est déclenchée si un locataire tente une opération PutObject non multipartite qui dépasse la limite de taille S3 de 5 Gio.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+
+
+Déterminez quels locataires utilisent des objets supérieurs à 5 Gio, afin de pouvoir les avertir.
+
+.Étapes
+. Accédez à *CONFIGURATION* > *Surveillance* > *Serveur d'audit et syslog*.
+. Si les écritures du client sont normales, accédez au journal d’audit :
++
+.. Entrer `ssh admin@_primary_Admin_Node_IP_`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
++
+Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+.. Accédez au répertoire dans lequel se trouvent les journaux d’audit.
++
+--
+Le répertoire du journal d’audit et les nœuds applicables dépendent de vos paramètres de destination d’audit.
+
+[cols="1a,2a"]
+|===
+| Option | Destination 
+
+
+ a| 
+Nœuds locaux (par défaut)
+ a| 
+`/var/local/log/localaudit.log`
+
+
+
+ a| 
+Nœuds d'administration/nœuds locaux
+ a| 
+*** Nœuds d'administration (principaux et non principaux) : `/var/local/audit/export/audit.log`
+*** Tous les nœuds : Le `/var/local/log/localaudit.log` le fichier est généralement vide ou manquant dans ce mode.
+
+
+
+
+ a| 
+Serveur syslog externe
+ a| 
+`/var/local/log/localaudit.log`
+
+|===
+En fonction des paramètres de destination de votre audit, saisissez : `cd /var/local/log` ou `/var/local/audit/export/`
+
+Pour en savoir plus, consultezlink:../monitor/configure-audit-messages.html#select-audit-information-destinations["Sélectionner les destinations des informations d'audit"] .
+
+--
+.. Identifiez les locataires qui utilisent des objets supérieurs à 5 Gio.
++
+... Entrer `zgrep SPUT * | egrep "CSIZ\(UI64\):([5-9]|[1-9][0-9]+)[0-9]{9}"`
+... Pour chaque message d’audit dans les résultats, regardez `S3AI` champ pour déterminer l'ID du compte locataire.  Utilisez les autres champs du message pour déterminer quelle adresse IP a été utilisée par le client, le bucket et l'objet :
++
+[cols="1a,2a"]
+|===
+| Code | Description 
+
+
+| SAIP  a| 
+IP source
+
+
+
+| S3AI  a| 
+ID du locataire
+
+
+
+| S3BK  a| 
+Seau
+
+
+
+| S3KY  a| 
+Objet
+
+
+
+| CSIZ  a| 
+Taille (octets)
+
+|===
++
+*Exemple de résultats du journal d'audit*
+
++
+[listing]
+----
+audit.log:2023-01-05T18:47:05.525999 [AUDT:[RSLT(FC32):SUCS][CNID(UI64):1672943621106262][TIME(UI64):804317333][SAIP(IPAD):"10.96.99.127"][S3AI(CSTR):"93390849266154004343"][SACC(CSTR):"bhavna"][S3AK(CSTR):"06OX85M40Q90Y280B7YT"][SUSR(CSTR):"urn:sgws:identity::93390849266154004343:root"][SBAI(CSTR):"93390849266154004343"][SBAC(CSTR):"bhavna"][S3BK(CSTR):"test"][S3KY(CSTR):"large-object"][CBID(UI64):0x077EA25F3B36C69A][UUID(CSTR):"A80219A2-CD1E-466F-9094-B9C0FDE2FFA3"][CSIZ(UI64):6040000000][MTME(UI64):1672943621338958][AVER(UI32):10][ATIM(UI64):1672944425525999][ATYP(FC32):SPUT][ANID(UI32):12220829][AMID(FC32):S3RQ][ATID(UI64):4333283179807659119]]
+----
+
+
+
+
+. Si les écritures client ne sont pas normales, utilisez l'ID de locataire de l'alerte pour identifier le locataire :
++
+.. Accédez à *SUPPORT* > *Outils* > *Journaux*. Collectez les journaux d’application pour le nœud de stockage dans l’alerte. Précisez 15 minutes avant et après l'alerte.
+.. Extrayez le fichier et accédez à `bycast.log` :
++
+`/GID<grid_id>_<time_stamp>/<site_node>/<time_stamp>/grid/bycast.log`
+
+.. Rechercher dans le journal pour `method=PUT` et identifier le client dans le `clientIP` champ.
++
+*Exemple bycast.log*
+
++
+[listing]
+----
+Jan  5 18:33:41 BHAVNAJ-DC1-S1-2-65 ADE: |12220829 1870864574 S3RQ %CEA 2023-01-05T18:33:41.208790| NOTICE   1404 af23cb66b7e3efa5 S3RQ: EVENT_PROCESS_CREATE - connection=1672943621106262 method=PUT name=</test/4MiB-0> auth=<V4> clientIP=<10.96.99.127>
+----
+
+
+. Informez les locataires que la taille maximale de PutObject est de 5 Gio et qu'ils doivent utiliser des téléchargements en plusieurs parties pour les objets supérieurs à 5 Gio.
+. Ignorez l'alerte pendant une semaine si l'application a été modifiée.
+

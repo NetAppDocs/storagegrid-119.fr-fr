@@ -1,0 +1,37 @@
+---
+permalink: tenant/guidelines-for-configuring-openldap-server.html 
+sidebar: sidebar 
+keywords: how to configure open ldap 
+summary: Si vous souhaitez utiliser un serveur OpenLDAP pour la fédération d’identité, vous devez configurer des paramètres spécifiques sur le serveur OpenLDAP. 
+---
+= Directives pour la configuration du serveur OpenLDAP
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si vous souhaitez utiliser un serveur OpenLDAP pour la fédération d’identité, vous devez configurer des paramètres spécifiques sur le serveur OpenLDAP.
+
+
+
+== Superpositions Memberof et refint
+
+Les superpositions memberof et refint doivent être activées.  Pour plus d'informations, consultez les instructions relatives à la maintenance de l'appartenance à un groupe inversé dans le _Guide de l'administrateur du logiciel OpenLDAP_.
+
+
+
+== Indexage
+
+Vous devez configurer les attributs OpenLDAP suivants avec les mots-clés d’index spécifiés :
+
+[listing]
+----
+olcDbIndex: objectClass eq
+olcDbIndex: uid eq,pres,sub
+olcDbIndex: cn eq,pres,sub
+olcDbIndex: entryUUID eq
+----
+De plus, assurez-vous que les champs mentionnés dans l’aide pour le nom d’utilisateur sont indexés pour des performances optimales.
+
+Consultez les informations sur la maintenance de l'appartenance à un groupe inversé dans le _Guide de l'administrateur du logiciel OpenLDAP_.

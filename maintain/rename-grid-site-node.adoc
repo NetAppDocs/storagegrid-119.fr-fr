@@ -1,0 +1,236 @@
+---
+permalink: maintain/rename-grid-site-node.html 
+sidebar: sidebar 
+keywords: rename grid, rename sites, rename node, change display name, bulk rename tool 
+summary: Vous pouvez utiliser cette procédure pour ajouter ou mettre à jour les noms d’affichage utilisés pour votre grille, vos sites et vos nœuds.  Vous pouvez renommer un seul élément, plusieurs noms ou même tous les éléments en même temps.  La définition ou la mise à jour d’un nom d’affichage n’affecte en aucune façon les opérations StorageGRID . 
+---
+= Ajouter ou mettre à jour les noms d'affichage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser cette procédure pour ajouter ou mettre à jour les noms d’affichage utilisés pour votre grille, vos sites et vos nœuds.  Vous pouvez renommer un seul élément, plusieurs éléments ou même tous les éléments en même temps.  La définition ou la mise à jour d’un nom d’affichage n’affecte en aucune façon les opérations StorageGRID .
+
+.Avant de commencer
+* À partir du *nœud d'administration principal*, vous êtes connecté au gestionnaire de grille à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
++
+
+NOTE: Vous pouvez ajouter ou mettre à jour des noms d’affichage à partir d’un nœud d’administration non principal, mais vous devez être connecté au nœud d’administration principal pour télécharger un package de récupération.
+
+* Vous avez lelink:../admin/admin-group-permissions.html["Autorisation d'accès de maintenance ou root"] .
+* Vous disposez de la phrase secrète de provisionnement.
+* Vous comprenez les exigences et les meilleures pratiques relatives aux noms d’affichage. Voir link:../maintain/rename-grid-site-node-overview.html["Renommer la grille, les sites et les nœuds"] .
+
+
+
+
+== Comment renommer une grille, des sites ou des nœuds
+
+Vous pouvez renommer votre système StorageGRID , un ou plusieurs sites ou un ou plusieurs nœuds.
+
+Vous pouvez utiliser un nom d'affichage qui a déjà été utilisé par un autre nœud, à condition que le changement de nom n'entraîne pas un nom d'affichage ou un nom système en double.
+
+
+
+=== Sélectionnez les éléments à renommer
+
+Pour commencer, sélectionnez les éléments que vous souhaitez renommer.
+
+.Étapes
+. Sélectionnez *MAINTENANCE* > *Tâches* > *Renommer la grille, les sites et les nœuds*.
+. Pour l’étape *Sélectionner les noms*, sélectionnez les éléments que vous souhaitez renommer.
++
+[cols="1a,2a"]
+|===
+| Élément à modifier | Instruction 
+
+
+ a| 
+Noms de tout (ou presque tout) dans votre système
+ a| 
+.. Sélectionnez *Sélectionner tout*.
+.. Vous pouvez également effacer tous les éléments que vous ne souhaitez pas renommer.
+
+
+
+
+ a| 
+Nom de la grille
+ a| 
+Cochez la case correspondant à la grille.
+
+
+
+ a| 
+Nom d'un site et de certains ou de tous ses nœuds
+ a| 
+.. Cochez la case dans l’en-tête du tableau pour le site.
+.. Vous pouvez également effacer tous les nœuds que vous ne souhaitez pas renommer.
+
+
+
+
+ a| 
+Nom d'un site
+ a| 
+Cochez la case correspondant au site.
+
+
+
+ a| 
+Nom d'un nœud
+ a| 
+Cochez la case correspondant au nœud.
+
+|===
+. Sélectionnez *Continuer*.
+. Consultez le tableau, qui comprend les éléments que vous avez sélectionnés.
++
+** La colonne *Nom d'affichage* indique le nom actuel de chaque élément.  Si l'élément n'a jamais été renommé, son nom d'affichage est le même que son nom système.
+** La colonne *Nom du système* indique le nom que vous avez saisi pour chaque élément lors de l'installation.  Les noms de système sont utilisés pour les opérations StorageGRID internes et ne peuvent pas être modifiés.  Par exemple, le nom système d’un nœud peut être son nom d’hôte.
+** La colonne *Type* indique le type de l'élément : Grille, Site ou le type spécifique de nœud.
+
+
+
+
+
+
+=== Proposer de nouveaux noms
+
+Pour l'étape *Proposer de nouveaux noms*, vous pouvez saisir un nom d'affichage pour chaque élément individuellement ou renommer les éléments en bloc.
+
+[role="tabbed-block"]
+====
+.Renommer les éléments individuellement
+--
+Suivez ces étapes pour saisir un nom d’affichage pour chaque élément que vous souhaitez renommer.
+
+.Étapes
+. Dans le champ *Nom d'affichage*, saisissez un nom d'affichage proposé pour chaque élément de la liste.
++
+Voirlink:../maintain/rename-grid-site-node-overview.html["Renommer la grille, les sites et les nœuds"] pour apprendre les exigences de dénomination.
+
+. Pour supprimer les éléments que vous ne souhaitez pas renommer, sélectionnezimage:../media/icon-x-to-remove.png["Icône X"] dans la colonne *Supprimer de la liste*.
++
+Si vous ne proposez pas de nouveau nom pour un élément, vous devez le supprimer du tableau.
+
+. Lorsque vous avez proposé de nouveaux noms pour tous les éléments du tableau, sélectionnez *Renommer*.
++
+Un message de réussite apparaît.  Les nouveaux noms d’affichage sont désormais utilisés dans tout Grid Manager.
+
+
+
+--
+.Renommer des éléments en masse
+--
+Utilisez l’outil de renommage en masse si les noms d’éléments partagent une chaîne commune que vous souhaitez remplacer par une chaîne différente.
+
+.Étapes
+. Pour l’étape *Proposer de nouveaux noms*, sélectionnez *Utiliser l’outil de renommage en masse*.
++
+L'*Aperçu de renommage* inclut tous les éléments qui ont été affichés pour l'étape *Proposer de nouveaux noms*.  Vous pouvez utiliser l'aperçu pour voir à quoi ressembleront les noms d'affichage après avoir remplacé une chaîne partagée.
+
+. Dans le champ *Chaîne existante*, saisissez la chaîne partagée que vous souhaitez remplacer.  Par exemple, si la chaîne que vous souhaitez remplacer est `Data-Center-1` , entrez *Data-Center-1*.
++
+Au fur et à mesure que vous tapez, votre texte est mis en surbrillance partout où il se trouve dans les noms sur la gauche.
+
+. Sélectionnerimage:../media/icon-x-to-remove.png["Icône X"] pour supprimer tous les éléments que vous ne souhaitez pas renommer avec cet outil.
++
+Par exemple, supposons que vous souhaitiez renommer tous les nœuds qui contiennent la chaîne `Data-Center-1` , mais vous ne voulez pas renommer le `Data-Center-1` site lui-même.  Sélectionnerimage:../media/icon-x-to-remove.png["Icône X"] pour supprimer le site de l'aperçu de renommage.
+
++
+image::../media/rename-bulk-rename-tool.png[Outil de renommage en masse avant]
+
+. Dans le champ *Nouvelle chaîne*, saisissez la chaîne de remplacement que vous souhaitez utiliser à la place.  Par exemple, entrez *DC1*.
++
+Voirlink:../maintain/rename-grid-site-node-overview.html["Renommer la grille, les sites et les nœuds"] pour apprendre les exigences de dénomination.
+
++
+Au fur et à mesure que vous entrez la chaîne de remplacement, les noms sur la gauche sont mis à jour, vous pouvez donc vérifier que les nouveaux noms seront corrects.
+
++
+image::../media/rename-bulk-rename-tool-after.png[Outil de renommage en masse après]
+
+. Lorsque vous êtes satisfait des noms affichés dans l'aperçu, sélectionnez *Ajouter des noms* pour ajouter les noms au tableau pour l'étape *Proposer de nouveaux noms*.
+. Apportez les modifications supplémentaires requises ou sélectionnezimage:../media/icon-x-to-remove.png["Icône X"] pour supprimer tous les éléments que vous ne souhaitez pas renommer.
+. Lorsque vous êtes prêt à renommer tous les éléments du tableau, sélectionnez *Renommer*.
++
+Un message de réussite s'affiche.  Les nouveaux noms d’affichage sont désormais utilisés dans tout Grid Manager.
+
+
+
+--
+====
+
+
+=== [[download-recovery-package]]Télécharger le package de récupération
+
+Une fois que vous avez terminé de renommer les éléments, téléchargez et enregistrez un nouveau package de récupération. Les nouveaux noms d'affichage des éléments que vous avez renommés sont inclus dans le `Passwords.txt` déposer.
+
+.Étapes
+. Saisissez la phrase secrète d’approvisionnement.
+. Sélectionnez *Télécharger le package de récupération*.
++
+Le téléchargement démarre immédiatement.
+
+. Une fois le téléchargement terminé, ouvrez le `Passwords.txt` fichier pour voir le nom du serveur pour tous les nœuds et les noms d'affichage pour tous les nœuds renommés.
+. Copiez le `sgws-recovery-package-_id-revision_.zip` fichier dans deux emplacements sûrs, sécurisés et séparés.
++
+
+CAUTION: Le fichier du package de récupération doit être sécurisé car il contient des clés de chiffrement et des mots de passe qui peuvent être utilisés pour obtenir des données à partir du système StorageGRID .
+
+. Sélectionnez *Terminer* pour revenir à la première étape.
+
+
+
+
+== Rétablir les noms d'affichage aux noms système
+
+Vous pouvez rétablir le nom système d'origine d'une grille, d'un site ou d'un nœud renommé.  Lorsque vous rétablissez le nom système d'un élément, les pages Grid Manager et les autres emplacements StorageGRID n'affichent plus de *Nom d'affichage* pour cet élément.  Seul le nom du système de l'élément est affiché.
+
+.Étapes
+. Sélectionnez *MAINTENANCE* > *Tâches* > *Renommer la grille, les sites et les nœuds*.
+. Pour l’étape *Sélectionner les noms*, sélectionnez les éléments pour lesquels vous souhaitez rétablir les noms système.
+. Sélectionnez *Continuer*.
+. Pour l'étape *Proposer de nouveaux noms*, rétablissez les noms d'affichage aux noms système individuellement ou en bloc.
++
+[role="tabbed-block"]
+====
+.Revenir aux noms de système individuellement
+--
+.. Copiez le nom système d'origine de chaque élément et collez-le dans le champ *Nom d'affichage* ou sélectionnezimage:../media/icon-x-to-remove.png["Icône X"] pour supprimer tous les éléments que vous ne souhaitez pas rétablir.
++
+Pour rétablir un nom d'affichage, le nom du système doit apparaître dans le champ *Nom d'affichage*, mais le nom n'est pas sensible à la casse.
+
+.. Sélectionnez *Renommer*.
++
+Un message de réussite apparaît.  Les noms d’affichage de ces éléments ne sont plus utilisés.
+
+
+
+--
+.Revenir aux noms de système en masse
+--
+.. Pour l’étape *Proposer de nouveaux noms*, sélectionnez *Utiliser l’outil de renommage en masse*.
+.. Dans le champ *Chaîne existante*, saisissez la chaîne de nom d’affichage que vous souhaitez remplacer.
+.. Dans le champ *Nouvelle chaîne*, saisissez la chaîne de nom du système que vous souhaitez utiliser à la place.
+.. Sélectionnez *Ajouter des noms* pour ajouter les noms au tableau pour l'étape *Proposer de nouveaux noms*.
+.. Confirmez que chaque entrée dans le champ *Nom d'affichage* correspond au nom dans le champ *Nom du système*.  Apportez des modifications ou sélectionnezimage:../media/icon-x-to-remove.png["Icône X"] pour supprimer tous les éléments que vous ne souhaitez pas rétablir.
++
+Pour rétablir un nom d'affichage, le nom du système doit apparaître dans le champ *Nom d'affichage*, mais le nom n'est pas sensible à la casse.
+
+.. Sélectionnez *Renommer*.
++
+Un message de réussite s'affiche.  Les noms d’affichage de ces éléments ne sont plus utilisés.
+
+
+
+--
+====
+. <<download-recovery-package,Téléchargez et enregistrez un nouveau package de récupération>> .
++
+Les noms d'affichage des éléments que vous avez rétablis ne sont plus inclus dans le `Passwords.txt` déposer.
+
+

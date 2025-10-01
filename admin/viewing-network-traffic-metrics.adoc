@@ -1,0 +1,69 @@
+---
+permalink: admin/viewing-network-traffic-metrics.html 
+sidebar: sidebar 
+keywords: network traffic, traffic classification policy, monitor traffic 
+summary: Vous pouvez surveiller le trafic réseau en affichant les graphiques disponibles sur la page Stratégies de classification du trafic. 
+---
+= Afficher les mesures du trafic réseau
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez surveiller le trafic réseau en affichant les graphiques disponibles sur la page Stratégies de classification du trafic.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:admin-group-permissions.html["Accès root ou autorisation des comptes locataires"] .
+
+
+.À propos de cette tâche
+Pour toute stratégie de classification du trafic existante, vous pouvez afficher les métriques du service d’équilibrage de charge afin de déterminer si la stratégie limite avec succès le trafic sur le réseau.  Les données des graphiques peuvent vous aider à déterminer si vous devez ajuster la politique.
+
+Même si aucune limite n'est définie pour une politique de classification du trafic, des mesures sont collectées et les graphiques fournissent des informations utiles pour comprendre les tendances du trafic.
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Réseau* > *Classification du trafic*.
++
+La page Stratégies de classification du trafic s’affiche et les stratégies existantes sont répertoriées dans le tableau.
+
+. Sélectionnez le nom de la politique de classification du trafic pour laquelle vous souhaitez afficher les métriques.
+. Sélectionnez l'onglet *Métriques*.
++
+Les graphiques de la politique de classification du trafic apparaissent.  Les graphiques affichent les métriques uniquement pour le trafic correspondant à la politique sélectionnée.
+
++
+Les graphiques suivants sont inclus sur la page.
+
++
+** Taux de demande : ce graphique fournit la quantité de bande passante correspondant à cette politique gérée par tous les équilibreurs de charge.  Les données reçues incluent les en-têtes de demande pour toutes les demandes et la taille des données du corps pour les réponses contenant des données du corps.  Sent inclut les en-têtes de réponse pour toutes les demandes et la taille des données du corps de la réponse pour les demandes qui incluent des données de corps dans la réponse.
++
+
+NOTE: Lorsque les demandes sont terminées, ce graphique affiche uniquement l'utilisation de la bande passante.  Pour les demandes d'objets lentes ou volumineuses, la bande passante instantanée réelle peut différer des valeurs indiquées dans ce graphique.
+
+** Taux de réponse aux erreurs : ce graphique fournit un taux approximatif auquel les requêtes correspondant à cette politique renvoient des erreurs (code d'état HTTP >= 400) aux clients.
+** Durée moyenne des requêtes (sans erreur) : ce graphique fournit une durée moyenne des requêtes réussies correspondant à cette politique.
+** Utilisation de la bande passante de la politique : ce graphique fournit la quantité de bande passante correspondant à cette politique gérée par tous les équilibreurs de charge.  Les données reçues incluent les en-têtes de demande pour toutes les demandes et la taille des données du corps pour les réponses contenant des données du corps.  Sent inclut les en-têtes de réponse pour toutes les demandes et la taille des données du corps de la réponse pour les demandes qui incluent des données de corps dans la réponse.
+
+
+. Positionnez le curseur sur un graphique linéaire pour voir une fenêtre contextuelle de valeurs sur une partie spécifique du graphique.
+. Sélectionnez *Tableau de bord Grafana* juste en dessous du titre Métriques pour afficher tous les graphiques d'une politique.  En plus des quatre graphiques de l'onglet *Metrics*, vous pouvez afficher deux autres graphiques :
++
+** Taux de demande d'écriture par taille d'objet : taux de demandes PUT/POST/DELETE correspondant à cette politique.  Le positionnement sur une cellule individuelle affiche les taux par seconde.  Les taux affichés dans la vue de survol sont tronqués en nombres entiers et peuvent indiquer 0 lorsqu'il y a des demandes différentes de zéro dans le bucket.
+** Taux de demande de lecture par taille d'objet : taux de demandes GET/HEAD correspondant à cette politique.  Le positionnement sur une cellule individuelle affiche les taux par seconde.  Les taux affichés dans la vue de survol sont tronqués en nombres entiers et peuvent indiquer 0 lorsqu'il y a des demandes différentes de zéro dans le bucket.
+
+
+. Vous pouvez également accéder aux graphiques à partir du menu *SUPPORT*.
++
+.. Sélectionnez *SUPPORT* > *Outils* > *Métriques*.
+.. Sélectionnez *Politique de classification du trafic* dans la section *Grafana*.
+.. Sélectionnez la politique dans le menu en haut à gauche de la page.
+.. Placez le curseur sur un graphique pour voir une fenêtre contextuelle indiquant la date et l'heure de l'échantillon, les tailles d'objets agrégées dans le décompte et le nombre de requêtes par seconde pendant cette période.
++
+Les politiques de classification du trafic sont identifiées par leur ID.  Les identifiants de stratégie sont répertoriés sur la page Stratégies de classification du trafic.
+
+
+
+. Analysez les graphiques pour déterminer à quelle fréquence la politique limite le trafic et si vous devez ajuster la politique.
+

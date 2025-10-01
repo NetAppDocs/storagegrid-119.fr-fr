@@ -1,0 +1,39 @@
+---
+permalink: audit/sysu-node-start.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, SYSU, Node Start 
+summary: 'Lorsqu"un service est redémarré, ce message est généré pour indiquer si l"arrêt précédent était propre \(commandé\) ou désordonné \(inattendu\).' 
+---
+= SYSU : démarrage du nœud
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lorsqu'un service est redémarré, ce message est généré pour indiquer si l'arrêt précédent était propre (commandé) ou désordonné (inattendu).
+
+[cols="1a,1a,4a"]
+|===
+| Code | Champ | Description 
+
+
+ a| 
+RSLT
+ a| 
+Arrêt propre
+ a| 
+La nature de l'arrêt :
+
+SUCS : Le système a été arrêté proprement.
+
+DSDN : le système n’a pas été arrêté correctement.
+
+VRGN : le système a été démarré pour la première fois après l'installation du serveur (ou la réinstallation).
+
+|===
+Le message n'indique pas si le serveur hôte a été démarré, uniquement le service de reporting.  Ce message peut être utilisé pour :
+
+* Détecter la discontinuité dans la piste d’audit.
+* Déterminez si un service échoue pendant son fonctionnement (car la nature distribuée du système StorageGRID peut masquer ces échecs).  Le Gestionnaire de serveur redémarre automatiquement un service défaillant.
+

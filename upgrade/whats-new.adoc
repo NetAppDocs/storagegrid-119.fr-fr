@@ -1,0 +1,174 @@
+---
+permalink: upgrade/whats-new.html 
+sidebar: sidebar 
+keywords: what is new in StorageGRID 11.9 
+summary: Cette version de StorageGRID introduit les fonctionnalités suivantes. 
+---
+= Quoi de neuf dans StorageGRID 11.9
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Cette version de StorageGRID introduit les fonctionnalités et modifications fonctionnelles suivantes.
+
+
+
+== Évolutivité
+
+
+
+=== Nœuds de stockage de données uniquement
+
+Pour permettre une mise à l'échelle plus granulaire, vous pouvez désormais installerlink:../primer/what-storage-node-is.html#types-of-storage-nodes["nœuds de stockage de données uniquement"] .  Lorsque le traitement des métadonnées n’est pas critique, vous pouvez optimiser votre infrastructure de manière rentable.  Cette flexibilité permet de s’adapter à des charges de travail et des modèles de croissance variés.
+
+
+
+== Améliorations du pool de stockage cloud
+
+
+
+=== Rôles IAM partout
+
+StorageGRID prend désormais en charge les informations d'identification à court terme à l'aide delink:../ilm/creating-cloud-storage-pool.html["Rôles IAM partout dans Amazon S3 pour les pools de stockage cloud"] .
+
+L’utilisation d’informations d’identification à long terme pour accéder aux buckets S3 présente des risques de sécurité si ces informations d’identification sont compromises.  Les informations d’identification à court terme ont une durée de vie limitée, ce qui réduit le risque d’accès non autorisé.
+
+
+
+=== Compartiments de verrouillage d'objet S3
+
+Vous pouvez désormaislink:../ilm/creating-cloud-storage-pool.html["configurer un pool de stockage cloud à l'aide d'un point de terminaison Amazon S3"] .  S3 Object Lock permet d'empêcher la suppression accidentelle ou malveillante d'objets.  Si vous hiérarchisez les données de StorageGRID vers Amazon S3, l'activation du verrouillage des objets sur les deux systèmes améliore la protection des données tout au long du cycle de vie des données.
+
+
+
+== Multi-location
+
+
+
+=== Limites de compartiment
+
+Parlink:../tenant/creating-s3-bucket.html["définition de limites sur les buckets S3"] , vous pouvez empêcher les locataires de monopoliser la capacité.  De plus, une croissance incontrôlée peut entraîner des coûts inattendus.  En définissant des limites, vous pouvez mieux estimer les dépenses de stockage des locataires.
+
+
+
+=== 5 000 seaux par locataire
+
+Pour améliorer l'évolutivité, StorageGRID prend désormais en charge jusqu'àlink:../s3/operations-on-buckets.html["5 000 compartiments S3 par locataire"] .  Chaque grille peut contenir un maximum de 100 000 buckets.
+
+Pour prendre en charge 5 000 buckets, chaque nœud de stockage de la grille doit disposer d'un minimum de 64 Go de RAM.
+
+
+
+== Améliorations du verrouillage des objets S3
+
+Les capacités de configuration par locataire offrent l’équilibre approprié entre flexibilité et sécurité des données.  Vous pouvez désormais configurer les paramètres de rétention par locataire pour :
+
+* Autoriser ou interdire le mode de conformité
+* Définir une durée de conservation maximale
+
+
+Se référer à :
+
+* link:../ilm/managing-objects-with-s3-object-lock.html["Gérer les objets avec S3 Object Lock"]
+* link:../ilm/how-object-retention-is-determined.html#how-grid-administrators-control-object-retention["Comment les administrateurs de réseau contrôlent la conservation des objets"]
+* link:../admin/creating-tenant-account.html["Créer un compte locataire"]
+
+
+
+
+== Compatibilité S3
+
+
+
+=== x-amz-checksum-somme de contrôle sha256
+
+* L'API REST S3 prend désormais en charge le lien :../s3/operations-on-objects.html[`x-amz-checksum-sha256` [somme de contrôle].
+* StorageGRID fournit désormais la prise en charge de la somme de contrôle SHA-256 pour les opérations PUT, GET et HEAD.  Ces sommes de contrôle améliorent l’intégrité des données.
+
+
+
+
+=== Modifications apportées à la prise en charge du protocole S3
+
+* Ajout de la prise en charge de Mountpoint pour Amazon S3, qui permet aux applications de se connecter directement aux compartiments S3 comme s'il s'agissait de systèmes de fichiers locaux.  Vous pouvez désormais utiliser StorageGRID avec davantage d’applications et de cas d’utilisation.
+* Dans le cadre de l'ajout de la prise en charge de Mountpoint, StorageGRID 11.9 contientlink:../s3/index.html#updates-to-rest-api-support["modifications supplémentaires apportées à la prise en charge du protocole S3"] .
+
+
+
+
+== Maintenance et supportabilité
+
+
+
+=== AutoSupport
+
+link:../admin/what-is-autosupport.html["AutoSupport"]crée désormais automatiquement des cas de défaillance matérielle pour les appareils hérités.
+
+
+
+=== Opérations de clonage de nœuds étendues
+
+La facilité d'utilisation du clonage de nœuds a été étendue pour prendre en charge des nœuds de stockage plus grands.
+
+
+
+=== Gestion ILM améliorée des marqueurs de suppression expirés
+
+Les règles de temps d'ingestion ILM avec une période de jours suppriment désormais également les marqueurs de suppression d'objets expirés.  Les marqueurs de suppression ne sont supprimés que lorsqu'une période de jours s'est écoulée et que le marqueur de suppression actuel a expiré (il n'existe aucune version non actuelle).
+
+Se référer àlink:../ilm/how-objects-are-deleted.html#delete-s3-versioned-objects["Comment les objets versionnés S3 sont supprimés"] etlink:../ilm/example-8-priorities-for-s3-bucket-lifecycle-and-ilm-policy.html#example-of-bucket-lifecycle-taking-priority-over-ilm-policy["Exemple de cycle de vie d'un bucket prioritaire sur la politique ILM"] .
+
+
+
+=== Amélioration de la mise hors service des nœuds
+
+Pour assurer une transition fluide et efficace vers le matériel de nouvelle génération StorageGRID ,link:../maintain/grid-node-decommissioning.html["déclassement des nœuds"] a été amélioré.
+
+
+
+=== Syslog pour les points de terminaison de l'équilibreur de charge
+
+Les journaux d’accès aux points de terminaison de l’équilibreur de charge contiennent des informations de dépannage, telles que les codes d’état HTTP.  StorageGRID prend désormais en chargelink:../monitor/configure-audit-messages.html["exporter ces journaux vers un serveur syslog externe"] .  Cette amélioration permet une gestion des journaux plus efficace et une intégration avec les systèmes de surveillance et d’alerte existants.
+
+
+
+=== Améliorations supplémentaires pour la maintenance et la prise en charge
+
+* Mise à jour de l'interface utilisateur des métriques
+* Qualifications du nouveau système d'exploitation
+* Prise en charge de nouveaux composants tiers
+
+
+
+
+== Sécurité
+
+
+
+=== Rotation des clés d'accès SSH
+
+Les administrateurs de réseau peuvent désormaislink:../admin/change-ssh-access-passwords.html["mettre à jour et faire pivoter les clés SSH"] .  La possibilité de faire tourner les clés SSH est une bonne pratique de sécurité et un mécanisme de défense proactif.
+
+
+
+=== Alertes pour les connexions root
+
+Lorsqu'une entité inconnue se connecte au Grid Manager en tant que root,link:../monitor/alerts-reference.html["une alerte est déclenchée"] .  La surveillance des connexions SSH root est une étape proactive vers la protection de votre infrastructure.
+
+
+
+== Améliorations du gestionnaire de grille
+
+
+
+=== Page des profils de codage d'effacement déplacée
+
+La page des profils de codage d'effacement se trouve désormais dans *CONFIGURATION* > *Système* > *Codage d'effacement*.  Il était dans le menu ILM.
+
+
+
+=== Améliorations de la recherche
+
+Lelink:../primer/exploring-grid-manager.html#search-field["champ de recherche dans le gestionnaire de grille"] inclut désormais une meilleure logique de correspondance, vous permettant de trouver des pages en recherchant des abréviations courantes et par les noms de certains paramètres dans une page.  Vous pouvez également rechercher d’autres types d’éléments, tels que des nœuds, des utilisateurs et des comptes locataires.

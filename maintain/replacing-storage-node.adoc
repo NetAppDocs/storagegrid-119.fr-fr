@@ -1,0 +1,47 @@
+---
+permalink: maintain/replacing-storage-node.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, replace storage node, replacing storage node 
+summary: Si le lecteur système est en panne, vous devez d’abord remplacer le nœud de stockage. 
+---
+= Remplacer le nœud de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si le lecteur système est en panne, vous devez d’abord remplacer le nœud de stockage.
+
+Vous devez sélectionner la procédure de remplacement de nœud pour votre plateforme.  Les étapes pour remplacer un nœud sont les mêmes pour tous les types de nœuds de grille.
+
+
+NOTE: Cette procédure s’applique uniquement aux nœuds de stockage basés sur des logiciels.  Vous devez suivre une procédure différente pourlink:recovering-storagegrid-appliance-storage-node.html["récupérer un nœud de stockage d'appliance"] .
+
+*Linux :* si vous n'êtes pas sûr que votre lecteur système est en panne, suivez les instructions pour remplacer le nœud afin de déterminer les étapes de récupération requises.
+
+[cols="1a,2a"]
+|===
+| Plate-forme | Procédure 
+
+
+ a| 
+VMware
+ a| 
+link:all-node-types-replacing-vmware-node.html["Remplacer un nœud VMware"]
+
+
+
+ a| 
+Linux
+ a| 
+link:all-node-types-replacing-linux-node.html["Remplacer un nœud Linux"]
+
+
+
+ a| 
+OpenStack
+ a| 
+Les fichiers de disque et les scripts de machine virtuelle fournis par NetApp pour OpenStack ne sont plus pris en charge pour les opérations de récupération.  Si vous devez récupérer un nœud exécuté dans un déploiement OpenStack, téléchargez les fichiers pour votre système d'exploitation Linux.  Ensuite, suivez la procédure pourlink:all-node-types-replacing-linux-node.html["remplacement d'un nœud Linux"] .
+
+|===

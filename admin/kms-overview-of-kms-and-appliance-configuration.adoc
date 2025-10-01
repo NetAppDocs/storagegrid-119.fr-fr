@@ -1,0 +1,94 @@
+---
+permalink: admin/kms-overview-of-kms-and-appliance-configuration.html 
+sidebar: sidebar 
+keywords: kms, appliance configuration, node encryption 
+summary: 'Avant de pouvoir utiliser un serveur de gestion de clés (KMS) pour sécuriser les données StorageGRID sur les nœuds de l"appliance, vous devez effectuer deux tâches de configuration : configurer un ou plusieurs serveurs KMS et activer le chiffrement des nœuds pour les nœuds de l"appliance.  Une fois ces deux tâches de configuration terminées, le processus de gestion des clés se déroule automatiquement.' 
+---
+= Configuration KMS et appliance
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avant de pouvoir utiliser un serveur de gestion de clés (KMS) pour sécuriser les données StorageGRID sur les nœuds de l'appliance, vous devez effectuer deux tâches de configuration : configurer un ou plusieurs serveurs KMS et activer le chiffrement des nœuds pour les nœuds de l'appliance.  Une fois ces deux tâches de configuration terminées, le processus de gestion des clés se déroule automatiquement.
+
+L'organigramme montre les étapes de haut niveau pour utiliser un KMS pour sécuriser les données StorageGRID sur les nœuds de l'appliance.
+
+image::../media/kms_configuration_overview.png[Flux de travail de configuration KMS, décrit dans le texte suivant]
+
+L'organigramme montre la configuration de KMS et la configuration de l'appliance se déroulant en parallèle ; cependant, vous pouvez configurer les serveurs de gestion de clés avant ou après avoir activé le chiffrement des nœuds pour les nouveaux nœuds de l'appliance, en fonction de vos besoins.
+
+
+
+== Configurer le serveur de gestion des clés (KMS)
+
+La configuration d’un serveur de gestion de clés comprend les étapes de haut niveau suivantes.
+
+[cols="1a,1a"]
+|===
+| Étape | Se référer à 
+
+
+ a| 
+Accédez au logiciel KMS et ajoutez un client pour StorageGRID à chaque KMS ou cluster KMS.
+ a| 
+link:kms-configuring-storagegrid-as-client.html["Configurer StorageGRID en tant que client dans le KMS"]
+
+
+
+ a| 
+Obtenez les informations requises pour le client StorageGRID sur le KMS.
+ a| 
+link:kms-configuring-storagegrid-as-client.html["Configurer StorageGRID en tant que client dans le KMS"]
+
+
+
+ a| 
+Ajoutez le KMS au Grid Manager, attribuez-le à un site unique ou à un groupe de sites par défaut, téléchargez les certificats requis et enregistrez la configuration KMS.
+ a| 
+link:kms-adding.html["Ajouter un serveur de gestion de clés (KMS)"]
+
+|===
+
+
+== Installer l'appareil
+
+La configuration d’un nœud d’appareil pour l’utilisation de KMS comprend les étapes de haut niveau suivantes.
+
+. Au cours de l'étape de configuration matérielle de l'installation de l'appliance, utilisez le programme d'installation de l'appliance StorageGRID pour activer le paramètre *Chiffrement de nœud* pour l'appliance.
++
+
+NOTE: Vous ne pouvez pas activer le paramètre *Chiffrement de nœud* après l'ajout d'un appareil à la grille, et vous ne pouvez pas utiliser la gestion des clés externes pour les appareils sur lesquels le chiffrement de nœud n'est pas activé.
+
+. Exécutez le programme d’installation de l’appliance StorageGRID .  Lors de l'installation, une clé de chiffrement de données aléatoire (DEK) est attribuée à chaque volume d'appareil, comme suit :
++
+** Les DEK sont utilisés pour crypter les données sur chaque volume.  Ces clés sont générées à l'aide du chiffrement de disque Linux Unified Key Setup (LUKS) dans le système d'exploitation de l'appliance et ne peuvent pas être modifiées.
+** Chaque DEK individuel est chiffré par une clé de chiffrement à clé principale (KEK).  La KEK initiale est une clé temporaire qui crypte les DEK jusqu'à ce que l'appareil puisse se connecter au KMS.
+
+
+. Ajoutez le nœud de l’appliance à StorageGRID.
+
+
+Voir https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/optional-enabling-node-encryption.html["Activer le cryptage des nœuds"^] pour plus de détails.
+
+
+
+== Processus de cryptage de gestion des clés (se produit automatiquement)
+
+Le chiffrement de gestion des clés comprend les étapes de haut niveau suivantes qui sont exécutées automatiquement.
+
+. Lorsque vous installez un dispositif sur lequel le chiffrement de nœud est activé dans la grille, StorageGRID détermine si une configuration KMS existe pour le site qui contient le nouveau nœud.
++
+** Si un KMS a déjà été configuré pour le site, l'appliance reçoit la configuration KMS.
+** Si un KMS n'a pas encore été configuré pour le site, les données sur l'appliance continuent d'être chiffrées par le KEK temporaire jusqu'à ce que vous configuriez un KMS pour le site et que l'appliance reçoive la configuration KMS.
+
+
+. L'appareil utilise la configuration KMS pour se connecter au KMS et demander une clé de chiffrement.
+. Le KMS envoie une clé de chiffrement à l'appareil.  La nouvelle clé du KMS remplace la KEK temporaire et est désormais utilisée pour chiffrer et déchiffrer les DEK pour les volumes de l'appliance.
++
+
+CAUTION: Toutes les données qui existent avant que le nœud de l’appareil chiffré ne se connecte au KMS configuré sont chiffrées avec une clé temporaire.  Toutefois, les volumes de l'appareil ne doivent pas être considérés comme protégés contre le retrait du centre de données tant que la clé temporaire n'est pas remplacée par la clé de chiffrement KMS.
+
+. Si l'appareil est sous tension ou redémarré, il se reconnecte au KMS pour demander la clé.  La clé, qui est enregistrée dans la mémoire volatile, ne peut pas survivre à une panne de courant ou à un redémarrage.
+

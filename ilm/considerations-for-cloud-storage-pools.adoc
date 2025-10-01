@@ -1,0 +1,128 @@
+---
+permalink: ilm/considerations-for-cloud-storage-pools.html 
+sidebar: sidebar 
+keywords: what is a cloud storage pool, considerations for a cloud storage pool 
+summary: 'Si vous prévoyez d"utiliser un pool de stockage cloud pour déplacer des objets hors du système StorageGRID , vous devez consulter les considérations relatives à la configuration et à l"utilisation des pools de stockage cloud.' 
+---
+= Considérations relatives aux pools de stockage cloud
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si vous prévoyez d'utiliser un pool de stockage cloud pour déplacer des objets hors du système StorageGRID , vous devez consulter les considérations relatives à la configuration et à l'utilisation des pools de stockage cloud.
+
+
+
+== Considérations générales
+
+* En général, le stockage d’archives cloud, tel qu’Amazon S3 Glacier ou le stockage Azure Blob, est un endroit peu coûteux pour stocker des données d’objet.  Cependant, les coûts de récupération des données à partir du stockage d’archives dans le cloud sont relativement élevés.  Pour obtenir le coût global le plus bas, vous devez tenir compte du moment et de la fréquence à laquelle vous accéderez aux objets du pool de stockage cloud.  L'utilisation d'un pool de stockage cloud est recommandée uniquement pour le contenu auquel vous prévoyez d'accéder rarement.
+* L’utilisation de pools de stockage Cloud avec FabricPool n’est pas prise en charge en raison de la latence supplémentaire nécessaire pour récupérer un objet à partir de la cible du pool de stockage Cloud.
+* Les objets avec le verrouillage d'objet S3 activé ne peuvent pas être placés dans les pools de stockage cloud.
+* Si le verrouillage d'objet S3 est activé sur le bucket S3 de destination d'un pool de stockage cloud, la tentative de configuration de la réplication du bucket (PutBucketReplication) échouera avec une erreur AccessDenied.
+* Les combinaisons de plateforme, d'authentification et de protocole suivantes avec le verrouillage d'objet S3 ne sont pas prises en charge pour les pools de stockage cloud :
++
+** *Plateformes* : Google Cloud Platform et Azure
+** *Types d'authentification* : IAM Roles Anywhere et accès anonyme
+** *Protocole* : HTTP
+
+
+
+
+
+
+== Considérations relatives aux ports utilisés pour les pools de stockage cloud
+
+Pour garantir que les règles ILM peuvent déplacer des objets vers et depuis le pool de stockage cloud spécifié, vous devez configurer le ou les réseaux qui contiennent les nœuds de stockage de votre système.  Vous devez vous assurer que les ports suivants peuvent communiquer avec le pool de stockage cloud.
+
+Par défaut, les pools de stockage cloud utilisent les ports suivants :
+
+* *80* : pour les URI de point de terminaison commençant par http
+* *443* : pour les URI de point de terminaison commençant par https
+
+
+Vous pouvez spécifier un port différent lorsque vous créez ou modifiez un pool de stockage cloud.
+
+Si vous utilisez un serveur proxy non transparent, vous devez égalementlink:../admin/configuring-storage-proxy-settings.html["configurer un proxy de stockage"] pour permettre l'envoi de messages à des points de terminaison externes, tels qu'un point de terminaison sur Internet.
+
+
+
+== Considérations relatives aux coûts
+
+L'accès au stockage dans le cloud à l'aide d'un pool de stockage cloud nécessite une connectivité réseau au cloud.  Vous devez prendre en compte le coût de l’infrastructure réseau que vous utiliserez pour accéder au cloud et la provisionner de manière appropriée, en fonction de la quantité de données que vous prévoyez de déplacer entre StorageGRID et le cloud à l’aide du pool de stockage cloud.
+
+Lorsque StorageGRID se connecte au point de terminaison du pool de stockage cloud externe, il émet diverses demandes pour surveiller la connectivité et garantir qu'il peut effectuer les opérations requises.  Bien que certains coûts supplémentaires soient associés à ces demandes, le coût de la surveillance d’un pool de stockage cloud ne devrait représenter qu’une petite fraction du coût global du stockage d’objets dans S3 ou Azure.
+
+Des coûts plus importants peuvent être encourus si vous devez déplacer des objets d'un point de terminaison de pool de stockage cloud externe vers StorageGRID.  Les objets peuvent être déplacés vers StorageGRID dans l'un ou l'autre de ces cas :
+
+* La seule copie de l'objet se trouve dans un pool de stockage Cloud et vous décidez de stocker l'objet dans StorageGRID à la place.  Dans ce cas, vous reconfigurez vos règles et votre politique ILM.  Lorsque l’évaluation ILM se produit, StorageGRID émet plusieurs requêtes pour récupérer l’objet à partir du pool de stockage cloud.  StorageGRID crée ensuite localement le nombre spécifié de copies répliquées ou codées par effacement.  Une fois l’objet déplacé vers StorageGRID, la copie dans le pool de stockage cloud est supprimée.
+* Les objets sont perdus en raison d'une défaillance du nœud de stockage.  Si la seule copie restante d’un objet se trouve dans un pool de stockage cloud, StorageGRID restaure temporairement l’objet et crée une nouvelle copie sur le nœud de stockage récupéré.
+
+
+
+NOTE: Lorsque des objets sont déplacés vers StorageGRID à partir d'un pool de stockage cloud, StorageGRID émet plusieurs requêtes vers le point de terminaison du pool de stockage cloud pour chaque objet.  Avant de déplacer un grand nombre d’objets, contactez le support technique pour obtenir de l’aide afin d’estimer le délai et les coûts associés.
+
+
+
+== S3 : autorisations requises pour le compartiment Cloud Storage Pool
+
+Les politiques du bucket S3 externe utilisé pour un pool de stockage cloud doivent accorder à StorageGRID l'autorisation de déplacer un objet vers le bucket, d'obtenir l'état d'un objet, de restaurer un objet à partir du stockage Glacier lorsque cela est nécessaire, etc.  Idéalement, StorageGRID devrait avoir un accès de contrôle total au bucket(`s3:*` ); cependant, si cela n'est pas possible, la politique de bucket doit accorder les autorisations S3 suivantes à StorageGRID:
+
+* `s3:AbortMultipartUpload`
+* `s3:DeleteObject`
+* `s3:GetObject`
+* `s3:ListBucket`
+* `s3:ListBucketMultipartUploads`
+* `s3:ListMultipartUploadParts`
+* `s3:PutObject`
+* `s3:RestoreObject`
+
+
+
+
+== S3 : Considérations relatives au cycle de vie du bucket externe
+
+Le mouvement des objets entre StorageGRID et le bucket S3 externe spécifié dans le pool de stockage cloud est contrôlé par les règles ILM et les stratégies ILM actives dans StorageGRID.  En revanche, la transition des objets du compartiment S3 externe spécifié dans le pool de stockage Cloud vers Amazon S3 Glacier ou S3 Glacier Deep Archive (ou vers une solution de stockage qui implémente la classe de stockage Glacier) est contrôlée par la configuration du cycle de vie de ce compartiment.
+
+Si vous souhaitez transférer des objets du pool de stockage Cloud, vous devez créer la configuration de cycle de vie appropriée sur le bucket S3 externe et utiliser une solution de stockage qui implémente la classe de stockage Glacier et prend en charge l'API S3 RestoreObject.
+
+Par exemple, supposons que vous souhaitiez que tous les objets déplacés de StorageGRID vers le pool de stockage cloud soient immédiatement transférés vers le stockage Amazon S3 Glacier.  Vous devez créer une configuration de cycle de vie sur le bucket S3 externe qui spécifie une action unique (*Transition*) comme suit :
+
+[listing]
+----
+<LifecycleConfiguration>
+  <Rule>
+    <ID>Transition Rule</ID>
+    <Filter>
+       <Prefix></Prefix>
+    </Filter>
+    <Status>Enabled</Status>
+    <Transition>
+      <Days>0</Days>
+      <StorageClass>GLACIER</StorageClass>
+    </Transition>
+  </Rule>
+</LifecycleConfiguration>
+----
+Cette règle transférerait tous les objets de compartiment vers Amazon S3 Glacier le jour de leur création (c'est-à-dire le jour où ils ont été déplacés de StorageGRID vers le pool de stockage cloud).
+
+
+CAUTION: Lors de la configuration du cycle de vie du bucket externe, n'utilisez jamais d'actions *Expiration* pour définir le moment où les objets expirent.  Les actions d’expiration amènent le système de stockage externe à supprimer les objets expirés.  Si vous tentez ultérieurement d'accéder à un objet expiré à partir de StorageGRID, l'objet supprimé ne sera pas trouvé.
+
+Si vous souhaitez transférer des objets du pool de stockage cloud vers S3 Glacier Deep Archive (au lieu d'Amazon S3 Glacier), spécifiez `<StorageClass>DEEP_ARCHIVE</StorageClass>` dans le cycle de vie du bucket.  Cependant, sachez que vous ne pouvez pas utiliser le `Expedited` niveau pour restaurer les objets de S3 Glacier Deep Archive.
+
+
+
+== Azure : Considérations relatives au niveau d'accès
+
+Lorsque vous configurez un compte de stockage Azure, vous pouvez définir le niveau d’accès par défaut sur Chaud ou Froid.  Lors de la création d'un compte de stockage à utiliser avec un pool de stockage cloud, vous devez utiliser le niveau Hot comme niveau par défaut.  Même si StorageGRID définit immédiatement le niveau sur Archive lorsqu'il déplace des objets vers le pool de stockage cloud, l'utilisation d'un paramètre par défaut sur Chaud garantit qu'aucun frais de suppression anticipée ne vous sera facturé pour les objets supprimés du niveau Froid avant le minimum de 30 jours.
+
+
+
+== Azure : la gestion du cycle de vie n'est pas prise en charge
+
+N’utilisez pas la gestion du cycle de vie du stockage Azure Blob pour le conteneur utilisé avec un pool de stockage cloud.  Les opérations du cycle de vie peuvent interférer avec les opérations du pool de stockage Cloud.
+
+.Informations connexes
+link:creating-cloud-storage-pool.html["Créer un pool de stockage cloud"]

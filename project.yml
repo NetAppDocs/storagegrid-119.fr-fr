@@ -1,0 +1,414 @@
+---
+settings:
+  name: StorageGRID software
+  search: storagegrid-enable,storagegrid,storagegrid-appliances
+  internal:
+    pdf_enabled: true
+    termcheck_enabled: false
+  prod:
+    pdf_enabled: true
+    harmony_enabled: false
+    hide_language_selector: false
+  versions:
+  - version-number: '11.9'
+    url: "/storagegrid-119"
+  - version-number: '12.0'
+    url: "/storagegrid"
+  - version-number: '11.8'
+    url: "/storagegrid-118"
+  - version-number: '11.7'
+    url: "/storagegrid-117"
+  - version-number: '11.6'
+    url: "/storagegrid-116"
+  - version-number: '11.5'
+    url: "/storagegrid-115"
+  langs: fr-fr,us-en,de-de,es-es,it-it,pt-br,ja-jp,ko-kr,zh-cn,zh-tw
+sidebar:
+  entries:
+  - title: Documentation de StorageGRID 11.9
+    url: "/index.html"
+  - title: Appareils StorageGRID
+    url: "/storagegrid-hardware.html"
+  - title: Notes de version
+    url: "/release-notes/index.html"
+  - title: Commencer
+    url: "/landing-get-started/index.html"
+    entries:
+    - section: primer
+    - section: network
+    - title: Démarrage rapide
+      url: "/primer/quick-start.html"
+  - title: Installer, mettre à niveau et corriger
+    url: "/landing-install-upgrade/index.html"
+    entries:
+    - title: Installer des appareils électroménagers
+      url: "/storagegrid-hardware.html"
+    - section: rhel
+    - section: ubuntu
+    - section: vmware
+    - section: upgrade
+    - title: Appliquer le correctif StorageGRID
+      entries:
+      - title: Procédure de correctif
+        url: "/maintain/storagegrid-hotfix-procedure.html"
+      - title: Comment votre système est affecté lorsque vous appliquez un correctif
+        url: "/maintain/how-your-system-is-affected-when-you-apply-hotfix.html"
+      - title: Obtenir le matériel nécessaire pour le correctif
+        url: "/maintain/obtaining-required-materials-for-hotfix.html"
+      - title: Télécharger le fichier de correctif
+        url: "/maintain/downloading-hotfix-file.html"
+      - title: Vérifiez l'état du système avant d'appliquer le correctif
+        url: "/maintain/checking-systems-condition-before-applying-hotfix.html"
+      - title: Appliquer le correctif
+        url: "/maintain/applying-hotfix.html"
+  - title: Configurer et gérer
+    url: "/landing-configure-manage/index.html"
+    entries:
+    - section: admin
+    - section: ilm
+    - section: harden
+    - section: fabricpool
+  - title: Utiliser StorageGRID
+    url: "/landing-use/index.html"
+    entries:
+    - section: tenant
+    - section: s3
+    - section: swift
+  - title: Surveiller et dépanner
+    url: "/landing-monitor-troubleshoot/index.html"
+    entries:
+    - section: monitor
+    - section: troubleshoot
+    - section: audit
+  - section: expand
+  - title: Entretenez votre réseau
+    url: "/landing-maintain/index.html"
+    entries:
+    - title: Maintenance du réseau
+      url: "/maintain/index.html"
+    - title: Télécharger le package de récupération
+      url: "/maintain/downloading-recovery-package.html"
+    - title: Décommissionner les nœuds ou le site
+      entries:
+      - title: Décommissionner un nœud ou un site
+        url: "/maintain/decommission-procedure.html"
+      - title: Décommissionner les nœuds
+        entries:
+        - title: Déclassement des nœuds de réseau
+          url: "/maintain/grid-node-decommissioning.html"
+        - title: Considérations relatives aux nœuds d'administration ou de passerelle
+          url: "/maintain/considerations-for-decommissioning-admin-or-gateway-nodes.html"
+        - title: Considérations relatives aux nœuds de stockage
+          entries:
+          - title: Considérations générales
+            url: "/maintain/considerations-for-decommissioning-storage-nodes.html"
+          - title: Quorum du CDA
+            url: "/maintain/understanding-adc-service-quorum.html"
+          - title: Examiner la politique ILM et la configuration du stockage
+            url: "/maintain/reviewing-ilm-policy-and-storage-configuration.html"
+          - title: Consolider les nœuds de stockage
+            url: "/maintain/consolidating-storage-nodes.html"
+          - title: Mettre hors service plusieurs nœuds de stockage
+            url: "/maintain/decommissioning-multiple-storage-nodes.html"
+        - title: Vérifier les tâches de réparation de données
+          url: "/maintain/checking-data-repair-jobs.html"
+        - title: Rassembler le matériel nécessaire
+          url: "/maintain/gathering-required-materials-node-decom.html"
+        - title: Accéder à la page des nœuds de déclassement
+          url: "/maintain/accessing-decommission-nodes-page.html"
+        - title: Décommissionner les nœuds de réseau déconnectés
+          url: "/maintain/decommissioning-disconnected-grid-nodes.html"
+        - title: Décommissionner les nœuds de réseau connectés
+          url: "/maintain/decommissioning-connected-grid-nodes.html"
+        - title: Suspendre et reprendre le processus de mise hors service des nœuds
+            de stockage
+          url: "/maintain/pausing-and-resuming-decommission-process-for-storage-nodes.html"
+      - title: Site de déclassement
+        entries:
+        - title: Considérations relatives à la suppression du site
+          url: "/maintain/considerations-for-removing-site.html"
+        - title: Rassembler le matériel nécessaire
+          url: "/maintain/gathering-required-materials-site-decom.html"
+        - title: Sélectionner un site
+          url: "/maintain/step-1-select-site.html"
+        - title: Voir les détails
+          url: "/maintain/step-2-view-details.html"
+        - title: Réviser les politiques ILM
+          url: "/maintain/step-3-revise-ilm-policy.html"
+        - title: Supprimer les références ILM
+          url: "/maintain/step-4-remove-ilm-references.html"
+        - title: Résoudre les conflits de nœuds (et démarrer la mise hors service)
+          url: "/maintain/step-5-resolve-node-conflicts.html"
+        - title: Surveiller le déclassement
+          url: "/maintain/step-6-monitor-decommission.html"
+    - title: Renommer la grille, le site ou le nœud
+      entries:
+      - title: Utiliser la procédure de renommage
+        url: "/maintain/rename-grid-site-node-overview.html"
+      - title: Ajouter ou mettre à jour les noms d'affichage
+        url: "/maintain/rename-grid-site-node.html"
+    - title: Procédures de nœud
+      entries:
+      - title: Procédures de maintenance des nœuds
+        pdf-filename: Procédures de nœud
+        url: "/maintain/grid-node-procedures.html"
+      - title: Procédures du gestionnaire de serveur
+        entries:
+        - title: Afficher l'état et la version du gestionnaire de serveur
+          url: "/maintain/viewing-server-manager-status-and-version.html"
+        - title: Afficher l'état actuel de tous les services
+          url: "/maintain/viewing-current-status-of-all-services.html"
+        - title: Démarrer le Gestionnaire de serveur et tous les services
+          url: "/maintain/starting-server-manager-and-all-services.html"
+        - title: Redémarrez le Gestionnaire de serveur et tous les services
+          url: "/maintain/restarting-server-manager-and-all-services.html"
+        - title: Arrêtez le gestionnaire de serveur et tous les services
+          url: "/maintain/stopping-server-manager-and-all-services.html"
+        - title: Afficher l'état actuel du service
+          url: "/maintain/viewing-current-status-of-service.html"
+        - title: Arrêter le service
+          url: "/maintain/stopping-service.html"
+        - title: Forcer la fin du service
+          url: "/maintain/forcing-service-to-terminate.html"
+        - title: Démarrer ou redémarrer le service
+          url: "/maintain/starting-or-restarting-service.html"
+        - title: Utiliser un fichier DoNotStart
+          url: "/maintain/using-donotstart-file.html"
+        - title: Dépannage du gestionnaire de serveur
+          url: "/maintain/accessing-server-manager-log-file.html"
+      - title: Procédures de redémarrage, d'arrêt et d'alimentation
+        entries:
+        - title: Effectuer un redémarrage progressif
+          url: "/maintain/rolling-reboot-procedure.html"
+        - title: Redémarrer le nœud à partir de l'onglet Tâches
+          url: "/maintain/rebooting-grid-node-from-grid-manager.html"
+        - title: Redémarrer le nœud à partir de l'interpréteur de commandes
+          url: "/maintain/rebooting-grid-node-from-command-shell.html"
+        - title: Arrêter le nœud
+          url: "/maintain/shutting-down-grid-node.html"
+        - title: Mettre l'hôte hors tension
+          url: "/maintain/powering-down-host.html"
+        - title: Éteindre et rallumer tous les nœuds
+          url: "/maintain/powering-off-and-on-all-nodes-in-grid.html"
+      - title: Procédures de remappage des ports
+        entries:
+        - title: Supprimer les remappages de ports
+          url: "/maintain/removing-port-remaps.html"
+        - title: Supprimer les remappages de ports sur les hôtes bare metal
+          url: "/maintain/removing-port-remaps-on-bare-metal-hosts.html"
+    - title: Procédures réseau
+      entries:
+      - title: Mettre à jour les sous-réseaux pour Grid Network
+        url: "/maintain/updating-subnets-for-grid-network.html"
+      - title: Configurer les adresses IP
+        entries:
+        - title: Directives relatives aux adresses IP
+          url: "/maintain/configuring-ip-addresses.html"
+        - title: Modifier la configuration du réseau de nœuds
+          url: "/maintain/changing-nodes-network-configuration.html"
+        - title: Ajouter ou modifier des listes de sous-réseaux sur le réseau d'administration
+          url: "/maintain/adding-to-or-changing-subnet-lists-on-admin-network.html"
+        - title: Ajouter ou modifier des listes de sous-réseaux sur Grid Network
+          url: "/maintain/adding-to-or-changing-subnet-lists-on-grid-network.html"
+        - title: Modifier les adresses IP de tous les nœuds de la grille
+          url: "/maintain/changing-ip-addresses-and-mtu-values-for-all-nodes-in-grid.html"
+      - title: Ajouter des interfaces au nœud existant
+        entries:
+        - title: 'Linux : ajouter des interfaces administrateur ou client'
+          url: "/maintain/linux-adding-interfaces-to-existing-node.html"
+        - title: 'Linux : ajouter des interfaces trunk ou d''accès'
+          url: "/maintain/linux-adding-trunk-or-access-interfaces-to-node.html"
+        - title: 'VMware : ajouter des interfaces trunk ou d''accès'
+          url: "/maintain/vmware-adding-trunk-or-access-interfaces-to-node.html"
+      - title: Configurer les serveurs DNS
+        url: "/maintain/configuring-dns-servers.html"
+      - title: Modifier la configuration DNS pour un nœud de grille unique
+        url: "/maintain/modifying-dns-configuration-for-single-grid-node.html"
+      - title: Gérer les serveurs NTP
+        url: "/maintain/configuring-ntp-servers.html"
+      - title: Restaurer la connectivité réseau pour les nœuds isolés
+        url: "/maintain/restoring-network-connectivity-for-isolated-nodes.html"
+    - title: Procédures d'hôte et de middleware
+      entries:
+      - title: 'Linux : migrer le nœud de grille vers un nouvel hôte'
+        url: "/maintain/linux-migrating-grid-node-to-new-host.html"
+      - title: 'VMware : configurer la machine virtuelle pour un redémarrage automatique'
+        url: "/maintain/vmware-configuring-virtual-machine-for-automatic-restart.html"
+  - title: Récupérer ou remplacer les nœuds
+    url: "/landing-recover/index.html"
+    entries:
+    - title: Avertissements et considérations pour la récupération des nœuds de grille
+      url: "/maintain/warnings-and-considerations-for-grid-node-recovery.html"
+    - title: Rassembler les matériaux nécessaires à la récupération des nœuds du réseau
+      url: "/maintain/gathering-required-materials-for-grid-node-recovery.html"
+    - title: Sélectionnez la procédure de récupération du nœud
+      url: "/maintain/selecting-node-recovery-procedure.html"
+    - title: Récupérer après une panne de nœud de stockage
+      entries:
+      - title: Récupération du nœud de stockage
+        url: "/maintain/recovering-from-storage-node-failures.html"
+      - title: Récupérer le nœud de stockage de l'appareil
+        entries:
+        - title: Avertissements concernant la récupération des nœuds de stockage de
+            l'appliance
+          pdf-filename: Récupérer le nœud de stockage de l'appareil
+          url: "/maintain/recovering-storagegrid-appliance-storage-node.html"
+        - title: Préparer le nœud de stockage de l'appareil pour la réinstallation
+          url: "/maintain/preparing-appliance-storage-node-for-reinstallation.html"
+        - title: Démarrer l'installation de l'appliance StorageGRID
+          url: "/maintain/starting-storagegrid-appliance-installation.html"
+        - title: Surveiller l'installation de l'appliance StorageGRID
+          url: "/maintain/monitoring-storagegrid-appliance-installation-sn.html"
+        - title: Sélectionnez Démarrer la récupération pour configurer le nœud de
+            stockage de l'appliance
+          url: "/maintain/selecting-start-recovery-to-configure-appliance-storage-node.html"
+        - title: Remonter et reformater les volumes de stockage de l'appareil (étapes
+            manuelles)
+          url: "/maintain/remounting-and-reformatting-appliance-storage-volumes.html"
+        - title: Restaurer les données d'objet sur le volume de stockage de l'appareil
+          url: "/maintain/restoring-object-data-to-storage-volume-for-appliance.html"
+        - title: Vérifier l'état du stockage après la récupération du nœud de stockage
+            de l'appliance
+          url: "/maintain/checking-storage-state-after-recovering-sga.html"
+      - title: Récupérer après une panne de volume de stockage lorsque le lecteur
+          système est intact
+        entries:
+        - title: Tâches de récupération
+          pdf-filename: Récupérer après une panne de volume de stockage lorsque le
+            lecteur système est intact
+          url: "/maintain/recovering-from-storage-volume-failure-where-system-drive-is-intact.html"
+        - title: Avertissements concernant la récupération du volume de stockage
+          url: "/maintain/reviewing-warnings-about-storage-volume-recovery.html"
+        - title: Identifier et démonter les volumes de stockage défaillants
+          url: "/maintain/identifying-and-unmounting-failed-storage-volumes.html"
+        - title: Récupérer les volumes de stockage défaillants et reconstruire la
+            base de données Cassandra
+          url: "/maintain/recovering-failed-storage-volumes-and-rebuilding-cassandra-database.html"
+        - title: Restaurer les données de l'objet sur le volume de stockage où le
+            lecteur système est intact
+          url: "/maintain/restoring-object-data-to-storage-volume-where-system-drive-is-intact.html"
+        - title: Vérifier l'état du stockage après la récupération des volumes de
+            stockage
+          url: "/maintain/checking-storage-state-after-recovering-storage-volumes.html"
+      - title: Récupérer après une panne du lecteur système
+        entries:
+        - title: Avertissements pour la récupération du lecteur système du nœud de
+            stockage
+          url: "/maintain/reviewing-warnings-for-system-drive-recovery.html"
+        - title: Remplacer le nœud de stockage
+          url: "/maintain/replacing-storage-node.html"
+        - title: Sélectionnez Démarrer la récupération pour configurer le nœud de
+            stockage
+          url: "/maintain/selecting-start-recovery-to-configure-storage-node.html"
+        - title: Remonter et reformater les volumes de stockage (étapes manuelles)
+          url: "/maintain/remounting-and-reformatting-storage-volumes-manual-steps.html"
+        - title: Restaurer les données de l'objet sur le volume de stockage (défaillance
+            du lecteur système)
+          url: "/maintain/restoring-object-data-to-storage-volume.html"
+        - title: Vérifier l'état du stockage après la récupération du lecteur système
+            du nœud de stockage
+          url: "/maintain/checking-storage-state-after-recovering-storage-node-system-drive.html"
+      - title: Restaurer les données d'objet à l'aide de Grid Manager
+        url: "/maintain/restoring-volume.html"
+      - title: Surveiller les tâches de réparation des données
+        url: "/maintain/monitor-repairs.html"
+    - title: Récupérer après une panne du nœud d'administration
+      entries:
+      - title: Nœud d'administration principal ou non principal
+        pdf-filename: Récupérer après une panne du nœud d'administration
+        url: "/maintain/recovering-from-admin-node-failures.html"
+      - title: Récupérer après une panne du nœud d'administration principal
+        entries:
+        - title: Récupérer le nœud d'administration principal
+          pdf-filename: Récupérer après une panne du nœud d'administration principal
+          url: "/maintain/recovering-from-primary-admin-node-failures.html"
+        - title: Copier les journaux d'audit du nœud d'administration principal défaillant
+          url: "/maintain/copying-audit-logs-from-failed-primary-admin-node.html"
+        - title: Remplacer le nœud d'administration principal
+          url: "/maintain/replacing-primary-admin-node.html"
+        - title: Configurer le nœud d'administration principal de remplacement
+          url: "/maintain/configuring-replacement-primary-admin-node.html"
+        - title: Déterminer les exigences de correctif pour le nœud d'administration
+            principal
+          url: "/maintain/assess-hotfix-requirement-during-primary-admin-node-recovery.html"
+        - title: Restaurer le journal d'audit sur le nœud d'administration principal
+            récupéré
+          url: "/maintain/restoring-audit-log-on-recovered-primary-admin-node.html"
+        - title: Restaurer la base de données du nœud d'administration lors de la
+            récupération du nœud d'administration principal
+          url: "/maintain/restoring-admin-node-database-primary-admin-node.html"
+        - title: Restaurer les métriques Prometheus lors de la récupération du nœud
+            d'administration principal
+          url: "/maintain/restoring-prometheus-metrics-primary-admin-node.html"
+      - title: Récupérer après une panne d'un nœud d'administration non principal
+        entries:
+        - title: Récupérer le nœud d'administration non principal
+          pdf-filename: Récupérer après une panne d'un nœud d'administration non principal
+          url: "/maintain/recovering-from-non-primary-admin-node-failures.html"
+        - title: Copier les journaux d'audit à partir d'un nœud d'administration non
+            principal défaillant
+          url: "/maintain/copying-audit-logs-from-failed-non-primary-admin-node.html"
+        - title: Remplacer le nœud d'administration non principal
+          url: "/maintain/replacing-non-primary-admin-node.html"
+        - title: Sélectionnez Démarrer la récupération pour configurer le nœud d’administration
+            non principal
+          url: "/maintain/selecting-start-recovery-to-configure-non-primary-admin-node.html"
+        - title: Restaurer le journal d'audit sur le nœud d'administration non principal
+            récupéré
+          url: "/maintain/restoring-audit-log-on-recovered-non-primary-admin-node.html"
+        - title: Restaurer la base de données du nœud d'administration lors de la
+            récupération d'un nœud d'administration non principal
+          url: "/maintain/restoring-admin-node-database-non-primary-admin-node.html"
+        - title: Restaurer les métriques Prometheus lors de la récupération d'un nœud
+            d'administration non principal
+          url: "/maintain/restoring-prometheus-metrics-non-primary-admin-node.html"
+    - title: Récupérer après une panne du nœud de passerelle
+      entries:
+      - title: Remplacer le nœud de passerelle
+        url: "/maintain/replacing-gateway-node.html"
+      - title: Sélectionnez Démarrer la récupération pour configurer le nœud de passerelle
+        url: "/maintain/selecting-start-recovery-to-configure-gateway-node.html"
+    - title: Récupérer après une panne du nœud d'archivage
+      entries:
+      - title: Récupérer après une panne du nœud d'archivage
+        pdf-filename: Récupérer après une panne du nœud d'archivage
+        url: "/maintain/recovering-from-archive-node-failures.html"
+    - title: Remplacer le nœud Linux
+      entries:
+      - title: Remplacement du nœud Linux
+        pdf-filename: Remplacer le nœud Linux (tous les types de nœuds de grille)
+        url: "/maintain/all-node-types-replacing-linux-node.html"
+      - title: Déployer de nouveaux hôtes Linux
+        url: "/maintain/deploying-new-linux-hosts.html"
+      - title: Restaurer les nœuds de la grille sur l'hôte
+        url: "/maintain/restoring-existing-nodes.html"
+      - title: 'Étapes suivantes : effectuez des étapes de récupération supplémentaires,
+          si nécessaire.'
+        url: "/maintain/whats-next-performing-additional-recovery-steps-if-required.html"
+    - title: Remplacer le nœud VMware
+      url: "/maintain/all-node-types-replacing-vmware-node.html"
+    - title: Remplacer le nœud défaillant par un dispositif de services
+      entries:
+      - title: Directives de remplacement
+        pdf-filename: Remplacer le nœud défaillant par un dispositif de services
+        url: "/maintain/replacing-failed-node-with-services-appliance.html"
+      - title: Installer l'appareil de services (changement de plateforme uniquement)
+        url: "/maintain/installing-services-appliance-platform-change-only.html"
+      - title: Préparer l'appareil pour la réinstallation (remplacement de la plate-forme
+          uniquement)
+        url: "/maintain/preparing-appliance-for-reinstallation-platform-replacement-only.html"
+      - title: Démarrer l'installation du logiciel sur l'appareil de services
+        url: "/maintain/starting-software-installation-on-services-appliance-recovery.html"
+      - title: Surveillance de l'installation des appareils de services
+        url: "/maintain/monitoring-services-appliance-installation.html"
+    - title: Comment le support technique récupère un site
+      url: "/maintain/how-site-recovery-is-performed-by-technical-support.html"
+  - title: Activer StorageGRID
+    url: "/storagegrid-enable.html"
+  - title: StorageGRID et BlueXP
+    url: "/storagegrid-bluexp.html"
+  - title: Mentions légales
+    url: "/legal-notices.html"
+product-family:
+  name: StorageGRID documentation
+  repo: storagegrid-family

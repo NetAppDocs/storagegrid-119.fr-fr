@@ -1,0 +1,217 @@
+---
+permalink: network/storagegrid-network-types.html 
+sidebar: sidebar 
+keywords: network types, grid traffic, admin traffic, client traffic, grid network, admin network, client network 
+summary: 'Les nœuds de grille d"un système StorageGRID traitent le trafic de grille, le trafic d"administration et le trafic client.  Vous devez configurer le réseau de manière appropriée pour gérer ces trois types de trafic et assurer le contrôle et la sécurité.' 
+---
+= Types de réseaux StorageGRID
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les nœuds de grille d'un système StorageGRID traitent le _trafic de grille_, le _trafic d'administration_ et le _trafic client_.  Vous devez configurer le réseau de manière appropriée pour gérer ces trois types de trafic et assurer le contrôle et la sécurité.
+
+
+
+== Types de trafic
+
+[cols="1a,4a,2a"]
+|===
+| Type de trafic | Description | Type de réseau 
+
+
+ a| 
+Trafic sur le réseau
+ a| 
+Le trafic StorageGRID interne qui circule entre tous les nœuds de la grille.  Tous les nœuds du réseau doivent pouvoir communiquer avec tous les autres nœuds du réseau sur ce réseau.
+ a| 
+Réseau de grille (obligatoire)
+
+
+
+ a| 
+Trafic administratif
+ a| 
+Le trafic utilisé pour l'administration et la maintenance du système.
+ a| 
+Réseau d'administration (facultatif),<<Réseaux VLAN optionnels,Réseau VLAN (facultatif)>>
+
+
+
+ a| 
+Trafic client
+ a| 
+Le trafic qui circule entre les applications clientes externes et la grille, y compris toutes les demandes de stockage d'objets provenant des clients S3.
+ a| 
+Réseau client (facultatif),<<Réseaux VLAN optionnels,Réseau VLAN (facultatif)>>
+
+|===
+Vous pouvez configurer la mise en réseau des manières suivantes :
+
+* Réseau de grille uniquement
+* Réseaux de grille et d'administration
+* Réseaux de grille et de clients
+* Réseaux de grille, d'administration et de clients
+
+
+Le réseau Grid est obligatoire et peut gérer tout le trafic du réseau.  Les réseaux administrateur et client peuvent être inclus au moment de l'installation ou ajoutés ultérieurement pour s'adapter aux changements d'exigences.  Bien que le réseau d'administration et le réseau client soient facultatifs, lorsque vous utilisez ces réseaux pour gérer le trafic administratif et client, le réseau de grille peut être rendu isolé et sécurisé.
+
+Les ports internes ne sont accessibles que via le réseau Grid.  Les ports externes sont accessibles depuis tous les types de réseaux.  Cette flexibilité offre plusieurs options pour la conception d'un déploiement StorageGRID et la configuration du filtrage IP et des ports externes dans les commutateurs et les pare-feu. Voirlink:../network/internal-grid-node-communications.html["communications internes des nœuds de grille"] etlink:../network/external-communications.html["communications externes"] .
+
+
+
+== Interfaces réseau
+
+Les nœuds StorageGRID sont connectés à chaque réseau à l'aide des interfaces spécifiques suivantes :
+
+[cols="1a,1a"]
+|===
+| Réseau | Nom de l'interface 
+
+
+ a| 
+Réseau de grille (obligatoire)
+ a| 
+eth0
+
+
+
+ a| 
+Réseau d'administration (facultatif)
+ a| 
+eth1
+
+
+
+ a| 
+Réseau client (facultatif)
+ a| 
+eth2
+
+|===
+Pour plus de détails sur le mappage des ports virtuels ou physiques aux interfaces réseau des nœuds, consultez les instructions d'installation :
+
+.Nœuds basés sur des logiciels
+* link:../rhel/index.html["Installer StorageGRID sur Red Hat Enterprise Linux"]
+* link:../ubuntu/index.html["Installer StorageGRID sur Ubuntu ou Debian"]
+* link:../vmware/index.html["Installer StorageGRID sur VMware"]
+
+
+.Nœuds d'appareils
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/hardware-description-sg6100.html["Appareil de stockage SG6160"^]
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/hardware-description-sg6100.html["Appareil de stockage SGF6112"^]
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/hardware-description-sg6000.html["Appareil de stockage SG6000"^]
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/hardware-description-sg5800.html["Appareil de stockage SG5800"^]
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/hardware-description-sg5700.html["Appareil de stockage SG5700"^]
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/hardware-description-sg110-and-1100.html["Appareils de service SG110 et SG1100"^]
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/hardware-description-sg100-and-1000.html["Appareils de service SG100 et SG1000"^]
+
+
+
+
+=== Informations réseau pour chaque nœud
+
+Vous devez configurer les éléments suivants pour chaque réseau que vous activez sur un nœud :
+
+* adresse IP
+* Masque de sous-réseau
+* Adresse IP de la passerelle
+
+
+Vous ne pouvez configurer qu'une seule combinaison adresse IP/masque/passerelle pour chacun des trois réseaux sur chaque nœud de grille.  Si vous ne souhaitez pas configurer de passerelle pour un réseau, vous devez utiliser l'adresse IP comme adresse de passerelle.
+
+
+
+=== Groupes de haute disponibilité
+
+Les groupes haute disponibilité (HA) offrent la possibilité d'ajouter des adresses IP virtuelles (VIP) à l'interface réseau de grille ou de client. Pour plus d'informations, consultez la section link:../admin/managing-high-availability-groups.html["Gérer les groupes de haute disponibilité"] .
+
+
+
+== Réseau de grille
+
+Le réseau Grid est requis.  Il est utilisé pour tout le trafic interne de StorageGRID .  Le réseau Grid fournit une connectivité entre tous les nœuds du réseau, sur tous les sites et sous-réseaux.  Tous les nœuds du réseau Grid doivent pouvoir communiquer avec tous les autres nœuds.  Le réseau Grid peut être constitué de plusieurs sous-réseaux.  Les réseaux contenant des services de grille critiques, tels que NTP, peuvent également être ajoutés en tant que sous-réseaux de grille.
+
+
+NOTE: StorageGRID ne prend pas en charge la traduction d'adresses réseau (NAT) entre les nœuds.
+
+Le réseau Grid peut être utilisé pour tout le trafic administrateur et tout le trafic client, même si le réseau administrateur et le réseau client sont configurés.  La passerelle du réseau Grid est la passerelle par défaut du nœud, sauf si le réseau client est configuré sur le nœud.
+
+
+CAUTION: Lors de la configuration du réseau Grid, vous devez vous assurer que le réseau est sécurisé contre les clients non approuvés, tels que ceux présents sur Internet ouvert.
+
+Notez les exigences et les détails suivants pour la passerelle Grid Network :
+
+* La passerelle du réseau de grille doit être configurée s'il existe plusieurs sous-réseaux de grille.
+* La passerelle du réseau Grid est la passerelle par défaut du nœud jusqu'à ce que la configuration du réseau soit terminée.
+* Les itinéraires statiques sont générés automatiquement pour tous les nœuds vers tous les sous-réseaux configurés dans la liste globale des sous-réseaux du réseau Grid.
+* Si un réseau client est ajouté, la passerelle par défaut passe de la passerelle du réseau de grille à la passerelle du réseau client une fois la configuration de la grille terminée.
+
+
+
+
+== Réseau d'administration
+
+Le réseau d'administration est facultatif.  Une fois configuré, il peut être utilisé pour l'administration du système et le trafic de maintenance.  Le réseau d’administration est généralement un réseau privé et n’a pas besoin d’être routable entre les nœuds.
+
+Vous pouvez choisir sur quels nœuds de grille le réseau d'administration doit être activé.
+
+Lorsque vous utilisez le réseau d’administration, le trafic administratif et de maintenance n’a pas besoin de transiter par le réseau Grid.  Les utilisations typiques du réseau d’administration incluent les suivantes :
+
+* Accès aux interfaces utilisateur de Grid Manager et Tenant Manager.
+* Accès aux services critiques tels que les serveurs NTP, les serveurs DNS, les serveurs de gestion de clés externes (KMS) et les serveurs Lightweight Directory Access Protocol (LDAP).
+* Accès aux journaux d’audit sur les nœuds d’administration.
+* Accès au protocole Secure Shell (SSH) pour la maintenance et le support.
+
+
+Le réseau d'administration n'est jamais utilisé pour le trafic interne du réseau.  Une passerelle réseau d'administration est fournie et permet au réseau d'administration de communiquer avec plusieurs sous-réseaux externes.  Cependant, la passerelle du réseau d’administration n’est jamais utilisée comme passerelle par défaut du nœud.
+
+Notez les exigences et les détails suivants pour la passerelle du réseau d’administration :
+
+* La passerelle du réseau d'administration est requise si les connexions doivent être établies depuis l'extérieur du sous-réseau du réseau d'administration ou si plusieurs sous-réseaux du réseau d'administration sont configurés.
+* Des itinéraires statiques sont créés pour chaque sous-réseau configuré dans la liste des sous-réseaux du réseau d'administration du nœud.
+
+
+
+
+== Réseau de clients
+
+Le réseau client est facultatif.  Une fois configuré, il est utilisé pour fournir l'accès aux services de grille pour les applications clientes telles que S3.  Si vous prévoyez de rendre les données StorageGRID accessibles à une ressource externe (par exemple, un pool de stockage cloud ou le service de réplication StorageGRID CloudMirror), la ressource externe peut également utiliser le réseau client.  Les nœuds de grille peuvent communiquer avec n’importe quel sous-réseau accessible via la passerelle du réseau client.
+
+Vous pouvez choisir sur quels nœuds de grille le réseau client doit être activé.  Tous les nœuds ne doivent pas nécessairement se trouver sur le même réseau client et les nœuds ne communiqueront jamais entre eux via le réseau client.  Le réseau client ne devient opérationnel qu’une fois l’installation du réseau terminée.
+
+Pour plus de sécurité, vous pouvez spécifier que l'interface réseau client d'un nœud ne soit pas approuvée afin que le réseau client soit plus restrictif quant aux connexions autorisées.  Si l'interface réseau client d'un nœud n'est pas approuvée, l'interface accepte les connexions sortantes telles que celles utilisées par la réplication CloudMirror, mais accepte uniquement les connexions entrantes sur les ports qui ont été explicitement configurés comme points de terminaison d'équilibrage de charge. Voirlink:../admin/manage-firewall-controls.html["Gérer les contrôles du pare-feu"] etlink:../admin/configuring-load-balancer-endpoints.html["Configurer les points de terminaison de l'équilibreur de charge"] .
+
+Lorsque vous utilisez un réseau client, le trafic client n’a pas besoin de traverser le réseau Grid.  Le trafic du réseau Grid peut être séparé sur un réseau sécurisé et non routable.  Les types de nœuds suivants sont souvent configurés avec un réseau client :
+
+* Nœuds de passerelle, car ces nœuds fournissent l’accès au service d’équilibrage de charge StorageGRID et l’accès client S3 à la grille.
+* Nœuds de stockage, car ces nœuds fournissent un accès au protocole S3, aux pools de stockage Cloud et au service de réplication CloudMirror.
+* Nœuds d'administration, pour garantir que les utilisateurs locataires peuvent se connecter au gestionnaire de locataires sans avoir besoin d'utiliser le réseau d'administration.
+
+
+Notez les points suivants pour la passerelle réseau client :
+
+* La passerelle du réseau client est requise si le réseau client est configuré.
+* La passerelle du réseau client devient la route par défaut pour le nœud de grille lorsque la configuration de la grille est terminée.
+
+
+
+
+== Réseaux VLAN optionnels
+
+Si nécessaire, vous pouvez éventuellement utiliser des réseaux LAN virtuels (VLAN) pour le trafic client et pour certains types de trafic administrateur.  Le trafic réseau ne peut cependant pas utiliser une interface VLAN.  Le trafic StorageGRID interne entre les nœuds doit toujours utiliser le réseau Grid sur eth0.
+
+Pour prendre en charge l’utilisation des VLAN, vous devez configurer une ou plusieurs interfaces sur un nœud en tant qu’interfaces de jonction au niveau du commutateur.  Vous pouvez configurer l'interface réseau Grid (eth0) ou l'interface réseau client (eth2) pour qu'elle soit une jonction, ou vous pouvez ajouter des interfaces de jonction au nœud.
+
+Si eth0 est configuré comme une liaison, le trafic du réseau Grid circule sur l'interface native de la liaison, telle que configurée sur le commutateur.  De même, si eth2 est configuré en tant que trunk et que le réseau client est également configuré sur le même nœud, le réseau client utilise le VLAN natif du port trunk tel que configuré sur le commutateur.
+
+Seul le trafic d'administration entrant, tel que celui utilisé pour le trafic SSH, Grid Manager ou Tenant Manager, est pris en charge sur les réseaux VLAN.  Le trafic sortant, tel que celui utilisé pour NTP, DNS, LDAP, KMS et les pools de stockage cloud, n'est pas pris en charge sur les réseaux VLAN.
+
+
+NOTE: Les interfaces VLAN peuvent être ajoutées uniquement aux nœuds d'administration et aux nœuds de passerelle.  Vous ne pouvez pas utiliser une interface VLAN pour l’accès client ou administrateur aux nœuds de stockage.
+
+Voirlink:../admin/configure-vlan-interfaces.html["Configurer les interfaces VLAN"] pour obtenir des instructions et des directives.
+
+Les interfaces VLAN ne sont utilisées que dans les groupes HA et se voient attribuer des adresses VIP sur le nœud actif.  Voirlink:../admin/managing-high-availability-groups.html["Gérer les groupes de haute disponibilité"] pour obtenir des instructions et des directives.

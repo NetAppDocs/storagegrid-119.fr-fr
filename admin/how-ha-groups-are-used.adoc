@@ -1,0 +1,78 @@
+---
+permalink: admin/how-ha-groups-are-used.html 
+sidebar: sidebar 
+keywords: ha groups, high availability group 
+summary: 'Vous pouvez utiliser des groupes haute disponibilité (HA) pour fournir des connexions hautement disponibles à StorageGRID pour les données d"objet et pour une utilisation administrative.' 
+---
+= Comment les groupes HA sont-ils utilisés ?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser des groupes haute disponibilité (HA) pour fournir des connexions hautement disponibles à StorageGRID pour les données d'objet et pour une utilisation administrative.
+
+* Un groupe HA peut fournir des connexions administratives hautement disponibles au Grid Manager ou au Tenant Manager.
+* Un groupe HA peut fournir des connexions de données hautement disponibles pour les clients S3.
+* Un groupe HA qui contient une seule interface vous permet de fournir plusieurs adresses VIP et de définir explicitement des adresses IPv6.
+
+
+Un groupe HA ne peut fournir une haute disponibilité que si tous les nœuds inclus dans le groupe fournissent les mêmes services.  Lorsque vous créez un groupe HA, ajoutez des interfaces à partir des types de nœuds qui fournissent les services dont vous avez besoin.
+
+* *Nœuds d'administration* : inclure le service d'équilibrage de charge et activer l'accès au gestionnaire de grille ou au gestionnaire de locataires.
+* *Nœuds de passerelle* : inclure le service d’équilibrage de charge.
+
+
+[cols="1a,2a"]
+|===
+| Objectif du groupe HA | Ajouter des nœuds de ce type au groupe HA 
+
+
+ a| 
+Accès au Grid Manager
+ a| 
+* Nœud d'administration principal (*Primaire*)
+* Nœuds d'administration non principaux
+
+
+*Remarque :* le nœud d’administration principal doit être l’interface principale.  Certaines procédures de maintenance ne peuvent être effectuées qu'à partir du nœud d'administration principal.
+
+
+
+ a| 
+Accès au gestionnaire de locataires uniquement
+ a| 
+* Nœuds d'administration principaux ou non principaux
+
+
+
+
+ a| 
+Accès client S3 – Service d'équilibrage de charge
+ a| 
+* Nœuds d'administration
+* Nœuds de passerelle
+
+
+
+
+ a| 
+Accès client S3 pourlink:../admin/manage-s3-select-for-tenant-accounts.html["S3 Select"]
+ a| 
+* Appareils de service
+* Nœuds logiciels basés sur VMware
+
+
+*Remarque* : les groupes HA sont recommandés lors de l'utilisation de S3 Select, mais pas obligatoires.
+
+|===
+
+
+== Limitations de l'utilisation des groupes HA avec Grid Manager ou Tenant Manager
+
+Si un service Grid Manager ou Tenant Manager échoue, le basculement du groupe HA n'est pas déclenché.
+
+Si vous êtes connecté au Grid Manager ou au Tenant Manager lors du basculement, vous êtes déconnecté et devez vous reconnecter pour reprendre votre tâche.
+
+Certaines procédures de maintenance ne peuvent pas être effectuées lorsque le nœud d'administration principal n'est pas disponible.  Lors du basculement, vous pouvez utiliser Grid Manager pour surveiller votre système StorageGRID .

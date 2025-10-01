@@ -1,0 +1,35 @@
+---
+permalink: maintain/checking-storage-state-after-recovering-storage-volumes.html 
+sidebar: sidebar 
+keywords: storagegrid, storage volume recovery, storage state, storage volume 
+summary: 'Après avoir récupéré les volumes de stockage, vous devez vérifier que l"état souhaité du nœud de stockage est défini sur en ligne et vous assurer que l"état sera en ligne par défaut à chaque redémarrage du serveur du nœud de stockage.' 
+---
+= Vérifier l'état du stockage après la récupération des volumes de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Après avoir récupéré les volumes de stockage, vous devez vérifier que l'état souhaité du nœud de stockage est défini sur en ligne et vous assurer que l'état sera en ligne par défaut à chaque redémarrage du serveur du nœud de stockage.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Le nœud de stockage a été récupéré et la récupération des données est terminée.
+
+
+.Étapes
+. Sélectionnez *SUPPORT* > *Outils* > *Topologie de grille*.
+. Vérifiez les valeurs de *Nœud de stockage récupéré* > *LDR* > *Stockage* > *État de stockage -- Souhaité* et *État de stockage -- Actuel*.
++
+La valeur des deux attributs doit être En ligne.
+
+. Si l'état de stockage souhaité est défini sur Lecture seule, procédez comme suit :
++
+.. Cliquez sur l'onglet *Configuration*.
+.. Dans la liste déroulante *État de stockage – Souhaité*, sélectionnez *En ligne*.
+.. Cliquez sur *Appliquer les modifications*.
+.. Cliquez sur l'onglet *Aperçu* et confirmez que les valeurs de *État de stockage -- Souhaité* et *État de stockage -- Actuel* sont mises à jour sur En ligne.
+
+
+

@@ -1,0 +1,261 @@
+---
+permalink: audit/sdel-s3-delete.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, SDEL, S3 DELETE 
+summary: 'Lorsqu"un client S3 émet une transaction DELETE, une demande est effectuée pour supprimer l"objet ou le compartiment spécifié.  Ce message est émis par le serveur si la transaction réussit.' 
+---
+= SDEL : SUPPRESSION S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lorsqu'un client S3 émet une transaction DELETE, une demande est effectuée pour supprimer l'objet ou le bucket spécifié, ou pour supprimer une sous-ressource bucket/objet.  Ce message est émis par le serveur si la transaction réussit.
+
+[cols="1a,1a,4a"]
+|===
+| Code | Champ | Description 
+
+
+ a| 
+CBID
+ a| 
+Identifiant du bloc de contenu
+ a| 
+L'identifiant unique du bloc de contenu demandé.  Si le CBID est inconnu, ce champ est défini sur 0.  Les opérations sur les buckets n'incluent pas ce champ.
+
+
+
+ a| 
+CNCH
+ a| 
+En-tête de contrôle de cohérence
+ a| 
+La valeur de l'en-tête de requête HTTP Consistency-Control, si présent dans la requête.
+
+
+
+ a| 
+CNID
+ a| 
+Identifiant de connexion
+ a| 
+L'identifiant système unique pour la connexion TCP/IP.
+
+
+
+ a| 
+CSIZ
+ a| 
+Taille du contenu
+ a| 
+La taille de l'objet supprimé en octets.  Les opérations sur les buckets n'incluent pas ce champ.
+
+
+
+ a| 
+DMRK
+ a| 
+Supprimer l'ID de version du marqueur
+ a| 
+L'ID de version du marqueur de suppression créé lors de la suppression d'un objet d'un bucket versionné.  Les opérations sur les buckets n'incluent pas ce champ.
+
+
+
+ a| 
+GFID
+ a| 
+ID de connexion à la fédération de grille
+ a| 
+L'ID de connexion de la connexion de fédération de grille associée à une demande de suppression de réplication inter-grille.  Uniquement inclus dans les journaux d'audit sur la grille de destination.
+
+
+
+ a| 
+GFSA
+ a| 
+ID du compte source de la Grid Federation
+ a| 
+L'ID de compte du locataire sur la grille source pour une demande de suppression de réplication inter-grille.  Uniquement inclus dans les journaux d'audit sur la grille de destination.
+
+
+
+ a| 
+HTRH
+ a| 
+En-tête de requête HTTP
+ a| 
+Liste des noms et valeurs d'en-tête de requête HTTP enregistrés tels que sélectionnés lors de la configuration.
+
+ `X-Forwarded-For`est automatiquement inclus s'il est présent dans la demande et si le `X-Forwarded-For` la valeur est différente de l'adresse IP de l'expéditeur de la demande (champ d'audit SAIP).
+
+`x-amz-bypass-governance-retention`est automatiquement inclus s'il est présent dans la demande.
+
+
+
+ a| 
+MTME
+ a| 
+Heure de la dernière modification
+ a| 
+L'horodatage Unix, en microsecondes, indiquant quand l'objet a été modifié pour la dernière fois.
+
+
+
+ a| 
+RSLT
+ a| 
+Code de résultat
+ a| 
+Résultat de la transaction DELETE.  Le résultat est toujours :
+
+SUCS : Réussi
+
+
+
+ a| 
+S3AI
+ a| 
+ID de compte locataire S3 (expéditeur de la demande)
+ a| 
+L'ID du compte locataire de l'utilisateur qui a envoyé la demande.  Une valeur vide indique un accès anonyme.
+
+
+
+ a| 
+S3AK
+ a| 
+ID de clé d'accès S3 (expéditeur de la demande)
+ a| 
+L'ID de clé d'accès S3 haché pour l'utilisateur qui a envoyé la demande.  Une valeur vide indique un accès anonyme.
+
+
+
+ a| 
+S3BK
+ a| 
+Godet S3
+ a| 
+Le nom du bucket S3.
+
+
+
+ a| 
+S3KY
+ a| 
+Touche S3
+ a| 
+Le nom de la clé S3, sans inclure le nom du bucket.  Les opérations sur les buckets n'incluent pas ce champ.
+
+
+
+ a| 
+S3SR
+ a| 
+Sous-ressource S3
+ a| 
+Le compartiment ou la sous-ressource d'objet sur lequel l'opération est effectuée, le cas échéant.
+
+
+
+ a| 
+SACC
+ a| 
+Nom du compte locataire S3 (expéditeur de la demande)
+ a| 
+Le nom du compte locataire de l'utilisateur qui a envoyé la demande.  Vide pour les demandes anonymes.
+
+
+
+ a| 
+SAIP
+ a| 
+Adresse IP (expéditeur de la requête)
+ a| 
+L'adresse IP de l'application cliente qui a effectué la demande.
+
+
+
+ a| 
+SBAC
+ a| 
+Nom du compte locataire S3 (propriétaire du bucket)
+ a| 
+Le nom du compte locataire pour le propriétaire du bucket.  Utilisé pour identifier l'accès inter-comptes ou anonyme.
+
+
+
+ a| 
+SBAI
+ a| 
+ID de compte locataire S3 (propriétaire du bucket)
+ a| 
+L'ID de compte locataire du propriétaire du bucket cible.  Utilisé pour identifier l'accès inter-comptes ou anonyme.
+
+
+
+ a| 
+SGRP
+ a| 
+Site (Groupe)
+ a| 
+Si présent, l'objet a été supprimé sur le site spécifié, qui n'est pas le site où l'objet a été ingéré.
+
+
+
+ a| 
+SUSR
+ a| 
+URN utilisateur S3 (expéditeur de la requête)
+ a| 
+L'ID du compte locataire et le nom d'utilisateur de l'utilisateur effectuant la demande.  L'utilisateur peut être un utilisateur local ou un utilisateur LDAP. Par exemple :  `urn:sgws:identity::03393893651506583485:root`
+
+Vide pour les demandes anonymes.
+
+
+
+ a| 
+TEMPS
+ a| 
+Durée
+ a| 
+Temps total de traitement de la demande en microsecondes.
+
+
+
+ a| 
+TLIP
+ a| 
+Adresse IP de l'équilibreur de charge approuvé
+ a| 
+Si la demande a été acheminée par un équilibreur de charge de couche 7 approuvé, l'adresse IP de l'équilibreur de charge.
+
+
+
+ a| 
+UUDM
+ a| 
+Identifiant unique universel pour un marqueur de suppression
+ a| 
+L'identifiant d'un marqueur de suppression.  Les messages du journal d'audit spécifient UUDM ou UUID, où UUDM indique un marqueur de suppression créé à la suite d'une demande de suppression d'objet et UUID indique un objet.
+
+
+
+ a| 
+UUID
+ a| 
+Identifiant unique universel
+ a| 
+L'identifiant de l'objet dans le système StorageGRID .
+
+
+
+ a| 
+VSID
+ a| 
+ID de version
+ a| 
+L'ID de version de la version spécifique d'un objet qui a été supprimé.  Les opérations sur les buckets et les objets dans les buckets non versionnés n'incluent pas ce champ.
+
+|===

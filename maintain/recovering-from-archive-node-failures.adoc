@@ -1,0 +1,16 @@
+---
+permalink: maintain/recovering-from-archive-node-failures.html 
+sidebar: sidebar 
+keywords: recover, archive node failure, workflow 
+summary: La prise en charge des nœuds d’archive a été supprimée. 
+---
+= Récupérer après une panne du nœud d'archivage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+La prise en charge des nœuds d’archive a été supprimée.
+
+Pour plus d'informations sur la récupération des nœuds d'archive, voir https://docs.netapp.com/us-en/storagegrid-118/maintain/recovering-from-archive-node-failures.html["Récupération après une panne de nœud d'archivage (site de documentation StorageGRID 11.8)"^] .

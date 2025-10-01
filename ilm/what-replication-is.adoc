@@ -1,0 +1,31 @@
+---
+permalink: ilm/what-replication-is.html 
+sidebar: sidebar 
+keywords: replication, object copies 
+summary: 'La réplication est l’une des deux méthodes utilisées par StorageGRID pour stocker les données des objets.  Lorsque les objets correspondent à une règle ILM qui utilise la réplication, le système crée des copies exactes des données d"objet et stocke les copies sur des nœuds de stockage.' 
+---
+= Qu'est-ce que la réplication ?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+La réplication est l’une des deux méthodes utilisées par StorageGRID pour stocker les données d’objet (le codage d’effacement est l’autre méthode).  Lorsque les objets correspondent à une règle ILM qui utilise la réplication, le système crée des copies exactes des données d'objet et stocke les copies sur des nœuds de stockage.
+
+Lorsque vous configurez une règle ILM pour créer des copies répliquées, vous spécifiez le nombre de copies à créer, l'endroit où ces copies doivent être placées et la durée pendant laquelle les copies doivent être stockées à chaque emplacement.
+
+Dans l’exemple suivant, la règle ILM spécifie que deux copies répliquées de chaque objet doivent être placées dans un pool de stockage contenant trois nœuds de stockage.
+
+image::../media/ilm_replication_make_2_copies.png[Règle de faire 2 copies]
+
+Lorsque StorageGRID fait correspondre des objets à cette règle, il crée deux copies de l'objet, en plaçant chaque copie sur un nœud de stockage différent dans le pool de stockage.  Les deux copies peuvent être placées sur deux des trois nœuds de stockage disponibles.  Dans ce cas, la règle a placé des copies d’objet sur les nœuds de stockage 2 et 3.  Comme il existe deux copies, l’objet peut être récupéré si l’un des nœuds du pool de stockage tombe en panne.
+
+
+NOTE: StorageGRID ne peut stocker qu'une seule copie répliquée d'un objet sur un nœud de stockage donné.  Si votre grille comprend trois nœuds de stockage et que vous créez une règle ILM à 4 copies, seules trois copies seront effectuées : une copie pour chaque nœud de stockage.  L'alerte *Placement ILM irréalisable* est déclenchée pour indiquer que la règle ILM n'a pas pu être complètement appliquée.
+
+.Informations connexes
+* link:what-erasure-coding-is.html["Qu'est-ce que le codage d'effacement"]
+* link:what-storage-pool-is.html["Qu'est-ce qu'un pool de stockage"]
+* link:using-multiple-storage-pools-for-cross-site-replication.html["Activer la protection contre la perte de site à l'aide du codage de réplication et d'effacement"]
+

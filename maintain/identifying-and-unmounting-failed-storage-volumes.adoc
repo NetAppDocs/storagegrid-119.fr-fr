@@ -1,0 +1,109 @@
+---
+permalink: maintain/identifying-and-unmounting-failed-storage-volumes.html 
+sidebar: sidebar 
+keywords: storagegrid, storage volume, failed storage volume, unmount failed volume 
+summary: 'Lors de la récupération d"un nœud de stockage avec des volumes de stockage défaillants, vous devez identifier et démonter les volumes défaillants.  Vous devez vérifier que seuls les volumes de stockage défaillants sont reformatés dans le cadre de la procédure de récupération.' 
+---
+= Identifier et démonter les volumes de stockage défaillants
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lors de la récupération d'un nœud de stockage avec des volumes de stockage défaillants, vous devez identifier et démonter les volumes défaillants.  Vous devez vérifier que seuls les volumes de stockage défaillants sont reformatés dans le cadre de la procédure de récupération.
+
+.Avant de commencer
+Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+
+.À propos de cette tâche
+Vous devez récupérer les volumes de stockage défaillants dès que possible.
+
+La première étape du processus de récupération consiste à détecter les volumes qui se sont détachés, qui doivent être démontés ou qui présentent des erreurs d’E/S.  Si les volumes défaillants sont toujours connectés mais ont un système de fichiers corrompu de manière aléatoire, le système peut ne détecter aucune corruption dans les parties inutilisées ou non allouées du disque.
+
+
+NOTE: Vous devez terminer cette procédure avant d'effectuer des étapes manuelles pour récupérer les volumes, telles que l'ajout ou la réattache des disques, l'arrêt du nœud, le démarrage du nœud ou le redémarrage.  Sinon, lorsque vous exécutez le `reformat_storage_block_devices.rb` script, vous pourriez rencontrer une erreur du système de fichiers qui entraînerait le blocage ou l'échec du script.
+
+
+NOTE: Réparez le matériel et fixez correctement les disques avant d'exécuter le `reboot` commande.
+
+
+CAUTION: Identifiez soigneusement les volumes de stockage défaillants.  Vous utiliserez ces informations pour vérifier quels volumes doivent être reformatés.  Une fois qu'un volume a été reformaté, les données sur le volume ne peuvent pas être récupérées.
+
+Pour récupérer correctement les volumes de stockage défaillants, vous devez connaître à la fois les noms des périphériques des volumes de stockage défaillants et leurs ID de volume.
+
+Lors de l'installation, chaque périphérique de stockage se voit attribuer un identifiant unique universel (UUID) du système de fichiers et est monté sur un répertoire rangedb sur le nœud de stockage à l'aide de cet UUID du système de fichiers attribué. L'UUID du système de fichiers et le répertoire rangedb sont répertoriés dans le `/etc/fstab` déposer. Le nom du périphérique, le répertoire rangedb et la taille du volume monté sont affichés dans le gestionnaire de grille.
+
+Dans l'exemple suivant, l'appareil `/dev/sdc` a une taille de volume de 4 To, est monté sur `/var/local/rangedb/0` , en utilisant le nom de l'appareil `/dev/disk/by-uuid/822b0547-3b2b-472e-ad5e-e1cf1809faba` dans le/`etc/fstab` déposer:
+
+image::../media/mounting_storage_devices.gif[Exemple de taille de volume]
+
+.Étapes
+. Suivez les étapes suivantes pour enregistrer les volumes de stockage défaillants et leurs noms de périphériques :
++
+.. Sélectionnez *SUPPORT* > *Outils* > *Topologie de grille*.
+.. Sélectionnez *site* > *nœud de stockage défaillant* > *LDR* > *stockage* > *aperçu* > *principal* et recherchez les magasins d'objets avec des alarmes.
++
+image::../media/ldr_storage_object_stores.gif[Section Magasins d'objets]
+
+.. Sélectionnez *site* > *nœud de stockage défaillant* > *SSM* > *ressources* > *aperçu* > *principal*.  Déterminez le point de montage et la taille du volume de chaque volume de stockage défaillant identifié à l’étape précédente.
++
+Les magasins d'objets sont numérotés en notation hexadécimale.  Par exemple, 0000 est le premier volume et 000F est le seizième volume.  Dans l'exemple, le magasin d'objets avec un ID de 0000 correspond à `/var/local/rangedb/0` avec le nom de périphérique sdc et une taille de 107 Go.
+
++
+image::../media/ssm_storage_volumes.gif[exemple montrant les magasins d'objets et les points de montage]
+
+
+
+. Connectez-vous au nœud de stockage défaillant :
++
+.. Entrez la commande suivante : `ssh admin@_grid_node_IP_`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+
+
++
+Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+. Exécutez le script suivant pour démonter un volume de stockage défaillant :
++
+`sn-unmount-volume object_store_ID`
+
++
+Le `object_store_ID` est l'ID du volume de stockage défaillant.  Par exemple, précisez `0` dans la commande pour un magasin d'objets avec l'ID 0000.
+
+. Si vous y êtes invité, appuyez sur *y* pour arrêter le service Cassandra en fonction du volume de stockage 0.
++
+
+NOTE: Si le service Cassandra est déjà arrêté, vous n'êtes pas invité à le faire.  Le service Cassandra est arrêté uniquement pour le volume 0.
+
++
+[listing]
+----
+root@Storage-180:~/var/local/tmp/storage~ # sn-unmount-volume 0
+Services depending on storage volume 0 (cassandra) aren't down.
+Services depending on storage volume 0 must be stopped before running this script.
+Stop services that require storage volume 0 [y/N]? y
+Shutting down services that require storage volume 0.
+Services requiring storage volume 0 stopped.
+Unmounting /var/local/rangedb/0
+/var/local/rangedb/0 is unmounted.
+----
++
+En quelques secondes, le volume est démonté.  Des messages apparaissent indiquant chaque étape du processus.  Le message final indique que le volume est démonté.
+
+. Si le démontage échoue parce que le volume est occupé, vous pouvez forcer un démontage en utilisant le `--use-umountof` option:
++
+
+NOTE: Forcer un démontage en utilisant le `--use-umountof` Cette option peut entraîner un comportement inattendu ou un blocage des processus ou des services utilisant le volume.
+
++
+[listing]
+----
+root@Storage-180:~ # sn-unmount-volume --use-umountof /var/local/rangedb/2
+Unmounting /var/local/rangedb/2 using umountof
+/var/local/rangedb/2 is unmounted.
+Informing LDR service of changes to storage volumes
+----
+

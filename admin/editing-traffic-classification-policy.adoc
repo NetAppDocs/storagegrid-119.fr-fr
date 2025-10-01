@@ -1,0 +1,52 @@
+---
+permalink: admin/editing-traffic-classification-policy.html 
+sidebar: sidebar 
+keywords: edit traffic classification policy 
+summary: Vous pouvez modifier une politique de classification du trafic pour changer son nom ou sa description, ou pour créer, modifier ou supprimer des règles ou des limites pour la politique. 
+---
+= Modifier la politique de classification du trafic
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez modifier une politique de classification du trafic pour changer son nom ou sa description, ou pour créer, modifier ou supprimer des règles ou des limites pour la politique.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:admin-group-permissions.html["Autorisation d'accès root"] .
+
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Réseau* > *Classification du trafic*.
++
+La page Stratégies de classification du trafic s’affiche et les stratégies existantes sont répertoriées dans un tableau.
+
+. Modifiez la politique en utilisant le menu Actions ou la page de détails.  Voirlink:../admin/creating-traffic-classification-policies.html["créer des politiques de classification du trafic"] pour quoi entrer.
++
+[role="tabbed-block"]
+====
+.Menu Actions
+--
+.. Cochez la case correspondant à la politique.
+.. Sélectionnez *Actions* > *Modifier*.
+
+
+--
+.Page de détails
+--
+.. Sélectionnez le nom de la politique.
+.. Sélectionnez le bouton *Modifier* à côté du nom de la politique.
+
+
+--
+====
+. Pour l'étape Saisir le nom de la politique, modifiez éventuellement le nom ou la description de la politique et sélectionnez *Continuer*.
+. Pour l'étape Ajouter des règles de correspondance, ajoutez éventuellement une règle ou modifiez le *Type* et la *Valeur de correspondance* de la règle existante, puis sélectionnez *Continuer*.
+. Pour l'étape Définir les limites, ajoutez, modifiez ou supprimez éventuellement une limite et sélectionnez *Continuer*.
+. Consultez la politique mise à jour et sélectionnez *Enregistrer et continuer*.
++
+Les modifications que vous avez apportées à la politique sont enregistrées et le trafic réseau est désormais géré conformément aux politiques de classification du trafic.  Vous pouvez consulter les graphiques de circulation et vérifier que les politiques appliquent les limites de circulation que vous attendez.
+
+

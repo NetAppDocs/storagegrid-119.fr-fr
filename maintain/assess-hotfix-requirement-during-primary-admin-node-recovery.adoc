@@ -1,0 +1,31 @@
+---
+permalink: maintain/assess-hotfix-requirement-during-primary-admin-node-recovery.html 
+sidebar: sidebar 
+keywords: storagegrid, primary admin node, hotfix 
+summary: Après avoir récupéré un nœud d’administration principal, déterminez si vous devez appliquer un correctif. 
+---
+= Déterminer les exigences de correctif pour le nœud d'administration principal
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Après avoir récupéré un nœud d’administration principal, déterminez si vous devez appliquer un correctif.
+
+.Avant de commencer
+La récupération du nœud d’administration principal est terminée.
+
+.Étapes
+. Sign in au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+. Sélectionnez *NODES*.
+. Dans la liste de gauche, sélectionnez le nœud d’administration principal.
+. Dans l’onglet Présentation, notez la version affichée dans le champ *Version du logiciel*.
+. Sélectionnez n’importe quel autre nœud de grille.
+. Dans l’onglet Présentation, notez la version affichée dans le champ *Version du logiciel*.
++
+** Si les versions affichées dans les champs *Version du logiciel* sont les mêmes, vous n'avez pas besoin d'appliquer un correctif.
+** Si les versions affichées dans les champs *Version du logiciel* sont différentes, vous devezlink:storagegrid-hotfix-procedure.html["appliquer un correctif"] pour mettre à jour le nœud d'administration principal récupéré vers la même version.
+
+
+

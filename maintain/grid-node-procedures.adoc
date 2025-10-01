@@ -1,0 +1,30 @@
+---
+permalink: maintain/grid-node-procedures.html 
+sidebar: sidebar 
+keywords: storagegrid, grid node procedure 
+summary: Vous devrez peut-être effectuer des procédures de maintenance liées à des nœuds de grille ou à des services de nœuds spécifiques. 
+---
+= Procédures de maintenance des nœuds
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devrez peut-être effectuer des procédures de maintenance liées à des nœuds de grille ou à des services de nœuds spécifiques.
+
+Procédures du gestionnaire de serveur:: Le gestionnaire de serveur s'exécute sur chaque nœud de grille pour superviser le démarrage et l'arrêt des services et pour garantir que les services rejoignent et quittent correctement le système StorageGRID .  Le gestionnaire de serveur surveille également les services sur chaque nœud de grille et tente automatiquement de redémarrer tous les services qui signalent des pannes.
++
+--
+Pour exécuter les procédures du Gestionnaire de serveur, vous devez généralement accéder à la ligne de commande du nœud.
+
+
+NOTE: Vous ne devez accéder au Gestionnaire de serveur que si le support technique vous a demandé de le faire.
+
+
+NOTE: Vous devez fermer la session de l'interpréteur de commandes en cours et vous déconnecter une fois que vous avez terminé avec le Gestionnaire de serveur.  Entrer: `exit`
+
+--
+Procédures de redémarrage, d'arrêt et d'alimentation du nœud:: Vous utilisez ces procédures pour redémarrer un ou plusieurs nœuds, pour arrêter et redémarrer des nœuds ou pour éteindre et rallumer des nœuds.
+Procédures de remappage des ports:: Vous pouvez utiliser les procédures de remappage de port pour supprimer les remappages de port d'un nœud, par exemple, si vous souhaitez configurer un point de terminaison d'équilibrage de charge à l'aide d'un port précédemment remappé.
+

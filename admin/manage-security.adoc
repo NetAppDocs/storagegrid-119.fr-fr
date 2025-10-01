@@ -1,0 +1,47 @@
+---
+permalink: admin/manage-security.html 
+sidebar: sidebar 
+keywords: how to manage security 
+summary: Vous pouvez configurer divers paramètres de sécurité à partir du Grid Manager pour contribuer à sécuriser votre système StorageGRID . 
+---
+= Gérer la sécurité
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez configurer divers paramètres de sécurité à partir du Grid Manager pour contribuer à sécuriser votre système StorageGRID .
+
+
+
+== Gérer le cryptage
+
+StorageGRID fournit plusieurs options pour crypter les données.  Tu devraislink:reviewing-storagegrid-encryption-methods.html["examiner les méthodes de cryptage disponibles"] pour déterminer ceux qui répondent à vos exigences en matière de protection des données.
+
+
+
+== Gérer les certificats
+
+Tu peuxlink:using-storagegrid-security-certificates.html["configurer et gérer les certificats du serveur"] utilisé pour les connexions HTTP ou les certificats clients utilisés pour authentifier l'identité d'un client ou d'un utilisateur auprès du serveur.
+
+
+
+== Configurer les serveurs de gestion de clés
+
+En utilisant unlink:kms-configuring.html["serveur de gestion de clés"] vous permet de protéger les données StorageGRID même si un appareil est retiré du centre de données.  Une fois les volumes de l'appliance chiffrés, vous ne pouvez accéder à aucune donnée sur l'appliance, sauf si le nœud peut communiquer avec le KMS.
+
+
+NOTE: Pour utiliser la gestion des clés de chiffrement, vous devez activer le paramètre *Chiffrement de nœud* pour chaque appliance lors de l'installation, avant que l'appliance ne soit ajoutée à la grille.
+
+
+
+== Gérer les paramètres de proxy
+
+Si vous utilisez des services de plateforme S3 ou des pools de stockage cloud, vous pouvez configurer unlink:configuring-storage-proxy-settings.html["serveur proxy de stockage"] entre les nœuds de stockage et les points de terminaison S3 externes.  Si vous envoyez des packages AutoSupport via HTTPS ou HTTP, vous pouvez configurer unlink:configuring-admin-proxy-settings.html["serveur proxy d'administration"] entre les nœuds d'administration et le support technique.
+
+
+
+== Contrôler les pare-feu
+
+Pour améliorer la sécurité de votre système, vous pouvez contrôler l'accès aux nœuds d'administration StorageGRID en ouvrant ou en fermant des ports spécifiques au niveau dulink:controlling-access-through-firewalls.html["pare-feu externe"] .  Vous pouvez également contrôler l’accès réseau à chaque nœud en configurant sonlink:manage-firewall-controls.html["pare-feu interne"] .  Vous pouvez empêcher l'accès sur tous les ports, sauf ceux nécessaires à votre déploiement.

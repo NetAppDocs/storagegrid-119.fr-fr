@@ -1,0 +1,78 @@
+= 
+:allow-uri-read: 
+
+
+[cols="1a,1a"]
+|===
+| Chemin et nom du fichier | Description 
+
+
+| ./rpms/README  a| 
+Un fichier texte qui décrit tous les fichiers contenus dans le fichier de téléchargement StorageGRID .
+
+
+
+| ./rpms/NLF000000.txt  a| 
+Une licence gratuite qui ne fournit aucun droit d'assistance pour le produit.
+
+
+
+| ./rpms/ StorageGRID-Webscale-Images-_version_-SHA.rpm  a| 
+Package RPM pour l'installation des images de nœuds StorageGRID sur vos hôtes RHEL.
+
+
+
+| ./rpms/ StorageGRID-Webscale-Service-_version_-SHA.rpm  a| 
+Package RPM pour l'installation du service hôte StorageGRID sur vos hôtes RHEL.
+
+
+
+| Outil de script de déploiement | Description 
+
+
+| ./rpms/configure-storagegrid.py  a| 
+Un script Python utilisé pour automatiser la configuration d'un système StorageGRID .
+
+
+
+| ./rpms/configure-sga.py  a| 
+Un script Python utilisé pour automatiser la configuration des appliances StorageGRID .
+
+
+
+| ./rpms/configure-storagegrid.sample.json  a| 
+Un exemple de fichier de configuration à utiliser avec le `configure-storagegrid.py` scénario.
+
+
+
+| ./rpms/storagegrid-ssoauth.py  a| 
+Un exemple de script Python que vous pouvez utiliser pour vous connecter à l’API Grid Management lorsque l’authentification unique est activée.  Vous pouvez également utiliser ce script pour l'intégration de Ping Federate.
+
+
+
+| ./rpms/configure-storagegrid.blank.json  a| 
+Un fichier de configuration vierge à utiliser avec le `configure-storagegrid.py` scénario.
+
+
+
+| ./rpms/extras/ansible  a| 
+Exemple de rôle Ansible et de playbook pour la configuration des hôtes RHEL pour le déploiement du conteneur StorageGRID .  Vous pouvez personnaliser le rôle ou le manuel selon vos besoins.
+
+
+
+| ./rpms/storagegrid-ssoauth-azure.py  a| 
+Un exemple de script Python que vous pouvez utiliser pour vous connecter à l’API Grid Management lorsque l’authentification unique (SSO) est activée à l’aide d’Active Directory ou de Ping Federate.
+
+
+
+| ./rpms/storagegrid-ssoauth-azure.js  a| 
+Un script d'aide appelé par le compagnon `storagegrid-ssoauth-azure.py` Script Python pour effectuer des interactions SSO avec Azure.
+
+
+
+| ./rpms/extras/api-schemas  a| 
+Schémas d'API pour StorageGRID.
+
+*Remarque* : avant d'effectuer une mise à niveau, vous pouvez utiliser ces schémas pour confirmer que tout code que vous avez écrit pour utiliser les API de gestion StorageGRID sera compatible avec la nouvelle version de StorageGRID si vous ne disposez pas d'un environnement StorageGRID hors production pour les tests de compatibilité de mise à niveau.
+
+|===

@@ -1,0 +1,57 @@
+---
+permalink: maintain/checking-data-repair-jobs.html 
+sidebar: sidebar 
+keywords: storagegrid, data repair 
+summary: 'Avant de mettre hors service un nœud de grille, vous devez confirmer qu"aucune tâche de réparation de données n"est active. Si des réparations ont échoué, vous devez les redémarrer et les laisser se terminer avant d"effectuer la procédure de mise hors service.' 
+---
+= Vérifier les tâches de réparation de données
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avant de mettre hors service un nœud de grille, vous devez confirmer qu'aucune tâche de réparation de données n'est active. Si des réparations ont échoué, vous devez les redémarrer et les laisser se terminer avant d'effectuer la procédure de mise hors service.
+
+.À propos de cette tâche
+Si vous devez mettre hors service un nœud de stockage déconnecté, vous devrez également effectuer ces étapes une fois la procédure de mise hors service terminée pour garantir que la tâche de réparation des données s'est terminée avec succès.  Vous devez vous assurer que tous les fragments codés par effacement qui se trouvaient sur le nœud supprimé ont été restaurés avec succès.
+
+Ces étapes s’appliquent uniquement aux systèmes dotés d’objets codés par effacement.
+
+.Étapes
+. Connectez-vous au nœud d’administration principal :
++
+.. Entrez la commande suivante : `ssh admin@_grid_node_IP_`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
++
+Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+
+
+. Vérifiez les réparations en cours : `repair-data show-ec-repair-status`
++
+** Si vous n’avez jamais exécuté de tâche de réparation de données, le résultat est `No job found` .  Vous n’avez pas besoin de redémarrer les tâches de réparation.
+** Si la tâche de réparation des données a été exécutée précédemment ou est en cours d'exécution, la sortie répertorie les informations relatives à la réparation.  Chaque réparation possède un identifiant de réparation unique.
++
+image::../media/repair-data-status.png[État des données de réparation]
+
+
+
++
+
+TIP: En option, vous pouvez utiliser le gestionnaire de grille pour surveiller les processus de restauration en cours et afficher un historique de restauration. Voir link:../maintain/restoring-volume.html["Restaurer les données d'objet à l'aide de Grid Manager"] .
+
+. Si l'État prend en charge toutes les réparations `Completed` , vous n'avez pas besoin de redémarrer les tâches de réparation.
+. Si l'État pour toute réparation est `Stopped` , vous devez recommencer cette réparation.
++
+.. Obtenez l'ID de réparation pour la réparation ayant échoué à partir de la sortie.
+.. Exécutez le  `repair-data start-ec-node-repair` commande.
++
+Utilisez le `--repair-id` option pour spécifier l'ID de réparation.  Par exemple, si vous souhaitez réessayer une réparation avec l'ID de réparation 949292, exécutez cette commande : `repair-data start-ec-node-repair --repair-id 949292`
+
+.. Continuez à suivre l'état des réparations des données CE jusqu'à ce que l'état de toutes les réparations soit `Completed` .
+
+
+

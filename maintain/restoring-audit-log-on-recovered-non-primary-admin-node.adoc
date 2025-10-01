@@ -1,0 +1,69 @@
+---
+permalink: maintain/restoring-audit-log-on-recovered-non-primary-admin-node.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, restore audit log, non-primary admin node 
+summary: 'Si vous avez pu conserver le journal d"audit du nœud d"administration non principal défaillant, afin que les informations historiques du journal d"audit soient conservées, vous pouvez le copier sur le nœud d"administration non principal que vous récupérez.' 
+---
+= Restaurer le journal d'audit sur le nœud d'administration non principal récupéré
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si vous avez pu conserver le journal d'audit du nœud d'administration non principal défaillant, afin que les informations historiques du journal d'audit soient conservées, vous pouvez le copier sur le nœud d'administration non principal que vous récupérez.
+
+.Avant de commencer
+* Le nœud d’administration récupéré est installé et en cours d’exécution.
+* Vous avez copié les journaux d’audit vers un autre emplacement après l’échec du nœud d’administration d’origine.
+
+
+.À propos de cette tâche
+Si un nœud d’administration échoue, les journaux d’audit enregistrés sur ce nœud d’administration sont potentiellement perdus.  Il peut être possible de préserver les données contre la perte en copiant les journaux d'audit du nœud d'administration défaillant, puis en restaurant ces journaux d'audit sur le nœud d'administration récupéré.  En fonction de l’échec, il peut ne pas être possible de copier les journaux d’audit à partir du nœud d’administration défaillant.  Dans ce cas, si le déploiement comporte plusieurs nœuds d’administration, vous pouvez récupérer les journaux d’audit d’un autre nœud d’administration, car les journaux d’audit sont répliqués sur tous les nœuds d’administration.
+
+S'il n'y a qu'un seul nœud d'administration et que le journal d'audit ne peut pas être copié à partir du nœud défaillant, le nœud d'administration récupéré commence à enregistrer les événements dans le journal d'audit comme si l'installation était nouvelle.
+
+Vous devez récupérer un nœud d’administration dès que possible pour restaurer la fonctionnalité de journalisation.
+
+[NOTE]
+====
+Par défaut, les informations d’audit sont envoyées au journal d’audit sur les nœuds d’administration.  Vous pouvez ignorer ces étapes si l’une des situations suivantes s’applique :
+
+* Vous avez configuré un serveur Syslog externe et les journaux d'audit sont désormais envoyés au serveur Syslog au lieu des nœuds d'administration.
+* Vous avez explicitement spécifié que les messages d’audit doivent être enregistrés uniquement sur les nœuds locaux qui les ont générés.
+
+
+Voirlink:../monitor/configure-audit-messages.html["Configurer les messages d'audit et les destinations des journaux"] pour plus de détails.
+
+====
+.Étapes
+. Connectez-vous au nœud d’administration récupéré :
++
+.. Entrez la commande suivante : +
+`ssh admin@recovery_Admin_Node_IP`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+
+
++
+Une fois connecté en tant que root, l'invite passe de `$` à `#` .
+
+. Vérifiez quels fichiers d’audit ont été conservés :
++
+`cd /var/local/log`
+
+. Copiez les fichiers journaux d’audit conservés sur le nœud d’administration récupéré :
++
+`scp admin@grid_node_IP:/var/local/tmp/saved-audit-logs/YYYY*`
+
++
+Lorsque vous y êtes invité, saisissez le mot de passe de l'administrateur.
+
+. Pour des raisons de sécurité, supprimez les journaux d'audit du nœud de grille défaillant après avoir vérifié qu'ils ont été copiés avec succès sur le nœud d'administration récupéré.
+. Mettre à jour les paramètres utilisateur et groupe des fichiers journaux d’audit sur le nœud d’administration récupéré :
++
+`chown ams-user:bycast *`
+
+. Déconnectez-vous en tant que root : `exit`
+

@@ -1,0 +1,29 @@
+---
+permalink: maintain/recovering-storagegrid-appliance-storage-node.html 
+sidebar: sidebar 
+keywords: recover, appliance storage node failure, workflow 
+summary: 'La procédure de récupération d"un nœud de stockage d"appliance StorageGRID défaillant est la même, que vous récupériez après la perte du lecteur système ou après la perte de volumes de stockage uniquement.' 
+---
+= Avertissements concernant la récupération des nœuds de stockage de l'appliance
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+La procédure de récupération d'un nœud de stockage d'appliance StorageGRID défaillant est la même, que vous récupériez après la perte du lecteur système ou après la perte de volumes de stockage uniquement.
+
+
+CAUTION: Si plusieurs nœuds de stockage sont en panne (ou sont hors ligne), contactez le support technique. N'effectuez pas la procédure de récupération suivante. Une perte de données pourrait survenir.
+
+
+CAUTION: S'il s'agit de la deuxième panne d'un nœud de stockage en moins de 15 jours après une panne ou une récupération d'un nœud de stockage, contactez le support technique.  La reconstruction de Cassandra sur deux nœuds de stockage ou plus dans un délai de 15 jours peut entraîner une perte de données.
+
+
+NOTE: Si plusieurs nœuds de stockage d'un site sont défaillants, une procédure de récupération de site peut être nécessaire. Voir link:how-site-recovery-is-performed-by-technical-support.html["Comment le support technique récupère un site"] .
+
+
+CAUTION: Si les règles ILM sont configurées pour stocker une seule copie répliquée et que la copie existe sur un volume de stockage défaillant, vous ne pourrez pas récupérer l'objet.
+
+
+NOTE: Pour les procédures de maintenance matérielle, telles que les instructions de remplacement d'un contrôleur ou de réinstallation de SANtricity OS, consultez le https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/index.html["instructions d'entretien de votre appareil de stockage"^] .

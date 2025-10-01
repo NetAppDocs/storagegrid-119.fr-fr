@@ -1,0 +1,102 @@
+---
+permalink: tenant/creating-groups-for-swift-tenant.html 
+sidebar: sidebar 
+keywords: how to create Swift tenant groups 
+summary: Vous pouvez gérer les autorisations d’accès pour un compte locataire Swift en important des groupes fédérés ou en créant des groupes locaux.  Au moins un groupe doit disposer de l’autorisation Administrateur Swift, qui est requise pour gérer les conteneurs et les objets d’un compte locataire Swift. 
+---
+= Créer des groupes pour un locataire Swift
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez gérer les autorisations d’accès pour un compte locataire Swift en important des groupes fédérés ou en créant des groupes locaux.  Au moins un groupe doit disposer de l’autorisation Administrateur Swift, qui est requise pour gérer les conteneurs et les objets d’un compte locataire Swift.
+
+
+NOTE: La prise en charge des applications clientes Swift est obsolète et sera supprimée dans une prochaine version.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Autorisation d'accès root"] .
+* Si vous envisagez d’importer un groupe fédéré, vous devezlink:using-identity-federation.html["fédération d'identité configurée"] , et le groupe fédéré existe déjà dans la source d’identité configurée.
+
+
+
+
+== Accéder à l'assistant de création de groupe
+
+.Étapes
+Dans un premier temps, accédez à l’assistant de création de groupe.
+
+. Sélectionnez *GESTION DES ACCÈS* > *Groupes*.
+. Sélectionnez *Créer un groupe*.
+
+
+
+
+== Choisissez un type de groupe
+
+Vous pouvez créer un groupe local ou importer un groupe fédéré.
+
+.Étapes
+. Sélectionnez l'onglet *Groupe local* pour créer un groupe local ou sélectionnez l'onglet *Groupe fédéré* pour importer un groupe à partir de la source d'identité précédemment configurée.
++
+Si l'authentification unique (SSO) est activée pour votre système StorageGRID , les utilisateurs appartenant à des groupes locaux ne pourront pas se connecter au gestionnaire de locataires, bien qu'ils puissent utiliser des applications clientes pour gérer les ressources du locataire, en fonction des autorisations de groupe.
+
+. Entrez le nom du groupe.
++
+** *Groupe local* : saisissez un nom d’affichage et un nom unique.  Vous pouvez modifier le nom d'affichage ultérieurement.
+** *Groupe fédéré* : Saisissez le nom unique.  Pour Active Directory, le nom unique est le nom associé au `sAMAccountName` attribut.  Pour OpenLDAP, le nom unique est le nom associé au `uid` attribut.
+
+
+. Sélectionnez *Continuer*.
+
+
+
+
+== Gérer les autorisations de groupe
+
+Les autorisations de groupe contrôlent les tâches que les utilisateurs peuvent effectuer dans Tenant Manager et l'API Tenant Management.
+
+.Étapes
+. Pour le *Mode d'accès*, sélectionnez l'une des options suivantes :
++
+** *Lecture-écriture* (par défaut) : les utilisateurs peuvent se connecter à Tenant Manager et gérer la configuration du locataire.
+** *Lecture seule* : les utilisateurs peuvent uniquement afficher les paramètres et les fonctionnalités.  Ils ne peuvent apporter aucune modification ni effectuer aucune opération dans l'API Tenant Manager ou Tenant Management.  Les utilisateurs locaux en lecture seule peuvent modifier leurs propres mots de passe.
++
+
+NOTE: Si un utilisateur appartient à plusieurs groupes et qu'un groupe est défini sur Lecture seule, l'utilisateur aura un accès en lecture seule à tous les paramètres et fonctionnalités sélectionnés.
+
+
+
+. Cochez la case *Accès root* si les utilisateurs du groupe doivent se connecter au gestionnaire de locataires ou à l'API de gestion des locataires.
+. Sélectionnez *Continuer*.
+
+
+
+
+== Définir la politique de groupe Swift
+
+Les utilisateurs de Swift ont besoin d’une autorisation d’administrateur pour s’authentifier dans l’API REST Swift afin de créer des conteneurs et d’ingérer des objets.
+
+. Cochez la case *Administrateur Swift* si les utilisateurs du groupe doivent utiliser l'API REST Swift pour gérer les conteneurs et les objets.
+. Si vous créez un groupe local, sélectionnez *Continuer*.  Si vous créez un groupe fédéré, sélectionnez *Créer un groupe* et *Terminer*.
+
+
+
+
+== Ajouter des utilisateurs (groupes locaux uniquement)
+
+Vous pouvez enregistrer le groupe sans ajouter d'utilisateurs, ou vous pouvez éventuellement ajouter des utilisateurs locaux déjà existants.
+
+.Étapes
+. Vous pouvez également sélectionner un ou plusieurs utilisateurs locaux pour ce groupe.
++
+Si vous n’avez pas encore créé d’utilisateurs locaux, vous pouvez ajouter ce groupe à l’utilisateur sur la page Utilisateurs. Voir link:../tenant/managing-local-users.html["Gérer les utilisateurs locaux"] .
+
+. Sélectionnez *Créer un groupe* et *Terminer*.
++
+Le groupe que vous avez créé apparaît dans la liste des groupes.
+
+

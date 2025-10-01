@@ -1,0 +1,98 @@
+---
+permalink: s3/custom-operations-on-buckets.html 
+sidebar: sidebar 
+keywords: operations, buckets, custom, storagegrid bucket operations 
+summary: 'Le système StorageGRID prend en charge les opérations personnalisées qui sont ajoutées à l"API REST S3.' 
+---
+= Opérations personnalisées StorageGRID
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Le système StorageGRID prend en charge les opérations personnalisées qui sont ajoutées à l'API REST S3.
+
+Le tableau suivant répertorie les opérations personnalisées prises en charge par StorageGRID.
+
+[cols="1a,2a"]
+|===
+| Opération | Description 
+
+
+ a| 
+link:get-bucket-consistency-request.html["Cohérence du bucket GET"]
+ a| 
+Renvoie la cohérence appliquée à un bucket particulier.
+
+
+
+ a| 
+link:put-bucket-consistency-request.html["Cohérence du seau PUT"]
+ a| 
+Définit la cohérence appliquée à un bucket particulier.
+
+
+
+ a| 
+link:get-bucket-last-access-time-request.html["Heure du dernier accès au bucket GET"]
+ a| 
+Renvoie si les dernières mises à jour de l'heure d'accès sont activées ou désactivées pour un bucket particulier.
+
+
+
+ a| 
+link:put-bucket-last-access-time-request.html["Heure du dernier accès au bucket PUT"]
+ a| 
+Vous permet d'activer ou de désactiver les mises à jour de l'heure du dernier accès pour un bucket particulier.
+
+
+
+ a| 
+link:delete-bucket-metadata-notification-configuration-request.html["SUPPRIMER la configuration de notification des métadonnées du bucket"]
+ a| 
+Supprime la configuration XML de notification de métadonnées associée à un bucket particulier.
+
+
+
+ a| 
+link:get-bucket-metadata-notification-configuration-request.html["Configuration de la notification des métadonnées du bucket GET"]
+ a| 
+Renvoie la configuration XML de notification de métadonnées associée à un bucket particulier.
+
+
+
+ a| 
+link:put-bucket-metadata-notification-configuration-request.html["Configuration des notifications de métadonnées du compartiment PUT"]
+ a| 
+Configure le service de notification de métadonnées pour un bucket.
+
+
+
+ a| 
+link:get-storage-usage-request.html["Utilisation du stockage GET"]
+ a| 
+Vous indique la quantité totale de stockage utilisée par un compte et pour chaque bucket associé au compte.
+
+
+
+ a| 
+link:deprecated-put-bucket-request-modifications-for-compliance.html["Obsolète : CreateBucket avec paramètres de conformité"]
+ a| 
+Obsolète et non pris en charge : vous ne pouvez plus créer de nouveaux buckets avec la conformité activée.
+
+
+
+ a| 
+link:deprecated-get-bucket-compliance-request.html["Obsolète : conformité du bucket GET"]
+ a| 
+Obsolète mais pris en charge : renvoie les paramètres de conformité actuellement en vigueur pour un bucket conforme hérité existant.
+
+
+
+ a| 
+link:deprecated-put-bucket-compliance-request.html["Obsolète : conformité du compartiment PUT"]
+ a| 
+Obsolète mais pris en charge : vous permet de modifier les paramètres de conformité d'un bucket conforme hérité existant.
+
+|===

@@ -1,0 +1,57 @@
+---
+permalink: maintain/warnings-and-considerations-for-grid-node-recovery.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, warning 
+summary: Si un nœud de grille tombe en panne, vous devez le récupérer dès que possible.  Vous devez examiner tous les avertissements et considérations relatifs à la récupération des nœuds avant de commencer. 
+---
+= Avertissements et considérations pour la récupération des nœuds de grille
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si un nœud de grille tombe en panne, vous devez le récupérer dès que possible.  Vous devez examiner tous les avertissements et considérations relatifs à la récupération des nœuds avant de commencer.
+
+
+CAUTION: StorageGRID est un système distribué composé de plusieurs nœuds fonctionnant les uns avec les autres.  N'utilisez pas d'instantanés de disque pour restaurer les nœuds de grille.  Reportez-vous plutôt aux procédures de récupération et de maintenance pour chaque type de nœud.
+
+
+NOTE: Si un site StorageGRID entier est en panne, contactez le support technique. Le support technique travaillera avec vous pour développer et exécuter un plan de récupération de site qui maximise la quantité de données récupérées et répond à vos objectifs commerciaux. Voir link:how-site-recovery-is-performed-by-technical-support.html["Comment le support technique récupère un site"] .
+
+Voici quelques-unes des raisons pour lesquelles il est nécessaire de récupérer un nœud de réseau défaillant dès que possible :
+
+* Un nœud de grille défaillant peut réduire la redondance des données système et objet, vous laissant vulnérable au risque de perte de données permanente si un autre nœud tombe en panne.
+* Un nœud de réseau défaillant peut avoir un impact sur l’efficacité des opérations quotidiennes.
+* Un nœud de réseau défaillant peut réduire votre capacité à surveiller les opérations du système.
+* Un nœud de grille défaillant peut provoquer une erreur de serveur interne 500 si des règles ILM strictes sont en place.
+* Si un nœud de grille n’est pas récupéré rapidement, les délais de récupération peuvent augmenter.  Par exemple, des files d’attente peuvent se développer et doivent être effacées avant que la récupération ne soit terminée.
+
+
+Suivez toujours la procédure de récupération pour le type spécifique de nœud de grille que vous récupérez.  Les procédures de récupération varient pour les nœuds d'administration principaux ou non principaux, les nœuds de passerelle, les nœuds d'appliance et les nœuds de stockage.
+
+
+
+== Conditions préalables à la récupération des nœuds de grille
+
+Toutes les conditions suivantes sont supposées lors de la récupération des nœuds de grille :
+
+* Le matériel physique ou virtuel défaillant a été remplacé et configuré.
+* La version du programme d'installation de l'appliance StorageGRID sur l'appliance de remplacement correspond à la version du logiciel de votre système StorageGRID , comme décrit dans https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/verifying-and-upgrading-storagegrid-appliance-installer-version.html["Vérifier et mettre à niveau la version du programme d'installation de l'appliance StorageGRID"^] .
+* Si vous récupérez un nœud de grille autre que le nœud d’administration principal, il existe une connectivité entre le nœud de grille en cours de récupération et le nœud d’administration principal.
+* Si vous récupérez un nœud de stockage d'appliance, vous devez spécifier le même type de stockage que l'appliance d'origine (combiné, métadonnées uniquement ou données uniquement) lors de l'installation de l'appliance. Si vous spécifiez un type de stockage différent, la récupération échouera et nécessitera la réinstallation de l'appliance avec le type de stockage correct spécifié.
+
+
+
+
+== Ordre de récupération des nœuds en cas de défaillance d'un serveur hébergeant plusieurs nœuds de grille
+
+Si un serveur hébergeant plusieurs nœuds de grille tombe en panne, vous pouvez récupérer les nœuds dans n'importe quel ordre. Cependant, si le serveur défaillant héberge le nœud d’administration principal, vous devez d’abord récupérer ce nœud. La récupération du nœud d’administration principal en premier empêche les autres récupérations de nœuds de s’arrêter pendant qu’elles attendent de contacter le nœud d’administration principal.
+
+
+
+== Adresses IP des nœuds récupérés
+
+N'essayez pas de récupérer un nœud à l'aide d'une adresse IP actuellement attribuée à un autre nœud.  Lorsque vous déployez le nouveau nœud, utilisez l’adresse IP actuelle du nœud défaillant ou une adresse IP inutilisée.
+
+Si vous utilisez une nouvelle adresse IP pour déployer le nouveau nœud, puis récupérez le nœud, la nouvelle adresse IP continuera d’être utilisée pour le nœud récupéré.  Si vous souhaitez revenir à l’adresse IP d’origine, utilisez l’outil Modifier l’IP une fois la récupération terminée.

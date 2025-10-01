@@ -1,0 +1,106 @@
+---
+permalink: audit/common-elements-in-audit-messages.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, messages, message, common elements, AMID, ANID, ASES, ASQN, ATID, ATIM, ATYP, AVER, RSLT 
+summary: Tous les messages d’audit contiennent les éléments communs. 
+---
+= Éléments communs aux messages d'audit
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Tous les messages d’audit contiennent les éléments communs.
+
+[cols="1a,1a,4a"]
+|===
+| Code | Type | Description 
+
+
+ a| 
+AU MILIEU DE
+ a| 
+FC32
+ a| 
+ID du module : identifiant à quatre caractères de l’ID du module qui a généré le message.  Cela indique le segment de code dans lequel le message d'audit a été généré.
+
+
+
+ a| 
+ANID
+ a| 
+UI32
+ a| 
+ID de nœud : l’ID de nœud de grille attribué au service qui a généré le message.  Chaque service se voit attribuer un identifiant unique au moment de la configuration et de l'installation du système StorageGRID .  Cet identifiant ne peut pas être modifié.
+
+
+
+ a| 
+ASES
+ a| 
+UI64
+ a| 
+Identifiant de session d'audit : dans les versions précédentes, cet élément indiquait l'heure à laquelle le système d'audit était initialisé après le démarrage du service.  Cette valeur temporelle a été mesurée en microsecondes depuis l'époque du système d'exploitation (00:00:00 UTC le 1er janvier 1970).
+
+*Remarque :* cet élément est obsolète et n’apparaît plus dans les messages d’audit.
+
+
+
+ a| 
+ASQN
+ a| 
+UI64
+ a| 
+Nombre de séquences : dans les versions précédentes, ce compteur était incrémenté pour chaque message d’audit généré sur le nœud de grille (ANID) et réinitialisé à zéro au redémarrage du service.
+
+*Remarque :* cet élément est obsolète et n’apparaît plus dans les messages d’audit.
+
+
+
+ a| 
+ATID
+ a| 
+UI64
+ a| 
+ID de trace : un identifiant partagé par l’ensemble des messages déclenchés par un événement unique.
+
+
+
+ a| 
+ATIM
+ a| 
+UI64
+ a| 
+Horodatage : l'heure à laquelle l'événement a été généré et a déclenché le message d'audit, mesurée en microsecondes depuis l'époque du système d'exploitation (00:00:00 UTC le 1er janvier 1970).  Notez que la plupart des outils disponibles pour convertir l’horodatage en date et heure locales sont basés sur des millisecondes.
+
+L'arrondi ou la troncature de l'horodatage enregistré peut être nécessaire.  L'heure lisible par l'homme qui apparaît au début du message d'audit dans le `audit.log` le fichier est l'attribut ATIM au format ISO 8601.  La date et l'heure sont représentées comme `_YYYY-MMDDTHH:MM:SS.UUUUUU_` , où le `T` est une chaîne de caractères littérale indiquant le début du segment de temps de la date. `_UUUUUU_` sont des microsecondes.
+
+
+
+ a| 
+ATYP
+ a| 
+FC32
+ a| 
+Type d’événement : identifiant à quatre caractères de l’événement enregistré.  Cela régit le contenu de la « charge utile » du message : les attributs qui sont inclus.
+
+
+
+ a| 
+MOYENNE
+ a| 
+UI32
+ a| 
+Version : la version du message d’audit.  À mesure que le logiciel StorageGRID évolue, de nouvelles versions de services peuvent intégrer de nouvelles fonctionnalités dans les rapports d'audit.  Ce champ permet la compatibilité descendante dans le service AMS pour traiter les messages provenant d'anciennes versions de services.
+
+
+
+ a| 
+RSLT
+ a| 
+FC32
+ a| 
+Résultat : le résultat d’un événement, d’un processus ou d’une transaction.  Si ce n'est pas pertinent pour un message, NONE est utilisé plutôt que SUCS afin que le message ne soit pas filtré accidentellement.
+
+|===

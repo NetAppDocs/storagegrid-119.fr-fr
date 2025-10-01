@@ -1,0 +1,80 @@
+---
+permalink: monitor/view-alert-rules.html 
+sidebar: sidebar 
+keywords: how to manage alert rules 
+summary: 'Les règles d’alerte définissent les conditions qui déclenchent des alertes spécifiques.  StorageGRID inclut un ensemble de règles d"alerte par défaut, que vous pouvez utiliser telles quelles ou modifier, ou vous pouvez créer des règles d"alerte personnalisées.' 
+---
+= Afficher les règles d'alerte
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les règles d’alerte définissent les conditions qui déclenchentlink:alerts-reference.html["alertes spécifiques"] .  StorageGRID inclut un ensemble de règles d'alerte par défaut, que vous pouvez utiliser telles quelles ou modifier, ou vous pouvez créer des règles d'alerte personnalisées.
+
+Vous pouvez afficher la liste de toutes les règles d'alerte par défaut et personnalisées pour savoir quelles conditions déclencheront chaque alerte et pour voir si des alertes sont désactivées.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:../admin/admin-group-permissions.html["Gérer les alertes ou l'autorisation d'accès root"] .
+* En option, vous avez regardé la vidéo : https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=2eea81c5-8323-417f-b0a0-b1ff008506c1["Vidéo : Aperçu des alertes"^]
++
+[link=https://netapp.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=2eea81c5-8323-417f-b0a0-b1ff008506c1]
+image::../media/video-screenshot-alert-overview-118.png[Vidéo : Aperçu des alertes]
+
+
+
+.Étapes
+. Sélectionnez *ALERTES* > *Règles*.
++
+La page Règles d’alerte s’affiche.
+
++
+image::../media/alert_rules_page.png[Page des règles d'alerte]
+
+. Consultez les informations dans le tableau des règles d’alerte :
++
+[cols="1a,3a"]
+|===
+| En-tête de colonne | Description 
+
+
+ a| 
+Nom
+ a| 
+Le nom unique et la description de la règle d’alerte.  Les règles d’alerte personnalisées sont répertoriées en premier, suivies des règles d’alerte par défaut.  Le nom de la règle d’alerte est l’objet des notifications par e-mail.
+
+
+
+ a| 
+Conditions
+ a| 
+Les expressions Prometheus qui déterminent quand cette alerte est déclenchée.  Une alerte peut être déclenchée à un ou plusieurs des niveaux de gravité suivants, mais une condition pour chaque gravité n'est pas requise.
+
+** *Critique*image:../media/icon_alert_red_critical.png["Icône d'alerte rouge critique"] :Une condition anormale existe qui a arrêté les opérations normales d'un nœud ou d'un service StorageGRID .  Vous devez résoudre le problème sous-jacent immédiatement.  Une interruption de service et une perte de données peuvent survenir si le problème n'est pas résolu.
+** *Majeur*image:../media/icon_alert_orange_major.png["Icône Alerte Orange Majeure"] :Une condition anormale existe qui affecte les opérations en cours ou approche le seuil d'une alerte critique.  Vous devez enquêter sur les alertes majeures et résoudre tous les problèmes sous-jacents pour garantir que la condition anormale n’arrête pas le fonctionnement normal d’un nœud ou d’un service StorageGRID .
+** *Mineure*image:../media/icon_alert_yellow_minor.png["Icône d'alerte mineure jaune"] :Le système fonctionne normalement, mais une condition anormale existe qui pourrait affecter la capacité du système à fonctionner si elle persiste.  Vous devez surveiller et résoudre les alertes mineures qui ne disparaissent pas d'elles-mêmes pour vous assurer qu'elles n'entraînent pas un problème plus grave.
+
+
+
+
+ a| 
+Type
+ a| 
+Le type de règle d'alerte :
+
+** *Par défaut* : une règle d’alerte fournie avec le système.  Vous pouvez désactiver une règle d’alerte par défaut ou modifier les conditions et la durée d’une règle d’alerte par défaut.  Vous ne pouvez pas supprimer une règle d’alerte par défaut.
+** *Par défaut** : une règle d’alerte par défaut qui inclut une condition ou une durée modifiée.  Si nécessaire, vous pouvez facilement rétablir une condition modifiée à la valeur par défaut d'origine.
+** *Personnalisé* : une règle d’alerte que vous avez créée.  Vous pouvez désactiver, modifier et supprimer des règles d’alerte personnalisées.
+
+
+
+
+ a| 
+Statut
+ a| 
+Si cette règle d'alerte est actuellement activée ou désactivée.  Les conditions des règles d'alerte désactivées ne sont pas évaluées, donc aucune alerte n'est déclenchée.
+
+|===
+

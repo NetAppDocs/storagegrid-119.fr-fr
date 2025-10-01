@@ -1,0 +1,44 @@
+---
+permalink: maintain/viewing-current-status-of-all-services.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, service, status 
+summary: Vous pouvez afficher l’état actuel de tous les services exécutés sur un nœud de grille à tout moment. 
+---
+= Afficher l'état actuel de tous les services
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez afficher l’état actuel de tous les services exécutés sur un nœud de grille à tout moment.
+
+.Avant de commencer
+Vous avez le `Passwords.txt` déposer.
+
+.Étapes
+. Connectez-vous au nœud de grille :
++
+.. Entrez la commande suivante : `ssh admin@_grid_node_IP_`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+
+
++
+Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+. Afficher l’état de tous les services exécutés sur le nœud de grille : `storagegrid-status`
++
+Par exemple, la sortie du nœud d'administration principal indique que l'état actuel des services AMS, CMN et NMS est En cours d'exécution.  Cette sortie est mise à jour immédiatement si l’état d’un service change.
+
++
+image::../media/storagegrid_status_output.gif[capture d'écran de la sortie de la commande storage-grid]
+
+. Revenez à la ligne de commande, appuyez sur *Ctrl*+*C*.
+. Vous pouvez également afficher un rapport statique pour tous les services exécutés sur le nœud de grille : `/usr/local/servermanager/reader.rb`
++
+Ce rapport inclut les mêmes informations que le rapport mis à jour en continu, mais il n'est pas mis à jour si l'état d'un service change.
+
+. Déconnectez-vous de l'interpréteur de commandes : `exit`
+

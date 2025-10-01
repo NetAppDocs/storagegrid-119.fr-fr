@@ -1,0 +1,70 @@
+---
+permalink: ilm/configuring-regions-optional-and-s3-only.html 
+sidebar: sidebar 
+keywords: S3 regions, region, ilm rules 
+summary: Les règles ILM peuvent filtrer les objets en fonction des régions dans lesquelles les compartiments S3 sont créés, vous permettant de stocker des objets de différentes régions dans différents emplacements de stockage. 
+---
+= Configurer les régions (facultatif et S3 uniquement)
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les règles ILM peuvent filtrer les objets en fonction des régions dans lesquelles les compartiments S3 sont créés, vous permettant de stocker des objets de différentes régions dans différents emplacements de stockage.
+
+Si vous souhaitez utiliser une région de compartiment S3 comme filtre dans une règle, vous devez d'abord créer les régions qui peuvent être utilisées par les compartiments de votre système.
+
+
+NOTE: Vous ne pouvez pas modifier la région d'un bucket une fois celui-ci créé.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+
+
+.À propos de cette tâche
+Lors de la création d'un bucket S3, vous pouvez spécifier que le bucket soit créé dans une région spécifique.  La spécification d'une région permet au bucket d'être géographiquement proche de ses utilisateurs, ce qui peut aider à optimiser la latence, à minimiser les coûts et à répondre aux exigences réglementaires.
+
+Lorsque vous créez une règle ILM, vous souhaiterez peut-être utiliser la région associée à un compartiment S3 comme filtre avancé.  Par exemple, vous pouvez concevoir une règle qui s'applique uniquement aux objets des compartiments S3 créés dans le `us-west-2` région.  Vous pouvez ensuite spécifier que des copies de ces objets soient placées sur des nœuds de stockage sur un site de centre de données dans cette région pour optimiser la latence.
+
+Lors de la configuration des régions, suivez ces instructions :
+
+* Par défaut, tous les buckets sont considérés comme appartenant au `us-east-1` région.
+* Vous devez créer les régions à l'aide du gestionnaire de grille avant de pouvoir spécifier une région non par défaut lors de la création de compartiments à l'aide de l'API Tenant Manager ou Tenant Management ou avec l'élément de demande LocationConstraint pour les demandes d'API S3 PUT Bucket.  Une erreur se produit si une demande PUT Bucket utilise une région qui n'a pas été définie dans StorageGRID.
+* Vous devez utiliser le nom exact de la région lorsque vous créez le bucket S3.  Les noms de région sont sensibles à la casse.  Les caractères valides sont les chiffres, les lettres et les traits d'union.
++
+
+NOTE: EU n'est pas considéré comme un alias pour eu-west-1. Si vous souhaitez utiliser la région UE ou eu-ouest-1, vous devez utiliser le nom exact.
+
+* Vous ne pouvez pas supprimer ou modifier une région si elle est utilisée dans une règle attribuée à une politique (active ou inactive).
+* Si vous utilisez une région non valide comme filtre avancé dans une règle ILM, vous ne pouvez pas ajouter cette règle à une stratégie.
++
+Une région non valide peut se produire si vous utilisez une région comme filtre avancé dans une règle ILM, mais que vous supprimez ultérieurement cette région, ou si vous utilisez l'API Grid Management pour créer une règle et spécifier une région que vous n'avez pas définie.
+
+* Si vous supprimez une région après l'avoir utilisée pour créer un compartiment S3, vous devrez rajouter la région si vous souhaitez utiliser le filtre avancé Contrainte d'emplacement pour rechercher des objets dans ce compartiment.
+
+
+.Étapes
+. Sélectionnez *ILM* > *Régions*.
++
+La page Régions apparaît, avec les régions actuellement définies répertoriées.  *Région 1* indique la région par défaut, `us-east-1` , qui ne peut être ni modifié ni supprimé.
+
+. Pour ajouter une région :
++
+.. Sélectionnez *Ajouter une autre région*.
+.. Saisissez le nom d’une région que vous souhaitez utiliser lors de la création de buckets S3.
++
+Vous devez utiliser ce nom de région exact comme élément de demande LocationConstraint lorsque vous créez le bucket S3 correspondant.
+
+
+
+. Pour supprimer une région inutilisée, sélectionnez l'icône de suppressionimage:../media/icon-x-to-remove.png["Supprimer l'icône"] .
++
+Un message d’erreur s’affiche si vous tentez de supprimer une région actuellement utilisée dans une politique (active ou inactive).
+
+. Lorsque vous avez terminé vos modifications, sélectionnez *Enregistrer*.
++
+Vous pouvez désormais sélectionner ces régions dans la section Filtres avancés à l’étape 1 de l’assistant Créer une règle ILM. Voir link:create-ilm-rule-enter-details.html#use-advanced-filters-in-ilm-rules["Utiliser des filtres avancés dans les règles ILM"] .
+
+

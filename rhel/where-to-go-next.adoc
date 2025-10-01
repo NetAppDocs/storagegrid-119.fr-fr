@@ -1,0 +1,47 @@
+---
+permalink: rhel/where-to-go-next.html 
+sidebar: sidebar 
+keywords: what to do after red hat linux installation 
+summary: Une fois l’installation terminée, effectuez les tâches d’intégration et de configuration requises.  Vous pouvez effectuer les tâches facultatives selon vos besoins. 
+---
+= Où aller ensuite
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Une fois l’installation terminée, effectuez les tâches d’intégration et de configuration requises.  Vous pouvez effectuer les tâches facultatives selon vos besoins.
+
+
+
+== Tâches requises
+
+* link:../admin/managing-tenants.html["Créer un compte locataire"]pour le protocole client S3 qui sera utilisé pour stocker des objets sur votre système StorageGRID .
+* link:../admin/controlling-storagegrid-access.html["Accès au système de contrôle"]en configurant des groupes et des comptes utilisateurs.  En option, vous pouvezlink:../admin/using-identity-federation.html["configurer une source d'identité fédérée"] (comme Active Directory ou OpenLDAP), afin de pouvoir importer des groupes d'administration et des utilisateurs.  Ou, vous pouvezlink:../admin/managing-users.html#create-a-local-user["créer des groupes et des utilisateurs locaux"] .
+* Intégrer et tester lelink:../s3/configuring-tenant-accounts-and-connections.html["API S3"] applications clientes que vous utiliserez pour télécharger des objets sur votre système StorageGRID .
+* link:../ilm/index.html["Configurer les règles de gestion du cycle de vie des informations (ILM) et la politique ILM"]vous souhaitez utiliser pour protéger les données de l'objet.
+* Si votre installation inclut des nœuds de stockage d'appliance, utilisez SANtricity OS pour effectuer les tâches suivantes :
++
+** Connectez-vous à chaque appliance StorageGRID .
+** Vérifier la réception des données AutoSupport .
++
+Voir https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/configuring-hardware.html["Configurer le matériel"^] .
+
+
+
+* Consultez et suivez leslink:../harden/index.html["Directives de renforcement du système StorageGRID"] pour éliminer les risques de sécurité.
+* link:../monitor/email-alert-notifications.html["Configurer les notifications par e-mail pour les alertes système"] .
+
+
+
+
+== Tâches facultatives
+
+* link:../maintain/changing-ip-addresses-and-mtu-values-for-all-nodes-in-grid.html["Mettre à jour les adresses IP des nœuds de grille"]s'ils ont changé depuis que vous avez planifié votre déploiement et généré le package de récupération.
+* link:../admin/changing-network-options-object-encryption.html["Configurer le chiffrement du stockage"], si nécessaire.
+* link:../admin/configuring-stored-object-compression.html["Configurer la compression du stockage"]pour réduire la taille des objets stockés, si nécessaire.
+* link:../admin/configure-vlan-interfaces.html["Configurer les interfaces VLAN"]pour isoler et partitionner le trafic réseau, si nécessaire.
+* link:../admin/configure-high-availability-group.html["Configurer des groupes de haute disponibilité"]pour améliorer la disponibilité de la connexion pour les clients Grid Manager, Tenant Manager et S3, si nécessaire.
+* link:../admin/configuring-load-balancer-endpoints.html["Configurer les points de terminaison de l'équilibreur de charge"]pour la connectivité client S3, si nécessaire.
+

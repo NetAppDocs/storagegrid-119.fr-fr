@@ -1,0 +1,51 @@
+---
+permalink: fabricpool/other-best-practices-for-storagegrid-and-fabricpool.html 
+sidebar: sidebar 
+keywords: fabricPool, best practices, audit log, encryption, compressions, tiering, ontap, consistency 
+summary: 'Lors de la configuration d"un système StorageGRID à utiliser avec FabricPool, vous devrez peut-être modifier d"autres options StorageGRID .  Avant de modifier un paramètre global, réfléchissez à la manière dont la modification affectera les autres applications S3.' 
+---
+= Autres bonnes pratiques pour StorageGRID et FabricPool
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lors de la configuration d'un système StorageGRID à utiliser avec FabricPool, vous devrez peut-être modifier d'autres options StorageGRID .  Avant de modifier un paramètre global, réfléchissez à la manière dont la modification affectera les autres applications S3.
+
+
+
+== Destinations des messages d'audit et des journaux
+
+Les charges de travail FabricPool ont souvent un taux élevé d’opérations de lecture, ce qui peut générer un volume élevé de messages d’audit.
+
+* Si vous n'avez pas besoin d'un enregistrement des opérations de lecture client pour FabricPool ou toute autre application S3, accédez éventuellement à *CONFIGURATION* > *Surveillance* > *Serveur d'audit et syslog*. Modifiez le paramètre *Lectures client* sur *Erreur* pour réduire le nombre de messages d’audit enregistrés dans le journal d’audit. Voirlink:../monitor/configure-audit-messages.html["Configurer les messages d'audit et les destinations des journaux"] pour plus de détails.
+* Si vous disposez d'une grande grille, utilisez plusieurs types d'applications S3 ou souhaitez conserver toutes les données d'audit, configurez un serveur Syslog externe et enregistrez les informations d'audit à distance.  L’utilisation d’un serveur externe minimise l’impact sur les performances de la journalisation des messages d’audit sans réduire l’exhaustivité des données d’audit. Voirlink:../monitor/considerations-for-external-syslog-server.html["Considérations relatives au serveur syslog externe"] pour plus de détails.
+
+
+
+
+== Chiffrement d'objet
+
+Lors de la configuration de StorageGRID, vous pouvez éventuellement activer lelink:../admin/changing-network-options-object-encryption.html["option globale pour le chiffrement des objets stockés"] si le cryptage des données est requis pour d'autres clients StorageGRID .  Les données hiérarchisées de FabricPool vers StorageGRID sont déjà chiffrées, l'activation du paramètre StorageGRID n'est donc pas requise.  Les clés de chiffrement côté client appartiennent à ONTAP.
+
+
+
+== Compression d'objets
+
+Lors de la configuration de StorageGRID, n'activez pas lelink:../admin/configuring-stored-object-compression.html["option globale pour compresser les objets stockés"] .  Les données hiérarchisées de FabricPool vers StorageGRID sont déjà compressées.  L'utilisation de l'option StorageGRID ne réduira pas davantage la taille d'un objet.
+
+
+
+== Consistance du seau
+
+Pour les buckets FabricPool , la cohérence de bucket recommandée est *Lecture après nouvelle écriture*, qui est la cohérence par défaut pour un nouveau bucket.  Ne modifiez pas les buckets FabricPool pour utiliser *Disponible* ou *Strong-site*.
+
+
+
+== Hiérarchisation de FabricPool
+
+Si un nœud StorageGRID utilise le stockage attribué à partir d'un système NetApp ONTAP , vérifiez que le volume n'a pas de stratégie de hiérarchisation FabricPool activée.  Par exemple, si un nœud StorageGRID s'exécute sur un hôte VMware, assurez-vous que le volume qui sauvegarde la banque de données pour le nœud StorageGRID n'a pas de stratégie de hiérarchisation FabricPool activée.  La désactivation de la hiérarchisation FabricPool pour les volumes utilisés avec les nœuds StorageGRID simplifie le dépannage et les opérations de stockage.
+
+
+CAUTION: N'utilisez jamais FabricPool pour hiérarchiser les données liées à StorageGRID vers StorageGRID lui-même.  La hiérarchisation des données StorageGRID vers StorageGRID augmente le dépannage et la complexité opérationnelle.

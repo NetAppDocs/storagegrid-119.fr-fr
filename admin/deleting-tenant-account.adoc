@@ -1,0 +1,37 @@
+---
+permalink: admin/deleting-tenant-account.html 
+sidebar: sidebar 
+keywords: tenant, delete, remove tenant 
+summary: 'Vous pouvez supprimer un compte locataire si vous souhaitez supprimer définitivement l"accès du locataire au système.' 
+---
+= Supprimer le compte locataire
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez supprimer un compte locataire si vous souhaitez supprimer définitivement l'accès du locataire au système.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:admin-group-permissions.html["autorisations d'accès spécifiques"] .
+* Vous avez supprimé tous les compartiments et objets S3 associés au compte locataire.
+* Si le locataire est autorisé à utiliser une connexion à une fédération de réseau, vous avez examiné les considérations relatives àlink:grid-federation-manage-tenants.html["suppression d'un locataire avec l'autorisation Utiliser la connexion à la fédération de grille"] .
+
+
+.Étapes
+. Sélectionnez *LOCATAIRES*.
+. Localisez le ou les comptes locataires que vous souhaitez supprimer.
++
+Utilisez le champ de recherche pour rechercher un locataire par nom ou par ID de locataire.
+
+. Pour supprimer plusieurs locataires, cochez les cases et sélectionnez *Actions* > *Supprimer*.
+. Pour supprimer un seul locataire, effectuez l’une des opérations suivantes :
++
+** Cochez la case, puis sélectionnez *Actions* > *Supprimer*.
+** Sélectionnez le nom du locataire pour afficher la page de détails, puis sélectionnez *Actions* > *Supprimer*.
+
+
+. Sélectionnez *Oui*.
+

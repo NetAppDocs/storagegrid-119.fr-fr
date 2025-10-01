@@ -1,0 +1,109 @@
+---
+permalink: tenant/deleting-s3-bucket-objects.html 
+sidebar: sidebar 
+keywords: how to delete bucket objects, empty bucket 
+summary: Vous pouvez utiliser le gestionnaire de locataires pour supprimer les objets dans un ou plusieurs compartiments. 
+---
+= Supprimer les objets dans le bucket
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser le gestionnaire de locataires pour supprimer les objets dans un ou plusieurs compartiments.
+
+.Considérations et exigences
+Avant d’effectuer ces étapes, notez les points suivants :
+
+* Lorsque vous supprimez les objets d'un bucket, StorageGRID supprime définitivement tous les objets et toutes les versions d'objets de chaque bucket sélectionné de tous les nœuds et sites de votre système StorageGRID .  StorageGRID supprime également toutes les métadonnées d'objet associées.  Vous ne pourrez pas récupérer ces informations.
+* La suppression de tous les objets d'un bucket peut prendre des minutes, des jours, voire des semaines, en fonction du nombre d'objets, de copies d'objets et d'opérations simultanées.
+* Si un seau alink:using-s3-object-lock.html["Verrouillage d'objet S3 activé"] , il pourrait rester dans l'état *Suppression d'objets : lecture seule* pendant _années_.
++
+
+TIP: Un bucket qui utilise S3 Object Lock restera dans l'état *Suppression d'objets : lecture seule* jusqu'à ce que la date de conservation soit atteinte pour tous les objets et que toutes les conservations légales soient supprimées.
+
+* Pendant la suppression des objets, l'état du bucket est *Suppression d'objets : lecture seule*.  Dans cet état, vous ne pouvez pas ajouter de nouveaux objets au bucket.
+* Lorsque tous les objets ont été supprimés, le bucket reste en état de lecture seule.  Vous pouvez effectuer l’une des opérations suivantes :
++
+** Remettre le bucket en mode écriture et le réutiliser pour de nouveaux objets
+** Supprimer le bucket
+** Gardez le bucket en mode lecture seule pour réserver son nom pour une utilisation ultérieure
+
+
+* Si le contrôle de version d'objet est activé pour un bucket, les marqueurs de suppression créés dans StorageGRID 11.8 ou version ultérieure peuvent être supprimés à l'aide des opérations Supprimer des objets dans le bucket.
+* Si le contrôle de version d'objet est activé pour un bucket, l'opération de suppression d'objets ne supprimera pas les marqueurs de suppression créés dans StorageGRID 11.7 ou une version antérieure.  Consultez les informations sur la suppression d'objets dans un bucket danslink:../ilm/how-objects-are-deleted.html#delete-s3-versioned-objects["Comment les objets versionnés S3 sont supprimés"] .
+* Si vous utilisezlink:grid-federation-manage-cross-grid-replication.html["réplication inter-réseaux"] , notez ce qui suit :
++
+** L’utilisation de cette option ne supprime aucun objet du bucket sur l’autre grille.
+** Si vous sélectionnez cette option pour le bucket source, l'alerte *Échec de la réplication inter-grille* sera déclenchée si vous ajoutez des objets au bucket de destination sur l'autre grille.  Si vous ne pouvez pas garantir que personne n'ajoutera d'objets au seau sur l'autre grille,link:../tenant/grid-federation-manage-cross-grid-replication.html["désactiver la réplication inter-grille"] pour ce bucket avant de supprimer tous les objets du bucket.
+
+
+
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Autorisation d'accès root"] .  Cette autorisation remplace les paramètres d’autorisations dans les stratégies de groupe ou de compartiment.
+
+
+.Étapes
+. Sélectionnez *Afficher les buckets* dans le tableau de bord ou sélectionnez *STOCKAGE (S3)* > *Buckets*.
++
+La page Buckets apparaît et affiche tous les buckets S3 existants.
+
+. Utilisez le menu *Actions* ou la page de détails pour un bucket spécifique.
++
+[role="tabbed-block"]
+====
+.Menu Actions
+--
+.. Cochez la case correspondant à chaque compartiment dont vous souhaitez supprimer des objets.
+.. Sélectionnez *Actions* > *Supprimer les objets dans le bucket*.
+
+
+--
+.Page de détails
+--
+.. Sélectionnez un nom de bucket pour afficher ses détails.
+.. Sélectionnez *Supprimer les objets dans le bucket*.
+
+
+--
+====
+. Lorsque la boîte de dialogue de confirmation s'affiche, vérifiez les détails, entrez *Oui* et sélectionnez *OK*.
+. Attendez que l’opération de suppression commence.
++
+Après quelques minutes :
+
++
+** Une bannière d’état jaune apparaît sur la page des détails du bucket.  La barre de progression représente le pourcentage d'objets supprimés.
+** *(lecture seule)* apparaît après le nom du bucket sur la page des détails du bucket.
+** *(Suppression d'objets : lecture seule)* apparaît à côté du nom du bucket sur la page Buckets.
+
+
++
+image::../media/delete-bucket-objects-in-progress.png[capture d'écran montrant les objets du bucket en cours de suppression]
+
+. Si nécessaire, pendant que l'opération est en cours, sélectionnez *Arrêter la suppression des objets* pour arrêter le processus.  Ensuite, si vous le souhaitez, sélectionnez *Supprimer les objets dans le bucket* pour reprendre le processus.
++
+Lorsque vous sélectionnez *Arrêter la suppression des objets*, le bucket revient en mode écriture ; cependant, vous ne pouvez pas accéder ni restaurer les objets qui ont été supprimés.
+
+. Attendez que l'opération soit terminée.
++
+Lorsque le bucket est vide, la bannière d'état est mise à jour, mais le bucket reste en lecture seule.
+
++
+image::../media/delete-bucket-objects-complete.png[capture d'écran montrant tous les objets du bucket supprimés]
+
+. Effectuez l’une des opérations suivantes :
++
+** Quittez la page pour conserver le bucket en mode lecture seule.  Par exemple, vous pouvez conserver un bucket vide en mode lecture seule pour réserver le nom du bucket pour une utilisation ultérieure.
+** Supprimer le bucket.  Vous pouvez sélectionner *Supprimer le bucket* pour supprimer un seul bucket ou revenir à la page Buckets et sélectionner *Actions* > *Supprimer* les buckets pour supprimer plusieurs buckets.
++
+
+NOTE: Si vous ne parvenez pas à supprimer un bucket versionné après la suppression de tous les objets, des marqueurs de suppression peuvent rester.  Pour supprimer le bucket, vous devez supprimer tous les marqueurs de suppression restants.
+
+** Remettez le bucket en mode écriture et réutilisez-le éventuellement pour de nouveaux objets.  Vous pouvez sélectionner *Arrêter la suppression des objets* pour un seul bucket ou revenir à la page Buckets et sélectionner *Action* > *Arrêter la suppression des objets* pour plusieurs buckets.
+
+
+

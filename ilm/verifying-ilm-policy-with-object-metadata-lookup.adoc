@@ -1,0 +1,53 @@
+---
+permalink: ilm/verifying-ilm-policy-with-object-metadata-lookup.html 
+sidebar: sidebar 
+keywords: verify ilm policy, object metadata lookup 
+summary: 'Après avoir activé une stratégie ILM, ingérez des objets de test représentatifs dans le système StorageGRID , puis effectuez une recherche de métadonnées d"objet pour confirmer que les copies sont effectuées comme prévu et placées aux emplacements corrects.' 
+---
+= Vérifier une politique ILM avec la recherche de métadonnées d'objet
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Après avoir activé une stratégie ILM, ingérez des objets de test représentatifs dans le système StorageGRID , puis effectuez une recherche de métadonnées d'objet pour confirmer que les copies sont effectuées comme prévu et placées aux emplacements corrects.
+
+.Avant de commencer
+Vous disposez d'un identifiant d'objet, qui peut être l'un des suivants : * *UUID* : l'identifiant unique universel de l'objet.  * *CBID* : l'identifiant unique de l'objet dans StorageGRID. Vous pouvez obtenir le CBID d'un objet à partir du journal d'audit. Entrez le CBID en majuscules.  * *Seau S3 et clé d'objet* : lorsqu'un objet est ingéré via l'interface S3, l'application cliente utilise une combinaison de compartiment et de clé d'objet pour stocker et identifier l'objet. Si le bucket S3 est versionné et que vous souhaitez rechercher une version spécifique d'un objet S3 à l'aide du bucket et de la clé d'objet, vous disposez de l'*ID de version*.
+
+.Étapes
+. Ingérer l'objet.
+. Sélectionnez *ILM* > *Recherche de métadonnées d'objet*.
+. Tapez l'identifiant de l'objet dans le champ *Identifiant*. Vous pouvez saisir un UUID, un CBID ou une clé de bucket/objet S3.
+. Si vous le souhaitez, saisissez un ID de version pour l'objet (S3 uniquement).
+. Sélectionnez *Rechercher*.
++
+Les résultats de la recherche de métadonnées d’objet s’affichent.  Cette page répertorie les types d'informations suivants :
+
++
+** Métadonnées système, telles que l'ID d'objet (UUID), le type de résultat (objet, marqueur de suppression, compartiment S3) et la taille logique de l'objet.  Reportez-vous à l'exemple de capture d'écran ci-dessous pour plus de détails.
+** Toutes les paires clé-valeur de métadonnées utilisateur personnalisées associées à l'objet.
+** Pour les objets S3, toutes les paires clé-valeur de balise d'objet associées à l'objet.
+** Pour les copies d’objets répliquées, l’emplacement de stockage actuel de chaque copie.
+** Pour les copies d'objets codées par effacement, l'emplacement de stockage actuel de chaque fragment.
+** Pour les copies d'objet dans un pool de stockage Cloud, l'emplacement de l'objet, y compris le nom du bucket externe et l'identifiant unique de l'objet.
+** Pour les objets segmentés et les objets en plusieurs parties, une liste de segments d'objet comprenant les identifiants de segment et les tailles de données.  Pour les objets comportant plus de 100 segments, seuls les 100 premiers segments sont affichés.
+** Toutes les métadonnées d'objet au format de stockage interne non traité.  Ces métadonnées brutes incluent des métadonnées système internes dont la persistance d'une version à l'autre n'est pas garantie.
+
+
+. Confirmez que l'objet est stocké au bon emplacement ou aux bons emplacements et qu'il s'agit du bon type de copie.
++
+Si l'option Audit est activée, vous pouvez également surveiller le journal d'audit pour le message Règles d'objet ORLM respectées.  Le message d'audit ORLM peut vous fournir plus d'informations sur l'état du processus d'évaluation ILM, mais il ne peut pas vous donner d'informations sur l'exactitude du placement des données de l'objet ou l'exhaustivité de la politique ILM.  Vous devez évaluer cela vous-même. Pour plus de détails, consultez la section link:../audit/index.html["Examiner les journaux d'audit"] .
+
+
+
+L'exemple suivant montre les résultats de la recherche de métadonnées d'objet pour un objet de test S3 stocké sous forme de deux copies répliquées.
+
+
+NOTE: La capture d'écran suivante est un exemple.  Vos résultats varieront en fonction de votre version de StorageGRID .
+
+image::../media/object_lookup_results.png[Résultats de la recherche d'objets]
+
+.Informations connexes
+link:../s3/index.html["Utiliser l'API REST S3"]

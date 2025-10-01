@@ -1,0 +1,57 @@
+---
+permalink: audit/svrf-object-store-verify-fail.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, SVRF, Object Store Verify Fail 
+summary: 'Ce message est émis chaque fois qu"un bloc de contenu échoue au processus de vérification.  Chaque fois que des données d"objet répliquées sont lues ou écrites sur le disque, plusieurs contrôles de vérification et d"intégrité sont effectués pour garantir que les données envoyées à l"utilisateur demandeur sont identiques aux données initialement ingérées dans le système.  Si l’une de ces vérifications échoue, le système met automatiquement en quarantaine les données de l’objet répliqué corrompu pour empêcher leur récupération ultérieure.' 
+---
+= SVRF : échec de la vérification du magasin d'objets
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ce message est émis chaque fois qu'un bloc de contenu échoue au processus de vérification.  Chaque fois que des données d'objet répliquées sont lues ou écrites sur le disque, plusieurs contrôles de vérification et d'intégrité sont effectués pour garantir que les données envoyées à l'utilisateur demandeur sont identiques aux données initialement ingérées dans le système.  Si l’une de ces vérifications échoue, le système met automatiquement en quarantaine les données de l’objet répliqué corrompu pour empêcher leur récupération ultérieure.
+
+[cols="1a,1a,4a"]
+|===
+| Code | Champ | Description 
+
+
+ a| 
+CBID
+ a| 
+Identifiant du bloc de contenu
+ a| 
+L'identifiant unique du bloc de contenu dont la vérification a échoué.
+
+
+
+ a| 
+RSLT
+ a| 
+Code de résultat
+ a| 
+Type d'échec de vérification :
+
+CRCF : échec du contrôle de redondance cyclique (CRC).
+
+HMAC : la vérification du code d'authentification de message basé sur le hachage (HMAC) a échoué.
+
+EHSH : hachage de contenu chiffré inattendu.
+
+PHSH : hachage de contenu original inattendu.
+
+SEQC : séquence de données incorrecte sur le disque.
+
+PERR : structure non valide du fichier disque.
+
+DERR : Erreur de disque.
+
+FNAM : Mauvais nom de fichier.
+
+|===
+
+NOTE: Ce message doit être surveillé de près.  Les échecs de vérification du contenu peuvent indiquer des pannes matérielles imminentes.
+
+Pour déterminer quelle opération a déclenché le message, consultez la valeur du champ AMID (ID du module).  Par exemple, une valeur SVFY indique que le message a été généré par le module Storage Verifier, c'est-à-dire une vérification en arrière-plan, et STOR indique que le message a été déclenché par une récupération de contenu.

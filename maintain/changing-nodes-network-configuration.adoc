@@ -1,0 +1,210 @@
+---
+permalink: maintain/changing-nodes-network-configuration.html 
+sidebar: sidebar 
+keywords: storagegrid, network configuration, node network configuration 
+summary: Vous pouvez modifier la configuration réseau d’un ou plusieurs nœuds à l’aide de l’outil Modifier l’IP.  Vous pouvez modifier la configuration du réseau Grid ou ajouter, modifier ou supprimer les réseaux administrateur ou client. 
+---
+= Modifier la configuration du réseau de nœuds
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez modifier la configuration réseau d’un ou plusieurs nœuds à l’aide de l’outil Modifier l’IP.  Vous pouvez modifier la configuration du réseau Grid ou ajouter, modifier ou supprimer les réseaux administrateur ou client.
+
+.Avant de commencer
+Vous avez le `Passwords.txt` déposer.
+
+.À propos de cette tâche
+*Linux :* si vous ajoutez un nœud de grille au réseau d'administration ou au réseau client pour la première fois et que vous n'avez pas configuré auparavant ADMIN_NETWORK_TARGET ou CLIENT_NETWORK_TARGET dans le fichier de configuration du nœud, vous devez le faire maintenant.
+
+Consultez les instructions d'installation de StorageGRID pour votre système d'exploitation Linux :
+
+* link:../rhel/index.html["Installer StorageGRID sur Red Hat Enterprise Linux"]
+* link:../ubuntu/index.html["Installer StorageGRID sur Ubuntu ou Debian"]
+
+
+*Appareils :* sur les appareils StorageGRID , si le réseau client ou administrateur n'a pas été configuré dans le programme d'installation de l'appareil StorageGRID lors de l'installation initiale, le réseau ne peut pas être ajouté à l'aide de l'outil Modifier l'adresse IP uniquement.  Tout d’abord, vous devez https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/placing-appliance-into-maintenance-mode.html["mettre l'appareil en mode maintenance"^] , configurez les liens, remettez l'appareil en mode de fonctionnement normal, puis utilisez l'outil Modifier l'IP pour modifier la configuration du réseau.  Voir le https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/configuring-network-links.html["procédure de configuration des liens réseau"^] .
+
+Vous pouvez modifier l'adresse IP, le masque de sous-réseau, la passerelle ou la valeur MTU d'un ou plusieurs nœuds sur n'importe quel réseau.
+
+Vous pouvez également ajouter ou supprimer un nœud d’un réseau client ou d’un réseau administrateur :
+
+* Vous pouvez ajouter un nœud à un réseau client ou à un réseau administrateur en ajoutant une adresse IP/un masque de sous-réseau sur ce réseau au nœud.
+* Vous pouvez supprimer un nœud d'un réseau client ou d'un réseau administrateur en supprimant l'adresse IP/le masque de sous-réseau du nœud sur ce réseau.
++
+Les nœuds ne peuvent pas être supprimés du réseau Grid.
+
+
+
+
+NOTE: Les échanges d'adresses IP ne sont pas autorisés.  Si vous devez échanger des adresses IP entre les nœuds de grille, vous devez utiliser une adresse IP intermédiaire temporaire.
+
+
+NOTE: Si l'authentification unique (SSO) est activée pour votre système StorageGRID et que vous modifiez l'adresse IP d'un nœud d'administration, sachez que toute approbation de partie de confiance configurée à l'aide de l'adresse IP du nœud d'administration (au lieu de son nom de domaine complet, comme recommandé) deviendra invalide. Vous ne pourrez plus vous connecter au nœud. Immédiatement après avoir modifié l'adresse IP, vous devez mettre à jour ou reconfigurer la partie de confiance du nœud dans Active Directory Federation Services (AD FS) avec la nouvelle adresse IP. Voir les instructions pourlink:../admin/configuring-sso.html["configuration de SSO"] .
+
+
+NOTE: Toutes les modifications que vous apportez au réseau à l’aide de l’outil Modifier l’adresse IP sont propagées au micrologiciel d’installation des appliances StorageGRID .  De cette façon, si le logiciel StorageGRID est réinstallé sur un appareil, ou si un appareil est placé en mode maintenance, la configuration réseau sera correcte.
+
+.Étapes
+. Connectez-vous au nœud d’administration principal :
++
+.. Entrez la commande suivante : `ssh admin@_primary_Admin_Node_IP_`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+
+
++
+Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+. Démarrez l’outil Change IP en entrant la commande suivante : `change-ip`
+. Saisissez la phrase secrète de provisionnement à l’invite.
++
+Le menu principal apparaît.
+
++
+image::../media/change_ip_tool_main_menu.png[capture d'écran montrant l'écran d'accueil de l'outil de changement d'IP]
+
+. Sélectionnez éventuellement *1* pour choisir les nœuds à mettre à jour.  Sélectionnez ensuite l’une des options suivantes :
++
+** *1*: Nœud unique – sélectionner par nom
+** *2*: Nœud unique – sélectionnez par site, puis par nom
+** *3*: Nœud unique – sélection par IP actuelle
+** *4*: Tous les nœuds d'un site
+** *5*: Tous les nœuds de la grille
++
+*Remarque :* si vous souhaitez mettre à jour tous les nœuds, laissez « tous » sélectionné.
+
+
+
++
+Une fois votre sélection effectuée, le menu principal apparaît, avec le champ *Nœuds sélectionnés* mis à jour pour refléter votre choix.  Toutes les actions ultérieures sont effectuées uniquement sur les nœuds affichés.
+
+. Dans le menu principal, sélectionnez l'option *2* pour modifier les informations IP/masque, passerelle et MTU pour les nœuds sélectionnés.
++
+.. Sélectionnez le réseau sur lequel vous souhaitez apporter des modifications :
++
+--
+*** *1*: Réseau de grille
+*** *2*: Réseau d'administration
+*** *3*: Réseau client
+*** *4*: Tous les réseaux
+
+
+--
++
+--
+Une fois votre sélection effectuée, l'invite affiche le nom du nœud, le nom du réseau (Grille, Admin ou Client), le type de données (IP/masque, passerelle ou MTU) et la valeur actuelle.
+
+La modification de l'adresse IP, de la longueur du préfixe, de la passerelle ou du MTU d'une interface configurée par DHCP modifiera l'interface en statique.  Lorsque vous choisissez de modifier une interface configurée par DHCP, un avertissement s'affiche pour vous informer que l'interface deviendra statique.
+
+Interfaces configurées comme `fixed` ne peut pas être modifié.
+
+--
+.. Pour définir une nouvelle valeur, saisissez-la au format indiqué pour la valeur actuelle.
+.. Pour laisser la valeur actuelle inchangée, appuyez sur *Entrée*.
+.. Si le type de données est `IP/mask` , vous pouvez supprimer le réseau administrateur ou client du nœud en saisissant *d* ou *0.0.0.0/0*.
+.. Après avoir modifié tous les nœuds que vous souhaitez modifier, entrez *q* pour revenir au menu principal.
++
+Vos modifications sont conservées jusqu'à ce qu'elles soient effacées ou appliquées.
+
+
+
+. Vérifiez vos modifications en sélectionnant l’une des options suivantes :
++
+** *5*: Affiche les modifications dans la sortie qui sont isolées pour afficher uniquement l'élément modifié.  Les modifications sont surlignées en vert (ajouts) ou en rouge (suppressions), comme indiqué dans l'exemple de sortie :
++
+image::../media/change_ip_tool_edit_ip_mask_sample_output.png[capture d'écran décrite par le texte environnant]
+
+** *6*: Affiche les modifications dans la sortie qui affiche la configuration complète.  Les modifications sont surlignées en vert (ajouts) ou en rouge (suppressions).
++
+
+NOTE: Certaines interfaces de ligne de commande peuvent afficher des ajouts et des suppressions à l'aide d'un formatage barré.  L'affichage correct dépend de la prise en charge par votre client terminal des séquences d'échappement VT100 nécessaires.
+
+
+
+. Sélectionnez l'option *7* pour valider toutes les modifications.
++
+Cette validation garantit que les règles des réseaux Grid, Admin et Client, telles que la non-utilisation de sous-réseaux qui se chevauchent, ne sont pas violées.
+
++
+Dans cet exemple, la validation a renvoyé des erreurs.
+
++
+image::../media/change_ip_tool_validate_sample_error_messages.gif[capture d'écran décrite par le texte environnant]
+
++
+Dans cet exemple, la validation a réussi.
+
++
+image::../media/change_ip_tool_validate_sample_passed_messages.gif[capture d'écran décrite par le texte environnant]
+
+. Une fois la validation effectuée, choisissez l'une des options suivantes :
++
+** *8*: Enregistrer les modifications non appliquées.
++
+Cette option vous permet de quitter l'outil Change IP et de le redémarrer plus tard, sans perdre les modifications non appliquées.
+
+** *10*: Appliquer la nouvelle configuration réseau.
+
+
+. Si vous avez sélectionné l'option *10*, choisissez l'une des options suivantes :
++
+** *appliquer* : appliquer les modifications immédiatement et redémarrer automatiquement chaque nœud si nécessaire.
++
+Si la nouvelle configuration réseau ne nécessite aucune modification du réseau physique, vous pouvez sélectionner *appliquer* pour appliquer les modifications immédiatement.  Les nœuds seront redémarrés automatiquement, si nécessaire.  Les nœuds qui doivent être redémarrés seront affichés.
+
+** *étape* : appliquer les modifications la prochaine fois que les nœuds sont redémarrés manuellement.
++
+Si vous devez apporter des modifications à la configuration du réseau physique ou virtuel pour que la nouvelle configuration réseau fonctionne, vous devez utiliser l'option *stage*, arrêter les nœuds concernés, apporter les modifications nécessaires au réseau physique et redémarrer les nœuds concernés.  Si vous sélectionnez *Appliquer* sans avoir d’abord effectué ces modifications réseau, les modifications échoueront généralement.
+
++
+
+NOTE: Si vous utilisez l'option *stage*, vous devez redémarrer le nœud dès que possible après la préparation afin de minimiser les interruptions.
+
+** *annuler* : N'effectuez aucune modification de réseau pour le moment.
++
+Si vous ne saviez pas que les modifications proposées nécessitent le redémarrage des nœuds, vous pouvez différer les modifications pour minimiser l'impact sur l'utilisateur.  En sélectionnant *Annuler*, vous revenez au menu principal et conservez vos modifications afin que vous puissiez les appliquer ultérieurement.
+
++
+Lorsque vous sélectionnez *appliquer* ou *étape*, un nouveau fichier de configuration réseau est généré, le provisionnement est effectué et les nœuds sont mis à jour avec de nouvelles informations de travail.
+
++
+Lors de l'approvisionnement, la sortie affiche l'état au fur et à mesure que les mises à jour sont appliquées.
+
++
+[listing]
+----
+Generating new grid networking description file...
+
+Running provisioning...
+
+Updating grid network configuration on Name
+----
+
+
++
+Une fois les modifications appliquées ou mises en scène, un nouveau package de récupération est généré suite à la modification de la configuration de la grille.
+
+. Si vous avez sélectionné *étape*, suivez ces étapes une fois le provisionnement terminé :
++
+.. Effectuez les modifications de réseau physiques ou virtuelles requises.
++
+*Modifications du réseau physique* : effectuez les modifications nécessaires au réseau physique, en arrêtant le nœud en toute sécurité si nécessaire.
+
++
+*Linux* : Si vous ajoutez le nœud à un réseau d'administration ou à un réseau client pour la première fois, assurez-vous d'avoir ajouté l'interface comme décrit danslink:linux-adding-interfaces-to-existing-node.html["Linux : ajouter des interfaces à un nœud existant"] .
+
+.. Redémarrez les nœuds affectés.
+
+
+. Sélectionnez *0* pour quitter l’outil Modifier l’IP une fois vos modifications terminées.
+. Téléchargez un nouveau package de récupération à partir du gestionnaire de grille.
++
+.. Sélectionnez *MAINTENANCE* > *Système* > *Package de récupération*.
+.. Saisissez la phrase secrète d’approvisionnement.
+
+
+

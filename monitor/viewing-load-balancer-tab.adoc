@@ -1,0 +1,52 @@
+---
+permalink: monitor/viewing-load-balancer-tab.html 
+sidebar: sidebar 
+keywords: load balancer tab 
+summary: 'L"onglet Équilibreur de charge inclut des graphiques de performances et de diagnostic liés au fonctionnement du service Équilibreur de charge.' 
+---
+= Afficher l'onglet Équilibreur de charge
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'onglet Équilibreur de charge inclut des graphiques de performances et de diagnostic liés au fonctionnement du service Équilibreur de charge.
+
+L'onglet Équilibreur de charge s'affiche pour les nœuds d'administration et les nœuds de passerelle, chaque site et l'ensemble de la grille.  Pour chaque site, l’onglet Équilibreur de charge fournit un résumé global des statistiques de tous les nœuds de ce site.  Pour l’ensemble de la grille, l’onglet Équilibreur de charge fournit un résumé global des statistiques pour tous les sites.
+
+S'il n'y a aucune E/S exécutée via le service Load Balancer ou si aucun équilibreur de charge n'est configuré, les graphiques affichent « Aucune donnée ».
+
+image::../media/nodes_page_load_balancer_tab.png[Onglet Équilibrage de charge de la page Nœuds]
+
+
+
+== Demande de trafic
+
+Ce graphique fournit une moyenne mobile sur 3 minutes du débit des données transmises entre les points de terminaison de l'équilibreur de charge et les clients effectuant les demandes, en bits par seconde.
+
+
+NOTE: Cette valeur est mise à jour à la fin de chaque requête.  Par conséquent, cette valeur peut différer du débit en temps réel à des taux de requête faibles ou pour des requêtes de très longue durée.  Vous pouvez consulter l’onglet Réseau pour obtenir une vue plus réaliste du comportement actuel du réseau.
+
+
+
+== Taux de demandes entrantes
+
+Ce graphique fournit une moyenne mobile sur 3 minutes du nombre de nouvelles requêtes par seconde, réparties par type de requête (GET, PUT, HEAD et DELETE).  Cette valeur est mise à jour lorsque les en-têtes d'une nouvelle requête ont été validés.
+
+
+
+== Durée moyenne de la requête (sans erreur)
+
+Ce graphique fournit une moyenne mobile sur 3 minutes des durées de requête, réparties par type de requête (GET, PUT, HEAD et DELETE).  La durée de chaque demande commence lorsqu'un en-tête de demande est analysé par le service Load Balancer et se termine lorsque le corps de la réponse complet est renvoyé au client.
+
+
+
+== Taux de réponse aux erreurs
+
+Ce graphique fournit une moyenne mobile sur 3 minutes du nombre de réponses d'erreur renvoyées aux clients par seconde, ventilées par code de réponse d'erreur.
+
+.Informations connexes
+* link:monitoring-load-balancing-operations.html["Surveiller les opérations d'équilibrage de charge"]
+* link:../admin/index.html["Administrer StorageGRID"]
+

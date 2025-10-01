@@ -1,0 +1,79 @@
+---
+permalink: ilm/using-last-access-time-in-ilm-rules.html 
+sidebar: sidebar 
+keywords: last access time, ilm rule reference time 
+summary: 'Vous pouvez utiliser l’heure du dernier accès comme heure de référence dans une règle ILM.  Par exemple, vous souhaiterez peut-être laisser les objets qui ont été consultés au cours des trois derniers mois sur les nœuds de stockage locaux, tout en déplaçant les objets qui n"ont pas été consultés récemment vers un emplacement hors site.  Vous pouvez également utiliser l"heure du dernier accès comme filtre avancé si vous souhaitez qu"une règle ILM s"applique uniquement aux objets qui ont été consultés pour la dernière fois à une date spécifique.' 
+---
+= Utiliser l'heure du dernier accès dans les règles ILM
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser l’heure du dernier accès comme heure de référence dans une règle ILM.  Par exemple, vous souhaiterez peut-être laisser les objets qui ont été consultés au cours des trois derniers mois sur les nœuds de stockage locaux, tout en déplaçant les objets qui n'ont pas été consultés récemment vers un emplacement hors site.  Vous pouvez également utiliser l'heure du dernier accès comme filtre avancé si vous souhaitez qu'une règle ILM s'applique uniquement aux objets qui ont été consultés pour la dernière fois à une date spécifique.
+
+.À propos de cette tâche
+Avant d’utiliser l’heure du dernier accès dans une règle ILM, passez en revue les considérations suivantes :
+
+* Lorsque vous utilisez l'heure du dernier accès comme heure de référence, sachez que la modification de l'heure du dernier accès à un objet ne déclenche pas d'évaluation ILM immédiate.  Au lieu de cela, les emplacements de l'objet sont évalués et l'objet est déplacé selon les besoins lorsque l'ILM d'arrière-plan évalue l'objet.  Cela peut prendre deux semaines ou plus après l’accès à l’objet.
++
+Tenez compte de cette latence lors de la création de règles ILM basées sur l'heure du dernier accès et évitez les placements qui utilisent des périodes de temps courtes (moins d'un mois).
+
+* Lorsque vous utilisez l’heure du dernier accès comme filtre avancé ou comme heure de référence, vous devez activer les mises à jour de l’heure du dernier accès pour les compartiments S3.  Vous pouvez utiliser lelink:../tenant/enabling-or-disabling-last-access-time-updates.html["Gestionnaire de locataires"] ou lelink:../s3/put-bucket-last-access-time-request.html["API de gestion des locataires"] .
++
+
+NOTE: Les mises à jour de l'heure du dernier accès sont désactivées par défaut pour les compartiments S3.
+
++
+
+NOTE: Gardez à l’esprit que l’activation des mises à jour de l’heure du dernier accès peut réduire les performances, en particulier dans les systèmes avec de petits objets.  L’impact sur les performances se produit car StorageGRID doit mettre à jour les objets avec de nouveaux horodatages chaque fois que les objets sont récupérés.
+
+
+
+Le tableau suivant résume si l'heure du dernier accès est mise à jour pour tous les objets du bucket pour différents types de demandes.
+
+[cols="1a,1a,1a"]
+|===
+| Type de demande | Si l'heure du dernier accès est mise à jour lorsque les mises à jour de l'heure du dernier accès sont désactivées | Si l'heure du dernier accès est mise à jour lorsque les mises à jour de l'heure du dernier accès sont activées 
+
+
+ a| 
+Demande de récupération d'un objet, de sa liste de contrôle d'accès ou de ses métadonnées
+ a| 
+Non
+ a| 
+Oui
+
+
+
+ a| 
+Demande de mise à jour des métadonnées d'un objet
+ a| 
+Oui
+ a| 
+Oui
+
+
+
+ a| 
+Demande de copie d'un objet d'un bucket à un autre
+ a| 
+* Non, pour la copie source
+* Oui, pour la copie de destination
+
+ a| 
+* Oui, pour la copie source
+* Oui, pour la copie de destination
+
+
+
+
+ a| 
+Demande de finalisation d'un téléchargement en plusieurs parties
+ a| 
+Oui, pour l'objet assemblé
+ a| 
+Oui, pour l'objet assemblé
+
+|===

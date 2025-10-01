@@ -1,0 +1,55 @@
+---
+permalink: maintain/how-your-system-is-affected-when-you-apply-hotfix.html 
+sidebar: sidebar 
+keywords: storagegrid, hotfix 
+summary: Vous devez comprendre comment votre système StorageGRID sera affecté lorsque vous appliquez un correctif. 
+---
+= Comment votre système est affecté lorsque vous appliquez un correctif
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez comprendre comment votre système StorageGRID sera affecté lorsque vous appliquez un correctif.
+
+
+
+== Les correctifs de StorageGRID ne sont pas perturbateurs
+
+Le système StorageGRID peut ingérer et récupérer des données à partir des applications clientes tout au long du processus de correctif.  Si vous approuvez tous les nœuds du même type pour le correctif (par exemple, les nœuds de stockage), les nœuds sont arrêtés un par un, de sorte qu'il n'y a aucun moment où tous les nœuds de grille ou tous les nœuds de grille d'un certain type sont indisponibles.
+
+Pour permettre une disponibilité continue, assurez-vous que votre politique ILM contient des règles qui spécifient le stockage de plusieurs copies de chaque objet.  Vous devez également vous assurer que tous les clients S3 externes sont configurés pour envoyer des requêtes à l’un des éléments suivants :
+
+* Une adresse IP virtuelle de groupe haute disponibilité (HA)
+* Un équilibreur de charge tiers à haute disponibilité
+* Plusieurs nœuds de passerelle pour chaque client
+* Plusieurs nœuds de stockage pour chaque client
+
+
+
+
+== Les applications clientes peuvent subir des perturbations à court terme
+
+Le système StorageGRID peut ingérer et récupérer des données à partir d'applications clientes tout au long du processus de correctif logiciel. Cependant, les connexions clientes aux nœuds de passerelle ou aux nœuds de stockage individuels peuvent être temporairement interrompues si le correctif logiciel doit redémarrer les services sur ces nœuds.  La connectivité sera restaurée une fois le processus de correctif terminé et les services reprendront sur les nœuds individuels.
+
+Vous devrez peut-être planifier un temps d'arrêt pour appliquer un correctif si la perte de connectivité pendant une courte période n'est pas acceptable.  Vous pouvez utiliser l’approbation sélective pour planifier le moment où certains nœuds sont mis à jour.
+
+
+NOTE: Vous pouvez utiliser plusieurs passerelles et groupes de haute disponibilité (HA) pour fournir un basculement automatique pendant le processus de correctif. Voir les instructions pourlink:../admin/configure-high-availability-group.html["configuration des groupes de haute disponibilité"] .
+
+
+
+== Des alertes et des notifications SNMP peuvent être déclenchées
+
+Des alertes et des notifications SNMP peuvent être déclenchées lorsque les services sont redémarrés et lorsque le système StorageGRID fonctionne dans un environnement à versions mixtes (certains nœuds de grille exécutant une version antérieure, tandis que d'autres ont été mis à niveau vers une version ultérieure).  En général, ces alertes et notifications disparaissent une fois le correctif terminé.
+
+
+
+== Les modifications de configuration sont restreintes
+
+Lors de l'application d'un correctif à StorageGRID:
+
+* N'apportez aucune modification à la configuration de la grille (par exemple, en spécifiant les sous-réseaux du réseau de grille ou en approuvant les nœuds de grille en attente) tant que le correctif n'a pas été appliqué à tous les nœuds.
+* Ne mettez pas à jour la configuration ILM tant que le correctif n'a pas été appliqué à tous les nœuds.
+

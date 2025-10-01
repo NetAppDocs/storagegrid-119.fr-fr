@@ -1,0 +1,53 @@
+---
+permalink: maintain/selecting-start-recovery-to-configure-appliance-storage-node.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, appliance storage node 
+summary: 'Vous devez sélectionner Démarrer la récupération dans le gestionnaire de grille pour configurer un nœud de stockage d"appliance en remplacement du nœud défaillant.' 
+---
+= Sélectionnez Démarrer la récupération pour configurer le nœud de stockage de l'appliance
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez sélectionner Démarrer la récupération dans le gestionnaire de grille pour configurer un nœud de stockage d'appliance en remplacement du nœud défaillant.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:../admin/admin-group-permissions.html["Autorisation d'accès de maintenance ou root"] .
+* Vous disposez de la phrase secrète de provisionnement.
+* Vous avez déployé un nœud de stockage d’appliance de récupération.
+* Vous disposez de la date de début de toutes les tâches de réparation pour les données codées par effacement.
+* Vous avez vérifié que le nœud de stockage n’a pas été reconstruit au cours des 15 derniers jours.
+
+
+.Étapes
+. Depuis le Gestionnaire de grille, sélectionnez *MAINTENANCE* > *Tâches* > *Récupération*.
+. Sélectionnez le nœud de grille que vous souhaitez récupérer dans la liste des nœuds en attente.
++
+Les nœuds apparaissent dans la liste après leur échec, mais vous ne pouvez pas sélectionner un nœud tant qu'il n'a pas été réinstallé et qu'il n'est pas prêt pour la récupération.
+
+. Saisissez la *phrase secrète de provisionnement*.
+. Cliquez sur *Démarrer la récupération*.
++
+image::../media/4b_select_recovery_node.png[capture d'écran montrant la page Maintenance > Récupération]
+
+. Surveillez la progression de la récupération dans le tableau des nœuds de grille de récupération.
++
+Lorsque le nœud de grille atteint l’étape « En attente des étapes manuelles », passez à la rubrique suivante et effectuez les étapes manuelles pour remonter et reformater les volumes de stockage de l’appliance.
+
++
+image::../media/recovery_reset_button.gif[capture d'écran montrant l'étape en attente d'étapes manuelles]
+
++
+
+NOTE: À tout moment pendant la récupération, vous pouvez cliquer sur *Réinitialiser* pour démarrer une nouvelle récupération.  Une boîte de dialogue apparaît, indiquant que le nœud sera laissé dans un état indéterminé si vous réinitialisez la procédure.
+
++
+image::../media/recovery_reset_warning.gif[capture d'écran montrant la boîte de dialogue d'avertissement de réinitialisation de récupération]
+
++
+Si vous souhaitez réessayer la récupération après avoir réinitialisé la procédure, vous devez restaurer le nœud de l'appliance à un état préinstallé en exécutant `sgareinstall` sur le nœud.
+
+

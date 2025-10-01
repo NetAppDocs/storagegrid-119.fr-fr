@@ -1,0 +1,122 @@
+---
+permalink: rhel/downloading-and-extracting-storagegrid-installation-files.html 
+sidebar: sidebar 
+keywords: red hat linux installation files, how to download installation files 
+summary: 'Vous devez télécharger l"archive d"installation de StorageGRID et extraire les fichiers requis. En option, vous pouvez vérifier manuellement les fichiers dans le package d"installation.' 
+---
+= Téléchargez et extrayez les fichiers d'installation de StorageGRID
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez télécharger l'archive d'installation de StorageGRID et extraire les fichiers requis. En option, vous pouvez vérifier manuellement les fichiers dans le package d'installation.
+
+.Étapes
+. Aller à la https://mysupport.netapp.com/site/products/all/details/storagegrid/downloads-tab["Page de téléchargement NetApp pour StorageGRID"^] .
+. Sélectionnez le bouton pour télécharger la dernière version ou sélectionnez une autre version dans le menu déroulant et sélectionnez *Aller*.
+. Sign in avec le nom d’utilisateur et le mot de passe de votre compte NetApp .
+. Si une mention d’avertissement/à lire absolument apparaît, lisez-la et cochez la case.
++
+
+CAUTION: Vous devez appliquer tous les correctifs requis après avoir installé la version StorageGRID . Pour plus d'informations, consultez le link:../maintain/storagegrid-hotfix-procedure.html["procédure de correctif dans les instructions de récupération et de maintenance"] .
+
+. Lisez le contrat de licence utilisateur final, cochez la case, puis sélectionnez *Accepter et continuer*.
+. Dans la colonne *Installer StorageGRID*, sélectionnez l'archive d'installation .tgz ou .zip pour Red Hat Enterprise Linux.
++
+
+NOTE: Sélectionnez le `.zip` fichier si vous exécutez Windows sur l'ordinateur portable de service.
+
+. Enregistrez l'archive d'installation.
+. [[rhel-download-verification-package]]Si vous devez vérifier l'archive d'installation :
++
+.. Téléchargez le package de vérification de signature de code StorageGRID .  Le nom de fichier de ce package utilise le format `StorageGRID_<version-number>_Code_Signature_Verification_Package.tar.gz` , où `<version-number>` est la version du logiciel StorageGRID .
+.. Suivez les étapes pourlink:../rhel/download-files-verify.html["vérifier manuellement les fichiers d'installation"] .
+
+
+. Extraire les fichiers de l'archive d'installation.
+. Choisissez les fichiers dont vous avez besoin.
++
+Les fichiers dont vous avez besoin dépendent de la topologie de grille prévue et de la manière dont vous allez déployer votre système StorageGRID .
+
++
+
+NOTE: Les chemins répertoriés dans le tableau sont relatifs au répertoire de niveau supérieur installé par l'archive d'installation extraite
+
+
+
+[cols="1a,1a"]
+|===
+| Chemin et nom du fichier | Description 
+
+
+| ./rpms/README  a| 
+Un fichier texte qui décrit tous les fichiers contenus dans le fichier de téléchargement StorageGRID .
+
+
+
+| ./rpms/NLF000000.txt  a| 
+Une licence gratuite qui ne fournit aucun droit d'assistance pour le produit.
+
+
+
+| ./rpms/ StorageGRID-Webscale-Images-_version_-SHA.rpm  a| 
+Package RPM pour l'installation des images de nœuds StorageGRID sur vos hôtes RHEL.
+
+
+
+| ./rpms/ StorageGRID-Webscale-Service-_version_-SHA.rpm  a| 
+Package RPM pour l'installation du service hôte StorageGRID sur vos hôtes RHEL.
+
+
+
+| Outil de script de déploiement | Description 
+
+
+| ./rpms/configure-storagegrid.py  a| 
+Un script Python utilisé pour automatiser la configuration d'un système StorageGRID .
+
+
+
+| ./rpms/configure-sga.py  a| 
+Un script Python utilisé pour automatiser la configuration des appliances StorageGRID .
+
+
+
+| ./rpms/configure-storagegrid.sample.json  a| 
+Un exemple de fichier de configuration à utiliser avec le `configure-storagegrid.py` scénario.
+
+
+
+| ./rpms/storagegrid-ssoauth.py  a| 
+Un exemple de script Python que vous pouvez utiliser pour vous connecter à l’API Grid Management lorsque l’authentification unique est activée.  Vous pouvez également utiliser ce script pour l'intégration de Ping Federate.
+
+
+
+| ./rpms/configure-storagegrid.blank.json  a| 
+Un fichier de configuration vierge à utiliser avec le `configure-storagegrid.py` scénario.
+
+
+
+| ./rpms/extras/ansible  a| 
+Exemple de rôle Ansible et de playbook pour la configuration des hôtes RHEL pour le déploiement du conteneur StorageGRID .  Vous pouvez personnaliser le rôle ou le manuel selon vos besoins.
+
+
+
+| ./rpms/storagegrid-ssoauth-azure.py  a| 
+Un exemple de script Python que vous pouvez utiliser pour vous connecter à l’API Grid Management lorsque l’authentification unique (SSO) est activée à l’aide d’Active Directory ou de Ping Federate.
+
+
+
+| ./rpms/storagegrid-ssoauth-azure.js  a| 
+Un script d'aide appelé par le compagnon `storagegrid-ssoauth-azure.py` Script Python pour effectuer des interactions SSO avec Azure.
+
+
+
+| ./rpms/extras/api-schemas  a| 
+Schémas d'API pour StorageGRID.
+
+*Remarque* : avant d'effectuer une mise à niveau, vous pouvez utiliser ces schémas pour confirmer que tout code que vous avez écrit pour utiliser les API de gestion StorageGRID sera compatible avec la nouvelle version de StorageGRID si vous ne disposez pas d'un environnement StorageGRID hors production pour les tests de compatibilité de mise à niveau.
+
+|===

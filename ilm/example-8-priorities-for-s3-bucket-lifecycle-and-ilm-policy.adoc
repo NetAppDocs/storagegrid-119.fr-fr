@@ -1,0 +1,118 @@
+---
+permalink: ilm/example-8-priorities-for-s3-bucket-lifecycle-and-ilm-policy.html 
+sidebar: sidebar 
+keywords: retention priority, example S3 bucket lifecycle, example ILM policy 
+summary: 'Selon la configuration de votre cycle de vie, les objets suivent les paramètres de conservation du cycle de vie du compartiment S3 ou d"une stratégie ILM.' 
+---
+= Exemple 8 : Priorités pour le cycle de vie du bucket S3 et la politique ILM
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Selon la configuration de votre cycle de vie, les objets suivent les paramètres de conservation du cycle de vie du compartiment S3 ou d'une stratégie ILM.
+
+
+
+== Exemple de cycle de vie d'un bucket prioritaire sur la politique ILM
+
+Politique ILM::
++
+--
+* Règle basée sur une référence temporelle non courante : le jour 0, conserver X copies pendant 20 jours
+* Règle basée sur la référence temporelle d'ingestion (par défaut) : le jour 0, conserver X copies pendant 50 jours
+
+
+--
+Cycle de vie du bucket:: `"Filter": {"Prefix": "docs/"}, "Expiration": {"Days": 100}, "NoncurrentVersionExpiration": {"NoncurrentDays": 5}`
+Résultat::
++
+--
+* Un objet nommé « docs/text » est ingéré.  Il correspond au filtre de cycle de vie du bucket du préfixe « docs/ ».
++
+** Après 100 jours, un marqueur de suppression est créé et « docs/text » devient non actuel.
+** Après 5 jours, soit un total de 105 jours depuis l'ingestion, « docs/text » est supprimé.
+** Après 95 jours, soit un total de 200 jours depuis l'ingestion et 100 jours depuis la création du marqueur de suppression, le marqueur de suppression expiré est supprimé.
+
+
+* Un objet nommé « vidéo/film » est ingéré.  Il ne correspond pas au filtre et utilise la politique de rétention ILM.
++
+** Après 50 jours, un marqueur de suppression est créé et « vidéo/film » devient obsolète.
+** Après 20 jours, soit un total de 70 jours depuis l'ingestion, la « vidéo/le film » est supprimé.
+** Après 30 jours, un total de 100 jours depuis l'ingestion et 50 jours depuis la création du marqueur de suppression, le marqueur de suppression expiré est supprimé.
+
+
+
+
+--
+
+
+
+
+== Exemple de cycle de vie d'un bucket implicitement conservé pour toujours
+
+Politique ILM::
++
+--
+* Règle basée sur une référence temporelle non courante : le jour 0, conserver X copies pendant 20 jours
+* Règle basée sur la référence temporelle d'ingestion (par défaut) : le jour 0, conserver X copies pendant 50 jours
+
+
+--
+Cycle de vie du bucket:: `"Filter": {"Prefix": "docs/"}, "Expiration": {"ExpiredObjectDeleteMarker": true}`
+Résultat::
++
+--
+* Un objet nommé « docs/text » est ingéré.  Il correspond au filtre de cycle de vie du bucket du préfixe « docs/ ».
++
+Le `Expiration` l'action s'applique uniquement aux marqueurs de suppression expirés, ce qui implique de conserver tout le reste pour toujours (en commençant par « docs/ »).
+
++
+Les marqueurs de suppression commençant par « docs/ » sont supprimés lorsqu'ils expirent.
+
+* Un objet nommé « vidéo/film » est ingéré.  Il ne correspond pas au filtre et utilise la politique de rétention ILM.
++
+** Après 50 jours, un marqueur de suppression est créé et « vidéo/film » devient obsolète.
+** Après 20 jours, soit un total de 70 jours depuis l'ingestion, la « vidéo/le film » est supprimé.
+** Après 30 jours, un total de 100 jours depuis l'ingestion et 50 jours depuis la création du marqueur de suppression, le marqueur de suppression expiré est supprimé.
+
+
+
+
+--
+
+
+
+
+== Exemple d'utilisation du cycle de vie du bucket pour dupliquer ILM et nettoyer les marqueurs de suppression expirés
+
+Politique ILM::
++
+--
+* Règle basée sur une référence temporelle non courante : le jour 0, conserver X copies pendant 20 jours
+* Règle basée sur la référence temporelle d'ingestion (par défaut) : le jour 0, conserver X copies pour toujours
+
+
+--
+Cycle de vie du bucket:: `"Filter": {}, "Expiration": {"ExpiredObjectDeleteMarker": true}, "NoncurrentVersionExpiration": {"NoncurrentDays": 20}`
+Résultat::
++
+--
+* La politique ILM est dupliquée dans le cycle de vie du bucket.
++
+** La règle permanente de la politique ILM est conçue pour supprimer manuellement les objets et nettoyer les versions non actuelles après 20 jours.  Par conséquent, la règle d'ingestion conservera les marqueurs de suppression expirés pour toujours.
+** Le cycle de vie du bucket duplique le comportement de la politique ILM lors de l'ajout `"ExpiredObjectDeleteMarker": true` , qui supprime les marqueurs de suppression une fois qu'ils ont expiré
+
+
+* Un objet est ingéré.  L'absence de filtre signifie que le cycle de vie du bucket s'applique à tous les objets et remplace les paramètres de conservation ILM.
++
+** Lorsqu'un locataire émet une demande de suppression d'objet, un marqueur de suppression est créé et l'objet devient non actuel.
+** Après 20 jours, l'objet non actuel est supprimé et le marqueur de suppression devient expiré.
+** Peu de temps après, le marqueur de suppression expiré est supprimé.
+
+
+
+
+--
+

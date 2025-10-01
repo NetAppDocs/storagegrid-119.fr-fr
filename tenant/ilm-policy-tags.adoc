@@ -1,0 +1,59 @@
+---
+permalink: tenant/ilm-policy-tags.html 
+sidebar: sidebar 
+keywords: how to assign ilm policy tag to bucket 
+summary: Choisissez une balise de stratégie ILM à attribuer à un bucket en fonction de vos besoins de stockage d’objets. 
+---
+= Appliquer une balise de stratégie ILM à un bucket
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Choisissez une balise de stratégie ILM à appliquer à un bucket en fonction de vos besoins de stockage d’objets.
+
+La politique ILM contrôle où les données de l'objet sont stockées et si elles sont supprimées après une certaine période.  Votre administrateur de réseau crée des stratégies ILM et les attribue à des balises de stratégie ILM lors de l'utilisation de plusieurs stratégies actives.
+
+
+NOTE: Évitez de réaffecter fréquemment la balise de stratégie d’un bucket.  Dans le cas contraire, des problèmes de performances pourraient survenir.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Accès root, autorisation Gérer tous les buckets ou Afficher tous les buckets"] .  Ces autorisations remplacent les paramètres d’autorisation dans les stratégies de groupe ou de compartiment.
+
+
+.Étapes
+. Sélectionnez *Afficher les buckets* dans le tableau de bord ou sélectionnez *STOCKAGE (S3)* > *Buckets*.
++
+La page Buckets apparaît.  Selon vos besoins, vous pouvez trier les informations par colonne ou parcourir la liste en avant et en arrière.
+
+. Sélectionnez le nom du bucket auquel vous souhaitez attribuer une balise de stratégie ILM.
++
+Vous pouvez également modifier l’attribution de balise de stratégie ILM pour un bucket auquel une balise est déjà attribuée.
+
++
+
+NOTE: Les valeurs affichées pour le nombre d'objets et l'espace utilisé sont des estimations. Ces estimations sont affectées par le moment des ingestions, la connectivité réseau et l’état du nœud.  Si le contrôle de version est activé pour les buckets, les versions d'objet supprimées sont incluses dans le nombre d'objets.
+
+. Dans l’onglet Options du compartiment, développez l’accordéon de balise de stratégie ILM.  Cet accordéon n'apparaît que si votre administrateur de grille a activé l'utilisation de balises de stratégie personnalisées.
+. Lisez la description de chaque balise de stratégie pour déterminer quelle balise doit être appliquée au bucket.
++
+
+CAUTION: La modification de la balise de politique ILM pour un bucket déclenchera la réévaluation ILM de tous les objets du bucket.  Si la nouvelle politique conserve les objets pendant une durée limitée, les objets plus anciens seront supprimés.
+
+. Sélectionnez le bouton radio correspondant à la balise que vous souhaitez attribuer au bucket.
+. Sélectionnez *Enregistrer les modifications*. Une nouvelle balise de compartiment S3 sera définie sur le compartiment avec la clé `NTAP-SG-ILM-BUCKET-TAG` et la valeur du nom de la balise de politique ILM.
++
+
+CAUTION: Assurez-vous que vos applications S3 ne remplacent pas ou ne suppriment pas accidentellement la nouvelle balise de compartiment.  Si cette balise est omise lors de l'application d'un nouveau TagSet au bucket, les objets du bucket seront à nouveau évalués par rapport à la stratégie ILM par défaut.
+
++
+
+CAUTION: Définissez et modifiez les balises de stratégie ILM à l'aide uniquement de Tenant Manager ou de l'API Tenant Manager où la balise de stratégie ILM est validée.  Ne pas modifier le `NTAP-SG-ILM-BUCKET-TAG` Balise de stratégie ILM utilisant l'API S3 PutBucketTagging ou l'API S3 DeleteBucketTagging.
+
++
+
+NOTE: La modification de la balise de stratégie attribuée à un bucket a un impact temporaire sur les performances pendant que les objets sont réévalués à l'aide de la nouvelle stratégie ILM.
+
+

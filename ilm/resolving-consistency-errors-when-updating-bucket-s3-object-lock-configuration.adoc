@@ -1,0 +1,36 @@
+---
+permalink: ilm/resolving-consistency-errors-when-updating-bucket-s3-object-lock-configuration.html 
+sidebar: sidebar 
+keywords: consistency error, s3 object lock and consistency 
+summary: 'Si un site de centre de données ou plusieurs nœuds de stockage sur un site deviennent indisponibles, vous devrez peut-être aider les utilisateurs locataires S3 à appliquer les modifications apportées au verrouillage d"objet S3 ou à la configuration de conformité héritée.' 
+---
+= Résoudre les erreurs de cohérence lors de la mise à jour du verrouillage d'objet S3 ou de la configuration de conformité héritée
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si un site de centre de données ou plusieurs nœuds de stockage sur un site deviennent indisponibles, vous devrez peut-être aider les utilisateurs locataires S3 à appliquer les modifications apportées au verrouillage d'objet S3 ou à la configuration de conformité héritée.
+
+Les utilisateurs locataires qui ont des buckets avec S3 Object Lock (ou conformité héritée) activé peuvent modifier certains paramètres.  Par exemple, un utilisateur locataire utilisant S3 Object Lock peut avoir besoin de placer une version d’objet sous conservation légale.
+
+Lorsqu'un utilisateur locataire met à jour les paramètres d'un bucket S3 ou d'une version d'objet, StorageGRID tente de mettre à jour immédiatement les métadonnées du bucket ou de l'objet sur la grille.  Si le système ne parvient pas à mettre à jour les métadonnées parce qu'un site de centre de données ou plusieurs nœuds de stockage ne sont pas disponibles, il renvoie une erreur :
+
+[listing]
+----
+503: Service Unavailable
+Unable to update compliance settings because the settings can't be consistently applied on enough storage services. Contact your grid administrator for assistance.
+----
+Pour résoudre cette erreur, procédez comme suit :
+
+. Essayez de rendre tous les nœuds ou sites de stockage à nouveau disponibles dès que possible.
+. Si vous ne parvenez pas à rendre disponibles suffisamment de nœuds de stockage sur chaque site, contactez le support technique, qui peut vous aider à récupérer les nœuds et à garantir que les modifications sont appliquées de manière cohérente sur l'ensemble de la grille.
+. Une fois le problème sous-jacent résolu, rappelez à l’utilisateur locataire de réessayer ses modifications de configuration.
+
+
+.Informations connexes
+* link:../tenant/index.html["Utiliser un compte locataire"]
+* link:../s3/index.html["Utiliser l'API REST S3"]
+* link:../maintain/index.html["Récupérer et entretenir"]
+

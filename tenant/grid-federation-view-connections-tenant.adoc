@@ -1,0 +1,91 @@
+---
+permalink: tenant/grid-federation-view-connections-tenant.html 
+sidebar: sidebar 
+keywords: grid federation connection, view, clear error, last error 
+summary: Si votre compte locataire dispose de l’autorisation Utiliser la connexion à la fédération de grille, vous pouvez afficher les connexions autorisées. 
+---
+= Afficher les connexions de la fédération de grille
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si votre compte locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille*, vous pouvez afficher les connexions autorisées.
+
+.Avant de commencer
+* Le compte locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille*.
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Autorisation d'accès root"] .
+
+
+.Étapes
+. Sélectionnez *STOCKAGE (S3)* > *Connexions de fédération de grille*.
++
+La page de connexion à la fédération Grid apparaît et inclut un tableau qui résume les informations suivantes :
+
++
+[cols="1a,2a"]
+|===
+| Colonne | Description 
+
+
+ a| 
+Nom de la connexion
+ a| 
+Les connexions de la fédération de grille que ce locataire est autorisé à utiliser.
+
+
+
+ a| 
+Buckets avec réplication inter-grille
+ a| 
+Pour chaque connexion de fédération de grille, les buckets de locataire pour lesquels la réplication inter-grille est activée.  Les objets ajoutés à ces buckets seront répliqués sur l’autre grille de la connexion.
+
+
+
+ a| 
+Dernière erreur
+ a| 
+Pour chaque connexion de fédération de grille, l'erreur la plus récente survenue, le cas échéant, lors de la réplication des données sur l'autre grille. Voir <<clear-last-error,Effacer la dernière erreur>> .
+
+|===
+. Vous pouvez également sélectionner un nom de bucket pourlink:viewing-s3-bucket-details.html["afficher les détails du godet"] .
+
+
+
+
+== [[clear-last-error]]Effacer la dernière erreur
+
+Une erreur peut apparaître dans la colonne *Dernière erreur* pour l'une des raisons suivantes :
+
+* La version de l'objet source n'a pas été trouvée.
+* Le bucket source n'a pas été trouvé.
+* Le bucket de destination a été supprimé.
+* Le bucket de destination a été recréé par un compte différent.
+* Le contrôle de version du bucket de destination est suspendu.
+* Le bucket de destination a été recréé par le même compte mais n'est désormais plus versionné.
+
+
+
+NOTE: Cette colonne affiche uniquement la dernière erreur de réplication inter-grille survenue ; les erreurs précédentes qui auraient pu se produire ne seront pas affichées.
+
+.Étapes
+. Si un message apparaît dans la colonne *Dernière erreur*, affichez le texte du message.
++
+Par exemple, cette erreur indique que le bucket de destination pour la réplication inter-grille était dans un état non valide, probablement parce que le contrôle de version a été suspendu ou que le verrouillage d'objet S3 a été activé.
+
++
+image::../media/grid-federation-cgr-object-example-last-error.png[grid-federation-cgr-objet-exemple-dernière-erreur]
+
+. Effectuez toutes les actions recommandées.  Par exemple, si le contrôle de version a été suspendu sur le bucket de destination pour la réplication inter-grille, réactivez le contrôle de version pour ce bucket.
+. Sélectionnez la connexion dans le tableau.
+. Sélectionnez *Effacer l'erreur*.
+. Sélectionnez *Oui* pour effacer le message et mettre à jour l'état du système.
+. Attendez 5 à 6 minutes, puis ingérez un nouvel objet dans le seau.  Vérifiez que le message d’erreur ne réapparaît pas.
++
+
+NOTE: Pour vous assurer que le message d’erreur est effacé, attendez au moins 5 minutes après l’horodatage du message avant d’ingérer un nouvel objet.
+
+. Pour déterminer si des objets n'ont pas pu être répliqués en raison de l'erreur de compartiment, consultezlink:../admin/grid-federation-retry-failed-replication.html["Identifier et réessayer les opérations de réplication ayant échoué"] .
+

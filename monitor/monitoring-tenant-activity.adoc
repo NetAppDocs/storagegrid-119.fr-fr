@@ -1,0 +1,175 @@
+---
+permalink: monitor/monitoring-tenant-activity.html 
+sidebar: sidebar 
+keywords: how to monitor tenant activity 
+summary: 'Toutes les activités des clients S3 sont associées aux comptes locataires StorageGRID .  Vous pouvez utiliser Grid Manager pour surveiller l’utilisation du stockage ou le trafic réseau pour tous les locataires ou un locataire spécifique.  Vous pouvez utiliser le journal d"audit ou les tableaux de bord Grafana pour collecter des informations plus détaillées sur la manière dont les locataires utilisent StorageGRID.' 
+---
+= Surveiller l'activité des locataires
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Toutes les activités des clients S3 sont associées aux comptes locataires StorageGRID .  Vous pouvez utiliser Grid Manager pour surveiller l’utilisation du stockage ou le trafic réseau pour tous les locataires ou un locataire spécifique.  Vous pouvez utiliser le journal d'audit ou les tableaux de bord Grafana pour collecter des informations plus détaillées sur la manière dont les locataires utilisent StorageGRID.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:../admin/admin-group-permissions.html["Accès root ou autorisation des comptes locataires"] .
+
+
+
+
+== Voir tous les locataires
+
+La page Locataires affiche les informations de base pour tous les comptes locataires actuels.
+
+.Étapes
+. Sélectionnez *LOCATAIRES*.
+. Consultez les informations affichées sur les pages Locataire.
++
+L'espace logique utilisé, l'utilisation du quota, le quota et le nombre d'objets sont répertoriés pour chaque locataire.  Si aucun quota n'est défini pour un locataire, les champs Utilisation du quota et Quota contiennent un tiret (&#8212;).
+
++
+
+NOTE: Les valeurs d'espace utilisées sont des estimations. Ces estimations sont affectées par le moment des ingestions, la connectivité réseau et l’état du nœud.
+
++
+image::../media/tenant_accounts_page.png[Page des comptes locataires]
+
+. Vous pouvez également vous connecter à un compte locataire en sélectionnant le lien de connexion.image:../media/icon_tenant_sign_in.png["Icône de connexion du locataire"] dans la colonne * Sign in/ Copier l'URL*.
+. Vous pouvez également copier l'URL de la page de connexion d'un locataire en sélectionnant le lien Copier l'URL.image:../media/icon_tenant_copy_url.png["Icône de copie d'URL du locataire"] dans la colonne * Sign in/ Copier l'URL*.
+. En option, sélectionnez *Exporter vers CSV* pour afficher et exporter un `.csv` fichier contenant les valeurs d'utilisation pour tous les locataires.
++
+Vous êtes invité à ouvrir ou à enregistrer le `.csv` déposer.
+
++
+Le contenu de la `.csv` le fichier ressemble à l'exemple suivant :
+
++
+image::../media/tenant_accounts_example_csv.png[Exemple de comptes locataires .csv]
+
++
+Vous pouvez ouvrir le `.csv` fichier dans une application de feuille de calcul ou utilisez-le dans l'automatisation.
+
+. Si aucun objet n'est répertorié, vous pouvez également sélectionner *Actions* > *Supprimer* pour supprimer un ou plusieurs locataires. Voir link:../admin/deleting-tenant-account.html["Supprimer le compte locataire"] .
++
+Vous ne pouvez pas supprimer un compte locataire si le compte inclut des buckets ou des conteneurs.
+
+
+
+
+
+== Afficher un locataire spécifique
+
+Vous pouvez afficher les détails d'un locataire spécifique.
+
+.Étapes
+. Sélectionnez le nom du locataire sur la page Locataires.
++
+La page des détails du locataire apparaît.
+
++
+image::../media/tenant_usage_modal.png[Modalité d'utilisation du locataire]
+
+. Consultez l’aperçu du locataire en haut de la page.
++
+Cette section de la page de détails fournit des informations récapitulatives sur le locataire, notamment le nombre d'objets du locataire, l'utilisation du quota, l'espace logique utilisé et le paramètre de quota.
+
+. Dans l’onglet *Répartition de l’espace*, consultez le graphique *Consommation d’espace*.
++
+Ce graphique montre la consommation totale d'espace pour tous les compartiments S3 du locataire.
+
++
+Si un quota a été défini pour ce locataire, la quantité de quota utilisée et restante est affichée sous forme de texte (par exemple, `85.00 GB of 100 GB used` ).  Si aucun quota n'a été défini, le locataire dispose d'un quota illimité et le texte n'inclut qu'une quantité d'espace utilisée (par exemple, `85.00 GB used` ).  Le graphique à barres montre le pourcentage de quota dans chaque bucket ou conteneur.  Si le locataire a dépassé le quota de stockage de plus de 1 % et d'au moins 1 Go, le graphique affiche le quota total et le montant excédentaire.
+
++
+Vous pouvez placer votre curseur sur le graphique à barres pour voir le stockage utilisé par chaque bucket ou conteneur.  Vous pouvez placer votre curseur sur le segment d'espace libre pour voir la quantité de quota de stockage restant.
+
++
+image::../media/tenant_bucket_space_consumption_GM.png[Graphique à barres de consommation des compartiments des locataires]
+
++
+
+CAUTION: L'utilisation des quotas est basée sur des estimations internes et peut être dépassée dans certains cas.  Par exemple, StorageGRID vérifie le quota lorsqu'un locataire commence à télécharger des objets et rejette les nouvelles acquisitions si le locataire a dépassé le quota.  Cependant, StorageGRID ne prend pas en compte la taille du téléchargement actuel pour déterminer si le quota a été dépassé.  Si des objets sont supprimés, un locataire peut être temporairement empêché de télécharger de nouveaux objets jusqu'à ce que l'utilisation du quota soit recalculée.  Les calculs d’utilisation des quotas peuvent prendre 10 minutes ou plus.
+
++
+
+NOTE: L'utilisation du quota d'un locataire indique la quantité totale de données d'objet que le locataire a téléchargées sur StorageGRID (taille logique).  L'utilisation du quota ne représente pas l'espace utilisé pour stocker des copies de ces objets et leurs métadonnées (taille physique).
+
++
+
+NOTE: Vous pouvez activer la règle d'alerte *Utilisation élevée du quota du locataire* pour déterminer si les locataires consomment leurs quotas.  Si cette option est activée, cette alerte est déclenchée lorsqu'un locataire a utilisé 90 % de son quota. Pour les instructions, voirlink:../monitor/editing-alert-rules.html["Modifier les règles d'alerte"] .
+
+. Dans l'onglet *Répartition de l'espace*, examinez les *Détails du bucket*.
++
+Ce tableau répertorie les compartiments S3 pour le locataire.  L'espace utilisé correspond à la quantité totale de données d'objet dans le bucket ou le conteneur.  Cette valeur ne représente pas l'espace de stockage requis pour les copies ILM et les métadonnées d'objet.
+
+. Vous pouvez également sélectionner *Exporter vers CSV* pour afficher et exporter un fichier .csv contenant les valeurs d'utilisation de chaque bucket ou conteneur.
++
+Le contenu d'un locataire S3 individuel `.csv` le fichier ressemble à l'exemple suivant :
+
++
+image::../media/tenant_bucket_details_csv.png[Exemple de fichier CSV contenant les détails du compartiment du locataire]
+
++
+Vous pouvez ouvrir le `.csv` fichier dans une application de feuille de calcul ou utilisez-le dans l'automatisation.
+
+. Vous pouvez également sélectionner l’onglet *Fonctionnalités autorisées* pour afficher la liste des autorisations et des fonctionnalités activées pour le locataire.  Voirlink:../admin/editing-tenant-account.html["Modifier le compte locataire"] si vous devez modifier l'un de ces paramètres.
+. Si le locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille*, sélectionnez éventuellement l'onglet *Fédération de grille* pour en savoir plus sur la connexion.
++
+Voirlink:../admin/grid-federation-overview.html["Qu'est-ce que la fédération de réseau ?"] etlink:../admin/grid-federation-manage-tenants.html["Gérer les locataires autorisés pour la fédération de réseau"] .
+
+
+
+
+
+== Afficher le trafic réseau
+
+Si des stratégies de classification du trafic sont en place pour un locataire, examinez le trafic réseau pour ce locataire.
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Réseau* > *Classification du trafic*.
++
+La page Stratégies de classification du trafic s’affiche et les stratégies existantes sont répertoriées dans le tableau.
+
+. Passez en revue la liste des politiques pour identifier celles qui s’appliquent à un locataire spécifique.
+. Pour afficher les mesures associées à une politique, sélectionnez le bouton radio à gauche de la politique et sélectionnez *Mesures*.
+. Analysez les graphiques pour déterminer à quelle fréquence la politique limite le trafic et si vous devez ajuster la politique.
+
+
+Voir link:../admin/managing-traffic-classification-policies.html["Gérer les politiques de classification du trafic"] pour plus d'informations.
+
+
+
+== Utiliser le journal d'audit
+
+En option, vous pouvez utiliser le journal d'audit pour une surveillance plus précise des activités d'un locataire.
+
+Par exemple, vous pouvez surveiller les types d’informations suivants :
+
+* Opérations client spécifiques, telles que PUT, GET ou DELETE
+* Tailles des objets
+* La règle ILM appliquée aux objets
+* L'IP source des requêtes client
+
+
+Les journaux d’audit sont écrits dans des fichiers texte que vous pouvez analyser à l’aide de l’outil d’analyse de journaux de votre choix.  Cela vous permet de mieux comprendre les activités des clients ou de mettre en œuvre des modèles de rétrofacturation et de facturation sophistiqués.
+
+Voir link:../audit/index.html["Examiner les journaux d'audit"] pour plus d'informations.
+
+
+
+== Utiliser les métriques Prometheus
+
+Vous pouvez également utiliser les métriques Prometheus pour générer des rapports sur l’activité des locataires.
+
+* Dans le gestionnaire de grille, sélectionnez *SUPPORT* > *Outils* > *Métriques*. Vous pouvez utiliser des tableaux de bord existants, tels que S3 Overview, pour examiner les activités des clients.
++
+
+NOTE: Les outils disponibles sur la page Métriques sont principalement destinés à être utilisés par le support technique.  Certaines fonctionnalités et éléments de menu de ces outils sont intentionnellement non fonctionnels.
+
+* En haut du gestionnaire de grille, sélectionnez l’icône d’aide et sélectionnez *Documentation API*.  Vous pouvez utiliser les métriques de la section Métriques de l'API Grid Management pour créer des règles d'alerte et des tableaux de bord personnalisés pour l'activité des locataires.
+
+
+Voir link:reviewing-support-metrics.html["Examiner les mesures de support"] pour plus d'informations.

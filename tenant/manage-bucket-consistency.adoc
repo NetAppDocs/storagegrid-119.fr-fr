@@ -1,0 +1,84 @@
+---
+permalink: tenant/manage-bucket-consistency.html 
+sidebar: sidebar 
+keywords: how to manage bucket consistency, how to change bucket consistency, read after new write, read-after-new-write, strong site, strong-site, strong global, strong-global 
+summary: 'Les valeurs de cohérence peuvent être utilisées pour spécifier la disponibilité des modifications des paramètres de bucket ainsi que pour fournir un équilibre entre la disponibilité des objets dans un bucket et la cohérence de ces objets sur différents nœuds de stockage et sites.  Vous pouvez modifier les valeurs de cohérence pour qu"elles soient différentes des valeurs par défaut afin que les applications clientes puissent répondre à leurs besoins opérationnels.' 
+---
+= Gérer la cohérence des buckets
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les valeurs de cohérence peuvent être utilisées pour spécifier la disponibilité des modifications des paramètres de bucket ainsi que pour fournir un équilibre entre la disponibilité des objets dans un bucket et la cohérence de ces objets sur différents nœuds de stockage et sites.  Vous pouvez modifier les valeurs de cohérence pour qu'elles soient différentes des valeurs par défaut afin que les applications clientes puissent répondre à leurs besoins opérationnels.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Gérer tous les buckets ou l'autorisation d'accès root"] . Ces autorisations remplacent les paramètres d’autorisations dans les stratégies de groupe ou de compartiment.
+
+
+
+
+== Directives relatives à la cohérence des seaux
+
+La cohérence du bucket est utilisée pour déterminer la cohérence des applications clientes affectant les objets dans ce bucket S3.  En général, vous devez utiliser la cohérence *Lecture après nouvelle écriture* pour vos buckets.
+
+
+
+== [[change-bucket-consistency]]Modifier la cohérence du bucket
+
+Si la cohérence *Lecture après nouvelle écriture* ne répond pas aux exigences de l'application cliente, vous pouvez modifier la cohérence en définissant la cohérence du compartiment ou en utilisant le `Consistency-Control` en-tête.  Le `Consistency-Control` l'en-tête remplace la cohérence du bucket.
+
+
+NOTE: Lorsque vous modifiez la cohérence d'un bucket, seuls les objets ingérés après la modification sont assurés de respecter le paramètre révisé.
+
+.Étapes
+. Sélectionnez *Afficher les buckets* dans le tableau de bord ou sélectionnez *STOCKAGE (S3)* > *Buckets*.
+. Sélectionnez le nom du bucket dans le tableau.
++
+La page des détails du bucket apparaît.
+
+. Dans l'onglet *Options du bucket*, sélectionnez l'accordéon **.
+. Sélectionnez une cohérence pour les opérations effectuées sur les objets de ce bucket.
++
+** *Tous* : Offre le plus haut niveau de cohérence.  Tous les nœuds reçoivent les données immédiatement, sinon la demande échouera.
+** *Strong-global* : garantit la cohérence de lecture après écriture pour toutes les demandes client sur tous les sites.
+** *Strong-site* : garantit la cohérence de lecture après écriture pour toutes les requêtes client au sein d'un site.
+** *Lecture après nouvelle écriture* (par défaut) : assure la cohérence de lecture après écriture pour les nouveaux objets et la cohérence éventuelle pour les mises à jour d'objets.  Offre des garanties de haute disponibilité et de protection des données.  Recommandé dans la plupart des cas.
+** *Disponible* : Fournit une cohérence éventuelle pour les nouveaux objets et les mises à jour d'objets.  Pour les buckets S3, utilisez-les uniquement si nécessaire (par exemple, pour un bucket contenant des valeurs de journal rarement lues ou pour des opérations HEAD ou GET sur des clés qui n'existent pas).  Non pris en charge pour les buckets S3 FabricPool .
+
+
+. Sélectionnez *Enregistrer les modifications*.
+
+
+
+
+== Que se passe-t-il lorsque vous modifiez les paramètres du bucket
+
+Les buckets ont plusieurs paramètres qui affectent le comportement des buckets et des objets qu'ils contiennent.
+
+Les paramètres de bucket suivants utilisent une cohérence *forte* par défaut.  Si deux ou plusieurs nœuds de stockage ne sont pas disponibles sur un site, ou si un site n'est pas disponible, les modifications apportées à ces paramètres peuvent ne pas être disponibles.
+
+* link:deleting-s3-bucket-objects.html["Suppression du bucket vide en arrière-plan"]
+* link:enabling-or-disabling-last-access-time-updates.html["Heure du dernier accès"]
+* link:../s3/create-s3-lifecycle-configuration.html["Cycle de vie du bucket"]
+* link:../s3/bucket-and-group-access-policies.html["Politique de compartiment"]
+* link:../s3/operations-on-buckets.html["Étiquetage des buckets"]
+* link:changing-bucket-versioning.html["Gestion des versions de buckets"]
+* link:using-s3-object-lock.html["Verrouillage d'objet S3"]
+* link:../admin/reviewing-storagegrid-encryption-methods.html#bucket-encryption-table["Chiffrement du bucket"]
+
+
+
+NOTE: La valeur de cohérence pour le contrôle de version du bucket, le verrouillage d'objet S3 et le chiffrement du bucket ne peut pas être définie sur une valeur qui n'est pas fortement cohérente.
+
+Les paramètres de compartiment suivants n'utilisent pas de cohérence forte et ont une plus grande disponibilité pour les modifications.  Les modifications apportées à ces paramètres peuvent prendre un certain temps avant d’avoir un effet.
+
+* link:considerations-for-platform-services.html["Configuration des services de la plateforme : intégration des notifications, de la réplication ou de la recherche"]
+* link:configuring-cross-origin-resource-sharing-cors.html["Configuration CORS"]
+* <<change-bucket-consistency,Modifier la cohérence du bucket>>
+
+
+
+TIP: Si la cohérence par défaut utilisée lors de la modification des paramètres de compartiment ne répond pas aux exigences de l'application cliente, vous pouvez modifier la cohérence à l'aide de l' `Consistency-Control` en-tête pour lelink:../s3/put-bucket-consistency-request.html["API REST S3"] ou en utilisant le `reducedConsistency` ou `force` options dans lelink:understanding-tenant-management-api.html["API de gestion des locataires"] .

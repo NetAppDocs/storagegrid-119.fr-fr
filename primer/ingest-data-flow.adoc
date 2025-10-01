@@ -1,0 +1,31 @@
+---
+permalink: primer/ingest-data-flow.html 
+sidebar: sidebar 
+keywords: object data, ingest 
+summary: 'Une opération d"ingestion ou de sauvegarde consiste en un flux de données défini entre le client et le système StorageGRID .' 
+---
+= Ingérer le flux de données
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Une opération d'ingestion ou de sauvegarde consiste en un flux de données défini entre le client et le système StorageGRID .
+
+
+
+== Flux de données
+
+Lorsqu'un client ingère un objet dans le système StorageGRID , le service LDR sur les nœuds de stockage traite la demande et stocke les métadonnées et les données sur le disque.
+
+image::../media/ingest_data_flow.png[Ingérer avec un placement synchrone]
+
+. L'application cliente crée l'objet et l'envoie au système StorageGRID via une requête HTTP PUT.
+. L'objet est évalué par rapport à la politique ILM du système.
+. Le service LDR enregistre les données de l'objet sous forme de copie répliquée ou de copie à code d'effacement.  (Le diagramme montre une version simplifiée du stockage d’une copie répliquée sur le disque.)
+. Le service LDR envoie les métadonnées de l'objet au magasin de métadonnées.
+. Le magasin de métadonnées enregistre les métadonnées de l'objet sur le disque.
+. Le magasin de métadonnées propage des copies des métadonnées d’objet vers d’autres nœuds de stockage.  Ces copies sont également enregistrées sur le disque.
+. Le service LDR renvoie une réponse HTTP 200 OK au client pour confirmer que l'objet a été ingéré.
+

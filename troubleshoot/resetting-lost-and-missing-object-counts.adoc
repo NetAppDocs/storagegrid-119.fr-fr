@@ -1,0 +1,58 @@
+---
+permalink: troubleshoot/resetting-lost-and-missing-object-counts.html 
+sidebar: sidebar 
+keywords: how to reset lost object count, how to reset missing object count 
+summary: 'Après avoir examiné le système StorageGRID et vérifié que tous les objets perdus enregistrés sont définitivement perdus ou qu"il s"agit d"une fausse alarme, vous pouvez réinitialiser la valeur de l"attribut Objets perdus à zéro.' 
+---
+= Réinitialiser le nombre d'objets perdus et manquants
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Après avoir examiné le système StorageGRID et vérifié que tous les objets perdus enregistrés sont définitivement perdus ou qu'il s'agit d'une fausse alarme, vous pouvez réinitialiser la valeur de l'attribut Objets perdus à zéro.
+
+.Avant de commencer
+* Vous devez être connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+
+
+.À propos de cette tâche
+Vous pouvez réinitialiser le compteur d'objets perdus à partir de l'une des pages suivantes :
+
+* *SUPPORT* > *Outils* > *Topologie de grille* > *_Site_* > *_Nœud de stockage_* > *LDR* > *Magasin de données* > *Présentation* > *Principal*
+* *SUPPORT* > *Outils* > *Topologie de grille* > *_Site_* > *_Nœud de stockage_* > *DDS* > *Magasin de données* > *Présentation* > *Principal*
+
+
+Ces instructions montrent la réinitialisation du compteur à partir de la page *LDR* > *Data Store*.
+
+.Étapes
+. Sélectionnez *SUPPORT* > *Outils* > *Topologie de grille*.
+. Sélectionnez *_Site_* > *_Nœud de stockage_* > *LDR* > *Magasin de données* > *Configuration* pour le nœud de stockage qui a l'alerte *Objets perdus* ou l'alarme PERDU.
+. Sélectionnez *Réinitialiser le nombre d'objets perdus*.
++
+image::../media/reset_ldr_lost_object_count.gif[Capture d'écran de la réinitialisation du nombre d'objets perdus LDR]
+
+. Cliquez sur *Appliquer les modifications*.
++
+L'attribut Objets perdus est réinitialisé à 0 et l'alerte *Objets perdus* ainsi que l'alarme PERDU s'effacent, ce qui peut prendre quelques minutes.
+
+. Vous pouvez également réinitialiser d’autres valeurs d’attributs associés qui pourraient avoir été incrémentées au cours du processus d’identification de l’objet perdu.
++
+.. Sélectionnez *_Site_* > *_Nœud de stockage_* > *LDR* > *Codage d'effacement* > *Configuration*.
+.. Sélectionnez *Réinitialiser le nombre d'échecs de lecture* et *Réinitialiser le nombre de copies corrompues détectées*.
+.. Cliquez sur *Appliquer les modifications*.
+.. Sélectionnez *_Site_* > *_Nœud de stockage_* > *LDR* > *Vérification* > *Configuration*.
+.. Sélectionnez *Réinitialiser le nombre d'objets manquants* et *Réinitialiser le nombre d'objets corrompus*.
+.. Si vous êtes sûr que les objets mis en quarantaine ne sont pas nécessaires, vous pouvez sélectionner *Supprimer les objets mis en quarantaine*.
++
+Les objets mis en quarantaine sont créés lorsque la vérification en arrière-plan identifie une copie d'objet répliquée corrompue.  Dans la plupart des cas, StorageGRID remplace automatiquement l'objet corrompu et il est possible de supprimer en toute sécurité les objets mis en quarantaine.  Cependant, si l'alerte *Objets perdus* ou l'alarme PERDU est déclenchée, le support technique peut souhaiter accéder aux objets mis en quarantaine.
+
+.. Cliquez sur *Appliquer les modifications*.
+
+
++
+La réinitialisation des attributs peut prendre quelques instants après avoir cliqué sur *Appliquer les modifications*.
+
+

@@ -1,0 +1,113 @@
+---
+permalink: s3/using-server-side-encryption.html 
+sidebar: sidebar 
+keywords: server side encryption, encryption, operations on objects, objects 
+summary: 'Le chiffrement côté serveur vous permet de protéger vos données d’objet au repos.  StorageGRID crypte les données lorsqu"il écrit l"objet et décrypte les données lorsque vous accédez à l"objet.' 
+---
+= Utiliser le cryptage côté serveur
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Le chiffrement côté serveur vous permet de protéger vos données d’objet au repos.  StorageGRID crypte les données lorsqu'il écrit l'objet et décrypte les données lorsque vous accédez à l'objet.
+
+Si vous souhaitez utiliser le chiffrement côté serveur, vous pouvez choisir l'une des deux options mutuellement exclusives, en fonction de la manière dont les clés de chiffrement sont gérées :
+
+* *SSE (chiffrement côté serveur avec clés gérées par StorageGRID)* : lorsque vous émettez une demande S3 pour stocker un objet, StorageGRID chiffre l'objet avec une clé unique.  Lorsque vous émettez une demande S3 pour récupérer l'objet, StorageGRID utilise la clé stockée pour déchiffrer l'objet.
+* *SSE-C (chiffrement côté serveur avec clés fournies par le client)* : lorsque vous émettez une demande S3 pour stocker un objet, vous fournissez votre propre clé de chiffrement.  Lorsque vous récupérez un objet, vous fournissez la même clé de chiffrement dans le cadre de votre demande.  Si les deux clés de chiffrement correspondent, l'objet est déchiffré et vos données d'objet sont renvoyées.
++
+Bien que StorageGRID gère toutes les opérations de chiffrement et de déchiffrement d'objets, vous devez gérer les clés de chiffrement que vous fournissez.
+
++
+
+CAUTION: Les clés de chiffrement que vous fournissez ne sont jamais stockées.  Si vous perdez une clé de chiffrement, vous perdez l'objet correspondant.
+
++
+
+NOTE: Si un objet est chiffré avec SSE ou SSE-C, tous les paramètres de chiffrement au niveau du bucket ou de la grille sont ignorés.
+
+
+
+
+
+== Utiliser SSE
+
+Pour chiffrer un objet avec une clé unique gérée par StorageGRID, vous utilisez l'en-tête de requête suivant :
+
+`x-amz-server-side-encryption`
+
+L'en-tête de requête SSE est pris en charge par les opérations d'objet suivantes :
+
+* link:put-object.html["Mettre l'objet"]
+* link:put-object-copy.html["Copier l'objet"]
+* link:initiate-multipart-upload.html["Créer un téléchargement multi-parties"]
+
+
+
+
+== Utiliser SSE-C
+
+Pour crypter un objet avec une clé unique que vous gérez, vous utilisez trois en-têtes de requête :
+
+[cols="1a,2a"]
+|===
+| En-tête de la requête | Description 
+
+
+ a| 
+`x-amz-server-side​-encryption​-customer-algorithm`
+ a| 
+Spécifiez l'algorithme de cryptage.  La valeur de l'en-tête doit être `AES256` .
+
+
+
+ a| 
+`x-amz-server-side​-encryption​-customer-key`
+ a| 
+Spécifiez la clé de chiffrement qui sera utilisée pour chiffrer ou déchiffrer l'objet.  La valeur de la clé doit être de 256 bits, codée en base64.
+
+
+
+ a| 
+`x-amz-server-side​-encryption​-customer-key-MD5`
+ a| 
+Spécifiez le condensé MD5 de la clé de chiffrement conformément à la RFC 1321, qui est utilisé pour garantir que la clé de chiffrement a été transmise sans erreur.  La valeur du condensé MD5 doit être codée en base64 sur 128 bits.
+
+|===
+Les en-têtes de requête SSE-C sont pris en charge par les opérations d’objet suivantes :
+
+* link:get-object.html["Obtenir l'objet"]
+* link:head-object.html["HeadObject"]
+* link:put-object.html["Mettre l'objet"]
+* link:put-object-copy.html["Copier l'objet"]
+* link:initiate-multipart-upload.html["Créer un téléchargement multi-parties"]
+* link:upload-part.html["Télécharger une partie"]
+* link:upload-part-copy.html["TéléchargerPartCopy"]
+
+
+
+
+== Considérations relatives à l'utilisation du chiffrement côté serveur avec des clés fournies par le client (SSE-C)
+
+Avant d’utiliser SSE-C, tenez compte des considérations suivantes :
+
+* Vous devez utiliser https.
++
+
+CAUTION: StorageGRID rejette toute requête effectuée via http lors de l'utilisation de SSE-C. Pour des raisons de sécurité, il est important de considérer que toute clé envoyée accidentellement via http est compromise.  Jetez la clé et faites-la tourner comme il convient.
+
+* L'ETag dans la réponse n'est pas le MD5 des données de l'objet.
+* Vous devez gérer le mappage des clés de chiffrement aux objets.  StorageGRID ne stocke pas les clés de chiffrement.  Vous êtes responsable du suivi de la clé de cryptage que vous fournissez pour chaque objet.
+* Si votre bucket est compatible avec le contrôle de version, chaque version d'objet doit avoir sa propre clé de chiffrement.  Vous êtes responsable du suivi de la clé de chiffrement utilisée pour chaque version d’objet.
+* Étant donné que vous gérez les clés de chiffrement côté client, vous devez également gérer toutes les mesures de protection supplémentaires, telles que la rotation des clés, côté client.
++
+
+CAUTION: Les clés de chiffrement que vous fournissez ne sont jamais stockées.  Si vous perdez une clé de chiffrement, vous perdez l'objet correspondant.
+
+* Si la réplication inter-grille ou la réplication CloudMirror est configurée pour le bucket, vous ne pouvez pas ingérer d'objets SSE-C. L'opération d'ingestion échouera.
+
+
+.Informations connexes
+https://docs.aws.amazon.com/AmazonS3/latest/dev/ServerSideEncryptionCustomerKeys.html["Guide de l'utilisateur Amazon S3 : Utilisation du chiffrement côté serveur avec les clés fournies par le client (SSE-C)"^]

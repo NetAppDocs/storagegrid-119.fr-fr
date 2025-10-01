@@ -1,0 +1,79 @@
+---
+permalink: maintain/linux-adding-trunk-or-access-interfaces-to-node.html 
+sidebar: sidebar 
+keywords: add extra interface to node, trunk interface, access interface 
+summary: 'Vous pouvez ajouter des interfaces de jonction ou d"accès supplémentaires à un nœud Linux après son installation.  Les interfaces que vous ajoutez sont affichées sur la page Interfaces VLAN et sur la page Groupes HA.' 
+---
+= Linux : ajouter des interfaces trunk ou d'accès à un nœud
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez ajouter des interfaces de jonction ou d'accès supplémentaires à un nœud Linux après son installation.  Les interfaces que vous ajoutez sont affichées sur la page Interfaces VLAN et sur la page Groupes HA.
+
+.Avant de commencer
+* Vous avez accès aux instructions d'installation de StorageGRID sur votre plateforme Linux.
++
+** link:../rhel/index.html["Installer StorageGRID sur Red Hat Enterprise Linux"]
+** link:../ubuntu/index.html["Installer StorageGRID sur Ubuntu ou Debian"]
+
+
+* Vous avez le `Passwords.txt` déposer.
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+
+
+
+CAUTION: N'essayez pas d'ajouter des interfaces à un nœud pendant qu'une mise à niveau logicielle, une procédure de récupération ou une procédure d'extension est active.
+
+.À propos de cette tâche
+Suivez ces étapes pour ajouter une ou plusieurs interfaces supplémentaires à un nœud Linux après l’installation du nœud.  Par exemple, vous souhaiterez peut-être ajouter une interface de jonction à un nœud d'administration ou de passerelle, afin de pouvoir utiliser des interfaces VLAN pour séparer le trafic appartenant à différentes applications ou locataires.  Ou, vous souhaiterez peut-être ajouter une interface d’accès à utiliser dans un groupe de haute disponibilité (HA).
+
+Si vous ajoutez une interface de jonction, vous devez configurer une interface VLAN dans StorageGRID.  Si vous ajoutez une interface d’accès, vous pouvez ajouter l’interface directement à un groupe HA ; vous n’avez pas besoin de configurer une interface VLAN.
+
+Le nœud n'est pas disponible pendant une brève période lorsque vous ajoutez des interfaces.  Vous devez effectuer cette procédure sur un nœud à la fois.
+
+.Étapes
+. Connectez-vous au serveur Linux hébergeant le nœud.
+. À l’aide d’un éditeur de texte tel que vim ou pico, modifiez le fichier de configuration du nœud :
++
+`/etc/storagegrid/nodes/_node-name_.conf`
+
+. Ajoutez une entrée au fichier pour spécifier le nom et, éventuellement, la description de chaque interface supplémentaire que vous souhaitez ajouter au nœud.  Utilisez ce format.
++
+`INTERFACE_TARGET_nnnn=_value_`
+
++
+Pour _nnnn_, spécifiez un numéro unique pour chaque `INTERFACE_TARGET` entrée que vous ajoutez.
+
++
+Pour _value_, spécifiez le nom de l'interface physique sur l'hôte bare-metal.  Ensuite, si vous le souhaitez, ajoutez une virgule et fournissez une description de l’interface, qui s’affiche sur la page Interfaces VLAN et sur la page Groupes HA.
+
++
+Par exemple:
+
++
+`INTERFACE_TARGET_0001=ens256, Trunk`
+
++
+
+NOTE: Ne spécifiez aucun autre paramètre réseau, sinon une erreur de validation se produira.
+
+. Exécutez la commande suivante pour valider vos modifications dans le fichier de configuration du nœud :
++
+`sudo storagegrid node validate _node-name_`
+
++
+Corrigez les erreurs ou les avertissements avant de passer à l’étape suivante.
+
+. Exécutez la commande suivante pour mettre à jour la configuration du nœud :
++
+`sudo storagegrid node reload _node-name_`
+
+
+
+.Après avoir terminé
+* Si vous avez ajouté une ou plusieurs interfaces trunk, accédez àlink:../admin/configure-vlan-interfaces.html["configurer les interfaces VLAN"] pour configurer une ou plusieurs interfaces VLAN pour chaque nouvelle interface parent.
+* Si vous avez ajouté une ou plusieurs interfaces d'accès, accédez àlink:../admin/configure-high-availability-group.html["configurer des groupes de haute disponibilité"] pour ajouter les nouvelles interfaces directement aux groupes HA.
+

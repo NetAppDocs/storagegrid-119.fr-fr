@@ -1,0 +1,51 @@
+---
+permalink: maintain/gathering-required-materials-site-decom.html 
+sidebar: sidebar 
+keywords: storagegrid, decommission 
+summary: Avant de déclasser un site, vous devez vous procurer les matériaux suivants. 
+---
+= Rassembler le matériel nécessaire
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avant de déclasser un site, vous devez vous procurer les matériaux suivants.
+
+[cols="1a,2a"]
+|===
+| Article | Remarques 
+
+
+ a| 
+Paquet de relance `.zip` déposer
+ a| 
+Vous devez télécharger le package de récupération le plus récent `.zip` déposer(`sgws-recovery-package-id-revision.zip` ).  Vous pouvez utiliser le fichier Recovery Package pour restaurer le système en cas de panne.
+
+link:downloading-recovery-package.html["Téléchargez le package de récupération"]
+
+
+
+ a| 
+`Passwords.txt`déposer
+ a| 
+Ce fichier contient les mots de passe requis pour accéder aux nœuds de grille sur la ligne de commande et est inclus dans le package de récupération.
+
+
+
+ a| 
+Mot de passe d'approvisionnement
+ a| 
+La phrase secrète est créée et documentée lors de la première installation du système StorageGRID .  La phrase secrète de provisionnement n'est pas dans le `Passwords.txt` déposer.
+
+
+
+ a| 
+Description de la topologie du système StorageGRID avant la mise hors service
+ a| 
+Si disponible, obtenez toute documentation décrivant la topologie actuelle du système.
+
+|===
+.Informations connexes
+link:../admin/web-browser-requirements.html["Configuration requise pour le navigateur Web"]

@@ -1,0 +1,35 @@
+---
+permalink: monitor/monitoring-object-ingest-and-retrieval-rates.html 
+sidebar: sidebar 
+keywords: object ingest rates, object retrieval rates, monitor s3, client operations 
+summary: 'Vous pouvez surveiller les taux d"ingestion et de récupération d"objets ainsi que les mesures relatives au nombre d"objets, aux requêtes et à la vérification.  Vous pouvez afficher le nombre de tentatives réussies et infructueuses des applications clientes pour lire, écrire et modifier des objets dans le système StorageGRID .' 
+---
+= Surveiller les opérations du client S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez surveiller les taux d'ingestion et de récupération d'objets ainsi que les mesures relatives au nombre d'objets, aux requêtes et à la vérification.  Vous pouvez afficher le nombre de tentatives réussies et infructueuses des applications clientes pour lire, écrire et modifier des objets dans le système StorageGRID .
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+
+
+.Étapes
+. Depuis le tableau de bord, sélectionnez l’onglet *Performance*.
+. Consultez les graphiques S3, qui résument le nombre d’opérations client effectuées par les nœuds de stockage et le nombre de requêtes API reçues par les nœuds de stockage pendant la période sélectionnée.
+. Sélectionnez *NODES* pour accéder à la page Nœuds.
+. Depuis la page d’accueil des nœuds (niveau de la grille), sélectionnez l’onglet *Objets*.
++
+Le graphique montre les taux d'ingestion et de récupération S3 pour l'ensemble de votre système StorageGRID en octets par seconde et la quantité de données ingérées ou récupérées.  Vous pouvez sélectionner un intervalle de temps ou appliquer un intervalle personnalisé.
+
+. Pour afficher les informations d'un nœud de stockage particulier, sélectionnez le nœud dans la liste de gauche, puis sélectionnez l'onglet *Objets*.
++
+Le graphique montre les taux d’ingestion et de récupération du nœud.  L'onglet inclut également des mesures pour le nombre d'objets, les requêtes de métadonnées et les opérations de vérification.
+
++
+image::../media/nodes_storage_node_objects_help.png[capture d'écran de Nœuds > _Nœud de stockage_ > Objets > aide sur les attributs]
+
+

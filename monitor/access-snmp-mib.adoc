@@ -1,0 +1,149 @@
+---
+permalink: monitor/access-snmp-mib.html 
+sidebar: sidebar 
+keywords: mib, snmp, monitoring 
+summary: Les fichiers MIB contiennent des définitions et des informations sur les propriétés des ressources et des services gérés pour les nœuds de votre grille.  Vous pouvez accéder aux fichiers MIB qui définissent les objets et les notifications pour StorageGRID.  Ces fichiers peuvent être utiles pour surveiller votre réseau. 
+---
+= Accéder aux fichiers MIB
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les fichiers MIB contiennent des définitions et des informations sur les propriétés des ressources et des services gérés pour les nœuds de votre grille.  Vous pouvez accéder aux fichiers MIB qui définissent les objets et les notifications pour StorageGRID.  Ces fichiers peuvent être utiles pour surveiller votre réseau.
+
+Voirlink:using-snmp-monitoring.html["Utiliser la surveillance SNMP"] pour plus d'informations sur les fichiers SNMP et MIB.
+
+
+
+== Accéder aux fichiers MIB
+
+Suivez ces étapes pour accéder aux fichiers MIB.
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Surveillance* > *Agent SNMP*.
+. Sur la page de l’agent SNMP, sélectionnez le fichier que vous souhaitez télécharger :
++
+** *NETAPP-STORAGEGRID-MIB.txt*: Définit la table d'alerte et les notifications (traps) accessibles sur tous les nœuds d'administration.
+** *ES-NETAPP-06-MIB.mib*: Définit les objets et les notifications pour les appareils basés sur la série E.
+** *MIB_1_10.zip*: Définit les objets et les notifications pour les appliances avec une interface BMC .
++
+[]
+====
+
+TIP: Vous pouvez également accéder aux fichiers MIB à l'emplacement suivant sur n'importe quel nœud StorageGRID : `/usr/share/snmp/mibs`
+
+====
+
+
+. Pour extraire les OID StorageGRID du fichier MIB :
++
+.. Obtenez l'OID de la racine du MIB StorageGRID :
++
+`root@user-adm1:~ # snmptranslate -On -IR storagegrid`
+
++
+Résultat: `.1.3.6.1.4.1.789.28669` (`28669` est toujours l'OID pour StorageGRID)
+
+.. Grep pour l'OID StorageGRID dans l'arbre entier (en utilisant `paste` pour joindre des lignes) :
++
+`root@user-adm1:~ # snmptranslate -Tso | paste -d " " - - | grep 28669`
+
+
+
+
+
+
+TIP: Le `snmptranslate` La commande dispose de nombreuses options utiles pour explorer le MIB.  Cette commande est disponible sur n’importe quel nœud StorageGRID .
+
+
+
+== Contenu du fichier MIB
+
+Tous les objets sont sous l'OID StorageGRID .
+
+[cols="1a,1a,2a"]
+|===
+| Nom de l'objet | ID d'objet (OID) | Description 
+
+
+| .iso.org.dod.internet.  + entreprises.privées.  + netapp.storagegrid | .1.3.6.1.4.1.789.28669  a| 
+Le module MIB pour les entités NetApp StorageGRID .
+
+|===
+
+
+== objets MIB
+
+[cols="1a,1a,2a"]
+|===
+| Nom de l'objet | ID d'objet (OID) | Description 
+
+
+| nombre d'alertes actives | .1.3.6.1.4.1. + 789.28669.1.3  a| 
+Le nombre d'alertes actives dans activeAlertTable.
+
+
+
+| table d'alertes actives | .1.3.6.1.4.1. + 789.28669.1.4  a| 
+Un tableau des alertes actives dans StorageGRID.
+
+
+
+| activeAlertId | .1.3.6.1.4.1. + 789.28669.1.4.1.1  a| 
+L'ID de l'alerte.  Unique dans l'ensemble actuel d'alertes actives.
+
+
+
+| activeAlertName | .1.3.6.1.4.1. + 789.28669.1.4.1.2  a| 
+Le nom de l'alerte.
+
+
+
+| instance d'alerte active | .1.3.6.1.4.1. + 789.28669.1.4.1.3  a| 
+Le nom de l'entité qui a généré l'alerte, généralement le nom du nœud.
+
+
+
+| gravité de l'alerte active | .1.3.6.1.4.1. + 789.28669.1.4.1.4  a| 
+La gravité de l'alerte.
+
+
+
+| heure de début d'alerte active | .1.3.6.1.4.1. + 789.28669.1.4.1.5  a| 
+La date et l'heure auxquelles l'alerte a été déclenchée.
+
+|===
+
+
+== Types de notifications (pièges)
+
+Toutes les notifications incluent les variables suivantes en tant que varbinds :
+
+* activeAlertId
+* activeAlertName
+* instance d'alerte active
+* gravité de l'alerte active
+* heure de début d'alerte active
+
+
+[cols="1a,1a,2a"]
+|===
+| Type de notification | ID d'objet (OID) | Description 
+
+
+| alerte mineure active | .1.3.6.1.4.1. + 789.28669.0.6  a| 
+Une alerte de gravité mineure
+
+
+
+| alerte majeure active | .1.3.6.1.4.1. + 789.28669.0.7  a| 
+Une alerte de gravité majeure
+
+
+
+| alerte critique active | .1.3.6.1.4.1. + 789.28669.0.8  a| 
+Une alerte de gravité critique
+
+|===

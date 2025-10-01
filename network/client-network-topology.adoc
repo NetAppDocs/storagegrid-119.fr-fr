@@ -1,0 +1,27 @@
+---
+permalink: network/client-network-topology.html 
+sidebar: sidebar 
+keywords: client network topology 
+summary: 'Avoir un réseau de clients est facultatif.  L"utilisation d"un réseau client permet de séparer le trafic réseau client (par exemple, S3) du trafic interne du réseau, ce qui permet de sécuriser davantage le réseau du réseau.  Le trafic administratif peut être géré par le client ou par le réseau de grille lorsque le réseau d"administration n"est pas configuré.' 
+---
+= Topologie du réseau client
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avoir un réseau de clients est facultatif.  L'utilisation d'un réseau client permet de séparer le trafic réseau client (par exemple, S3) du trafic interne du réseau, ce qui permet de sécuriser davantage le réseau du réseau.  Le trafic administratif peut être géré par le client ou par le réseau de grille lorsque le réseau d'administration n'est pas configuré.
+
+Lorsque vous configurez le réseau client, vous établissez l’adresse IP de l’hôte, le masque de sous-réseau et l’adresse IP de la passerelle pour l’interface eth2 du nœud configuré.  Le réseau client de chaque nœud peut être indépendant du réseau client de tout autre nœud.
+
+Si vous configurez un réseau client pour un nœud pendant l'installation, la passerelle par défaut du nœud passe de la passerelle du réseau de grille à la passerelle du réseau client une fois l'installation terminée.  Si un réseau client est ajouté ultérieurement, la passerelle par défaut du nœud change de la même manière.
+
+Dans cet exemple, le réseau client est utilisé pour les demandes client S3 et pour les fonctions administratives, tandis que le réseau grille est dédié aux opérations de gestion d'objets internes.
+
+image::../media/grid_client_networks.png[Réseaux clients Grid]
+
+image::../media/grid_client_networks_ips.png[IP des réseaux clients Grid]
+
+.Informations connexes
+link:../maintain/changing-nodes-network-configuration.html["Modifier la configuration du réseau de nœuds"]

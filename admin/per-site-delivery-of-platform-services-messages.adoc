@@ -1,0 +1,24 @@
+---
+permalink: admin/per-site-delivery-of-platform-services-messages.html 
+sidebar: sidebar 
+keywords: platform services message delivery 
+summary: Toutes les opérations de services de la plateforme sont effectuées site par site. 
+---
+= Livraison par site des messages des services de la plateforme
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Toutes les opérations de services de la plateforme sont effectuées site par site.
+
+Autrement dit, si un locataire utilise un client pour effectuer une opération de création d'API S3 sur un objet en se connectant à un nœud de passerelle sur le site 1 du centre de données, la notification concernant cette action est déclenchée et envoyée depuis le site 1 du centre de données.
+
+image::../media/notification_multiple_sites.gif[Diagramme montrant que l'action sur l'objet du site 1 déclenche une notification du site 1]
+
+Si le client effectue ensuite une opération de suppression d'API S3 sur ce même objet à partir du site de centre de données 2, la notification concernant l'action de suppression est déclenchée et envoyée à partir du site de centre de données 2.
+
+image::../media/notifications_site_2.gif[diagramme montrant l'action sur l'objet du site 2 déclenche des notifications du site 2]
+
+Assurez-vous que le réseau de chaque site est configuré de manière à ce que les messages des services de la plateforme puissent être délivrés à leurs destinations.

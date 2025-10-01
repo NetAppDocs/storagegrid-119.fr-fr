@@ -1,0 +1,49 @@
+---
+permalink: maintain/gathering-required-materials-node-decom.html 
+sidebar: sidebar 
+keywords: storagegrid, node decommission, decommission 
+summary: Avant d’effectuer la mise hors service d’un nœud de grille, vous devez obtenir les informations suivantes. 
+---
+= Rassembler le matériel nécessaire
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avant d’effectuer la mise hors service d’un nœud de grille, vous devez obtenir les informations suivantes.
+
+[cols="1a,2a"]
+|===
+| Article | Remarques 
+
+
+ a| 
+Paquet de relance `.zip` déposer
+ a| 
+Vous devezlink:downloading-recovery-package.html["télécharger le package de récupération le plus récent"] `.zip` déposer(`sgws-recovery-package-_id-revision_.zip` ). Vous pouvez utiliser le fichier Recovery Package pour restaurer le système en cas de panne.
+
+
+
+ a| 
+`Passwords.txt`déposer
+ a| 
+Ce fichier contient les mots de passe requis pour accéder aux nœuds de grille sur la ligne de commande et est inclus dans le package de récupération.
+
+
+
+ a| 
+Mot de passe d'approvisionnement
+ a| 
+La phrase secrète est créée et documentée lors de la première installation du système StorageGRID .  La phrase secrète de provisionnement n'est pas dans le `Passwords.txt` déposer.
+
+
+
+ a| 
+Description de la topologie du système StorageGRID avant la mise hors service
+ a| 
+Si disponible, obtenez toute documentation décrivant la topologie actuelle du système.
+
+|===
+.Informations connexes
+link:../admin/web-browser-requirements.html["Configuration requise pour le navigateur Web"]

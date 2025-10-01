@@ -1,0 +1,69 @@
+---
+permalink: expand/copying-prometheus-metrics.html 
+sidebar: sidebar 
+keywords: prometheus, copy metrics, Admin Node expansion 
+summary: 'Après avoir ajouté un nouveau nœud d"administration, vous pouvez éventuellement copier les métriques historiques gérées par Prometheus du nœud d"administration principal vers le nouveau nœud d"administration.  La copie des métriques garantit que les métriques historiques sont cohérentes entre les nœuds d’administration.' 
+---
+= Copier les métriques Prometheus
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Après avoir ajouté un nouveau nœud d'administration, vous pouvez éventuellement copier les métriques historiques gérées par Prometheus du nœud d'administration principal vers le nouveau nœud d'administration.  La copie des métriques garantit que les métriques historiques sont cohérentes entre les nœuds d’administration.
+
+.Avant de commencer
+* Le nouveau nœud d’administration est installé et en cours d’exécution.
+* Vous avez le `Passwords.txt` déposer.
+* Vous disposez de la phrase secrète de provisionnement.
+
+
+.À propos de cette tâche
+Lorsque vous ajoutez un nœud d’administration, le processus d’installation du logiciel crée une nouvelle base de données Prometheus.  Vous pouvez conserver la cohérence des mesures historiques entre les nœuds en copiant la base de données Prometheus du nœud d'administration principal (le _nœud d'administration source_) vers le nouveau nœud d'administration.
+
+
+NOTE: La copie de la base de données Prometheus peut prendre une heure ou plus.  Certaines fonctionnalités de Grid Manager ne seront pas disponibles lorsque les services sont arrêtés sur le nœud d'administration source.
+
+.Étapes
+. Connectez-vous au nœud d'administration source :
++
+.. Entrez la commande suivante : `ssh admin@_grid_node_IP_`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+
+
+. Depuis le nœud d’administration source, arrêtez le service Prometheus : `service prometheus stop`
+. Effectuez les étapes suivantes sur le nouveau nœud d’administration :
++
+.. Connectez-vous au nouveau nœud d’administration :
++
+... Entrez la commande suivante : `ssh admin@_grid_node_IP_`
+... Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+... Entrez la commande suivante pour passer en root : `su -`
+... Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+
+
+.. Arrêter le service Prometheus : `service prometheus stop`
+.. Ajoutez la clé privée SSH à l’agent SSH.  Entrer:``ssh-add``
+.. Saisissez le mot de passe d'accès SSH répertorié dans le `Passwords.txt` déposer.
+.. Copiez la base de données Prometheus du nœud d’administration source vers le nouveau nœud d’administration : `/usr/local/prometheus/bin/prometheus-clone-db.sh _Source_Admin_Node_IP_`
+.. Lorsque vous y êtes invité, appuyez sur *Entrée* pour confirmer que vous souhaitez détruire la nouvelle base de données Prometheus sur le nouveau nœud d'administration.
++
+La base de données Prometheus d'origine et ses données historiques sont copiées sur le nouveau nœud d'administration.  Une fois l’opération de copie terminée, le script démarre le nouveau nœud d’administration.  Le statut suivant apparaît :
+
++
+`Database cloned, starting services`
+
+.. Lorsque vous n’avez plus besoin d’un accès sans mot de passe à d’autres serveurs, supprimez la clé privée de l’agent SSH.  Entrer:
++
+`ssh-add -D`
+
+
+
+. Redémarrez le service Prometheus sur le nœud d’administration source.
++
+`service prometheus start`
+
+

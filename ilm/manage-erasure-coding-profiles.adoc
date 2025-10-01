@@ -1,0 +1,166 @@
+---
+permalink: ilm/manage-erasure-coding-profiles.html 
+sidebar: sidebar 
+keywords: rename erasure-coding profile, ec profile 
+summary: 'Vous pouvez afficher les détails d"un profil de codage d"effacement et renommer un profil si nécessaire.  Vous pouvez désactiver un profil de codage d"effacement s"il n"est actuellement utilisé dans aucune règle ILM.' 
+---
+= Gérer les profils de codage d'effacement
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez afficher les détails d'un profil de codage d'effacement et renommer un profil si nécessaire.  Vous pouvez désactiver un profil de codage d'effacement s'il n'est actuellement utilisé dans aucune règle ILM.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:../admin/admin-group-permissions.html["autorisations d'accès requises"] .
+
+
+
+
+== Afficher les détails du profil de codage d'effacement
+
+Vous pouvez afficher les détails d'un profil de codage d'effacement pour déterminer son état, le schéma de codage d'effacement utilisé et d'autres informations.
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Système* > *Codage d'effacement*.
+. Sélectionnez le profil.  La page de détails du profil apparaît.
+. Vous pouvez également consulter l’onglet Règles ILM pour obtenir la liste des règles ILM qui utilisent le profil et les stratégies ILM qui utilisent ces règles.
+. Vous pouvez également consulter l'onglet Nœuds de stockage pour obtenir des détails sur chaque nœud de stockage dans le pool de stockage du profil, comme le site où il se trouve et l'utilisation du stockage.
+
+
+
+
+== Renommer un profil de codage d'effacement
+
+Vous souhaiterez peut-être renommer un profil de codage d'effacement pour rendre plus évident ce que fait le profil.
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Système* > *Codage d'effacement*.
+. Sélectionnez le profil que vous souhaitez renommer.
+. Sélectionnez *Renommer*.
+. Saisissez un nom unique pour le profil de codage d’effacement.
++
+Le nom du profil de codage d'effacement est ajouté au nom du pool de stockage dans l'instruction de placement d'une règle ILM.
+
++
+
+NOTE: Les noms de profil de codage d’effacement doivent être uniques.  Une erreur de validation se produit si vous utilisez le nom d'un profil existant, même si ce profil a été désactivé.
+
+. Sélectionnez *Enregistrer*.
+
+
+
+
+== Désactiver un profil de codage d'effacement
+
+Vous pouvez désactiver un profil de codage d'effacement si vous ne prévoyez plus de l'utiliser et si le profil n'est actuellement utilisé dans aucune règle ILM.
+
+
+TIP: Confirmez qu'aucune opération de réparation de données codées par effacement ou procédure de mise hors service n'est en cours.  Un message d'erreur est renvoyé si vous tentez de désactiver un profil de codage d'effacement pendant que l'une de ces opérations est en cours.
+
+.À propos de cette tâche
+StorageGRID vous empêche de désactiver un profil de codage d'effacement si l'une des conditions suivantes est vraie :
+
+* Le profil de codage d’effacement est actuellement utilisé dans une règle ILM.
+* Le profil de codage d'effacement n'est plus utilisé dans aucune règle ILM, mais les données d'objet et les fragments de parité du profil existent toujours.
+
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Système* > *Codage d'effacement*.
+. Dans l'onglet Actif, vérifiez la colonne *Statut* pour confirmer que le profil de codage d'effacement que vous souhaitez désactiver n'est utilisé dans aucune règle ILM.
++
+Vous ne pouvez pas désactiver un profil de codage d'effacement s'il est utilisé dans une règle ILM.  Dans l'exemple, le profil 2+1 Data Center 1 est utilisé dans au moins une règle ILM.
+
++
+image::../media/ec_profile_used_in_ilm_rule.png[Profil EC utilisé dans la règle ILM]
+
+. Si le profil est utilisé dans une règle ILM, suivez ces étapes :
++
+.. Sélectionnez *ILM* > *Règles*.
+.. Sélectionnez chaque règle et examinez le diagramme de conservation pour déterminer si la règle utilise le profil de codage d’effacement que vous souhaitez désactiver.
+.. Si la règle ILM utilise le profil de codage d’effacement que vous souhaitez désactiver, déterminez si la règle est utilisée dans une stratégie ILM.
+.. Effectuez les étapes supplémentaires du tableau, en fonction de l’endroit où le profil de codage d’effacement est utilisé.
++
+[cols="2a,4a,1a"]
+|===
+| Où le profil a-t-il été utilisé ? | Étapes supplémentaires à effectuer avant de désactiver le profil | Reportez-vous à ces instructions supplémentaires 
+
+
+ a| 
+Jamais utilisé dans aucune règle ILM
+ a| 
+Aucune étape supplémentaire n'est requise.  Continuez avec cette procédure.
+ a| 
+_Aucun_
+
+
+
+ a| 
+Dans une règle ILM qui n'a jamais été utilisée dans aucune politique ILM
+ a| 
+... Modifiez ou supprimez toutes les règles ILM affectées.  Si vous modifiez la règle, supprimez tous les emplacements qui utilisent le profil de codage d’effacement.
+... Continuez avec cette procédure.
+
+ a| 
+link:working-with-ilm-rules-and-ilm-policies.html["Travailler avec les règles et les politiques ILM"]
+
+
+
+ a| 
+Dans une règle ILM qui se trouve actuellement dans une politique ILM active
+ a| 
+... Cloner la politique.
+... Supprimez la règle ILM qui utilise le profil de codage d’effacement.
+... Ajoutez une ou plusieurs nouvelles règles ILM pour garantir la protection des objets.
+... Enregistrez, simulez et activez la nouvelle politique.
+... Attendez que la nouvelle politique soit appliquée et que les objets existants soient déplacés vers de nouveaux emplacements en fonction des nouvelles règles que vous avez ajoutées.
++
+*Remarque :* selon le nombre d'objets et la taille de votre système StorageGRID , les opérations ILM peuvent prendre des semaines, voire des mois, pour déplacer les objets vers de nouveaux emplacements, en fonction des nouvelles règles ILM.
+
++
+Bien que vous puissiez tenter en toute sécurité de désactiver un profil de codage d'effacement alors qu'il est toujours associé à des données, l'opération de désactivation échouera.  Un message d'erreur vous informera si le profil n'est pas encore prêt à être désactivé.
+
+... Modifiez ou supprimez la règle que vous avez supprimée de la politique.  Si vous modifiez la règle, supprimez tous les emplacements qui utilisent le profil de codage d’effacement.
+... Continuez avec cette procédure.
+
+ a| 
+link:creating-ilm-policy.html["Créer une politique ILM"]
+
+link:working-with-ilm-rules-and-ilm-policies.html["Travailler avec les règles et les politiques ILM"]
+
+
+
+ a| 
+Dans une règle ILM qui se trouve actuellement dans une politique ILM
+ a| 
+... Modifier la politique.
+... Supprimez la règle ILM qui utilise le profil de codage d’effacement.
+... Ajoutez une ou plusieurs nouvelles règles ILM pour garantir que tous les objets sont protégés.
+... Sauvegarder la politique.
+... Modifiez ou supprimez la règle que vous avez supprimée de la politique.  Si vous modifiez la règle, supprimez tous les emplacements qui utilisent le profil de codage d’effacement.
+... Continuez avec cette procédure.
+
+ a| 
+link:creating-ilm-policy.html["Créer une politique ILM"]
+
+link:working-with-ilm-rules-and-ilm-policies.html["Travailler avec les règles et les politiques ILM"]
+
+|===
+.. Actualisez la page Profils de codage d’effacement pour vous assurer que le profil n’est pas utilisé dans une règle ILM.
+
+
+. Si le profil n'est pas utilisé dans une règle ILM, sélectionnez le bouton radio et sélectionnez *Désactiver*.  La boîte de dialogue Désactiver le profil de codage d’effacement s’affiche.
++
+
+TIP: Vous pouvez sélectionner plusieurs profils à désactiver en même temps, à condition que chaque profil ne soit utilisé dans aucune règle.
+
+. Si vous êtes sûr de vouloir désactiver le profil, sélectionnez *Désactiver*.
+
+
+.Résultats
+* Si StorageGRID est en mesure de désactiver le profil de codage d'effacement, son statut est Désactivé.  Vous ne pouvez plus sélectionner ce profil pour aucune règle ILM.  Vous ne pouvez pas réactiver un profil désactivé.
+* Si StorageGRID ne parvient pas à désactiver le profil, un message d’erreur s’affiche.  Par exemple, un message d’erreur s’affiche si les données d’objet sont toujours associées à ce profil.  Vous devrez peut-être attendre plusieurs semaines avant de réessayer le processus de désactivation.
+

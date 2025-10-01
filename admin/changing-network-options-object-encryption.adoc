@@ -1,0 +1,74 @@
+---
+permalink: admin/changing-network-options-object-encryption.html 
+sidebar: sidebar 
+keywords: enable http, storage node connections 
+summary: Vous pouvez configurer la sécurité du réseau et des objets pour chiffrer les objets stockés, pour empêcher certaines requêtes S3 ou pour autoriser les connexions client aux nœuds de stockage à utiliser HTTP au lieu de HTTPS. 
+---
+= Configurer la sécurité du réseau et des objets
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez configurer la sécurité du réseau et des objets pour chiffrer les objets stockés, pour empêcher certaines requêtes S3 ou pour autoriser les connexions client aux nœuds de stockage à utiliser HTTP au lieu de HTTPS.
+
+
+
+== Chiffrement des objets stockés
+
+Le chiffrement des objets stockés permet le chiffrement de toutes les données d'objets lorsqu'elles sont ingérées via S3.  Par défaut, les objets stockés ne sont pas chiffrés, mais vous pouvez choisir de crypter les objets à l'aide de l'algorithme de chiffrement AES-128 ou AES-256.  Lorsque vous activez le paramètre, tous les objets nouvellement ingérés sont chiffrés, mais aucune modification n'est apportée aux objets stockés existants.  Si vous désactivez le chiffrement, les objets actuellement chiffrés restent chiffrés, mais les objets nouvellement ingérés ne sont pas chiffrés.
+
+Le paramètre de chiffrement d'objet stocké s'applique uniquement aux objets S3 qui n'ont pas été chiffrés par un chiffrement au niveau du bucket ou au niveau de l'objet.
+
+Pour plus de détails sur les méthodes de chiffrement StorageGRID , voirlink:../admin/reviewing-storagegrid-encryption-methods.html["Examiner les méthodes de chiffrement StorageGRID"] .
+
+
+
+== Empêcher la modification du client
+
+Empêcher la modification du client est un paramètre à l'échelle du système.  Lorsque l'option *Empêcher la modification du client* est sélectionnée, les demandes suivantes sont refusées.
+
+
+
+=== API REST S3
+
+* Requêtes DeleteBucket
+* Toute demande de modification des données d'un objet existant, des métadonnées définies par l'utilisateur ou du balisage d'un objet S3
+
+
+
+
+== Activer HTTP pour les connexions aux nœuds de stockage
+
+Par défaut, les applications clientes utilisent le protocole réseau HTTPS pour toutes les connexions directes aux nœuds de stockage.  Vous pouvez éventuellement activer HTTP pour ces connexions, par exemple lors du test d'une grille non productive.
+
+Utilisez HTTP pour les connexions aux nœuds de stockage uniquement si les clients S3 doivent établir des connexions HTTP directement aux nœuds de stockage.  Vous n'avez pas besoin d'utiliser cette option pour les clients qui utilisent uniquement des connexions HTTPS ou pour les clients qui se connectent au service Load Balancer (car vous pouvezlink:../admin/configuring-load-balancer-endpoints.html["configurer chaque point de terminaison de l'équilibreur de charge"] (utiliser soit HTTP soit HTTPS).
+
+Voirlink:summary-ip-addresses-and-ports-for-client-connections.html["Résumé : Adresses IP et ports pour les connexions client"] pour savoir quels ports les clients S3 utilisent lors de la connexion aux nœuds de stockage via HTTP ou HTTPS.
+
+
+
+== Sélectionnez les options
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous disposez de l'autorisation d'accès root.
+
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Sécurité* > *Paramètres de sécurité*.
+. Sélectionnez l'onglet *Réseau et objets*.
+. Pour le chiffrement des objets stockés, utilisez le paramètre *Aucun* (par défaut) si vous ne souhaitez pas que les objets stockés soient chiffrés, ou sélectionnez *AES-128* ou *AES-256* pour chiffrer les objets stockés.
+. Sélectionnez éventuellement *Empêcher la modification du client* si vous souhaitez empêcher les clients S3 d'effectuer des demandes spécifiques.
++
+
+NOTE: Si vous modifiez ce paramètre, l’application du nouveau paramètre prendra environ une minute.  La valeur configurée est mise en cache pour les performances et la mise à l'échelle.
+
+. Sélectionnez éventuellement *Activer HTTP pour les connexions aux nœuds de stockage* si les clients se connectent directement aux nœuds de stockage et que vous souhaitez utiliser des connexions HTTP.
++
+
+NOTE: Soyez prudent lorsque vous activez HTTP pour une grille de production car les requêtes seront envoyées non chiffrées.
+
+. Sélectionnez *Enregistrer*.
+

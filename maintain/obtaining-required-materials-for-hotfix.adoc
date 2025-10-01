@@ -1,0 +1,61 @@
+---
+permalink: maintain/obtaining-required-materials-for-hotfix.html 
+sidebar: sidebar 
+keywords: storagegrid, hotfix 
+summary: Avant d’appliquer un correctif, vous devez obtenir tout le matériel requis. 
+---
+= Obtenir le matériel nécessaire pour le correctif
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avant d’appliquer un correctif, vous devez obtenir tout le matériel requis.
+
+[cols="1a,2a"]
+|===
+| Article | Remarques 
+
+
+ a| 
+Fichier de correctifs StorageGRID
+ a| 
+Vous devez télécharger le fichier de correctif StorageGRID .
+
+
+
+ a| 
+* Port réseau
+* link:../admin/web-browser-requirements.html["Navigateur Web pris en charge"]
+* Client SSH (par exemple, PuTTY)
+
+ a| 
+
+
+
+ a| 
+Paquet de relance(`.zip` ) déposer
+ a| 
+Avant d'appliquer un correctif,link:downloading-recovery-package.html["télécharger le fichier du package de récupération le plus récent"] au cas où des problèmes surviendraient pendant le correctif. Ensuite, une fois le correctif appliqué, téléchargez une nouvelle copie du fichier du package de récupération et enregistrez-le dans un endroit sûr.  Le fichier de package de récupération mis à jour vous permet de restaurer le système en cas de panne.
+
+
+
+| Fichier Passwords.txt  a| 
+Facultatif et utilisé uniquement si vous appliquez un correctif manuellement à l'aide du client SSH. Le `Passwords.txt` le fichier fait partie du package de récupération `.zip` déposer.
+
+
+
+ a| 
+Mot de passe d'approvisionnement
+ a| 
+La phrase secrète est créée et documentée lors de la première installation du système StorageGRID . La phrase secrète de provisionnement n'est pas répertoriée dans le `Passwords.txt` déposer.
+
+
+
+ a| 
+Documentation connexe
+ a| 
+`readme.txt`fichier pour le correctif.  Ce fichier est inclus sur la page de téléchargement du correctif.  Assurez-vous de revoir le `readme` fichier soigneusement avant d'appliquer le correctif.
+
+|===

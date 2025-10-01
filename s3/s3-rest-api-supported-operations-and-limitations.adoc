@@ -1,0 +1,71 @@
+---
+permalink: s3/s3-rest-api-supported-operations-and-limitations.html 
+sidebar: sidebar 
+keywords: s3 rest api supported operations, s3 rest api limitations 
+summary: 'Le système StorageGRID implémente l"API Simple Storage Service (version API 2006-03-01) avec prise en charge de la plupart des opérations et avec certaines limitations.  Vous devez comprendre les détails d’implémentation lorsque vous intégrez des applications clientes S3 REST API.' 
+---
+= Détails d'implémentation de l'API REST S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Le système StorageGRID implémente l'API Simple Storage Service (version API 2006-03-01) avec prise en charge de la plupart des opérations et avec certaines limitations.  Vous devez comprendre les détails d’implémentation lorsque vous intégrez des applications clientes S3 REST API.
+
+Le système StorageGRID prend en charge à la fois les demandes de type hébergé virtuel et les demandes de type chemin.
+
+
+
+== Gestion des dates
+
+L'implémentation StorageGRID de l'API REST S3 prend uniquement en charge les formats de date HTTP valides.
+
+Le système StorageGRID prend uniquement en charge les formats de date HTTP valides pour tous les en-têtes qui acceptent les valeurs de date.  La partie horaire de la date peut être spécifiée au format Greenwich Mean Time (GMT) ou au format Universal Coordinated Time (UTC) sans décalage de fuseau horaire (+0000 doit être spécifié).  Si vous incluez le `x-amz-date` en-tête de votre demande, il remplace toute valeur spécifiée dans l'en-tête de la demande Date.  Lors de l'utilisation d'AWS Signature Version 4, le `x-amz-date` l'en-tête doit être présent dans la demande signée car l'en-tête de date n'est pas pris en charge.
+
+
+
+== En-têtes de requête courants
+
+Le système StorageGRID prend en charge les en-têtes de requête courants définis par https://docs.aws.amazon.com/AmazonS3/latest/API/RESTCommonRequestHeaders.html["Référence de l'API Amazon Simple Storage Service : en-têtes de requête courants"^] , à une exception près.
+
+[cols="1a,2a"]
+|===
+| En-tête de la requête | Mise en œuvre 
+
+
+ a| 
+Autorisation
+ a| 
+Prise en charge complète d'AWS Signature Version 2
+
+Prise en charge d'AWS Signature version 4, avec les exceptions suivantes :
+
+* Lorsque vous fournissez la valeur réelle de la somme de contrôle de la charge utile dans `x-amz-content-sha256` , la valeur est acceptée sans validation, comme si la valeur `UNSIGNED-PAYLOAD` avait été prévu pour l'en-tête.  Lorsque vous fournissez un `x-amz-content-sha256` valeur d'en-tête qui implique `aws-chunked` en streaming (par exemple, STREAMING-AWS4-HMAC-SHA256-PAYLOAD), les signatures de bloc ne sont pas vérifiées par rapport aux données de bloc.
+
+
+
+
+ a| 
+jeton de sécurité x-amz
+ a| 
+Non implémenté.  Retours `XNotImplemented` .
+
+|===
+
+
+== En-têtes de réponse courants
+
+Le système StorageGRID prend en charge tous les en-têtes de réponse courants définis par la _Référence API du service de stockage simple_, à une exception près.
+
+[cols="1a,2a"]
+|===
+| En-tête de réponse | Mise en œuvre 
+
+
+ a| 
+x-amz-id-2
+ a| 
+Non utilisé
+
+|===

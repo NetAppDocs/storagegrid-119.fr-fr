@@ -1,0 +1,43 @@
+---
+permalink: ilm/create-ilm-rule-select-ingest-behavior.html 
+sidebar: sidebar 
+keywords: ilm rule step 3, define ingest behavior 
+summary: 'L"étape 3 \(Sélectionner le comportement d"ingestion\) de l"assistant Créer une règle ILM vous permet de choisir comment les objets filtrés par cette règle sont protégés lorsqu"ils sont ingérés.' 
+---
+= Étape 3 sur 3 : Sélectionner le comportement d'ingestion
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'étape *Sélectionner le comportement d'ingestion* de l'assistant Créer une règle ILM vous permet de choisir comment les objets filtrés par cette règle sont protégés lorsqu'ils sont ingérés.
+
+.À propos de cette tâche
+StorageGRID peut effectuer des copies intermédiaires et mettre en file d'attente les objets pour une évaluation ILM ultérieure, ou il peut effectuer des copies pour répondre immédiatement aux instructions de placement de la règle.
+
+.Étapes
+. Sélectionnez lelink:data-protection-options-for-ingest.html["comportement d'ingestion"] à utiliser.
++
+Pour plus d'informations, consultez la section link:advantages-disadvantages-of-ingest-options.html["Avantages, inconvénients et limites des options d'ingestion"] .
+
++
+[NOTE]
+====
+Vous ne pouvez pas utiliser l'option Équilibré ou Strict si la règle utilise l'un de ces placements :
+
+** Un pool de stockage cloud au jour 0
+** Un pool de stockage cloud lorsque la règle utilise une heure de création définie par l'utilisateur comme heure de référence
+
+
+Voir link:example-5-ilm-rules-and-policy-for-strict-ingest-behavior.html["Exemple 5 : Règles et politique ILM pour un comportement d'ingestion strict"] .
+
+====
+. Sélectionnez *Créer*.
++
+La règle ILM est créée.  La règle ne devient active que lorsqu'elle est ajoutée à unlink:creating-ilm-policy.html["Politique ILM"] et cette politique est activée.
+
++
+Pour afficher les détails de la règle, sélectionnez le nom de la règle sur la page des règles ILM.
+
+

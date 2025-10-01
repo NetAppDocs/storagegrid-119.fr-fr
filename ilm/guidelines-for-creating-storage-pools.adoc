@@ -1,0 +1,60 @@
+---
+permalink: ilm/guidelines-for-creating-storage-pools.html 
+sidebar: sidebar 
+keywords: storage pool guidelines 
+summary: 'Configurez et utilisez des pools de stockage pour vous protéger contre la perte de données en distribuant les données sur plusieurs sites.  Les copies répliquées et les copies à code d"effacement nécessitent des configurations de pool de stockage différentes.' 
+---
+= Directives pour la création de pools de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Configurez et utilisez des pools de stockage pour vous protéger contre la perte de données en distribuant les données sur plusieurs sites.  Les copies répliquées et les copies à code d'effacement nécessitent des configurations de pool de stockage différentes.
+
+Voir link:using-multiple-storage-pools-for-cross-site-replication.html["Exemples d'activation de la protection contre la perte de site à l'aide de la réplication et du codage d'effacement"] .
+
+
+
+== Directives pour tous les pools de stockage
+
+* Gardez les configurations de pool de stockage aussi simples que possible.  Ne créez pas plus de pools de stockage que nécessaire.
+* Créez des pools de stockage avec autant de nœuds que possible.  Chaque pool de stockage doit contenir deux nœuds ou plus.  Un pool de stockage avec un nombre insuffisant de nœuds peut entraîner des retards ILM si un nœud devient indisponible.
+* Évitez de créer ou d’utiliser des pools de stockage qui se chevauchent (contenant un ou plusieurs nœuds identiques).  Si les pools de stockage se chevauchent, plusieurs copies des données d'objet peuvent être enregistrées sur le même nœud.
+* En général, n'utilisez pas le pool de stockage Tous les nœuds de stockage (StorageGRID 11.6 et versions antérieures) ou le site Tous les sites.  Ces éléments sont automatiquement mis à jour pour inclure tous les nouveaux sites que vous ajoutez dans une extension, ce qui peut ne pas correspondre au comportement souhaité.
+
+
+
+
+== Directives pour les pools de stockage utilisés pour les copies répliquées
+
+* Pour la protection contre la perte de site à l'aidelink:what-replication-is.html["réplication"] , spécifiez un ou plusieurs pools de stockage spécifiques au site dans lelink:create-ilm-rule-define-placements.html["instructions de placement pour chaque règle ILM"] .
++
+Un pool de stockage est automatiquement créé pour chaque site lors de l'installation de StorageGRID .
+
++
+L'utilisation d'un pool de stockage pour chaque site garantit que les copies d'objets répliquées sont placées exactement là où vous l'attendez (par exemple, une copie de chaque objet sur chaque site pour la protection contre la perte de site).
+
+* Si vous ajoutez un site dans une extension, créez un nouveau pool de stockage contenant uniquement le nouveau site.  Alors,link:working-with-ilm-rules-and-ilm-policies.html#edit-an-ilm-rule["mettre à jour les règles ILM"] pour contrôler quels objets sont stockés sur le nouveau site.
+* Si le nombre de copies est inférieur au nombre de pools de stockage, le système distribue les copies pour équilibrer l'utilisation du disque entre les pools.
+* Si les pools de stockage se chevauchent (contiennent les mêmes nœuds de stockage), toutes les copies de l'objet peuvent être enregistrées sur un seul site.  Vous devez vous assurer que les pools de stockage sélectionnés ne contiennent pas les mêmes nœuds de stockage.
+
+
+
+
+== Directives relatives aux pools de stockage utilisés pour les copies à code d'effacement
+
+* Pour la protection contre la perte de site à l'aidelink:what-erasure-coding-is.html["codage d'effacement"] , créez des pools de stockage composés d’au moins trois sites.  Si un pool de stockage comprend uniquement deux sites, vous ne pouvez pas utiliser ce pool de stockage pour le codage d'effacement.  Aucun schéma de codage d'effacement n'est disponible pour un pool de stockage comportant deux sites.
+* Le nombre de nœuds de stockage et de sites contenus dans le pool de stockage détermine lequellink:what-erasure-coding-schemes-are.html["schémas de codage d'effacement"] sont disponibles.
+* Si possible, un pool de stockage doit inclure plus que le nombre minimum de nœuds de stockage requis pour le schéma de codage d'effacement que vous sélectionnez.  Par exemple, si vous utilisez un schéma de codage d’effacement 6+3, vous devez disposer d’au moins neuf nœuds de stockage.  Cependant, il est recommandé de disposer d’au moins un nœud de stockage supplémentaire par site.
+* Répartissez les nœuds de stockage sur les sites aussi uniformément que possible.  Par exemple, pour prendre en charge un schéma de codage d’effacement 6+3, configurez un pool de stockage qui comprend au moins trois nœuds de stockage sur trois sites.
+* Si vous avez des exigences de débit élevées, l'utilisation d'un pool de stockage comprenant plusieurs sites n'est pas recommandée si la latence du réseau entre les sites est supérieure à 100 ms.  À mesure que la latence augmente, la vitesse à laquelle StorageGRID peut créer, placer et récupérer des fragments d’objet diminue fortement en raison de la diminution du débit du réseau TCP.
++
+La diminution du débit affecte les taux maximum réalisables d'ingestion et de récupération d'objets (lorsque Équilibré ou Strict sont sélectionnés comme comportement d'ingestion) ou peut entraîner des retards dans la file d'attente ILM (lorsque la double validation est sélectionnée comme comportement d'ingestion). Voir link:what-ilm-rule-is.html#ilm-rule-ingest-behavior["Comportement d'ingestion de règle ILM"] .
+
++
+
+NOTE: Si votre grille n'inclut qu'un seul site, vous ne pouvez pas utiliser le pool de stockage Tous les nœuds de stockage (StorageGRID 11.6 et versions antérieures) ou le site Tous les sites dans un profil de codage d'effacement.  Ce comportement empêche le profil de devenir invalide si un deuxième site est ajouté.
+
+

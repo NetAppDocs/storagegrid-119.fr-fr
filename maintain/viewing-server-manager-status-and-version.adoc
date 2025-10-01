@@ -1,0 +1,50 @@
+---
+permalink: maintain/viewing-server-manager-status-and-version.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, server manager, status, version 
+summary: Pour chaque nœud de grille, vous pouvez afficher l’état actuel et la version du Gestionnaire de serveur exécuté sur ce nœud de grille.  Vous pouvez également obtenir l’état actuel de tous les services exécutés sur ce nœud de grille. 
+---
+= Afficher l'état et la version du gestionnaire de serveur
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Pour chaque nœud de grille, vous pouvez afficher l’état actuel et la version du Gestionnaire de serveur exécuté sur ce nœud de grille.  Vous pouvez également obtenir l’état actuel de tous les services exécutés sur ce nœud de grille.
+
+.Avant de commencer
+Vous avez le `Passwords.txt` déposer.
+
+.Étapes
+. Connectez-vous au nœud de grille :
++
+.. Entrez la commande suivante : `ssh admin@_grid_node_IP_`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+
+
++
+Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+. Afficher l’état actuel du Gestionnaire de serveur en cours d’exécution sur le nœud de grille : `*service servermanager status*`
++
+L'état actuel du Gestionnaire de serveur en cours d'exécution sur le nœud de grille est signalé (en cours d'exécution ou non).  Si l'état du Gestionnaire de serveur est `running` , le temps d'exécution depuis le dernier démarrage est indiqué. Par exemple:
+
++
+[listing]
+----
+servermanager running for 1d, 13h, 0m, 30s
+----
+. Afficher la version actuelle du Gestionnaire de serveur exécutée sur un nœud de grille : `*service servermanager version*`
++
+La version actuelle est répertoriée. Par exemple:
+
++
+[listing]
+----
+11.1.0-20180425.1905.39c9493
+----
+. Déconnectez-vous de l'interpréteur de commandes : `*exit*`
+

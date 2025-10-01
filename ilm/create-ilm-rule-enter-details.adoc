@@ -1,0 +1,208 @@
+---
+permalink: ilm/create-ilm-rule-enter-details.html 
+sidebar: sidebar 
+keywords: ILM rule step 1, define basics 
+summary: 'L"étape 1 \(Saisir les détails\) de l"assistant Créer une règle ILM vous permet de saisir un nom et une description pour la règle et de définir des filtres pour la règle.' 
+---
+= Étape 1 sur 3 : Saisir les détails
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'étape *Saisir les détails* de l'assistant Créer une règle ILM vous permet de saisir un nom et une description pour la règle et de définir des filtres pour la règle.
+
+La saisie d'une description et la définition de filtres pour la règle sont facultatives.
+
+.À propos de cette tâche
+Lors de l'évaluation d'un objet par rapport à unlink:what-ilm-rule-is.html["Règle ILM"] StorageGRID compare les métadonnées de l'objet aux filtres de la règle.  Si les métadonnées de l’objet correspondent à tous les filtres, StorageGRID utilise la règle pour placer l’objet.  Vous pouvez concevoir une règle à appliquer à tous les objets, ou spécifier des filtres de base, tels qu'un ou plusieurs comptes de locataire ou noms de bucket, ou des filtres avancés, tels que la taille de l'objet ou les métadonnées de l'utilisateur.
+
+.Étapes
+. Saisissez un nom unique pour la règle dans le champ *Nom*.
+. Vous pouvez également saisir une brève description de la règle dans le champ *Description*.
++
+Vous devez décrire le but ou la fonction de la règle afin de pouvoir la reconnaître ultérieurement.
+
+. Vous pouvez également sélectionner un ou plusieurs comptes de locataire S3 auxquels cette règle s’applique.  Si cette règle s’applique à tous les locataires, laissez ce champ vide.
++
+Si vous ne disposez pas de l'autorisation d'accès racine ou de l'autorisation de comptes locataires, vous ne pouvez pas sélectionner de locataires dans la liste.  Saisissez plutôt l’ID du locataire ou saisissez plusieurs ID sous forme de chaîne délimitée par des virgules.
+
+. Vous pouvez également spécifier les compartiments S3 auxquels cette règle s’applique.
++
+Si *s'applique à tous les buckets* est sélectionné (par défaut), la règle s'applique à tous les buckets S3.
+
+. Pour les locataires S3, sélectionnez éventuellement *Oui* pour appliquer la règle uniquement aux anciennes versions d'objet dans les compartiments S3 pour lesquels le contrôle de version est activé.
++
+Si vous sélectionnez *Oui*, « Heure non actuelle » sera automatiquement sélectionné pour l'heure de référence danslink:create-ilm-rule-define-placements.html["Étape 2 de l'assistant Créer une règle ILM"] .
+
++
+
+NOTE: L'heure non actuelle s'applique uniquement aux objets S3 dans les compartiments où la gestion des versions est activée. Voirlink:../s3/operations-on-buckets.html["Opérations sur les buckets, PutBucketVersioning"] etlink:managing-objects-with-s3-object-lock.html["Gérer les objets avec S3 Object Lock"] .
+
++
+Vous pouvez utiliser cette option pour réduire l'impact du stockage des objets versionnés en filtrant les versions d'objets non actuelles. Voir link:example-4-ilm-rules-and-policy-for-s3-versioned-objects.html["Exemple 4 : Règles et politique ILM pour les objets versionnés S3"] .
+
+. Vous pouvez également sélectionner *Ajouter un filtre avancé* pour spécifier des filtres supplémentaires.
++
+Si vous ne configurez pas de filtrage avancé, la règle s'applique à tous les objets qui correspondent aux filtres de base.  Pour plus d'informations sur le filtrage avancé, voir<<Utiliser des filtres avancés dans les règles ILM>> et<<Spécifier plusieurs types et valeurs de métadonnées>> .
+
+. Sélectionnez *Continuer*. link:create-ilm-rule-define-placements.html["Étape 2 (Définir les emplacements)"]de l'assistant Créer une règle ILM apparaît.
+
+
+
+
+== Utiliser des filtres avancés dans les règles ILM
+
+Le filtrage avancé vous permet de créer des règles ILM qui s'appliquent uniquement à des objets spécifiques en fonction de leurs métadonnées.  Lorsque vous configurez un filtrage avancé pour une règle, vous sélectionnez le type de métadonnées que vous souhaitez faire correspondre, sélectionnez un opérateur et spécifiez une valeur de métadonnées.  Lorsque les objets sont évalués, la règle ILM est appliquée uniquement aux objets dont les métadonnées correspondent au filtre avancé.
+
+Le tableau indique les types de métadonnées que vous pouvez spécifier dans les filtres avancés, les opérateurs que vous pouvez utiliser pour chaque type de métadonnées et les valeurs de métadonnées attendues.
+
+[cols="1a,1a,2a"]
+|===
+| Type de métadonnées | Opérateurs pris en charge | Valeur des métadonnées 
+
+
+ a| 
+Temps d'ingestion
+ a| 
+* est
+* n'est pas
+* est avant
+* est sur ou avant
+* est après
+* est sur ou après
+
+ a| 
+Heure et date d'ingestion de l'objet.
+
+*Remarque :* pour éviter les problèmes de ressources lors de l’activation d’une nouvelle stratégie ILM, vous pouvez utiliser le filtre avancé Heure d’ingestion dans n’importe quelle règle susceptible de modifier l’emplacement d’un grand nombre d’objets existants.  Définissez le temps d'ingestion comme étant supérieur ou égal à l'heure approximative à laquelle la nouvelle politique entrera en vigueur pour garantir que les objets existants ne sont pas déplacés inutilement.
+
+
+
+ a| 
+Clé
+ a| 
+* égal à
+* n'est pas égal à
+* contient
+* ne contient pas
+* commence par
+* ne commence pas par
+* se termine par
+* ne se termine pas avec
+
+ a| 
+Tout ou partie d'une clé d'objet S3 unique.
+
+Par exemple, vous souhaiterez peut-être faire correspondre des objets qui se terminent par `.txt` ou commencer par `test-object/` .
+
+
+
+ a| 
+Heure du dernier accès
+ a| 
+* est
+* n'est pas
+* est avant
+* est sur ou avant
+* est après
+* est sur ou après
+
+ a| 
+Heure et date de la dernière récupération de l'objet (lu ou visualisé).
+
+*Remarque :* si vous prévoyez delink:using-last-access-time-in-ilm-rules.html["utiliser l'heure du dernier accès"] en tant que filtre avancé, les mises à jour de l'heure du dernier accès doivent être activées pour le compartiment S3.
+
+
+
+ a| 
+Contrainte de localisation (S3 uniquement)
+ a| 
+* égal à
+* n'est pas égal à
+
+ a| 
+La région dans laquelle un bucket S3 a été créé.  Utilisez *ILM* > *Régions* pour définir les régions affichées.
+
+*Remarque :* une valeur us-east-1 correspondra aux objets dans les buckets créés dans la région us-east-1 ainsi qu'aux objets dans les buckets qui n'ont aucune région spécifiée. Voir link:configuring-regions-optional-and-s3-only.html["Configurer les régions (facultatif et S3 uniquement)"] .
+
+
+
+ a| 
+Taille de l'objet
+ a| 
+* égal à
+* n'est pas égal à
+* moins que
+* inférieur ou égal à
+* supérieur à
+* supérieur ou égal à
+
+ a| 
+La taille de l'objet.
+
+Le codage d’effacement est particulièrement adapté aux objets supérieurs à 1 Mo.  N'utilisez pas le codage d'effacement pour les objets inférieurs à 200 Ko afin d'éviter la surcharge liée à la gestion de très petits fragments codés par effacement.
+
+
+
+ a| 
+Métadonnées de l'utilisateur
+ a| 
+* contient
+* se termine par
+* égal à
+* existe
+* commence par
+* ne contient pas
+* ne se termine pas avec
+* n'est pas égal à
+* n'existe pas
+* ne commence pas par
+
+ a| 
+Paire clé-valeur, où *Nom des métadonnées de l'utilisateur* est la clé et *Valeur des métadonnées* est la valeur.
+
+Par exemple, pour filtrer les objets qui ont des métadonnées utilisateur de `color=blue` , préciser `color` pour *Nom des métadonnées de l'utilisateur*, `equals` pour l'opérateur, et `blue` pour *Valeur de métadonnées*.
+
+*Remarque :* les noms des métadonnées utilisateur ne sont pas sensibles à la casse ; les valeurs des métadonnées utilisateur sont sensibles à la casse.
+
+
+
+ a| 
+Balise d'objet (S3 uniquement)
+ a| 
+* contient
+* se termine par
+* égal à
+* existe
+* commence par
+* ne contient pas
+* ne se termine pas avec
+* n'est pas égal à
+* n'existe pas
+* ne commence pas par
+
+ a| 
+Paire clé-valeur, où *Nom de balise d'objet* est la clé et *Valeur de balise d'objet* est la valeur.
+
+Par exemple, pour filtrer sur les objets qui ont une balise d'objet de `Image=True` , préciser `Image` pour *Nom de balise d'objet*, `equals` pour l'opérateur, et `True` pour *valeur de balise d'objet*.
+
+*Remarque :* les noms et les valeurs des balises d'objet sont sensibles à la casse.  Vous devez saisir ces éléments exactement tels qu’ils ont été définis pour l’objet.
+
+|===
+
+
+== Spécifier plusieurs types et valeurs de métadonnées
+
+Lorsque vous définissez un filtrage avancé, vous pouvez spécifier plusieurs types de métadonnées et plusieurs valeurs de métadonnées.  Par exemple, si vous souhaitez qu'une règle corresponde à des objets d'une taille comprise entre 10 Mo et 100 Mo, vous devez sélectionner le type de métadonnées *Taille de l'objet* et spécifier deux valeurs de métadonnées.
+
+* La première valeur de métadonnées spécifie les objets supérieurs ou égaux à 10 Mo.
+* La deuxième valeur de métadonnées spécifie les objets inférieurs ou égaux à 100 Mo.
+
+
+image::../media/advanced_filtering_size_between.png[Exemple de filtrage avancé pour la taille de l'objet]
+
+L'utilisation de plusieurs entrées vous permet d'avoir un contrôle précis sur les objets correspondants.  Dans l'exemple suivant, la règle s'applique aux objets dont la valeur des métadonnées utilisateur camera_type est Marque A ou Marque B.  Toutefois, la règle s'applique uniquement aux objets de marque B dont la taille est inférieure à 10 Mo.
+
+image::../media/advanced_filtering_multiple_rows.png[Exemple de filtrage avancé pour les métadonnées utilisateur]

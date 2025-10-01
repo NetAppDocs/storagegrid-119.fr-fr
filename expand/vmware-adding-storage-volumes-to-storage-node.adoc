@@ -1,0 +1,112 @@
+---
+permalink: expand/vmware-adding-storage-volumes-to-storage-node.html 
+sidebar: sidebar 
+keywords: expand, expansion, storage node, add storage volumes, VMware 
+summary: Si un nœud de stockage comprend moins de 16 volumes de stockage, vous pouvez augmenter sa capacité en utilisant VMware vSphere pour ajouter des volumes. 
+---
+= VMware : ajouter des volumes de stockage au nœud de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si un nœud de stockage comprend moins de 16 volumes de stockage, vous pouvez augmenter sa capacité en utilisant VMware vSphere pour ajouter des volumes.
+
+.Avant de commencer
+* Vous avez accès aux instructions d’installation de StorageGRID pour les déploiements VMware.
++
+** link:../vmware/index.html["Installer StorageGRID sur VMware"]
+
+
+* Vous avez le `Passwords.txt` déposer.
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+
+
+
+CAUTION: N'essayez pas d'ajouter des volumes de stockage à un nœud de stockage pendant qu'une mise à niveau logicielle, une procédure de récupération ou une autre procédure d'extension est active.
+
+.À propos de cette tâche
+Le nœud de stockage n'est pas disponible pendant une brève période lorsque vous ajoutez des volumes de stockage.  Vous devez effectuer cette procédure sur un nœud de stockage à la fois pour éviter d’impacter les services de grille orientés client.
+
+.Étapes
+. Si nécessaire, installez un nouveau matériel de stockage et créez de nouvelles banques de données VMware.
+. Ajoutez un ou plusieurs disques durs à la machine virtuelle pour les utiliser comme stockage (magasins d’objets).
++
+.. Ouvrez le client VMware vSphere.
+.. Modifiez les paramètres de la machine virtuelle pour ajouter un ou plusieurs disques durs supplémentaires.
+
+
++
+Les disques durs sont généralement configurés comme des disques de machine virtuelle (VMDK).  Les VMDK sont plus couramment utilisés et plus faciles à gérer, tandis que les RDM peuvent offrir de meilleures performances pour les charges de travail qui utilisent des tailles d’objet plus grandes (par exemple, supérieures à 100 Mo).  Pour plus d’informations sur l’ajout de disques durs aux machines virtuelles, consultez la documentation VMware vSphere.
+
+. Redémarrez la machine virtuelle en utilisant l'option *Redémarrer le système d'exploitation invité* dans le client VMware vSphere ou en entrant la commande suivante dans une session SSH sur la machine virtuelle :``sudo reboot``
++
+
+NOTE: N'utilisez pas *Power Off* ou *Reset* pour redémarrer la machine virtuelle.
+
+. Configurer le nouveau stockage à utiliser par le nœud de stockage :
++
+.. Connectez-vous au nœud de grille :
++
+... Entrez la commande suivante : `ssh admin@_grid_node_IP_`
+... Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+... Entrez la commande suivante pour passer en root : `su -`
+... Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.  Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+
+.. Configurer les nouveaux volumes de stockage :
++
+`sudo add_rangedbs.rb`
+
++
+Ce script recherche tous les nouveaux volumes de stockage et vous invite à les formater.
+
+.. Entrez *y* pour accepter le formatage.
+.. Si l’un des volumes a déjà été formaté, décidez si vous souhaitez le reformater.
++
+*** Entrez *y* pour reformater.
+*** Entrez *n* pour ignorer le reformatage.
+
+
+
+
++
+Le `setup_rangedbs.sh` le script s'exécute automatiquement.
+
+. Vérifiez que les services démarrent correctement :
++
+.. Afficher une liste de l’état de tous les services sur le serveur :
++
+`sudo storagegrid-status`
+
++
+Le statut est mis à jour automatiquement.
+
+.. Attendez que tous les services soient en cours d’exécution ou vérifiés.
+.. Quitter l'écran d'état :
++
+`Ctrl+C`
+
+
+
+. Vérifiez que le nœud de stockage est en ligne :
++
+.. Sign in au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+.. Sélectionnez *SUPPORT* > *Outils* > *Topologie de grille*.
+.. Sélectionnez *_site_* > *_Nœud de stockage_* > *LDR* > *Stockage*.
+.. Sélectionnez l'onglet *Configuration* puis l'onglet *Principal*.
+.. Si la liste déroulante *État de stockage - Souhaité* est définie sur Lecture seule ou Hors ligne, sélectionnez *En ligne*.
+.. Sélectionnez *Appliquer les modifications*.
+
+
+. Pour voir les nouveaux magasins d’objets :
++
+.. Sélectionnez *NODES* > *_site_* > *_Storage Node_* > *Storage*.
+.. Consultez les détails dans le tableau *Magasins d'objets*.
+
+
+
+
+.Résultat
+Vous pouvez utiliser la capacité étendue des nœuds de stockage pour enregistrer les données des objets.

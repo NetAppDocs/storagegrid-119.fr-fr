@@ -1,0 +1,282 @@
+---
+permalink: admin/grid-federation-manage-connection.html 
+sidebar: sidebar 
+keywords: grid federation, edit connection, remove connection, rotate certificates 
+summary: La gestion des connexions de fédération de grille entre les systèmes StorageGRID inclut la modification des détails de connexion, la rotation des certificats, la suppression des autorisations des locataires et la suppression des connexions inutilisées. 
+---
+= Gérer les connexions de la fédération de réseau
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+La gestion des connexions de fédération de grille entre les systèmes StorageGRID inclut la modification des détails de connexion, la rotation des certificats, la suppression des autorisations des locataires et la suppression des connexions inutilisées.
+
+.Avant de commencer
+* Vous êtes connecté au gestionnaire de grille sur l'une ou l'autre grille à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:admin-group-permissions.html["Autorisation d'accès root"] pour la grille à laquelle vous êtes connecté.
+
+
+
+
+== [[edit_grid_fed_connection]]Modifier une connexion à une fédération de grille
+
+Vous pouvez modifier une connexion de fédération de grille en vous connectant au nœud d'administration principal sur l'une ou l'autre des grilles de la connexion.  Après avoir apporté des modifications à la première grille, vous devez télécharger un nouveau fichier de vérification et le charger sur l’autre grille.
+
+
+NOTE: Pendant que la connexion est en cours de modification, les demandes de clonage de compte ou de réplication inter-grille continueront d'utiliser les paramètres de connexion existants.  Toutes les modifications que vous apportez à la première grille sont enregistrées localement mais ne sont pas utilisées tant qu'elles n'ont pas été téléchargées sur la deuxième grille, enregistrées et testées.
+
+
+
+=== Commencer à éditer la connexion
+
+.Étapes
+. Sign in au gestionnaire de grille à partir du nœud d’administration principal sur l’une ou l’autre grille.
+. Sélectionnez *NODES* et confirmez que tous les autres nœuds d’administration de votre système sont en ligne.
++
+
+NOTE: Lorsque vous modifiez une connexion de fédération de grille, StorageGRID tente d'enregistrer un fichier de « configuration candidate » sur tous les nœuds d'administration de la première grille.  Si ce fichier ne peut pas être enregistré sur tous les nœuds d'administration, un message d'avertissement apparaît lorsque vous sélectionnez *Enregistrer et tester*.
+
+. Sélectionnez *CONFIGURATION* > *Système* > *Fédération de grille*.
+. Modifiez les détails de la connexion à l'aide du menu *Actions* sur la page de fédération de grille ou sur la page de détails d'une connexion spécifique.  Voirlink:grid-federation-create-connection.html["Créer des connexions de fédération de grille"] pour quoi entrer.
++
+[role="tabbed-block"]
+====
+.Menu Actions
+--
+.. Sélectionnez le bouton radio pour la connexion.
+.. Sélectionnez *Actions* > *Modifier*.
+.. Entrez les nouvelles informations.
+
+
+--
+.Page de détails
+--
+.. Sélectionnez un nom de connexion pour afficher ses détails.
+.. Sélectionnez *Modifier*.
+.. Entrez les nouvelles informations.
+
+
+--
+====
+. Saisissez la phrase secrète de provisionnement pour la grille à laquelle vous êtes connecté.
+. Sélectionnez *Enregistrer et continuer*.
++
+Les nouvelles valeurs sont enregistrées, mais elles ne seront pas appliquées à la connexion tant que vous n'aurez pas téléchargé le nouveau fichier de vérification sur l'autre grille.
+
+. Sélectionnez *Télécharger le fichier de vérification*.
++
+Pour télécharger ce fichier ultérieurement, accédez à la page de détails de la connexion.
+
+. Localisez le fichier téléchargé(`_connection-name_.grid-federation` ), et enregistrez-le dans un endroit sûr.
++
+
+CAUTION: Le fichier de vérification contient des secrets et doit être stocké et transmis en toute sécurité.
+
+. Sélectionnez *Fermer* pour revenir à la page de la fédération Grid.
+. Confirmez que le *statut de connexion* est *En attente de modification*.
++
+
+NOTE: Si l'état de la connexion était autre que *Connecté* lorsque vous avez commencé à modifier la connexion, il ne passera pas à *En attente de modification*.
+
+. Fournir le `_connection-name_.grid-federation` fichier à l'administrateur de la grille pour l'autre grille.
+
+
+
+
+=== Terminer la modification de la connexion
+
+Terminez la modification de la connexion en téléchargeant le fichier de vérification sur l’autre grille.
+
+.Étapes
+. Sign in au gestionnaire de grille à partir du nœud d’administration principal.
+. Sélectionnez *CONFIGURATION* > *Système* > *Fédération de grille*.
+. Sélectionnez *Télécharger le fichier de vérification* pour accéder à la page de téléchargement.
+. Sélectionnez *Télécharger le fichier de vérification*.  Ensuite, recherchez et sélectionnez le fichier qui a été téléchargé à partir de la première grille.
+. Saisissez la phrase secrète de provisionnement pour la grille à laquelle vous êtes actuellement connecté.
+. Sélectionnez *Enregistrer et tester*.
++
+Si la connexion peut être établie à l’aide des valeurs modifiées, un message de réussite s’affiche.  Sinon, un message d’erreur apparaît.  Examinez le message et résolvez les problèmes éventuels.
+
+. Fermez l'assistant pour revenir à la page de fédération de grille.
+. Confirmez que le *statut de connexion* est *Connecté*.
+. Accédez à la page de la fédération Grid sur la première grille et actualisez le navigateur.  Confirmez que le *statut de connexion* est désormais *Connecté*.
+. Une fois la connexion établie, supprimez en toute sécurité toutes les copies du fichier de vérification.
+
+
+
+
+== [[test_grid_fed_connection]]Tester une connexion à une fédération de grille
+
+.Étapes
+. Sign in au gestionnaire de grille à partir du nœud d’administration principal.
+. Sélectionnez *CONFIGURATION* > *Système* > *Fédération de grille*.
+. Testez la connexion en utilisant le menu *Actions* sur la page de fédération Grid ou la page de détails d'une connexion spécifique.
++
+[role="tabbed-block"]
+====
+.Menu Actions
+--
+.. Sélectionnez le bouton radio pour la connexion.
+.. Sélectionnez *Actions* > *Test*.
+
+
+--
+.Page de détails
+--
+.. Sélectionnez un nom de connexion pour afficher ses détails.
+.. Sélectionnez *Tester la connexion*.
+
+
+--
+====
+. Vérifiez l’état de la connexion :
++
+[cols="1a,2a"]
+|===
+| État de la connexion | Description 
+
+
+ a| 
+Connecté
+ a| 
+Les deux réseaux sont connectés et communiquent normalement.
+
+
+
+ a| 
+Erreur
+ a| 
+La connexion est dans un état d'erreur.  Par exemple, un certificat a expiré ou une valeur de configuration n'est plus valide.
+
+
+
+ a| 
+En attente de modification
+ a| 
+Vous avez modifié la connexion sur cette grille, mais la connexion utilise toujours la configuration existante.  Pour terminer la modification, téléchargez le nouveau fichier de vérification dans l’autre grille.
+
+
+
+ a| 
+En attente de connexion
+ a| 
+Vous avez configuré la connexion sur cette grille, mais la connexion n'a pas été établie sur l'autre grille.  Téléchargez le fichier de vérification de cette grille et téléchargez-le sur l’autre grille.
+
+
+
+ a| 
+Inconnu
+ a| 
+La connexion est dans un état inconnu, probablement en raison d'un problème de réseau ou d'un nœud hors ligne.
+
+|===
+. Si l'état de la connexion est *Erreur*, résolvez tous les problèmes.  Ensuite, sélectionnez à nouveau *Tester la connexion* pour confirmer que le problème a été résolu.
+
+
+
+
+== [[rotate_grid_fed_certificates]]Faire tourner les certificats de connexion
+
+Chaque connexion à la fédération de grille utilise quatre certificats SSL générés automatiquement pour sécuriser la connexion.  Lorsque les deux certificats de chaque grille approchent de leur date d'expiration, l'alerte *Expiration du certificat de fédération de grille* vous rappelle de faire pivoter les certificats.
+
+
+CAUTION: Si les certificats à l'une ou l'autre extrémité de la connexion expirent, la connexion cessera de fonctionner et les réplications seront en attente jusqu'à ce que les certificats soient mis à jour.
+
+.Étapes
+. Sign in au gestionnaire de grille à partir du nœud d’administration principal sur l’une ou l’autre grille.
+. Sélectionnez *CONFIGURATION* > *Système* > *Fédération de grille*.
+. À partir de l’un ou l’autre onglet de la page de fédération Grid, sélectionnez le nom de la connexion pour afficher ses détails.
+. Sélectionnez l'onglet *Certificats*.
+. Sélectionnez *Faire tourner les certificats*.
+. Spécifiez combien de jours les nouveaux certificats doivent être valides.
+. Saisissez la phrase secrète de provisionnement pour la grille à laquelle vous êtes connecté.
+. Sélectionnez *Faire tourner les certificats*.
+. Si nécessaire, répétez ces étapes sur l’autre grille de la connexion.
++
+En général, utilisez le même nombre de jours pour les certificats des deux côtés de la connexion.
+
+
+
+
+
+== [[remove_grid_fed_connection]]Supprimer une connexion à une fédération de grille
+
+Vous pouvez supprimer une connexion de fédération de grille de l'une ou l'autre des grilles de la connexion.  Comme indiqué dans la figure, vous devez effectuer les étapes préalables sur les deux grilles pour confirmer que la connexion n'est utilisée par aucun locataire sur l'une ou l'autre grille.
+
+image::../media/grid-federation-remove-connection.png[étapes pour supprimer la connexion à la fédération de réseau]
+
+Avant de supprimer une connexion, notez les points suivants :
+
+* La suppression d’une connexion ne supprime aucun élément qui a déjà été copié entre les grilles.  Par exemple, les utilisateurs, groupes et objets locataires qui existent sur les deux grilles ne sont supprimés d'aucune des deux grilles lorsque l'autorisation du locataire est supprimée.  Si vous souhaitez supprimer ces éléments, vous devez les supprimer manuellement des deux grilles.
+* Lorsque vous supprimez une connexion, la réplication de tous les objets en attente de réplication (ingérés mais pas encore répliqués sur l'autre grille) échouera définitivement.
+
+
+
+
+=== Désactiver la réplication pour tous les compartiments locataires
+
+.Étapes
+. À partir de l’une ou l’autre des grilles, connectez-vous au gestionnaire de grille à partir du nœud d’administration principal.
+. Sélectionnez *CONFIGURATION* > *Système* > *Fédération de grille*.
+. Sélectionnez le nom de la connexion pour afficher ses détails.
+. Dans l’onglet * Locataires autorisés *, déterminez si la connexion est utilisée par des locataires.
+. Si des locataires sont répertoriés, demandez à tous les locataires delink:../tenant/grid-federation-manage-cross-grid-replication.html["désactiver la réplication inter-grille"] pour tous leurs buckets sur les deux grilles de la connexion.
++
+
+TIP: Vous ne pouvez pas supprimer l'autorisation *Utiliser la connexion à la fédération de grille* si la réplication inter-grille est activée pour l'un des compartiments de locataire.  Chaque compte locataire doit désactiver la réplication inter-grille pour ses buckets sur les deux grilles.
+
+
+
+
+
+=== Supprimer l'autorisation pour chaque locataire
+
+Une fois la réplication inter-grille désactivée pour tous les compartiments de locataire, supprimez l'autorisation *Utiliser la fédération de grille* de tous les locataires sur les deux grilles.
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Système* > *Fédération de grille*.
+. Sélectionnez le nom de la connexion pour afficher ses détails.
+. Pour chaque locataire de l'onglet *Locataires autorisés*, supprimez l'autorisation *Utiliser la connexion à la fédération de grille* de chaque locataire. Voir link:grid-federation-manage-tenants.html["Gérer les locataires autorisés"] .
+. Répétez ces étapes pour les locataires autorisés sur l’autre grille.
+
+
+
+
+=== Supprimer la connexion
+
+.Étapes
+. Lorsqu'aucun locataire sur l'une ou l'autre des grilles n'utilise la connexion, sélectionnez *Supprimer*.
+. Vérifiez le message de confirmation et sélectionnez *Supprimer*.
++
+** Si la connexion peut être supprimée, un message de réussite s'affiche.  La connexion à la fédération de grille est désormais supprimée des deux grilles.
+** Si la connexion ne peut pas être supprimée (par exemple, elle est toujours utilisée ou il y a une erreur de connexion), un message d'erreur s'affiche.  Vous pouvez effectuer l’une des opérations suivantes :
++
+*** Résoudre l'erreur (recommandé). Voir link:grid-federation-troubleshoot.html["Résoudre les erreurs de fédération de grille"] .
+*** Retirer la connexion par la force.  Voir la section suivante.
+
+
+
+
+
+
+
+
+== [[force-remove_grid_fed_connection]]Supprimer une connexion à une fédération de grille de force
+
+Si nécessaire, vous pouvez forcer la suppression d'une connexion qui n'a pas le statut *Connecté*.
+
+La suppression forcée supprime uniquement la connexion du réseau local.  Pour supprimer complètement la connexion, effectuez les mêmes étapes sur les deux grilles.
+
+.Étapes
+. Dans la boîte de dialogue de confirmation, sélectionnez *Forcer la suppression*.
++
+Un message de réussite apparaît.  Cette connexion à la fédération de grille ne peut plus être utilisée.  Cependant, les buckets locataires peuvent toujours avoir la réplication inter-grille activée et certaines copies d'objets peuvent avoir déjà été répliquées entre les grilles de la connexion.
+
+. À partir de l’autre grille de la connexion, connectez-vous au gestionnaire de grille à partir du nœud d’administration principal.
+. Sélectionnez *CONFIGURATION* > *Système* > *Fédération de grille*.
+. Sélectionnez le nom de la connexion pour afficher ses détails.
+. Sélectionnez *Supprimer* et *Oui*.
+. Sélectionnez *Forcer la suppression* pour supprimer la connexion de cette grille.
+

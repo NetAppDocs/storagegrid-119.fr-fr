@@ -1,0 +1,140 @@
+---
+permalink: admin/grid-federation-compare-cgr-to-cloudmirror.html 
+sidebar: sidebar 
+keywords: cross-grid replication, cloudmirror replication 
+summary: Lorsque vous commencez à utiliser la fédération de grille, examinez les similitudes et les différences entre la réplication inter-grille et le service de réplication StorageGRID CloudMirror. 
+---
+= Comparer la réplication inter-grille et la réplication CloudMirror
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lorsque vous commencez à utiliser la fédération de grille, examinez les similitudes et les différences entrelink:grid-federation-what-is-cross-grid-replication.html["réplication inter-réseaux"] et lelink:../tenant/understanding-cloudmirror-replication-service.html["Service de réplication StorageGRID CloudMirror"] .
+
+[cols="1a,3a,3a"]
+|===
+|  | Réplication inter-réseaux | Service de réplication CloudMirror 
+
+
+ a| 
+Quel est le but principal ?
+ a| 
+Un système StorageGRID agit comme un système de reprise après sinistre.  Les objets d’un bucket peuvent être répliqués entre les grilles dans une ou les deux directions.
+ a| 
+Permet à un locataire de répliquer automatiquement des objets d'un bucket dans StorageGRID (source) vers un bucket S3 externe (destination).
+
+La réplication CloudMirror crée une copie indépendante d'un objet dans une infrastructure S3 indépendante. Cette copie indépendante n'est pas utilisée comme sauvegarde, mais souvent traitée ultérieurement dans le cloud.
+
+
+
+ a| 
+Comment est-il configuré ?
+ a| 
+. Configurer une connexion de fédération de grille entre deux grilles.
+. Ajoutez de nouveaux comptes locataires, qui sont automatiquement clonés sur l’autre grille.
+. Ajoutez de nouveaux groupes de locataires et utilisateurs, qui sont également clonés.
+. Créez des buckets correspondants sur chaque grille et activez la réplication inter-grille dans une ou les deux directions.
+
+ a| 
+. Un utilisateur locataire configure la réplication CloudMirror en définissant un point de terminaison CloudMirror (adresse IP, informations d'identification, etc.) à l'aide du gestionnaire de locataires ou de l'API S3.
+. Tout bucket appartenant à ce compte locataire peut être configuré pour pointer vers le point de terminaison CloudMirror.
+
+
+
+
+ a| 
+Qui est responsable de sa mise en place ?
+ a| 
+* Un administrateur de grille configure la connexion et les locataires.
+* Les utilisateurs locataires configurent les groupes, les utilisateurs, les clés et les buckets.
+
+ a| 
+Généralement, un utilisateur locataire.
+
+
+
+ a| 
+Quelle est la destination ?
+ a| 
+Un bucket S3 correspondant et identique sur l’autre système StorageGRID dans la connexion de fédération de grille.
+ a| 
+* Toute infrastructure S3 compatible (y compris Amazon S3).
+* Plateforme Google Cloud (GCP)
+
+
+
+
+ a| 
+La gestion des versions d'objets est-elle requise ?
+ a| 
+Oui, le contrôle de version des objets doit être activé pour les buckets source et de destination.
+ a| 
+Non, la réplication CloudMirror prend en charge toute combinaison de buckets versionnés et non versionnés sur la source et la destination.
+
+
+
+ a| 
+Qu'est-ce qui provoque le déplacement des objets vers la destination ?
+ a| 
+Les objets sont automatiquement répliqués lorsqu'ils sont ajoutés à un bucket pour lequel la réplication inter-grille est activée.
+ a| 
+Les objets sont automatiquement répliqués lorsqu'ils sont ajoutés à un bucket qui a été configuré avec un point de terminaison CloudMirror.  Les objets qui existaient dans le bucket source avant que le bucket ne soit configuré avec le point de terminaison CloudMirror ne sont pas répliqués, sauf s'ils sont modifiés.
+
+
+
+ a| 
+Comment les objets sont-ils répliqués ?
+ a| 
+La réplication inter-grille crée des objets versionnés et réplique l'ID de version du bucket source vers le bucket de destination.  Cela permet de maintenir l’ordre des versions sur les deux grilles.
+ a| 
+La réplication CloudMirror ne nécessite pas de buckets avec contrôle de version activé. CloudMirror ne peut donc conserver l'ordre d'une clé que dans un site.  Il n'y a aucune garantie que la commande soit maintenue pour les demandes concernant un objet sur un site différent.
+
+
+
+ a| 
+Que faire si un objet ne peut pas être répliqué ?
+ a| 
+L'objet est mis en file d'attente pour la réplication, sous réserve des limites de stockage des métadonnées.
+ a| 
+L'objet est mis en file d'attente pour la réplication, sous réserve des limites des services de la plateforme (voirlink:manage-platform-services-for-tenants.html["Recommandations pour l'utilisation des services de la plateforme"] ).
+
+
+
+ a| 
+Les métadonnées système de l’objet sont-elles répliquées ?
+ a| 
+Oui, lorsqu’un objet est répliqué sur l’autre grille, ses métadonnées système sont également répliquées.  Les métadonnées seront identiques sur les deux grilles.
+ a| 
+Non, lorsqu'un objet est répliqué dans le bucket externe, ses métadonnées système sont mises à jour.  Les métadonnées différeront selon les emplacements, en fonction du moment d’ingestion et du comportement de l’infrastructure S3 indépendante.
+
+
+
+ a| 
+Comment les objets sont-ils récupérés ?
+ a| 
+Les applications peuvent récupérer ou lire des objets en adressant une requête au bucket sur l'une ou l'autre grille.
+ a| 
+Les applications peuvent récupérer ou lire des objets en adressant une demande à StorageGRID ou à la destination S3.  Par exemple, supposons que vous utilisiez la réplication CloudMirror pour mettre en miroir des objets vers une organisation partenaire.  Le partenaire peut utiliser ses propres applications pour lire ou mettre à jour des objets directement depuis la destination S3.  L'utilisation de StorageGRID n'est pas requise.
+
+
+
+ a| 
+Que se passe-t-il si un objet est supprimé ?
+ a| 
+* Les demandes de suppression qui incluent un ID de version ne sont jamais répliquées sur la grille de destination.
+* Les demandes de suppression qui n'incluent pas d'ID de version ajoutent un marqueur de suppression au bucket source, qui peut éventuellement être répliqué vers la grille de destination.
+* Si la réplication inter-grille est configurée pour une seule direction, les objets du compartiment de destination peuvent être supprimés sans affecter la source.
+
+ a| 
+Les résultats varient en fonction de l'état de version des buckets source et de destination (qui n'ont pas besoin d'être identiques) :
+
+* Si les deux buckets sont versionnés, une demande de suppression ajoutera un marqueur de suppression aux deux emplacements.
+* Si seul le bucket source est versionné, une demande de suppression ajoutera un marqueur de suppression à la source mais pas à la destination.
+* Si aucun des deux compartiments n'est versionné, une demande de suppression supprimera l'objet de la source mais pas de la destination.
+
+
+De même, les objets du bucket de destination peuvent être supprimés sans affecter la source.
+
+|===

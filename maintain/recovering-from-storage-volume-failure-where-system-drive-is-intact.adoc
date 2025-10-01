@@ -1,0 +1,26 @@
+---
+permalink: maintain/recovering-from-storage-volume-failure-where-system-drive-is-intact.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, storage volume failure, volume failure, system drive intact 
+summary: Vous devez effectuer une série de tâches pour récupérer un nœud de stockage logiciel où un ou plusieurs volumes de stockage sur le nœud de stockage sont tombés en panne, mais le lecteur système est intact.  Si seuls les volumes de stockage sont en panne, le nœud de stockage est toujours disponible pour le système StorageGRID . 
+---
+= Récupérer après une panne de volume de stockage lorsque le lecteur système est intact
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez effectuer une série de tâches pour récupérer un nœud de stockage logiciel où un ou plusieurs volumes de stockage sur le nœud de stockage sont tombés en panne, mais le lecteur système est intact.  Si seuls les volumes de stockage sont en panne, le nœud de stockage est toujours disponible pour le système StorageGRID .
+
+
+NOTE: Cette procédure de récupération s'applique uniquement aux nœuds de stockage basés sur des logiciels.  Si les volumes de stockage sont en panne sur un nœud de stockage d'appliance, utilisez plutôt la procédure d'appliance :link:recovering-storagegrid-appliance-storage-node.html["Récupérer le nœud de stockage de l'appareil"] .
+
+Cette procédure de récupération comprend les tâches suivantes :
+
+* link:reviewing-warnings-about-storage-volume-recovery.html["Examiner les avertissements pour la récupération du volume de stockage"]
+* link:identifying-and-unmounting-failed-storage-volumes.html["Identifier et démonter les volumes de stockage défaillants"]
+* link:recovering-failed-storage-volumes-and-rebuilding-cassandra-database.html["Récupérer les volumes et reconstruire la base de données Cassandra"]
+* link:restoring-object-data-to-storage-volume-where-system-drive-is-intact.html["Restaurer les données de l'objet"]
+* link:checking-storage-state-after-recovering-storage-volumes.html["Vérifiez l'état de stockage"]
+

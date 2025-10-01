@@ -1,0 +1,67 @@
+---
+permalink: maintain/how-site-recovery-is-performed-by-technical-support.html 
+sidebar: sidebar 
+keywords: storagegrid, site recovery, technical support, tech support 
+summary: 'Si un site StorageGRID entier tombe en panne ou si plusieurs nœuds de stockage tombent en panne, vous devez contacter le support technique.  Le support technique évaluera votre situation, élaborera un plan de récupération, puis récupérera les nœuds ou le site défaillants d"une manière qui répond à vos objectifs commerciaux, optimise le temps de récupération et évite toute perte de données inutile.' 
+---
+= Comment le support technique récupère un site
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si un site StorageGRID entier tombe en panne ou si plusieurs nœuds de stockage tombent en panne, vous devez contacter le support technique.  Le support technique évaluera votre situation, élaborera un plan de récupération, puis récupérera les nœuds ou le site défaillants d'une manière qui répond à vos objectifs commerciaux, optimise le temps de récupération et évite toute perte de données inutile.
+
+
+CAUTION: La récupération du site ne peut être effectuée que par le support technique.
+
+Les systèmes StorageGRID sont résilients à une grande variété de pannes et vous pouvez effectuer vous-même avec succès de nombreuses procédures de récupération et de maintenance.  Cependant, il est difficile de créer une procédure de récupération de site simple et généralisée, car les étapes détaillées dépendent de facteurs spécifiques à votre situation. Par exemple:
+
+* *Vos objectifs commerciaux* : Après la perte complète d'un site StorageGRID , vous devez évaluer la meilleure façon d'atteindre vos objectifs commerciaux.  Par exemple, souhaitez-vous reconstruire le site perdu sur place ?  Voulez-vous remplacer le site StorageGRID perdu dans un nouvel emplacement ?  La situation de chaque client est différente et votre plan de reprise doit être conçu pour répondre à vos priorités.
+* *Nature exacte de la panne* : Avant de commencer une récupération de site, déterminez si des nœuds du site défaillant sont intacts ou si des nœuds de stockage contiennent des objets récupérables.  Si vous reconstruisez des nœuds ou des volumes de stockage contenant des données valides, une perte de données inutile peut se produire.
+* *Stratégies ILM actives* : Le nombre, le type et l’emplacement des copies d’objets dans votre grille sont contrôlés par vos stratégies ILM actives.  Les spécificités de vos politiques ILM peuvent affecter la quantité de données récupérables, ainsi que les techniques spécifiques requises pour la récupération.
++
+
+CAUTION: Si un site contient la seule copie d’un objet et que le site est perdu, l’objet est perdu.
+
+* *Cohérence du bucket (ou du conteneur)* : la cohérence appliquée à un bucket (ou à un conteneur) affecte la capacité de StorageGRID à répliquer entièrement les métadonnées de l'objet sur tous les nœuds et sites avant d'indiquer à un client que l'ingestion de l'objet a réussi.  Si la valeur de cohérence permet une cohérence éventuelle, certaines métadonnées d’objet peuvent avoir été perdues lors de la défaillance du site.  Cela peut affecter la quantité de données récupérables et potentiellement les détails de la procédure de récupération.
+* *Historique des modifications récentes* : Les détails de votre procédure de récupération peuvent être affectés par le fait que des procédures de maintenance étaient en cours au moment de la panne ou que des modifications récentes ont été apportées à vos politiques ILM.  Le support technique doit évaluer l’historique récent de votre réseau ainsi que sa situation actuelle avant de commencer une récupération de site.
+
+
+
+CAUTION: La récupération du site ne peut être effectuée que par le support technique.
+
+Voici un aperçu général du processus utilisé par le support technique pour récupérer un site défaillant :
+
+. Support technique :
++
+.. Fait une évaluation détaillée de l’échec.
+.. Travaille avec vous pour revoir vos objectifs commerciaux.
+.. Élabore un plan de rétablissement adapté à votre situation.
+
+
+. Si le nœud d'administration principal est en panne, le support technique le récupère.
+. Le support technique récupère tous les nœuds de stockage, selon ce schéma :
++
+.. Remplacez le matériel du nœud de stockage ou les machines virtuelles selon les besoins.
+.. Restaurer les métadonnées de l’objet sur le site défaillant.
+.. Restaurer les données d’objet sur les nœuds de stockage récupérés.
++
+
+CAUTION: Une perte de données se produira si les procédures de récupération pour un seul nœud de stockage défaillant sont utilisées.
+
++
+
+NOTE: Lorsqu'un site entier est en panne, le support technique utilise des commandes spécialisées pour restaurer avec succès les objets et les métadonnées des objets.
+
+
+
+. Le support technique récupère les autres nœuds défaillants.
++
+Une fois les métadonnées et les données de l'objet récupérées, le support technique utilise des procédures standard pour récupérer les nœuds de passerelle défaillants ou les nœuds d'administration non principaux.
+
+
+
+.Informations connexes
+link:site-decommissioning.html["Démantèlement du site"]

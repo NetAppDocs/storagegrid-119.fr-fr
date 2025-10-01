@@ -1,0 +1,21 @@
+---
+permalink: admin/kms-configuring.html 
+sidebar: sidebar 
+keywords: configure kms, key management server, kmip, Key Management Interoperability Protocol 
+summary: 'Un serveur de gestion de clés (KMS) est un système externe tiers qui fournit des clés de chiffrement aux nœuds d"appliance StorageGRID sur le site StorageGRID associé à l"aide du protocole d"interopérabilité de gestion de clés (KMIP).' 
+---
+= Qu'est-ce qu'un serveur de gestion de clés (KMS) ?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Un serveur de gestion de clés (KMS) est un système externe tiers qui fournit des clés de chiffrement aux nœuds d'appliance StorageGRID sur le site StorageGRID associé à l'aide du protocole d'interopérabilité de gestion de clés (KMIP).
+
+StorageGRID prend en charge uniquement certains serveurs de gestion de clés.  Pour obtenir la liste des produits et versions pris en charge, utilisez le https://imt.netapp.com/matrix/#welcome["Outil de matrice d'interopérabilité NetApp (IMT)"^] .
+
+Vous pouvez utiliser un ou plusieurs serveurs de gestion de clés pour gérer les clés de chiffrement de nœud pour tous les nœuds d'appliance StorageGRID dont le paramètre *Chiffrement de nœud* est activé lors de l'installation.  L’utilisation de serveurs de gestion de clés avec ces nœuds d’appliance vous permet de protéger vos données même si une appliance est supprimée du centre de données.  Une fois les volumes de l'appliance chiffrés, vous ne pouvez accéder à aucune donnée sur l'appliance, sauf si le nœud peut communiquer avec le KMS.
+
+
+CAUTION: StorageGRID ne crée ni ne gère les clés externes utilisées pour chiffrer et déchiffrer les nœuds de l'appliance.  Si vous prévoyez d'utiliser un serveur de gestion de clés externe pour protéger les données StorageGRID , vous devez comprendre comment configurer ce serveur et comment gérer les clés de chiffrement.  L’exécution des tâches de gestion des clés dépasse le cadre de ces instructions.  Si vous avez besoin d’aide, consultez la documentation de votre serveur de gestion de clés ou contactez le support technique.

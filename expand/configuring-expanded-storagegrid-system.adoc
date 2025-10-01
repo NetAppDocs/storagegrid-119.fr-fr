@@ -1,0 +1,65 @@
+---
+permalink: expand/configuring-expanded-storagegrid-system.html 
+sidebar: sidebar 
+keywords: expansion, configuration 
+summary: Une fois l’extension terminée, vous devez effectuer des étapes d’intégration et de configuration supplémentaires. 
+---
+= Étapes de configuration après l'extension
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Une fois l’extension terminée, vous devez effectuer des étapes d’intégration et de configuration supplémentaires.
+
+.À propos de cette tâche
+Vous devez effectuer les tâches de configuration répertoriées ci-dessous pour les nœuds de grille ou les sites que vous ajoutez dans votre extension.  Certaines tâches peuvent être facultatives, en fonction des options sélectionnées lors de l'installation et de l'administration de votre système, et de la manière dont vous souhaitez configurer les nœuds et les sites ajoutés lors de l'extension.
+
+.Étapes
+. Si vous avez ajouté un site :
++
+** link:../ilm/creating-storage-pool.html["Créer un pool de stockage"]pour le site et chaque niveau de stockage que vous avez sélectionné pour les nouveaux nœuds de stockage.
+** Confirmer que la politique ILM répond aux nouvelles exigences.  Si des changements de règles sont nécessaires,link:../ilm/access-create-ilm-rule-wizard.html["créer de nouvelles règles"] etlink:../ilm/creating-ilm-policy.html["mettre à jour la politique ILM"] .  Si les règles sont déjà correctes,link:../ilm/creating-ilm-policy.html#activate-ilm-policy["activer une nouvelle politique"] sans aucune modification de règle pour garantir que StorageGRID utilise les nouveaux nœuds.
+** Confirmez que les serveurs NTP (Network Time Protocol) sont accessibles depuis ce site. Voir link:../maintain/configuring-ntp-servers.html["Gérer les serveurs NTP"] .
++
+
+CAUTION: Assurez-vous qu’au moins deux nœuds de chaque site peuvent accéder à au moins quatre sources NTP externes.  Si un seul nœud d'un site peut atteindre les sources NTP, des problèmes de synchronisation se produiront si ce nœud tombe en panne.  De plus, la désignation de deux nœuds par site comme sources NTP principales garantit une synchronisation précise si un site est isolé du reste du réseau.
+
+
+
+. Si vous avez ajouté un ou plusieurs nœuds de stockage à un site existant :
++
+** link:../ilm/viewing-storage-pool-details.html["Afficher les détails du pool de stockage"]pour confirmer que chaque nœud que vous avez ajouté est inclus dans les pools de stockage attendus et utilisé dans les règles ILM attendues.
+** Confirmer que la politique ILM répond aux nouvelles exigences.  Si des changements de règles sont nécessaires,link:../ilm/access-create-ilm-rule-wizard.html["créer de nouvelles règles"] etlink:../ilm/creating-ilm-policy.html["mettre à jour la politique ILM"] .  Si les règles sont déjà correctes,link:../ilm/creating-ilm-policy.html#activate-ilm-policy["activer une nouvelle politique"] sans aucune modification de règle pour garantir que StorageGRID utilise les nouveaux nœuds.
+** link:verifying-storage-node-is-active.html["Vérifiez que le nœud de stockage est actif"]et capable d'ingérer des objets.
+** Si vous n’avez pas pu ajouter le nombre recommandé de nœuds de stockage, rééquilibrez les données codées par effacement. Voir link:rebalancing-erasure-coded-data-after-adding-storage-nodes.html["Rééquilibrer les données codées par effacement après l'ajout de nœuds de stockage"] .
+
+
+. Si vous avez ajouté un nœud de passerelle :
++
+** Si des groupes de haute disponibilité (HA) sont utilisés pour les connexions client, ajoutez éventuellement le nœud de passerelle à un groupe HA. Sélectionnez *CONFIGURATION* > *Réseau* > *Groupes de haute disponibilité* pour consulter la liste des groupes HA existants et ajouter le nouveau nœud. Voir link:../admin/configure-high-availability-group.html["Configurer des groupes de haute disponibilité"] .
+
+
+. Si vous avez ajouté un nœud d’administration :
++
+.. Si l’authentification unique (SSO) est activée pour votre système StorageGRID , créez une approbation de partie de confiance pour le nouveau nœud d’administration. Vous ne pouvez pas vous connecter au nœud tant que vous n’avez pas créé cette approbation de partie de confiance. Voir link:../admin/configuring-sso.html["Configurer l'authentification unique"] .
+.. Si vous prévoyez d’utiliser le service Load Balancer sur les nœuds d’administration, ajoutez éventuellement le nouveau nœud d’administration à un groupe HA. Sélectionnez *CONFIGURATION* > *Réseau* > *Groupes de haute disponibilité* pour consulter la liste des groupes HA existants et ajouter le nouveau nœud. Voir link:../admin/configure-high-availability-group.html["Configurer des groupes de haute disponibilité"] .
+.. Vous pouvez également copier la base de données du nœud d'administration du nœud d'administration principal vers le nœud d'administration d'extension si vous souhaitez conserver la cohérence des informations d'attribut et d'audit sur chaque nœud d'administration. Voir link:copying-admin-node-database.html["Copier la base de données du nœud d'administration"] .
+.. Vous pouvez également copier la base de données Prometheus du nœud d’administration principal vers le nœud d’administration d’extension si vous souhaitez conserver la cohérence des métriques historiques sur chaque nœud d’administration. Voir link:copying-prometheus-metrics.html["Copier les métriques Prometheus"] .
+.. Vous pouvez également copier les journaux d’audit existants du nœud d’administration principal vers le nœud d’administration d’extension si vous souhaitez conserver la cohérence des informations du journal historique sur chaque nœud d’administration. Voir link:copying-audit-logs.html["Copier les journaux d'audit"] .
+
+
+. Pour vérifier si des nœuds d'extension ont été ajoutés avec un réseau client non approuvé ou pour modifier si le réseau client d'un nœud est approuvé ou non approuvé, accédez à *CONFIGURATION* > *Sécurité* > *Contrôle du pare-feu*.
++
+Si le réseau client sur le nœud d’extension n’est pas approuvé, les connexions au nœud sur le réseau client doivent être établies à l’aide d’un point de terminaison d’équilibrage de charge. Voirlink:../admin/configuring-load-balancer-endpoints.html["Configurer les points de terminaison de l'équilibreur de charge"] etlink:../admin/manage-firewall-controls.html["Gérer les contrôles du pare-feu"] .
+
+. Configurer le DNS.
++
+Si vous avez spécifié les paramètres DNS séparément pour chaque nœud de grille, vous devez ajouter des paramètres DNS personnalisés par nœud pour les nouveaux nœuds. Voir link:../maintain/modifying-dns-configuration-for-single-grid-node.html["Modifier la configuration DNS pour un nœud de grille unique"] .
+
+
+
+Pour garantir un bon fonctionnement, spécifiez deux ou trois serveurs DNS.  Si vous spécifiez plus de trois, il est possible que seulement trois soient utilisés en raison de limitations connues du système d'exploitation sur certaines plates-formes.  Si vous avez des restrictions de routage dans votre environnement, vous pouvezlink:../maintain/modifying-dns-configuration-for-single-grid-node.html["personnaliser la liste des serveurs DNS"] pour que les nœuds individuels (généralement tous les nœuds d'un site) utilisent un ensemble différent de trois serveurs DNS maximum.
+
+Si possible, utilisez des serveurs DNS auxquels chaque site peut accéder localement pour garantir qu'un site isolé peut résoudre les noms de domaine complets pour les destinations externes.

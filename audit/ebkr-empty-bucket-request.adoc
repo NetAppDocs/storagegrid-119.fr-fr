@@ -1,0 +1,55 @@
+---
+permalink: audit/ebkr-empty-bucket-request.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, EBKR, Empty Bucket Request 
+summary: 'Ce message indique qu"un utilisateur a envoyé une demande pour activer ou désactiver le compartiment vide (c"est-à-dire pour supprimer des objets du compartiment ou pour arrêter la suppression d"objets).' 
+---
+= EBKR : demande de seau vide
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ce message indique qu'un utilisateur a envoyé une demande pour activer ou désactiver le compartiment vide (c'est-à-dire pour supprimer des objets du compartiment ou pour arrêter la suppression d'objets).
+
+[cols="1a,1a,4a"]
+|===
+| Code | Champ | Description 
+
+
+ a| 
+CONSTRUIRE
+ a| 
+UUID du bucket
+ a| 
+L'ID du bucket.
+
+
+
+ a| 
+EBJS
+ a| 
+Configuration JSON du bucket vide
+ a| 
+Contient le JSON représentant la configuration actuelle du bucket vide.
+
+
+
+ a| 
+S3AI
+ a| 
+ID de compte locataire S3
+ a| 
+L'ID du compte locataire de l'utilisateur qui a envoyé la demande.  Une valeur vide indique un accès anonyme.
+
+
+
+ a| 
+S3BK
+ a| 
+Godet S3
+ a| 
+Le nom du bucket S3.
+
+|===

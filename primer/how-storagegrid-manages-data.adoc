@@ -1,0 +1,74 @@
+---
+permalink: primer/how-storagegrid-manages-data.html 
+sidebar: sidebar 
+keywords: how storagegrid manages data, what an object is, how object data is protected 
+summary: Avec le stockage d’objets, l’unité de stockage est un objet, plutôt qu’un fichier ou un bloc.  Contrairement à la hiérarchie arborescente d’un système de fichiers ou d’un stockage en blocs, le stockage d’objets organise les données dans une disposition plate et non structurée. 
+---
+= Qu'est-ce qu'un objet
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avec le stockage d’objets, l’unité de stockage est un objet, plutôt qu’un fichier ou un bloc.  Contrairement à la hiérarchie arborescente d’un système de fichiers ou d’un stockage en blocs, le stockage d’objets organise les données dans une disposition plate et non structurée.
+
+Le stockage d’objets dissocie l’emplacement physique des données de la méthode utilisée pour stocker et récupérer ces données.
+
+Chaque objet d'un système de stockage basé sur des objets comporte deux parties : les données d'objet et les métadonnées d'objet.
+
+image::../media/object_conceptual_drawing.png[Objet]
+
+
+
+== Que sont les données d’objet ?
+
+Les données d’objet peuvent être n’importe quoi ; par exemple, une photographie, un film ou un dossier médical.
+
+
+
+== Que sont les métadonnées d’objet ?
+
+Les métadonnées d’objet sont toutes les informations qui décrivent un objet.  StorageGRID utilise les métadonnées des objets pour suivre les emplacements de tous les objets sur la grille et pour gérer le cycle de vie de chaque objet au fil du temps.
+
+Les métadonnées d’objet incluent des informations telles que les suivantes :
+
+* Métadonnées système, y compris un identifiant unique pour chaque objet (UUID), le nom de l'objet, le nom du compartiment S3 ou du conteneur Swift, le nom ou l'ID du compte locataire, la taille logique de l'objet, la date et l'heure de la première création de l'objet, ainsi que la date et l'heure de la dernière modification de l'objet.
+* L'emplacement de stockage actuel de chaque copie d'objet ou fragment codé par effacement.
+* Toutes les métadonnées utilisateur associées à l’objet.
+
+
+Les métadonnées des objets sont personnalisables et extensibles, ce qui les rend flexibles à utiliser pour les applications.
+
+Pour des informations détaillées sur la manière et l'endroit où StorageGRID stocke les métadonnées des objets, accédez àlink:../admin/managing-object-metadata-storage.html["Gérer le stockage des métadonnées des objets"] .
+
+
+
+== Comment les données des objets sont-elles protégées ?
+
+Le système StorageGRID vous fournit deux mécanismes pour protéger les données des objets contre la perte : la réplication et le codage d'effacement.
+
+
+
+=== Réplication
+
+Lorsque StorageGRID fait correspondre des objets à une règle de gestion du cycle de vie des informations (ILM) configurée pour créer des copies répliquées, le système crée des copies exactes des données d'objet et les stocke sur des nœuds de stockage ou des pools de stockage cloud.  Les règles ILM dictent le nombre de copies effectuées, l'endroit où ces copies sont stockées et la durée pendant laquelle elles sont conservées par le système.  Si une copie est perdue, par exemple suite à la perte d'un nœud de stockage, l'objet est toujours disponible si une copie existe ailleurs dans le système StorageGRID .
+
+Dans l'exemple suivant, la règle Créer 2 copies spécifie que deux copies répliquées de chaque objet doivent être placées dans un pool de stockage contenant trois nœuds de stockage.
+
+image::../media/ilm_replication_make_2_copies.png[Règle de faire 2 copies]
+
+
+
+=== Codage d'effacement
+
+Lorsque StorageGRID fait correspondre des objets à une règle ILM configurée pour créer des copies à code d'effacement, il découpe les données d'objet en fragments de données, calcule des fragments de parité supplémentaires et stocke chaque fragment sur un nœud de stockage différent.  Lorsqu'un objet est consulté, il est réassemblé à l'aide des fragments stockés.  Si des données ou un fragment de parité sont corrompus ou perdus, l'algorithme de codage d'effacement peut recréer ce fragment en utilisant un sous-ensemble des données et des fragments de parité restants.  Les règles ILM et les profils de codage d'effacement déterminent le schéma de codage d'effacement utilisé.
+
+L'exemple suivant illustre l'utilisation du codage d'effacement sur les données d'un objet.  Dans cet exemple, la règle ILM utilise un schéma de codage d’effacement 4+2.  Chaque objet est divisé en quatre fragments de données égaux et deux fragments de parité sont calculés à partir des données de l'objet.  Chacun des six fragments est stocké sur un nœud de stockage différent dans trois centres de données pour assurer la protection des données en cas de panne de nœud ou de perte de site.
+
+image::../media/ec_three_sites_4_plus_2.png[Code d'effacement trois sites 4 plus 2]
+
+.Informations connexes
+* link:../ilm/index.html["Gérer les objets avec ILM"]
+* link:using-information-lifecycle-management.html["Utiliser la gestion du cycle de vie des informations"]
+

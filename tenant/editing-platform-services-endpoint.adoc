@@ -1,0 +1,58 @@
+---
+permalink: tenant/editing-platform-services-endpoint.html 
+sidebar: sidebar 
+keywords: how to edit platform services endpoint 
+summary: Vous pouvez modifier la configuration d’un point de terminaison de services de plateforme pour modifier son nom, son URI ou d’autres détails.  Par exemple, vous devrez peut-être mettre à jour des informations d’identification expirées ou modifier l’URI pour pointer vers un index Elasticsearch de sauvegarde pour le basculement.  Vous ne pouvez pas modifier l’URN d’un point de terminaison de services de plateforme. 
+---
+= Modifier le point de terminaison des services de la plateforme
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez modifier la configuration d’un point de terminaison de services de plateforme pour modifier son nom, son URI ou d’autres détails.  Par exemple, vous devrez peut-être mettre à jour des informations d’identification expirées ou modifier l’URI pour pointer vers un index Elasticsearch de sauvegarde pour le basculement.  Vous ne pouvez pas modifier l’URN d’un point de terminaison de services de plateforme.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Gérer les points de terminaison ou l'autorisation d'accès root"] .
+
+
+.Étapes
+. Sélectionnez *STOCKAGE (S3)* > *Points de terminaison des services de plateforme*.
++
+La page Points de terminaison des services de plateforme s’affiche et affiche la liste des points de terminaison des services de plateforme qui ont déjà été configurés.
+
+. Sélectionnez le point de terminaison que vous souhaitez modifier.
++
+La page des détails du point de terminaison s’affiche.
+
+. Sélectionnez *Configuration*.
+. Selon les besoins, modifiez la configuration du point de terminaison.
++
+
+NOTE: Vous ne pouvez pas modifier l'URN d'un point de terminaison une fois le point de terminaison créé.
+
++
+.. Pour modifier le nom d'affichage du point de terminaison, sélectionnez l'icône de modificationimage:../media/icon_edit_tm.png["Modifier l'icône"] .
+.. Si nécessaire, modifiez l'URI.
+.. Si nécessaire, modifiez le type d’authentification.
++
+*** Pour l'authentification par clé d'accès, modifiez la clé si nécessaire en sélectionnant *Modifier la clé S3* et en collant un nouvel ID de clé d'accès et une clé d'accès secrète.  Si vous devez annuler vos modifications, sélectionnez *Annuler la modification de la clé S3*.
+*** Pour l'authentification CAP (portail d'accès C2S), modifiez l'URL des informations d'identification temporaires ou la phrase secrète de la clé privée facultative du client et téléchargez de nouveaux fichiers de certificat et de clé selon les besoins.
++
+
+NOTE: La clé privée du client doit être au format crypté OpenSSL ou au format de clé privée non cryptée.
+
+
+
+.. Si nécessaire, modifiez la méthode de vérification du serveur.
+
+
+. Sélectionnez *Tester et enregistrer les modifications*.
++
+** Un message de réussite s'affiche si le point de terminaison peut être atteint à l'aide des informations d'identification spécifiées.  La connexion au point de terminaison est vérifiée à partir d’un nœud sur chaque site.
+** Un message d’erreur s’affiche si la validation du point de terminaison échoue.  Modifiez le point de terminaison pour corriger l’erreur, puis sélectionnez *Tester et enregistrer les modifications*.
+
+
+

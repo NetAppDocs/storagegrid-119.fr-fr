@@ -1,0 +1,29 @@
+---
+permalink: admin/identifying-primary-admin-node.html 
+sidebar: sidebar 
+keywords: primary admin node, configuration management node 
+summary: Le nœud d’administration principal fournit plus de fonctionnalités que les nœuds d’administration non principaux.  Par exemple, certaines procédures de maintenance doivent être effectuées à l’aide du nœud d’administration principal. 
+---
+= Identifier le nœud d'administration principal
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Le nœud d’administration principal fournit plus de fonctionnalités que les nœuds d’administration non principaux.  Par exemple, certaines procédures de maintenance doivent être effectuées à l’aide du nœud d’administration principal.
+
+Pour plus d'informations sur les nœuds d'administration, voirlink:../primer/what-admin-node-is.html["Qu'est-ce qu'un nœud d'administration"] .
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:admin-group-permissions.html["autorisations d'accès spécifiques"] .
+
+
+.Étapes
+. Sélectionnez *NODES*.
+. Saisissez *primaire* dans le champ de recherche.
++
+Dans les résultats de la recherche, identifiez le nœud avec « Nœud d'administration principal » affiché dans la colonne Type.  Un nœud d’administration principal doit être répertorié.
+
+

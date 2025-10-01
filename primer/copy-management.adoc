@@ -1,0 +1,69 @@
+---
+permalink: primer/copy-management.html 
+sidebar: sidebar 
+keywords: object data, ilm policy, ilm rules, replicated copy, replication, erasure-coded copy, ec, cloud storage pool 
+summary: Les données d’objet sont gérées par la politique ILM active et ses règles ILM.  Les règles ILM créent des copies répliquées ou codées par effacement pour protéger les données des objets contre la perte. 
+---
+= Gestion des copies
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les données d’objet sont gérées par les politiques ILM actives et les règles ILM associées.  Les règles ILM créent des copies répliquées ou codées par effacement pour protéger les données des objets contre la perte.
+
+Différents types ou emplacements de copies d'objets peuvent être nécessaires à différents moments de la vie de l'objet.  Les règles ILM sont évaluées périodiquement pour garantir que les objets sont placés comme requis.
+
+Les données des objets sont gérées par le service LDR.
+
+
+
+== Protection du contenu : réplication
+
+Si les instructions de placement de contenu d'une règle ILM nécessitent des copies répliquées des données d'objet, des copies sont effectuées et stockées sur le disque par les nœuds de stockage qui composent le pool de stockage configuré.
+
+Le moteur ILM du service LDR contrôle la réplication et garantit que le nombre correct de copies est stocké aux bons emplacements et pendant la durée correcte.
+
+image::../media/replication_data_flow.png[diagramme montrant le processus décrit dans le texte environnant]
+
+. Le moteur ILM interroge le service ADC pour déterminer le meilleur service LDR de destination au sein du pool de stockage spécifié par la règle ILM.  Il envoie ensuite à ce service LDR une commande pour lancer la réplication.
+. Le service LDR de destination interroge le service ADC pour connaître le meilleur emplacement source.  Il envoie ensuite une demande de réplication au service LDR source.
+. Le service LDR source envoie une copie au service LDR de destination.
+. Le service LDR de destination informe le moteur ILM que les données de l'objet ont été stockées.
+. Le moteur ILM met à jour le magasin de métadonnées avec les métadonnées d'emplacement des objets.
+
+
+
+
+== Protection du contenu : codage d'effacement
+
+Si une règle ILM inclut des instructions pour créer des copies codées par effacement des données d'objet, le schéma de codage par effacement applicable divise les données d'objet en fragments de données et de parité et distribue ces fragments sur les nœuds de stockage configurés dans le profil de codage par effacement.
+
+Le moteur ILM, qui est un composant du service LDR, contrôle le codage d'effacement et garantit que le profil de codage d'effacement est appliqué aux données de l'objet.
+
+image::../media/erasure_coding_data_flow.png[Flux de données de codage d'effacement]
+
+. Le moteur ILM interroge le service ADC pour déterminer quel service DDS peut le mieux effectuer l'opération de codage d'effacement.  Une fois déterminé, le moteur ILM envoie une demande « d'initiation » à ce service.
+. Le service DDS demande à un LDR d'effacer le code des données de l'objet.
+. Le service LDR source envoie une copie au service LDR sélectionné pour le codage d'effacement.
+. Après avoir créé le nombre approprié de fragments de parité et de données, le service LDR distribue ces fragments sur les nœuds de stockage (services de blocs) qui constituent le pool de stockage du profil de codage d'effacement.
+. Le service LDR notifie le moteur ILM, confirmant que les données de l'objet sont distribuées avec succès.
+. Le moteur ILM met à jour le magasin de métadonnées avec les métadonnées d'emplacement des objets.
+
+
+
+
+== Protection du contenu : pool de stockage cloud
+
+Si les instructions de placement de contenu d’une règle ILM nécessitent qu’une copie répliquée des données d’objet soit stockée sur un pool de stockage cloud, les données d’objet sont dupliquées dans le compartiment S3 externe ou le conteneur de stockage Azure Blob spécifié pour le pool de stockage cloud.
+
+Le moteur ILM, qui est un composant du service LDR, et le service Data Mover contrôlent le mouvement des objets vers le pool de stockage cloud.
+
+image::../media/cloud_storage_pool_data_flow.png[Flux de données du pool de stockage cloud]
+
+. Le moteur ILM sélectionne un service Data Mover à répliquer vers le pool de stockage cloud.
+. Le service Data Mover envoie les données de l’objet au pool de stockage cloud.
+. Le service Data Mover informe le moteur ILM que les données de l'objet ont été stockées.
+. Le moteur ILM met à jour le magasin de métadonnées avec les métadonnées d'emplacement des objets.
+

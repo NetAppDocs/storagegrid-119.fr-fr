@@ -1,0 +1,139 @@
+---
+permalink: troubleshoot/investigating-lost-objects.html 
+sidebar: sidebar 
+keywords: lost objects, investigating, objects 
+summary: 'Lorsque l"alerte *Objets perdus* est déclenchée, vous devez enquêter immédiatement. Collectez des informations sur les objets concernés et contactez le support technique.' 
+---
+= Enquêter sur les objets perdus
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lorsque l'alerte *Objets perdus* est déclenchée, vous devez enquêter immédiatement. Collectez des informations sur les objets concernés et contactez le support technique.
+
+.Avant de commencer
+* Vous devez être connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+* Vous devez avoir le `Passwords.txt` déposer.
+
+
+.À propos de cette tâche
+L'alerte *Objets perdus* indique que StorageGRID estime qu'il n'existe aucune copie d'un objet dans la grille. Les données ont peut-être été définitivement perdues.
+
+Enquêtez immédiatement sur les alertes d’objets perdus.  Vous devrez peut-être prendre des mesures pour éviter toute perte de données supplémentaire.  Dans certains cas, vous pourrez peut-être restaurer un objet perdu si vous agissez rapidement.
+
+.Étapes
+. Sélectionnez *NODES*.
+. Sélectionnez *_Nœud de stockage_* > *Objets*.
+. Consultez le nombre d’objets perdus affiché dans le tableau Nombre d’objets.
++
+Ce nombre indique le nombre total d'objets que ce nœud de grille détecte comme manquants dans l'ensemble du système StorageGRID .  La valeur est la somme des compteurs d'objets perdus du composant de magasin de données dans les services LDR et DDS.
+
++
+image::../media/nodes_storage_nodes_objects_page_lost_object.png[Nœuds Nœuds de stockage Page d'objets Objet perdu]
+
+. À partir d'un nœud d'administration,link:../audit/accessing-audit-log-file.html["accéder au journal d'audit"] pour déterminer l'identifiant unique (UUID) de l'objet qui a déclenché l'alerte *Objets perdus* :
++
+.. Connectez-vous au nœud de grille :
++
+... Entrez la commande suivante : `ssh admin@grid_node_IP`
+... Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+... Entrez la commande suivante pour passer en root : `su -`
+... Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.  Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+
+.. Accédez au répertoire dans lequel se trouvent les journaux d’audit.
++
+--
+Le répertoire du journal d’audit et les nœuds applicables dépendent de vos paramètres de destination d’audit.
+
+[cols="1a,2a"]
+|===
+| Option | Destination 
+
+
+ a| 
+Nœuds locaux (par défaut)
+ a| 
+`/var/local/log/localaudit.log`
+
+
+
+ a| 
+Nœuds d'administration/nœuds locaux
+ a| 
+*** Nœuds d'administration (principaux et non principaux) : `/var/local/audit/export/audit.log`
+*** Tous les nœuds : Le `/var/local/log/localaudit.log` le fichier est généralement vide ou manquant dans ce mode.
+
+
+
+
+ a| 
+Serveur syslog externe
+ a| 
+`/var/local/log/localaudit.log`
+
+|===
+En fonction des paramètres de destination de votre audit, saisissez : `cd /var/local/log` ou `/var/local/audit/export/`
+
+Pour en savoir plus, consultezlink:../monitor/configure-audit-messages.html#select-audit-information-destinations["Sélectionner les destinations des informations d'audit"] .
+
+--
+.. Utilisez grep pour extraire les messages d’audit d’objet perdu (OLST).  Entrer: `grep OLST audit_file_name`
+.. Notez la valeur UUID incluse dans le message.
++
+[listing]
+----
+Admin: # grep OLST audit.log
+2020-02-12T19:18:54.780426 [AUDT:[CBID(UI64):0x38186FE53E3C49A5][UUID(CSTR):"926026C4-00A4-449B-AC72-BCCA72DD1311"]
+[PATH(CSTR):"source/cats"][NOID(UI32):12288733][VOLI(UI64):3222345986][RSLT(FC32):NONE][AVER(UI32):10]
+[ATIM(UI64):1581535134780426][ATYP(FC32):OLST][ANID(UI32):12448208][AMID(FC32):ILMX][ATID(UI64):7729403978647354233]]
+----
+
+
+. Recherchez les métadonnées de l'objet perdu en utilisant l'UUID :
++
+.. Sélectionnez *ILM* > *Recherche de métadonnées d'objet*.
+.. Saisissez l'UUID et sélectionnez *Rechercher*.
+.. Vérifiez les emplacements dans les métadonnées et prenez les mesures appropriées :
++
+[cols="2a,4a"]
+|===
+| Métadonnées | Conclusion 
+
+
+ a| 
+Objet <object_identifier> non trouvé
+ a| 
+Si l'objet n'est pas trouvé, le message « ERROR":" » est renvoyé.
+
+Si l'objet n'est pas trouvé, vous pouvez réinitialiser le nombre d'*Objets perdus* pour effacer l'alerte. L’absence d’un objet indique que l’objet a été intentionnellement supprimé.
+
+
+
+ a| 
+Emplacements > 0
+ a| 
+Si des emplacements sont répertoriés dans la sortie, l'alerte *Objets perdus* peut être un faux positif.
+
+Confirmer que les objets existent.  Utilisez l’ID de nœud et le chemin de fichier répertoriés dans la sortie pour confirmer que le fichier objet se trouve à l’emplacement répertorié.
+
+(La procédure pourlink:searching-for-and-restoring-potentially-lost-objects.html["recherche d'objets potentiellement perdus"] explique comment utiliser l'ID de nœud pour trouver le nœud de stockage correct.)
+
+Si les objets existent, vous pouvez réinitialiser le nombre d'*Objets perdus* pour effacer l'alerte.
+
+
+
+ a| 
+Emplacements = 0
+ a| 
+S'il n'y a aucun emplacement répertorié dans la sortie, l'objet est potentiellement manquant. Vous pouvez essayer delink:searching-for-and-restoring-potentially-lost-objects.html["rechercher et restaurer l'objet"] vous-même, ou vous pouvez contacter le support technique.
+
+Le support technique peut vous demander de déterminer si une procédure de récupération de stockage est en cours.  Voir les informations surlink:../maintain/restoring-volume.html["restauration des données d'objet à l'aide de Grid Manager"] etlink:../maintain/restoring-object-data-to-storage-volume.html["restauration des données d'objet sur un volume de stockage"] .
+
+|===
+
+
+

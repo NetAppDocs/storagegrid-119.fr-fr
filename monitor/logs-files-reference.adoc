@@ -1,0 +1,232 @@
+---
+permalink: monitor/logs-files-reference.html 
+sidebar: sidebar 
+keywords: log, logs, log files 
+summary: 'StorageGRID fournit des journaux utilisés pour capturer des événements, des messages de diagnostic et des conditions d"erreur.  Il peut vous être demandé de collecter des fichiers journaux et de les transmettre au support technique pour aider au dépannage.' 
+---
+= Référence des fichiers journaux
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID fournit des journaux utilisés pour capturer des événements, des messages de diagnostic et des conditions d'erreur.  Il peut vous être demandé de collecter des fichiers journaux et de les transmettre au support technique pour aider au dépannage.
+
+Les journaux sont classés comme suit :
+
+* link:storagegrid-software-logs.html["Journaux du logiciel StorageGRID"]
+* link:deployment-and-maintenance-logs.html["Journaux de déploiement et de maintenance"]
+* link:about-bycast-log.html["À propos du bycast.log"]
+
+
+
+NOTE: Les détails fournis pour chaque type de journal sont fournis à titre indicatif uniquement.  Les journaux sont destinés au dépannage avancé par le support technique.  Les techniques avancées qui impliquent la reconstruction de l’historique des problèmes à l’aide des journaux d’audit et des fichiers journaux d’application dépassent le cadre de ces instructions.
+
+
+
+== Accéder aux journaux
+
+Pour accéder aux journaux, vous pouvezlink:collecting-log-files-and-system-data.html["collecter les fichiers journaux et les données système"] à partir d'un ou plusieurs nœuds sous forme d'archive de fichier journal unique. Ou, si le nœud d'administration principal n'est pas disponible ou ne peut pas atteindre un nœud spécifique, vous pouvez accéder aux fichiers journaux individuels pour chaque nœud de grille comme suit :
+
+. Entrez la commande suivante : `ssh admin@grid_node_IP`
+. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+. Entrez la commande suivante pour passer en root : `su -`
+. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+
+
+
+
+== Exporter les journaux vers le serveur syslog
+
+L'exportation des journaux vers le serveur syslog offre les fonctionnalités suivantes :
+
+* Recevez une liste de toutes les demandes Grid Manager et Tenant Manager, en plus des demandes S3 et Swift.
+* Meilleure visibilité sur les requêtes S3 qui renvoient des erreurs, sans l’impact sur les performances causé par les méthodes de journalisation d’audit.
+* Accès aux requêtes de la couche HTTP et aux codes d'erreur faciles à analyser.
+* Meilleure visibilité sur les requêtes bloquées par les classificateurs de trafic au niveau de l'équilibreur de charge.
+
+
+Pour exporter les journaux, reportez-vous àlink:../monitor/configure-audit-messages.html["Configurer les messages d'audit et les destinations des journaux"] .
+
+
+
+== Catégories de fichiers journaux
+
+L'archive du fichier journal StorageGRID contient les journaux décrits pour chaque catégorie et des fichiers supplémentaires contenant des métriques et la sortie des commandes de débogage.
+
+[cols="1a,3a"]
+|===
+| Emplacement des archives | Description 
+
+
+| audit  a| 
+Messages d'audit générés pendant le fonctionnement normal du système.
+
+
+
+| journaux du système d'exploitation de base  a| 
+Informations sur le système d’exploitation de base, y compris les versions d’image StorageGRID .
+
+
+
+| paquets  a| 
+Informations de configuration globale (bundles).
+
+
+
+| Cassandre  a| 
+Informations sur la base de données Cassandra et journaux de réparation Reaper.
+
+
+
+| ec  a| 
+Informations VCS sur le nœud actuel et informations sur le groupe EC par ID de profil.
+
+
+
+| grille  a| 
+Journaux de grille généraux, y compris le débogage(`bycast.log` ) et `servermanager` journaux.
+
+
+
+| grille.json  a| 
+Fichier de configuration de grille partagé entre tous les nœuds.  En plus, `node.json` est spécifique au nœud actuel.
+
+
+
+| hagroupes  a| 
+Mesures et journaux des groupes de haute disponibilité.
+
+
+
+| installer  a| 
+`Gdu-server`et installer les journaux.
+
+
+
+| Arbitre lambda  a| 
+Journaux liés à la demande de proxy S3 Select.
+
+
+
+| bûcheron.log  a| 
+Messages de débogage liés à la collecte de journaux.
+
+
+
+| Métrique  a| 
+Journaux de service pour Grafana, Jaeger, l'exportateur de nœuds et Prometheus.
+
+
+
+| divers  a| 
+Journaux d'accès et d'erreurs Miscd.
+
+
+
+| MySQL  a| 
+La configuration de la base de données mariaDB et les journaux associés.
+
+
+
+| filet  a| 
+Journaux générés par les scripts liés au réseau et le service Dynip.
+
+
+
+| nginx  a| 
+Fichiers et journaux de configuration de l'équilibreur de charge et de la fédération de grille.  Inclut également les journaux de trafic Grid Manager et Tenant Manager.
+
+
+
+| nginx-gw  a| 
+* `access.log`:Messages du journal des demandes du gestionnaire de grille et du gestionnaire de locataires.
++
+** Ces messages sont préfixés par `mgmt:` lorsqu'il est exporté à l'aide de syslog.
+** Le format de ces messages de journal est `[$time_iso8601] $remote_addr $status $bytes_sent $request_length $request_time "$endpointId" "$request" "$http_host" "$http_user_agent" "$http_referer"`
+
+
+* `cgr-access.log.gz`:Demandes de réplication inter-grille entrantes.
++
+** Ces messages sont préfixés par `cgr:` lorsqu'il est exporté à l'aide de syslog.
+** Le format de ces messages de journal est `[$time_iso8601] $remote_addr $status $bytes_sent $request_length $request_time "$endpointId" "$upstream_addr" "$request" "$http_host"`
+
+
+* `endpoint-access.log.gz`:S3 et Swift demandent aux points de terminaison de l'équilibreur de charge.
++
+** Ces messages sont préfixés par `endpoint:` lorsqu'il est exporté à l'aide de syslog.
+** Le format de ces messages de journal est `[$time_iso8601] $remote_addr $status $bytes_sent $request_length $request_time "$endpointId" "$upstream_addr" "$request" "$http_host"`
+
+
+* `nginx-gw-dns-check.log`:En rapport avec la nouvelle alerte de vérification DNS.
+
+
+
+
+| ntp  a| 
+Fichier de configuration et journaux NTP.
+
+
+
+ a| 
+Objets orphelins
+ a| 
+Journaux relatifs aux objets orphelins.
+
+
+
+| os  a| 
+Fichier d'état des nœuds et des grilles, y compris les services `pid` .
+
+
+
+| autre  a| 
+Fichiers journaux sous `/var/local/log` qui ne sont pas collectés dans d'autres dossiers.
+
+
+
+| performances  a| 
+Informations sur les performances du processeur, du réseau et des E/S disque.
+
+
+
+| données de Prometheus  a| 
+Métriques Prometheus actuelles, si la collecte de journaux inclut des données Prometheus.
+
+
+
+| approvisionnement  a| 
+Journaux liés au processus de provisionnement du réseau.
+
+
+
+| radeau  a| 
+Journaux du cluster Raft utilisés dans les services de la plateforme.
+
+
+
+| ssh  a| 
+Journaux liés à la configuration et au service SSH.
+
+
+
+| SNMP  a| 
+Configuration de l'agent SNMP utilisée pour l'envoi de notifications SNMP.
+
+
+
+| sockets-données  a| 
+Données de sockets pour le débogage du réseau.
+
+
+
+| commandes-système.txt  a| 
+Sortie des commandes du conteneur StorageGRID .  Contient des informations système, telles que la mise en réseau et l'utilisation du disque.
+
+
+
+| synchronisation-recuperation-package  a| 
+Lié au maintien de la cohérence du dernier package de récupération sur tous les nœuds d'administration et nœuds de stockage qui hébergent le service ADC.
+
+|===

@@ -1,0 +1,93 @@
+---
+permalink: audit/ovwr-object-overwrite.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, OVWR, Object Overwrite 
+summary: 'Ce message est généré lorsqu"une opération externe (demandée par le client) provoque l"écrasement d"un objet par un autre objet.' 
+---
+= OVWR : écrasement d'objet
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ce message est généré lorsqu'une opération externe (demandée par le client) entraîne l'écrasement d'un objet par un autre objet.
+
+[cols="1a,1a,4a"]
+|===
+| Code | Champ | Description 
+
+
+ a| 
+CBID
+ a| 
+Identifiant du bloc de contenu (nouveau)
+ a| 
+Le CBID du nouvel objet.
+
+
+
+ a| 
+CSIZ
+ a| 
+Taille de l'objet précédent
+ a| 
+La taille, en octets, de l'objet écrasé.
+
+
+
+ a| 
+trouble obsessionnel compulsif (TOC)
+ a| 
+Identifiant du bloc de contenu (précédent)
+ a| 
+Le CBID de l'objet précédent.
+
+
+
+ a| 
+UUID
+ a| 
+ID unique universel (nouveau)
+ a| 
+L'identifiant du nouvel objet dans le système StorageGRID .
+
+
+
+ a| 
+OUID
+ a| 
+ID unique universel (précédent)
+ a| 
+L'identifiant de l'objet précédent dans le système StorageGRID .
+
+
+
+ a| 
+CHEMIN
+ a| 
+Chemin de l'objet S3
+ a| 
+Le chemin d'accès à l'objet S3 utilisé pour l'objet précédent et le nouvel objet
+
+
+
+ a| 
+RSLT
+ a| 
+Code de résultat
+ a| 
+Résultat de la transaction d'écrasement d'objet.  Le résultat est toujours :
+
+SUCS : Réussi
+
+
+
+ a| 
+SGRP
+ a| 
+Site (Groupe)
+ a| 
+Si présent, l'objet écrasé a été supprimé sur le site spécifié, qui n'est pas le site où l'objet écrasé a été ingéré.
+
+|===

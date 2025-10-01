@@ -1,0 +1,170 @@
+---
+permalink: admin/managing-load-balancing.html 
+sidebar: sidebar 
+keywords: manage load balancing, balance workload, client ingest, client retrieval, distribute connection 
+summary: Vous pouvez utiliser l’équilibrage de charge pour gérer les charges de travail d’ingestion et de récupération des clients S3. 
+---
+= Considérations relatives à l'équilibrage de charge
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser l’équilibrage de charge pour gérer les charges de travail d’ingestion et de récupération des clients S3.
+
+
+
+== Qu'est-ce que l'équilibrage de charge ?
+
+Lorsqu'une application cliente enregistre ou récupère des données à partir d'un système StorageGRID , StorageGRID utilise un équilibreur de charge pour gérer la charge de travail d'ingestion et de récupération.  L'équilibrage de charge maximise la vitesse et la capacité de connexion en répartissant la charge de travail sur plusieurs nœuds de stockage.
+
+Le service StorageGRID Load Balancer est installé sur tous les nœuds d’administration et tous les nœuds de passerelle et fournit un équilibrage de charge de couche 7.  Il effectue la terminaison TLS (Transport Layer Security) des demandes client, inspecte les demandes et établit de nouvelles connexions sécurisées aux nœuds de stockage.
+
+Le service d'équilibrage de charge sur chaque nœud fonctionne indépendamment lors du transfert du trafic client vers les nœuds de stockage.  Grâce à un processus de pondération, le service Load Balancer achemine davantage de requêtes vers les nœuds de stockage avec une disponibilité CPU plus élevée.
+
+
+NOTE: Bien que le service StorageGRID Load Balancer soit le mécanisme d'équilibrage de charge recommandé, vous souhaiterez peut-être intégrer un équilibreur de charge tiers à la place.  Pour plus d'informations, contactez votre représentant de compte NetApp ou reportez-vous à https://fieldportal.netapp.com/content/2666394["TR-4626 : Équilibreurs de charge tiers et globaux StorageGRID"^] .
+
+
+
+== De combien de nœuds d'équilibrage de charge ai-je besoin ?
+
+En règle générale, chaque site de votre système StorageGRID doit inclure deux nœuds ou plus avec le service Load Balancer.  Par exemple, un site peut inclure deux nœuds de passerelle ou un nœud d'administration et un nœud de passerelle.  Assurez-vous qu'il existe une infrastructure réseau, matérielle ou de virtualisation adéquate pour chaque nœud d'équilibrage de charge, que vous utilisiez des appliances de services, des nœuds bare metal ou des nœuds basés sur des machines virtuelles (VM).
+
+
+
+== Qu'est-ce qu'un point de terminaison d'équilibrage de charge ?
+
+Un point de terminaison d'équilibrage de charge définit le port et le protocole réseau (HTTPS ou HTTP) que les demandes d'application client entrantes et sortantes utiliseront pour accéder aux nœuds contenant le service d'équilibrage de charge.  Le point de terminaison définit également le type de client (S3), le mode de liaison et éventuellement une liste de locataires autorisés ou bloqués.
+
+Pour créer un point de terminaison d'équilibrage de charge, sélectionnez *CONFIGURATION* > *Réseau* > *Points de terminaison d'équilibrage de charge* ou suivez l'assistant de configuration de FabricPool et S3.  Pour les instructions :
+
+* link:configuring-load-balancer-endpoints.html["Configurer les points de terminaison de l'équilibreur de charge"]
+* link:use-s3-setup-wizard-steps.html["Utiliser l'assistant de configuration S3"]
+* link:../fabricpool/use-fabricpool-setup-wizard-steps.html["Utiliser l'assistant de configuration de FabricPool"]
+
+
+
+
+=== Considérations pour le port
+
+Le port d'un point de terminaison d'équilibrage de charge est par défaut 10433 pour le premier point de terminaison que vous créez, mais vous pouvez spécifier n'importe quel port externe inutilisé entre 1 et 65535.  Si vous utilisez le port 80 ou 443, le point de terminaison utilisera le service Load Balancer sur les nœuds de passerelle uniquement.  Ces ports sont réservés sur les nœuds d’administration.  Si vous utilisez le même port pour plusieurs points de terminaison, vous devez spécifier un mode de liaison différent pour chaque point de terminaison.
+
+Les ports utilisés par d'autres services de grille ne sont pas autorisés. Voir lelink:../network/network-port-reference.html["Référence du port réseau"] .
+
+
+
+=== Considérations relatives au protocole réseau
+
+Dans la plupart des cas, les connexions entre les applications clientes et StorageGRID doivent utiliser le cryptage TLS (Transport Layer Security).  La connexion à StorageGRID sans cryptage TLS est prise en charge mais non recommandée, en particulier dans les environnements de production.  Lorsque vous sélectionnez le protocole réseau pour le point de terminaison de l'équilibreur de charge StorageGRID , vous devez sélectionner *HTTPS*.
+
+
+
+=== Considérations relatives aux certificats de point de terminaison d'équilibrage de charge
+
+Si vous sélectionnez *HTTPS* comme protocole réseau pour le point de terminaison de l'équilibreur de charge, vous devez fournir un certificat de sécurité.  Vous pouvez utiliser l’une de ces trois options lorsque vous créez le point de terminaison de l’équilibreur de charge :
+
+* *Télécharger un certificat signé (recommandé)*.  Ce certificat peut être signé par une autorité de certification (CA) publique ou privée.  L’utilisation d’un certificat de serveur CA publiquement approuvé pour sécuriser la connexion est la meilleure pratique.  Contrairement aux certificats générés, les certificats signés par une autorité de certification peuvent être renouvelés sans interruption, ce qui peut aider à éviter les problèmes d'expiration.
++
+Vous devez obtenir les fichiers suivants avant de créer le point de terminaison de l’équilibreur de charge :
+
++
+** Le fichier de certificat du serveur personnalisé.
+** Le fichier de clé privée du certificat de serveur personnalisé.
+** En option, un ensemble de certificats CA provenant de chaque autorité de certification émettrice intermédiaire.
+
+
+* *Générer un certificat auto-signé*.
+* *Utilisez le certificat global StorageGRID S3*.  Vous devez télécharger ou générer une version personnalisée de ce certificat avant de pouvoir le sélectionner pour le point de terminaison de l'équilibreur de charge. Voir link:../admin/configuring-custom-server-certificate-for-storage-node.html["Configurer les certificats API S3"] .
+
+
+
+
+==== De quelles valeurs ai-je besoin ?
+
+Pour créer le certificat, vous devez connaître tous les noms de domaine et adresses IP que les applications clientes S3 utiliseront pour accéder au point de terminaison.
+
+L'entrée *Subject DN* (Distinguished Name) du certificat doit inclure le nom de domaine complet que l'application cliente utilisera pour StorageGRID. Par exemple:
+
+[listing]
+----
+Subject DN: /C=Country/ST=State/O=Company,Inc./CN=s3.storagegrid.example.com
+----
+Si nécessaire, le certificat peut utiliser des caractères génériques pour représenter les noms de domaine complets de tous les nœuds d'administration et nœuds de passerelle exécutant le service d'équilibrage de charge.  Par exemple, `*.storagegrid._example_.com` utilise le caractère générique * pour représenter `adm1.storagegrid._example_.com` et `gn1.storagegrid._example_.com` .
+
+Si vous prévoyez d'utiliser des requêtes de type hébergé virtuel S3, le certificat doit également inclure une entrée *Nom alternatif* pour chaquelink:../admin/configuring-s3-api-endpoint-domain-names.html["Nom de domaine du point de terminaison S3"] vous avez configuré, y compris tous les noms génériques. Par exemple:
+
+[listing]
+----
+Alternative Name: DNS:*.s3.storagegrid.example.com
+----
+
+NOTE: Si vous utilisez des caractères génériques pour les noms de domaine, consultez lelink:../harden/hardening-guideline-for-server-certificates.html["Directives de renforcement pour les certificats de serveur"] .
+
+Vous devez également définir une entrée DNS pour chaque nom dans le certificat de sécurité.
+
+
+
+==== Comment gérer les certificats expirés ?
+
+
+CAUTION: Si le certificat utilisé pour sécuriser la connexion entre l'application S3 et StorageGRID expire, l'application peut perdre temporairement l'accès à StorageGRID.
+
+Pour éviter les problèmes d’expiration des certificats, suivez ces bonnes pratiques :
+
+* Surveillez attentivement toutes les alertes qui avertissent de l'approche de la date d'expiration du certificat, telles que les alertes *Expiration du certificat du point de terminaison de l'équilibreur de charge* et *Expiration du certificat du serveur global pour l'API S3*.
+* Gardez toujours les versions du certificat de l'application StorageGRID et S3 synchronisées.  Si vous remplacez ou renouvelez le certificat utilisé pour un point de terminaison d’équilibrage de charge, vous devez remplacer ou renouveler le certificat équivalent utilisé par l’application S3.
+* Utilisez un certificat CA signé publiquement.  Si vous utilisez un certificat signé par une autorité de certification, vous pouvez remplacer les certificats sur le point d’expirer sans interruption.
+* Si vous avez généré un certificat StorageGRID auto-signé et que ce certificat est sur le point d'expirer, vous devez remplacer manuellement le certificat dans StorageGRID et dans l'application S3 avant l'expiration du certificat existant.
+
+
+
+
+=== Considérations sur le mode de liaison
+
+Le mode de liaison vous permet de contrôler les adresses IP qui peuvent être utilisées pour accéder à un point de terminaison d'équilibrage de charge.  Si un point de terminaison utilise un mode de liaison, les applications clientes ne peuvent accéder au point de terminaison que si elles utilisent une adresse IP autorisée ou son nom de domaine complet (FQDN) correspondant.  Les applications clientes utilisant une autre adresse IP ou un nom de domaine complet ne peuvent pas accéder au point de terminaison.
+
+Vous pouvez spécifier l’un des modes de liaison suivants :
+
+* *Global* (par défaut) : les applications clientes peuvent accéder au point de terminaison à l'aide de l'adresse IP de n'importe quel nœud de passerelle ou nœud d'administration, de l'adresse IP virtuelle (VIP) de n'importe quel groupe HA sur n'importe quel réseau ou d'un nom de domaine complet correspondant.  Utilisez ce paramètre sauf si vous devez restreindre l’accessibilité d’un point de terminaison.
+* *IP virtuelles des groupes HA*.  Les applications clientes doivent utiliser une adresse IP virtuelle (ou un nom de domaine complet correspondant) d’un groupe HA.
+* *Interfaces de nœuds*.  Les clients doivent utiliser les adresses IP (ou les noms de domaine complets correspondants) des interfaces de nœuds sélectionnées.
+* *Type de nœud*.  En fonction du type de nœud que vous sélectionnez, les clients doivent utiliser soit l'adresse IP (ou le nom de domaine complet correspondant) de n'importe quel nœud d'administration, soit l'adresse IP (ou le nom de domaine complet correspondant) de n'importe quel nœud de passerelle.
+
+
+
+
+=== Considérations relatives à l'accès des locataires
+
+L'accès des locataires est une fonctionnalité de sécurité facultative qui vous permet de contrôler les comptes de locataires StorageGRID qui peuvent utiliser un point de terminaison d'équilibrage de charge pour accéder à leurs buckets.  Vous pouvez autoriser tous les locataires à accéder à un point de terminaison (par défaut), ou vous pouvez spécifier une liste des locataires autorisés ou bloqués pour chaque point de terminaison.
+
+Vous pouvez utiliser cette fonctionnalité pour fournir une meilleure isolation de sécurité entre les locataires et leurs points de terminaison.  Par exemple, vous pouvez utiliser cette fonctionnalité pour garantir que les documents top secret ou hautement classifiés appartenant à un locataire restent totalement inaccessibles aux autres locataires.
+
+
+NOTE: Aux fins du contrôle d'accès, le locataire est déterminé à partir des clés d'accès utilisées dans la demande du client. Si aucune clé d'accès n'est fournie dans le cadre de la demande (comme dans le cas d'un accès anonyme), le propriétaire du bucket est utilisé pour déterminer le locataire.
+
+
+
+==== Exemple d'accès des locataires
+
+Pour comprendre comment fonctionne cette fonctionnalité de sécurité, considérez l’exemple suivant :
+
+. Vous avez créé deux points de terminaison d’équilibrage de charge, comme suit :
++
+** Point de terminaison *public* : utilise le port 10443 et autorise l'accès à tous les locataires.
+** Point de terminaison *Top secret* : utilise le port 10444 et autorise l'accès au locataire *Top secret* uniquement.  Tous les autres locataires ne peuvent pas accéder à ce point de terminaison.
+
+
+. Le `top-secret.pdf` se trouve dans un bucket appartenant au locataire *Top secret*.
+
+
+Pour accéder au `top-secret.pdf` , un utilisateur du locataire *Top secret* peut émettre une requête GET pour `\https://w.x.y.z:10444/top-secret.pdf` .  Étant donné que ce locataire est autorisé à utiliser le point de terminaison 10444, l’utilisateur peut accéder à l’objet.  Cependant, si un utilisateur appartenant à un autre locataire émet la même demande à la même URL, il reçoit immédiatement un message d'accès refusé.  L'accès est refusé même si les informations d'identification et la signature sont valides.
+
+
+
+== Disponibilité du processeur
+
+Le service d'équilibrage de charge sur chaque nœud d'administration et nœud de passerelle fonctionne indépendamment lors du transfert du trafic S3 vers les nœuds de stockage.  Grâce à un processus de pondération, le service Load Balancer achemine davantage de requêtes vers les nœuds de stockage avec une disponibilité CPU plus élevée.  Les informations sur la charge du processeur du nœud sont mises à jour toutes les quelques minutes, mais la pondération peut être mise à jour plus fréquemment.  Une valeur de pondération de base minimale est attribuée à tous les nœuds de stockage, même si un nœud signale une utilisation à 100 % ou ne parvient pas à signaler son utilisation.
+
+Dans certains cas, les informations sur la disponibilité du processeur sont limitées au site sur lequel se trouve le service Load Balancer.

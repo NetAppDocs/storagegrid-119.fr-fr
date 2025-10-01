@@ -1,0 +1,93 @@
+---
+permalink: admin/managing-high-availability-groups.html 
+sidebar: sidebar 
+keywords: manage high availability group, ha groups, admin node, gateway node, active interface, backup interface, priority order 
+summary: 'Les groupes haute disponibilité (HA) fournissent des connexions de données hautement disponibles pour les clients S3 et des connexions hautement disponibles au Grid Manager et au Tenant Manager.' 
+---
+= Que sont les groupes de haute disponibilité (HA) ?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les groupes haute disponibilité (HA) fournissent des connexions de données hautement disponibles pour les clients S3 et des connexions hautement disponibles au Grid Manager et au Tenant Manager.
+
+Vous pouvez regrouper les interfaces réseau de plusieurs nœuds d'administration et de passerelle dans un groupe haute disponibilité (HA).  Si l’interface active du groupe HA échoue, une interface de sauvegarde peut gérer la charge de travail.
+
+Chaque groupe HA fournit un accès aux services partagés sur les nœuds sélectionnés.
+
+* Les groupes HA qui incluent des nœuds de passerelle, des nœuds d'administration ou les deux fournissent des connexions de données hautement disponibles pour les clients S3.
+* Les groupes HA qui incluent uniquement des nœuds d'administration fournissent des connexions hautement disponibles au gestionnaire de grille et au gestionnaire de locataires.
+* Un groupe HA qui comprend uniquement des appliances de services et des nœuds logiciels basés sur VMware peut fournir des connexions hautement disponibles pourlink:../admin/manage-s3-select-for-tenant-accounts.html["Locataires S3 qui utilisent S3 Select"] .  Les groupes HA sont recommandés lors de l'utilisation de S3 Select, mais pas obligatoires.
+
+
+
+
+== Comment créer un groupe HA ?
+
+. Vous sélectionnez une interface réseau pour un ou plusieurs nœuds d’administration ou nœuds de passerelle.  Vous pouvez utiliser une interface Grid Network (eth0), une interface Client Network (eth2), une interface VLAN ou une interface d'accès que vous avez ajoutée au nœud.
++
+
+NOTE: Vous ne pouvez pas ajouter une interface à un groupe HA si elle dispose d'une adresse IP attribuée par DHCP.
+
+. Vous spécifiez une interface comme interface principale.  L'interface principale est l'interface active sauf en cas de panne.
+. Vous déterminez l’ordre de priorité pour toutes les interfaces de sauvegarde.
+. Vous attribuez une à dix adresses IP virtuelles (VIP) au groupe.  Les applications clientes peuvent utiliser n’importe laquelle de ces adresses VIP pour se connecter à StorageGRID.
+
+
+Pour les instructions, voirlink:configure-high-availability-group.html["Configurer des groupes de haute disponibilité"] .
+
+
+
+== Quelle est l'interface active ?
+
+En fonctionnement normal, toutes les adresses VIP du groupe HA sont ajoutées à l'interface principale, qui est la première interface dans l'ordre de priorité.  Tant que l'interface principale reste disponible, elle est utilisée lorsque les clients se connectent à n'importe quelle adresse VIP du groupe.  Autrement dit, pendant le fonctionnement normal, l'interface principale est l'interface « active » du groupe.
+
+De même, pendant le fonctionnement normal, toutes les interfaces de priorité inférieure pour le groupe HA agissent comme des interfaces de « secours ».  Ces interfaces de sauvegarde ne sont pas utilisées à moins que l'interface principale (actuellement active) ne devienne indisponible.
+
+
+
+== Afficher l'état actuel du groupe HA d'un nœud
+
+Pour voir si un nœud est affecté à un groupe HA et déterminer son état actuel, sélectionnez *NODES* > *_node_*.
+
+Si l'onglet *Vue d'ensemble* inclut une entrée pour les *groupes HA*, le nœud est attribué aux groupes HA répertoriés.  La valeur après le nom du groupe est l'état actuel du nœud dans le groupe HA :
+
+* *Actif* : Le groupe HA est actuellement hébergé sur ce nœud.
+* *Sauvegarde* : Le groupe HA n’utilise pas actuellement ce nœud ; il s’agit d’une interface de sauvegarde.
+* *Arrêté* : le groupe HA ne peut pas être hébergé sur ce nœud car le service Haute disponibilité (maintenu en vie) a été arrêté manuellement.
+* *Erreur* : Le groupe HA ne peut pas être hébergé sur ce nœud en raison d’une ou plusieurs des raisons suivantes :
++
+** Le service Load Balancer (nginx-gw) n'est pas en cours d'exécution sur le nœud.
+** L'interface eth0 ou VIP du nœud est en panne.
+** Le nœud est en panne.
+
+
+
+
+Dans cet exemple, le nœud d’administration principal a été ajouté à deux groupes HA.  Ce nœud est actuellement l’interface active pour le groupe de clients Admin et une interface de sauvegarde pour le groupe de clients FabricPool .
+
+image::../media/ha_group_primary_interface.png[Interface principale du groupe HA]
+
+
+
+== Que se passe-t-il lorsque l’interface active échoue ?
+
+L'interface qui héberge actuellement les adresses VIP est l'interface active.  Si le groupe HA comprend plusieurs interfaces et que l'interface active échoue, les adresses VIP se déplacent vers la première interface de sauvegarde disponible dans l'ordre de priorité.  Si cette interface échoue, les adresses VIP se déplacent vers la prochaine interface de sauvegarde disponible, et ainsi de suite.
+
+Le basculement peut être déclenché pour l’une des raisons suivantes :
+
+* Le nœud sur lequel l'interface est configurée tombe en panne.
+* Le nœud sur lequel l'interface est configurée perd la connectivité avec tous les autres nœuds pendant au moins 2 minutes.
+* L'interface active tombe en panne.
+* Le service Load Balancer s'arrête.
+* Le service de haute disponibilité s'arrête.
+
+
+
+NOTE: Le basculement peut ne pas être déclenché par des pannes de réseau externes au nœud qui héberge l'interface active.  De même, le basculement n’est pas déclenché par les services du Grid Manager ou du Tenant Manager.
+
+Le processus de basculement ne prend généralement que quelques secondes et est suffisamment rapide pour que les applications clientes subissent peu d'impact et puissent compter sur des comportements de nouvelle tentative normaux pour continuer à fonctionner.
+
+Lorsque l'échec est résolu et qu'une interface de priorité supérieure redevient disponible, les adresses VIP sont automatiquement déplacées vers l'interface de priorité la plus élevée disponible.

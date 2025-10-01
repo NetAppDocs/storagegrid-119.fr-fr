@@ -1,0 +1,237 @@
+---
+permalink: admin/creating-relying-party-trusts-in-ad-fs.html 
+sidebar: sidebar 
+keywords: relying party trust, active directory, ad fs, single sign on, sso 
+summary: 'Vous devez utiliser les services de fédération Active Directory (AD FS) pour créer une approbation de partie de confiance pour chaque nœud d’administration de votre système.  Vous pouvez créer des approbations de parties de confiance à l’aide de commandes PowerShell, en important des métadonnées SAML à partir de StorageGRID ou en saisissant les données manuellement.' 
+---
+= Créer des approbations de parties de confiance dans AD FS
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez utiliser les services de fédération Active Directory (AD FS) pour créer une approbation de partie de confiance pour chaque nœud d’administration de votre système.  Vous pouvez créer des approbations de parties de confiance à l’aide de commandes PowerShell, en important des métadonnées SAML à partir de StorageGRID ou en saisissant les données manuellement.
+
+.Avant de commencer
+* Vous avez configuré l’authentification unique pour StorageGRID et vous avez sélectionné *AD FS* comme type d’authentification unique.
+* Le *mode Sandbox* est sélectionné sur la page d'authentification unique dans Grid Manager. Voir link:../admin/using-sandbox-mode.html["Utiliser le mode sandbox"] .
+* Vous connaissez le nom de domaine complet (ou l'adresse IP) et l'identifiant de la partie de confiance pour chaque nœud d'administration de votre système. Vous pouvez trouver ces valeurs dans le tableau détaillé des nœuds d’administration sur la page d’authentification unique StorageGRID .
++
+
+NOTE: Vous devez créer une approbation de partie de confiance pour chaque nœud d’administration de votre système StorageGRID .  Le fait de disposer d'une partie de confiance pour chaque nœud d'administration garantit que les utilisateurs peuvent se connecter et se déconnecter en toute sécurité de n'importe quel nœud d'administration.
+
+* Vous avez de l’expérience dans la création d’approbations de parties de confiance dans AD FS ou vous avez accès à la documentation Microsoft AD FS.
+* Vous utilisez le composant logiciel enfichable Gestion AD FS et vous appartenez au groupe Administrateurs.
+* Si vous créez manuellement l'approbation de partie de confiance, vous disposez du certificat personnalisé qui a été téléchargé pour l'interface de gestion StorageGRID ou vous savez comment vous connecter à un nœud d'administration à partir de l'interpréteur de commandes.
+
+
+.À propos de cette tâche
+Ces instructions s’appliquent à Windows Server 2016 AD FS.  Si vous utilisez une version différente d’AD FS, vous remarquerez de légères différences dans la procédure.  Consultez la documentation Microsoft AD FS si vous avez des questions.
+
+
+
+== Créer une approbation de partie de confiance à l'aide de Windows PowerShell
+
+Vous pouvez utiliser Windows PowerShell pour créer rapidement une ou plusieurs approbations de parties de confiance.
+
+.Étapes
+. Dans le menu Démarrer de Windows, sélectionnez avec le bouton droit de la souris l’icône PowerShell et sélectionnez *Exécuter en tant qu’administrateur*.
+. À l’invite de commande PowerShell, entrez la commande suivante :
++
+`Add-AdfsRelyingPartyTrust -Name "_Admin_Node_Identifer_" -MetadataURL "https://_Admin_Node_FQDN_/api/saml-metadata"`
+
++
+** Pour `_Admin_Node_Identifier_` , saisissez l’identifiant de la partie de confiance pour le nœud d’administration, exactement tel qu’il apparaît sur la page d’authentification unique. Par exemple :  `SG-DC1-ADM1` .
+** Pour `_Admin_Node_FQDN_` , entrez le nom de domaine complet pour le même nœud d'administration.  (Si nécessaire, vous pouvez utiliser l'adresse IP du nœud à la place.  Cependant, si vous saisissez une adresse IP ici, sachez que vous devez mettre à jour ou recréer cette approbation de partie de confiance si cette adresse IP change un jour.)
+
+
+. Dans le Gestionnaire de serveur Windows, sélectionnez *Outils* > *Gestion AD FS*.
++
+L'outil de gestion AD FS apparaît.
+
+. Sélectionnez *AD FS* > *Approbations de parties de confiance*.
++
+La liste des fiducies de parties utilisatrices s’affiche.
+
+. Ajoutez une politique de contrôle d’accès à la nouvelle approbation de partie de confiance créée :
++
+.. Localisez la fiducie de partie de confiance que vous venez de créer.
+.. Cliquez avec le bouton droit sur l’approbation et sélectionnez *Modifier la politique de contrôle d’accès*.
+.. Sélectionnez une politique de contrôle d’accès.
+.. Sélectionnez *Appliquer*, puis *OK*
+
+
+. Ajoutez une politique d'émission de réclamation à la fiducie de partie utilisatrice nouvellement créée :
++
+.. Localisez la fiducie de partie de confiance que vous venez de créer.
+.. Cliquez avec le bouton droit sur la fiducie et sélectionnez *Modifier la politique d’émission de réclamation*.
+.. Sélectionnez *Ajouter une règle*.
+.. Sur la page Sélectionner un modèle de règle, sélectionnez *Envoyer les attributs LDAP en tant que revendications* dans la liste, puis sélectionnez *Suivant*.
+.. Sur la page Configurer la règle, entrez un nom d’affichage pour cette règle.
++
+Par exemple, *ObjectGUID vers Name ID* ou *UPN vers Name ID*.
+
+.. Pour le magasin d'attributs, sélectionnez *Active Directory*.
+.. Dans la colonne Attribut LDAP de la table de mappage, saisissez *objectGUID* ou sélectionnez *User-Principal-Name*.
+.. Dans la colonne Type de réclamation sortante de la table de mappage, sélectionnez *ID de nom* dans la liste déroulante.
+.. Sélectionnez *Terminer*, puis *OK*.
+
+
+. Confirmez que les métadonnées ont été importées avec succès.
++
+.. Cliquez avec le bouton droit sur l’approbation de la partie de confiance pour ouvrir ses propriétés.
+.. Confirmez que les champs des onglets *Points de terminaison*, *Identifiants* et *Signature* sont renseignés.
++
+Si les métadonnées sont manquantes, confirmez que l'adresse des métadonnées de la Fédération est correcte ou saisissez les valeurs manuellement.
+
+
+
+. Répétez ces étapes pour configurer une approbation de partie de confiance pour tous les nœuds d’administration de votre système StorageGRID .
+. Une fois que vous avez terminé, revenez à StorageGRID et testez toutes les approbations des parties de confiance pour confirmer qu'elles sont correctement configurées. Voirlink:using-sandbox-mode.html["Utiliser le mode Sandbox"] pour les instructions.
+
+
+
+
+== Créer une approbation de partie de confiance en important des métadonnées de fédération
+
+Vous pouvez importer les valeurs de chaque partie de confiance en accédant aux métadonnées SAML pour chaque nœud d’administration.
+
+.Étapes
+. Dans le Gestionnaire de serveur Windows, sélectionnez *Outils*, puis *Gestion AD FS*.
+. Sous Actions, sélectionnez *Ajouter une approbation de partie de confiance*.
+. Sur la page d'accueil, choisissez *Réclamations prises en compte*, puis sélectionnez *Démarrer*.
+. Sélectionnez *Importer des données sur la partie utilisatrice publiées en ligne ou sur un réseau local*.
+. Dans *Adresse des métadonnées de la fédération (nom d'hôte ou URL)*, saisissez l'emplacement des métadonnées SAML pour ce nœud d'administration :
++
+`https://_Admin_Node_FQDN_/api/saml-metadata`
+
++
+Pour `_Admin_Node_FQDN_` , entrez le nom de domaine complet pour le même nœud d'administration.  (Si nécessaire, vous pouvez utiliser l'adresse IP du nœud à la place.  Cependant, si vous saisissez une adresse IP ici, sachez que vous devez mettre à jour ou recréer cette approbation de partie de confiance si cette adresse IP change un jour.)
+
+. Terminez l’assistant d’approbation de partie de confiance, enregistrez l’approbation de partie de confiance et fermez l’assistant.
++
+
+NOTE: Lors de la saisie du nom d’affichage, utilisez l’identifiant de la partie de confiance pour le nœud d’administration, exactement tel qu’il apparaît sur la page d’authentification unique dans le gestionnaire de grille. Par exemple :  `SG-DC1-ADM1` .
+
+. Ajouter une règle de revendication :
++
+.. Cliquez avec le bouton droit sur la fiducie et sélectionnez *Modifier la politique d’émission de réclamation*.
+.. Sélectionnez *Ajouter une règle*:
+.. Sur la page Sélectionner un modèle de règle, sélectionnez *Envoyer les attributs LDAP en tant que revendications* dans la liste, puis sélectionnez *Suivant*.
+.. Sur la page Configurer la règle, entrez un nom d’affichage pour cette règle.
++
+Par exemple, *ObjectGUID vers Name ID* ou *UPN vers Name ID*.
+
+.. Pour le magasin d'attributs, sélectionnez *Active Directory*.
+.. Dans la colonne Attribut LDAP de la table de mappage, saisissez *objectGUID* ou sélectionnez *User-Principal-Name*.
+.. Dans la colonne Type de réclamation sortante de la table de mappage, sélectionnez *ID de nom* dans la liste déroulante.
+.. Sélectionnez *Terminer*, puis *OK*.
+
+
+. Confirmez que les métadonnées ont été importées avec succès.
++
+.. Cliquez avec le bouton droit sur l’approbation de la partie de confiance pour ouvrir ses propriétés.
+.. Confirmez que les champs des onglets *Points de terminaison*, *Identifiants* et *Signature* sont renseignés.
++
+Si les métadonnées sont manquantes, confirmez que l'adresse des métadonnées de la Fédération est correcte ou saisissez les valeurs manuellement.
+
+
+
+. Répétez ces étapes pour configurer une approbation de partie de confiance pour tous les nœuds d’administration de votre système StorageGRID .
+. Une fois que vous avez terminé, revenez à StorageGRID et testez toutes les approbations des parties de confiance pour confirmer qu'elles sont correctement configurées. Voirlink:using-sandbox-mode.html["Utiliser le mode Sandbox"] pour les instructions.
+
+
+
+
+== Créer manuellement une fiducie de partie utilisatrice
+
+Si vous choisissez de ne pas importer les données des approbations de partie de confiance, vous pouvez saisir les valeurs manuellement.
+
+.Étapes
+. Dans le Gestionnaire de serveur Windows, sélectionnez *Outils*, puis *Gestion AD FS*.
+. Sous Actions, sélectionnez *Ajouter une approbation de partie de confiance*.
+. Sur la page d'accueil, choisissez *Réclamations prises en compte*, puis sélectionnez *Démarrer*.
+. Sélectionnez *Saisir manuellement les données sur la partie de confiance*, puis sélectionnez *Suivant*.
+. Complétez l'assistant d'approbation de partie de confiance :
++
+.. Saisissez un nom d’affichage pour ce nœud d’administration.
++
+Par souci de cohérence, utilisez l’identifiant de partie de confiance pour le nœud d’administration, exactement tel qu’il apparaît sur la page d’authentification unique dans le gestionnaire de grille. Par exemple :  `SG-DC1-ADM1` .
+
+.. Ignorez l’étape pour configurer un certificat de chiffrement de jeton facultatif.
+.. Sur la page Configurer l’URL, cochez la case *Activer la prise en charge du protocole SAML 2.0 WebSSO*.
+.. Saisissez l’URL du point de terminaison du service SAML pour le nœud d’administration :
++
+`https://_Admin_Node_FQDN_/api/saml-response`
+
++
+Pour `_Admin_Node_FQDN_` , entrez le nom de domaine complet du nœud d'administration.  (Si nécessaire, vous pouvez utiliser l'adresse IP du nœud à la place.  Cependant, si vous saisissez une adresse IP ici, sachez que vous devez mettre à jour ou recréer cette approbation de partie de confiance si cette adresse IP change un jour.)
+
+.. Sur la page Configurer les identifiants, spécifiez l’identifiant de la partie de confiance pour le même nœud d’administration :
++
+`_Admin_Node_Identifier_`
+
++
+Pour `_Admin_Node_Identifier_` , saisissez l’identifiant de la partie de confiance pour le nœud d’administration, exactement tel qu’il apparaît sur la page d’authentification unique. Par exemple :  `SG-DC1-ADM1` .
+
+.. Vérifiez les paramètres, enregistrez l’approbation de la partie de confiance et fermez l’assistant.
++
+La boîte de dialogue Modifier la politique d’émission de réclamation s’affiche.
+
++
+
+NOTE: Si la boîte de dialogue n'apparaît pas, cliquez avec le bouton droit sur la fiducie et sélectionnez *Modifier la politique d'émission de réclamation*.
+
+
+
+. Pour démarrer l'assistant de règle de revendication, sélectionnez *Ajouter une règle* :
++
+.. Sur la page Sélectionner un modèle de règle, sélectionnez *Envoyer les attributs LDAP en tant que revendications* dans la liste, puis sélectionnez *Suivant*.
+.. Sur la page Configurer la règle, entrez un nom d’affichage pour cette règle.
++
+Par exemple, *ObjectGUID vers Name ID* ou *UPN vers Name ID*.
+
+.. Pour le magasin d'attributs, sélectionnez *Active Directory*.
+.. Dans la colonne Attribut LDAP de la table de mappage, saisissez *objectGUID* ou sélectionnez *User-Principal-Name*.
+.. Dans la colonne Type de réclamation sortante de la table de mappage, sélectionnez *ID de nom* dans la liste déroulante.
+.. Sélectionnez *Terminer*, puis *OK*.
+
+
+. Cliquez avec le bouton droit sur l’approbation de la partie de confiance pour ouvrir ses propriétés.
+. Dans l'onglet *Points de terminaison*, configurez le point de terminaison pour la déconnexion unique (SLO) :
++
+.. Sélectionnez *Ajouter SAML*.
+.. Sélectionnez *Type de point de terminaison* > *Déconnexion SAML*.
+.. Sélectionnez *Liaison* > *Redirection*.
+.. Dans le champ *URL de confiance*, saisissez l'URL utilisée pour la déconnexion unique (SLO) de ce nœud d'administration :
++
+`https://_Admin_Node_FQDN_/api/saml-logout`
+
++
+Pour `_Admin_Node_FQDN_` , entrez le nom de domaine complet du nœud d'administration.  (Si nécessaire, vous pouvez utiliser l'adresse IP du nœud à la place.  Cependant, si vous saisissez une adresse IP ici, sachez que vous devez mettre à jour ou recréer cette approbation de partie de confiance si cette adresse IP change un jour.)
+
+.. Sélectionnez *OK*.
+
+
+. Dans l'onglet *Signature*, spécifiez le certificat de signature pour cette approbation de partie de confiance :
++
+.. Ajoutez le certificat personnalisé :
++
+*** Si vous disposez du certificat de gestion personnalisé que vous avez téléchargé sur StorageGRID, sélectionnez ce certificat.
+*** Si vous n'avez pas le certificat personnalisé, connectez-vous au nœud d'administration, accédez à la `/var/local/mgmt-api` répertoire du nœud Admin et ajoutez le `custom-server.crt` fichier de certificat.
++
+
+NOTE: Utilisation du certificat par défaut du nœud d'administration(`server.crt` ) n'est pas recommandé.  Si le nœud d'administration échoue, le certificat par défaut sera régénéré lorsque vous récupérerez le nœud et vous devrez mettre à jour l'approbation de la partie de confiance.
+
+
+
+.. Sélectionnez *Appliquer*, puis *OK*.
++
+Les propriétés de la partie de confiance sont enregistrées et fermées.
+
+
+
+. Répétez ces étapes pour configurer une approbation de partie de confiance pour tous les nœuds d’administration de votre système StorageGRID .
+. Une fois que vous avez terminé, revenez à StorageGRID et testez toutes les approbations des parties de confiance pour confirmer qu'elles sont correctement configurées. Voirlink:using-sandbox-mode.html["Utiliser le mode sandbox"] pour les instructions.
+

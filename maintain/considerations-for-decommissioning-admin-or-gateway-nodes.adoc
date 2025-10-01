@@ -1,0 +1,36 @@
+---
+permalink: maintain/considerations-for-decommissioning-admin-or-gateway-nodes.html 
+sidebar: sidebar 
+keywords: storagegrid, decommission admin node, decommission gateway node 
+summary: Passez en revue les considérations relatives à la mise hors service d’un nœud d’administration ou d’un nœud de passerelle. 
+---
+= Considérations relatives à la mise hors service des nœuds d'administration ou de passerelle
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Passez en revue les considérations relatives à la mise hors service d’un nœud d’administration ou d’un nœud de passerelle.
+
+
+
+== Considérations pour le nœud d'administration
+
+* Vous ne pouvez pas désactiver le nœud d’administration principal.
+* Vous ne pouvez pas désactiver un nœud d’administration si l’une de ses interfaces réseau fait partie d’un groupe de haute disponibilité (HA).  Vous devez d’abord supprimer les interfaces réseau du groupe HA. Voir les instructions pourlink:../admin/managing-high-availability-groups.html["gestion des groupes HA"] .
+* Si nécessaire, vous pouvez modifier en toute sécurité les politiques ILM lors de la mise hors service d'un nœud d'administration.
+* Si vous désactivez un nœud d'administration et que l'authentification unique (SSO) est activée pour votre système StorageGRID , vous devez penser à supprimer l'approbation de la partie de confiance du nœud des services de fédération Active Directory (AD FS).
+* Si vous utilisezlink:../admin/grid-federation-overview.html["fédération de réseau"] , assurez-vous que l'adresse IP du nœud que vous mettez hors service n'a pas été spécifiée pour une connexion à une fédération de grille.
+* Lorsque vous désactivez un nœud d'administration déconnecté, vous perdez les journaux d'audit de ce nœud ; cependant, ces journaux doivent également exister sur le nœud d'administration principal.
+
+
+
+
+== Considérations relatives au nœud de passerelle
+
+* Vous ne pouvez pas désactiver un nœud de passerelle si l’une de ses interfaces réseau fait partie d’un groupe de haute disponibilité (HA).  Vous devez d’abord supprimer les interfaces réseau du groupe HA. Voir les instructions pourlink:../admin/managing-high-availability-groups.html["gestion des groupes HA"] .
+* Si nécessaire, vous pouvez modifier en toute sécurité les stratégies ILM lors de la mise hors service d'un nœud de passerelle.
+* Si vous utilisezlink:../admin/grid-federation-overview.html["fédération de réseau"] , assurez-vous que l'adresse IP du nœud que vous mettez hors service n'a pas été spécifiée pour une connexion à une fédération de grille.
+* Vous pouvez mettre hors service en toute sécurité un nœud de passerelle lorsqu'il est déconnecté.
+

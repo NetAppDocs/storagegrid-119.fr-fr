@@ -1,0 +1,102 @@
+---
+permalink: ilm/what-cloud-storage-pool-is.html 
+sidebar: sidebar 
+keywords: what is a cloud storage pool 
+summary: 'Un pool de stockage cloud vous permet d"utiliser ILM pour déplacer des données d"objet en dehors de votre système StorageGRID .  Par exemple, vous souhaiterez peut-être déplacer des objets rarement consultés vers un stockage cloud moins coûteux, tel qu"Amazon S3 Glacier, S3 Glacier Deep Archive, Google Cloud ou le niveau d"accès Archive dans le stockage Microsoft Azure Blob.  Ou, vous souhaiterez peut-être conserver une sauvegarde cloud des objets StorageGRID pour améliorer la reprise après sinistre.' 
+---
+= Qu'est-ce qu'un pool de stockage cloud ?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Un pool de stockage cloud vous permet d'utiliser ILM pour déplacer des données d'objet en dehors de votre système StorageGRID .  Par exemple, vous souhaiterez peut-être déplacer des objets rarement consultés vers un stockage cloud moins coûteux, tel qu'Amazon S3 Glacier, S3 Glacier Deep Archive, Google Cloud ou le niveau d'accès Archive dans le stockage Microsoft Azure Blob.  Ou, vous souhaiterez peut-être conserver une sauvegarde cloud des objets StorageGRID pour améliorer la reprise après sinistre.
+
+Du point de vue ILM, un pool de stockage cloud est similaire à un pool de stockage.  Pour stocker des objets dans l'un ou l'autre emplacement, vous sélectionnez le pool lors de la création des instructions de placement pour une règle ILM.  Cependant, alors que les pools de stockage se composent de nœuds de stockage au sein du système StorageGRID , un pool de stockage cloud se compose d'un bucket externe (S3) ou d'un conteneur (stockage Azure Blob).
+
+Le tableau compare les pools de stockage aux pools de stockage cloud et montre les similitudes et les différences de haut niveau.
+
+[cols="1a,2a,5a"]
+|===
+|  | Piscine de stockage | Pool de stockage cloud 
+
+
+ a| 
+Comment est-il créé ?
+ a| 
+Utilisation de l'option *ILM* > *Pools de stockage* dans Grid Manager.
+ a| 
+Utilisation de l'option *ILM* > *Pools de stockage* > *Pools de stockage cloud* dans Grid Manager.
+
+Vous devez configurer le bucket ou le conteneur externe avant de pouvoir créer le pool de stockage cloud.
+
+
+
+ a| 
+Combien de pools pouvez-vous créer ?
+ a| 
+Illimité.
+ a| 
+Jusqu'à 10.
+
+
+
+ a| 
+Où sont stockés les objets ?
+ a| 
+Sur un ou plusieurs nœuds de stockage dans StorageGRID.
+ a| 
+Dans un compartiment Amazon S3, un conteneur de stockage Azure Blob ou Google Cloud externe au système StorageGRID .
+
+Si le pool de stockage cloud est un compartiment Amazon S3 :
+
+* Vous pouvez éventuellement configurer un cycle de vie de bucket pour transférer des objets vers un stockage à long terme et à faible coût, tel qu'Amazon S3 Glacier ou S3 Glacier Deep Archive.  Le système de stockage externe doit prendre en charge la classe de stockage Glacier et l'API S3 RestoreObject.
+* Vous pouvez créer des pools de stockage cloud à utiliser avec AWS Commercial Cloud Services (C2S), qui prend en charge la région secrète AWS.
+
+
+Si le pool de stockage cloud est un conteneur de stockage d’objets blob Azure, StorageGRID fait passer l’objet au niveau Archive.
+
+*Remarque :* En général, ne configurez pas la gestion du cycle de vie du stockage Blob Azure pour le conteneur utilisé pour un pool de stockage cloud.  Les opérations RestoreObject sur les objets du pool de stockage cloud peuvent être affectées par le cycle de vie configuré.
+
+
+
+ a| 
+Qu'est-ce qui contrôle le placement des objets ?
+ a| 
+Une règle ILM dans les politiques ILM actives.
+ a| 
+Une règle ILM dans les politiques ILM actives.
+
+
+
+ a| 
+Quelle méthode de protection des données est utilisée ?
+ a| 
+Codage de réplication ou d'effacement.
+ a| 
+Réplication.
+
+
+
+ a| 
+Combien de copies de chaque objet sont autorisées ?
+ a| 
+Multiple.
+ a| 
+Une copie dans le Cloud Storage Pool et, éventuellement, une ou plusieurs copies dans StorageGRID.
+
+*Remarque :* vous ne pouvez pas stocker un objet dans plusieurs pools de stockage cloud à la fois.
+
+
+
+ a| 
+Quels sont les avantages ?
+ a| 
+Les objets sont rapidement accessibles à tout moment.
+ a| 
+Stockage à faible coût.
+
+*Remarque* : les données FabricPool ne peuvent pas être hiérarchisées vers des pools de stockage cloud.
+
+|===

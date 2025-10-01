@@ -1,0 +1,98 @@
+---
+permalink: ilm/advantages-disadvantages-of-ingest-options.html 
+sidebar: sidebar 
+keywords: ingest options, balance ingest, strict ingest, dual commit ingest 
+summary: 'Comprendre les avantages et les inconvénients de chacune des trois options de protection des données lors de l"ingestion (validation équilibrée, stricte ou double) peut vous aider à décider laquelle sélectionner pour une règle ILM.' 
+---
+= Avantages, inconvénients et limites des options d'ingestion
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Comprendre les avantages et les inconvénients de chacune des trois options de protection des données lors de l’ingestion (validation équilibrée, stricte ou double) peut vous aider à décider laquelle sélectionner pour une règle ILM.
+
+Pour un aperçu des options d'ingestion, voirlink:data-protection-options-for-ingest.html["Options d'ingestion"] .
+
+
+
+== Avantages des options Équilibré et Strict
+
+Par rapport à la validation double, qui crée des copies intermédiaires lors de l'ingestion, les deux options de placement synchrone peuvent offrir les avantages suivants :
+
+* * Meilleure sécurité des données * : les données de l'objet sont immédiatement protégées comme spécifié dans les instructions de placement de la règle ILM, qui peuvent être configurées pour protéger contre une grande variété de conditions de défaillance, y compris la défaillance de plusieurs emplacements de stockage.  La double validation ne peut protéger que contre la perte d'une seule copie locale.
+* *Fonctionnement de grille plus efficace* : chaque objet est traité une seule fois, au fur et à mesure de son ingestion.  Étant donné que le système StorageGRID n’a pas besoin de suivre ou de supprimer les copies intermédiaires, la charge de traitement est moindre et l’espace de base de données consommé est moindre.
+* *(Équilibré) Recommandé* : L'option Équilibré offre une efficacité ILM optimale.  L'utilisation de l'option Équilibré est recommandée, sauf si un comportement d'ingestion strict est requis ou si la grille répond à tous les critères d'utilisation de la double validation.
+* *(Stricte) Certitude sur les emplacements des objets* : L'option Stricte garantit que les objets sont immédiatement stockés conformément aux instructions de placement de la règle ILM.
+
+
+
+
+== Inconvénients des options Équilibré et Strict
+
+Par rapport à la validation double, les options équilibrée et stricte présentent certains inconvénients :
+
+* *Ingestions client plus longues* : les latences d'ingestion client peuvent être plus longues.  Lorsque vous utilisez les options Équilibré ou Strict, un message « ingestion réussie » n'est pas renvoyé au client tant que tous les fragments codés par effacement ou les copies répliquées ne sont pas créés et stockés.  Cependant, les données de l’objet atteindront probablement leur emplacement final beaucoup plus rapidement.
+* *(Strict) Taux d'échec d'ingestion plus élevés* : avec l'option Strict, l'ingestion échoue lorsque StorageGRID ne peut pas effectuer immédiatement toutes les copies spécifiées dans la règle ILM.  Vous pouvez constater des taux élevés d’échec d’ingestion si un emplacement de stockage requis est temporairement hors ligne ou si des problèmes de réseau entraînent des retards dans la copie d’objets entre les sites.
+* *(Strict) Les placements de téléchargement multipartites S3 peuvent ne pas être comme prévu dans certaines circonstances* : Avec Strict, vous vous attendez à ce que les objets soient placés comme décrit par la règle ILM ou à ce que l'ingestion échoue.  Cependant, avec un téléchargement multipartie S3, ILM est évalué pour chaque partie de l'objet au fur et à mesure de son ingestion, et pour l'objet dans son ensemble lorsque le téléchargement multipartie est terminé.  Dans les circonstances suivantes, cela peut entraîner des placements différents de ceux que vous attendez :
++
+** *Si l'ILM change pendant qu'un téléchargement multipartie S3 est en cours* : Étant donné que chaque partie est placée selon la règle active lorsque la partie est ingérée, certaines parties de l'objet peuvent ne pas répondre aux exigences ILM actuelles une fois le téléchargement multipartie terminé.  Dans ces cas, l’ingestion de l’objet n’échoue pas.  Au lieu de cela, toute pièce qui n'est pas placée correctement est mise en file d'attente pour une réévaluation ILM et est déplacée vers l'emplacement correct ultérieurement.
+** *Lorsque les règles ILM filtrent sur la taille* : lors de l'évaluation de l'ILM pour une partie, StorageGRID filtre sur la taille de la partie, et non sur la taille de l'objet.  Cela signifie que des parties d'un objet peuvent être stockées dans des emplacements qui ne répondent pas aux exigences ILM pour l'objet dans son ensemble.  Par exemple, si une règle spécifie que tous les objets de 10 Go ou plus sont stockés sur DC1 tandis que tous les objets plus petits sont stockés sur DC2, lors de l'ingestion, chaque partie de 1 Go d'un téléchargement multipartie en 10 parties est stockée sur DC2.  Lorsque l'ILM est évalué pour l'objet, toutes les parties de l'objet sont déplacées vers DC1.
+
+
+* *(Strict) L'ingestion n'échoue pas lorsque les balises d'objet ou les métadonnées sont mises à jour et que les nouveaux placements requis ne peuvent pas être effectués* : avec Strict, vous vous attendez à ce que les objets soient placés comme décrit par la règle ILM ou que l'ingestion échoue.  Cependant, lorsque vous mettez à jour les métadonnées ou les balises d’un objet déjà stocké dans la grille, l’objet n’est pas réingéré.  Cela signifie que toutes les modifications apportées au placement des objets déclenchées par la mise à jour ne sont pas effectuées immédiatement.  Les modifications de placement sont effectuées lorsque l'ILM est réévalué par les processus ILM d'arrière-plan normaux.  Si les modifications de placement requises ne peuvent pas être effectuées (par exemple, parce qu'un nouvel emplacement requis n'est pas disponible), l'objet mis à jour conserve son placement actuel jusqu'à ce que les modifications de placement soient possibles.
+
+
+
+
+== Limitations sur les placements d'objets avec les options Équilibré et Strict
+
+Les options Équilibré ou Strict ne peuvent pas être utilisées pour les règles ILM qui ont l'une de ces instructions de placement :
+
+* Placement dans un pool de stockage cloud au jour 0.
+* Emplacements dans un pool de stockage cloud lorsque la règle a une heure de création définie par l'utilisateur comme heure de référence.
+
+
+Ces restrictions existent parce que StorageGRID ne peut pas effectuer de copies de manière synchrone vers un pool de stockage cloud, et une heure de création définie par l'utilisateur peut être résolue au présent.
+
+
+
+== Comment les règles ILM et la cohérence interagissent pour affecter la protection des données
+
+Votre règle ILM et votre choix de cohérence affectent la manière dont les objets sont protégés.  Ces paramètres peuvent interagir.
+
+Par exemple, le comportement d’ingestion sélectionné pour une règle ILM affecte le placement initial des copies d’objet, tandis que la cohérence utilisée lors du stockage d’un objet affecte le placement initial des métadonnées de l’objet.  Étant donné que StorageGRID nécessite l'accès aux données et aux métadonnées d'un objet pour répondre aux demandes des clients, la sélection de niveaux de protection correspondants pour la cohérence et le comportement d'ingestion peut fournir une meilleure protection initiale des données et des réponses système plus prévisibles.
+
+Voici un bref résumé des valeurs de cohérence disponibles dans StorageGRID:
+
+* *Tous* : Tous les nœuds reçoivent immédiatement les métadonnées de l'objet, sinon la demande échouera.
+* *Strong-global* : les métadonnées de l'objet sont immédiatement distribuées à tous les sites.  Garantit la cohérence de lecture après écriture pour toutes les demandes client sur tous les sites.
+* *Site fort* : les métadonnées de l'objet sont immédiatement distribuées aux autres nœuds du site.  Garantit la cohérence de lecture après écriture pour toutes les demandes client au sein d'un site.
+* *Lecture après nouvelle écriture* : assure la cohérence de lecture après écriture pour les nouveaux objets et la cohérence éventuelle pour les mises à jour d'objets.  Offre des garanties de haute disponibilité et de protection des données.  Recommandé dans la plupart des cas.
+* *Disponible* : Fournit une cohérence éventuelle pour les nouveaux objets et les mises à jour d'objets.  Pour les buckets S3, utilisez-les uniquement si nécessaire (par exemple, pour un bucket contenant des valeurs de journal rarement lues ou pour des opérations HEAD ou GET sur des clés qui n'existent pas).  Non pris en charge pour les buckets S3 FabricPool .
+
+
+
+NOTE: Avant de sélectionner une valeur de cohérence,link:../s3/consistency-controls.html["lire la description complète de la cohérence"] . Vous devez comprendre les avantages et les limites avant de modifier la valeur par défaut.
+
+
+
+== Exemple de la manière dont les règles de cohérence et les règles ILM peuvent interagir
+
+Supposons que vous ayez une grille à deux sites avec la règle ILM suivante et la cohérence suivante :
+
+* *Règle ILM* : Créez deux copies d'objet, une sur le site local et une sur un site distant. Adoptez un comportement d'ingestion strict.
+* *cohérence* : Global fort (les métadonnées de l'objet sont immédiatement distribuées à tous les sites).
+
+
+Lorsqu'un client stocke un objet dans la grille, StorageGRID effectue les deux copies de l'objet et distribue les métadonnées aux deux sites avant de renvoyer le succès au client.
+
+L'objet est entièrement protégé contre la perte au moment de l'ingestion réussie du message. Par exemple, si le site local est perdu peu de temps après l'ingestion, des copies des données d'objet et des métadonnées d'objet existent toujours sur le site distant.  L'objet est entièrement récupérable.
+
+Si vous avez utilisé la même règle ILM et la cohérence de site forte, le client peut recevoir un message de réussite après la réplication des données d'objet sur le site distant, mais avant que les métadonnées d'objet y soient distribuées. Dans ce cas, le niveau de protection des métadonnées de l’objet ne correspond pas au niveau de protection des données de l’objet. Si le site local est perdu peu de temps après l'ingestion, les métadonnées de l'objet sont perdues. L'objet ne peut pas être récupéré.
+
+L’interrelation entre la cohérence et les règles ILM peut être complexe.  Contactez NetApp si vous avez besoin d’aide.
+
+.Informations connexes
+link:example-5-ilm-rules-and-policy-for-strict-ingest-behavior.html["Exemple 5 : Règles et politique ILM pour un comportement d'ingestion strict"]

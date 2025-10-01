@@ -1,0 +1,54 @@
+---
+permalink: harden/hardening-guidelines-for-storagegrid-networks.html 
+sidebar: sidebar 
+keywords: hardening guidelines, networks, networking, security 
+summary: 'Le système StorageGRID prend en charge jusqu"à trois interfaces réseau par nœud de grille, vous permettant de configurer la mise en réseau de chaque nœud de grille individuel afin de répondre à vos exigences de sécurité et d"accès.' 
+---
+= Directives de renforcement pour les réseaux StorageGRID
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Le système StorageGRID prend en charge jusqu'à trois interfaces réseau par nœud de grille, vous permettant de configurer la mise en réseau de chaque nœud de grille individuel afin de répondre à vos exigences de sécurité et d'accès.
+
+Pour des informations détaillées sur les réseaux StorageGRID , consultez lelink:../network/storagegrid-network-types.html["Types de réseaux StorageGRID"] .
+
+
+
+== Lignes directrices pour le réseau de grille
+
+Vous devez configurer un réseau Grid pour tout le trafic StorageGRID interne.  Tous les nœuds de grille sont sur le réseau de grille et doivent pouvoir communiquer avec tous les autres nœuds.
+
+Lors de la configuration du réseau Grid, suivez ces instructions :
+
+* Assurez-vous que le réseau est sécurisé contre les clients non fiables, tels que ceux présents sur Internet ouvert.
+* Dans la mesure du possible, utilisez le réseau Grid exclusivement pour le trafic interne.  Le réseau d'administration et le réseau client disposent tous deux de restrictions de pare-feu supplémentaires qui bloquent le trafic externe vers les services internes.  L’utilisation du réseau Grid pour le trafic client externe est prise en charge, mais cette utilisation offre moins de couches de protection.
+* Si le déploiement StorageGRID s'étend sur plusieurs centres de données, utilisez un réseau privé virtuel (VPN) ou équivalent sur le réseau Grid pour fournir une protection supplémentaire au trafic interne.
+* Certaines procédures de maintenance nécessitent un accès Secure Shell (SSH) sur le port 22 entre le nœud d'administration principal et tous les autres nœuds de grille.  Utilisez un pare-feu externe pour restreindre l’accès SSH aux clients de confiance.
+
+
+
+
+== Directives pour le réseau d'administration
+
+Le réseau d'administration est généralement utilisé pour les tâches administratives (employés de confiance utilisant Grid Manager ou SSH) et pour communiquer avec d'autres services de confiance tels que LDAP, DNS, NTP ou KMS (ou serveur KMIP).  Cependant, StorageGRID n'applique pas cette utilisation en interne.
+
+Si vous utilisez le réseau d’administration, suivez ces instructions :
+
+* Bloquez tous les ports de trafic internes sur le réseau d'administration. Voir lelink:../network/internal-grid-node-communications.html["liste des ports internes"] .
+* Si des clients non approuvés peuvent accéder au réseau d’administration, bloquez l’accès à StorageGRID sur le réseau d’administration avec un pare-feu externe.
+
+
+
+
+== Lignes directrices pour le réseau de clients
+
+Le réseau client est généralement utilisé pour les locataires et pour communiquer avec des services externes, tels que le service de réplication CloudMirror ou un autre service de plateforme.  Cependant, StorageGRID n'applique pas cette utilisation en interne.
+
+Si vous utilisez le réseau client, suivez ces directives :
+
+* Bloquez tous les ports de trafic internes sur le réseau client. Voir lelink:../network/internal-grid-node-communications.html["liste des ports internes"] .
+* Acceptez le trafic client entrant uniquement sur les points de terminaison explicitement configurés.  Voir les informations surlink:../admin/manage-firewall-controls.html["gestion des contrôles du pare-feu"] .
+

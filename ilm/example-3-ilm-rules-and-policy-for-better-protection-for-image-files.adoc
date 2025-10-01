@@ -1,0 +1,124 @@
+---
+permalink: ilm/example-3-ilm-rules-and-policy-for-better-protection-for-image-files.html 
+sidebar: sidebar 
+keywords: example ILM rule, information lifecycle rule examples 
+summary: 'Vous pouvez utiliser les exemples de règles et de politiques suivants pour garantir que les images supérieures à 1 Mo sont codées par effacement et que deux copies d"images plus petites sont effectuées.' 
+---
+= Exemple 3 : Règles et politique ILM pour une meilleure protection des fichiers image
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser les exemples de règles et de politiques suivants pour garantir que les images supérieures à 1 Mo sont codées par effacement et que deux copies d'images plus petites sont effectuées.
+
+
+CAUTION: Les règles et politiques ILM suivantes ne sont que des exemples.  Il existe de nombreuses façons de configurer les règles ILM.  Avant d’activer une nouvelle politique, simulez-la pour confirmer qu’elle fonctionnera comme prévu pour protéger le contenu contre la perte.
+
+
+
+== Règle ILM 1 pour l'exemple 3 : utiliser EC pour les fichiers image supérieurs à 1 Mo
+
+Cet exemple de règle ILM utilise un filtrage avancé pour effacer le code de tous les fichiers image supérieurs à 1 Mo.
+
+
+NOTE: Le codage d’effacement est particulièrement adapté aux objets supérieurs à 1 Mo.  N'utilisez pas le codage d'effacement pour les objets inférieurs à 200 Ko afin d'éviter la surcharge liée à la gestion de très petits fragments codés par effacement.
+
+[cols="1a,2a"]
+|===
+| Définition de la règle | Exemple de valeur 
+
+
+ a| 
+Nom de la règle
+ a| 
+Fichiers image EC > 1 Mo
+
+
+
+ a| 
+Heure de référence
+ a| 
+Temps d'ingestion
+
+
+
+ a| 
+Filtre avancé pour la taille de l'objet
+ a| 
+Taille de l'objet supérieure à 1 Mo
+
+
+
+ a| 
+Filtres avancés pour la clé
+ a| 
+* Se termine par .jpg
+* Se termine par .png
+
+
+
+
+ a| 
+Placements
+ a| 
+Créer une copie codée à effacement 2+1 en utilisant trois sites
+
+|===
+image::../media/policy_3_rule_1_ec_images_adv_filtering.png[Règle ILM 1 pour l'exemple 3 : utiliser EC pour les fichiers image supérieurs à 1 Mo]
+
+Étant donné que cette règle est configurée comme première règle de la stratégie, l'instruction de placement du codage d'effacement s'applique uniquement aux fichiers .jpg et .png supérieurs à 1 Mo.
+
+
+
+== Règle ILM 2 pour l'exemple 3 : créer 2 copies répliquées pour tous les fichiers image restants
+
+Cet exemple de règle ILM utilise un filtrage avancé pour spécifier que des fichiers image plus petits doivent être répliqués.  Étant donné que la première règle de la politique a déjà mis en correspondance des fichiers image supérieurs à 1 Mo, cette règle s’applique aux fichiers image de 1 Mo ou moins.
+
+[cols="1a,2a"]
+|===
+| Définition de la règle | Exemple de valeur 
+
+
+ a| 
+Nom de la règle
+ a| 
+2 copies pour les fichiers image
+
+
+
+ a| 
+Heure de référence
+ a| 
+Temps d'ingestion
+
+
+
+ a| 
+Filtres avancés pour la clé
+ a| 
+* Se termine par .jpg
+* Se termine par .png
+
+
+
+
+ a| 
+Placements
+ a| 
+Créer 2 copies répliquées dans deux pools de stockage
+
+|===
+
+
+== Politique ILM pour l'exemple 3 : Meilleure protection des fichiers image
+
+Cet exemple de politique ILM comprend trois règles :
+
+* La première règle efface les codes de tous les fichiers image supérieurs à 1 Mo.
+* La deuxième règle crée deux copies de tous les fichiers image restants (c'est-à-dire des images de 1 Mo ou moins).
+* La règle par défaut s'applique à tous les objets restants (c'est-à-dire tous les fichiers non image).
+
+
+image::../media/policy_3_configured_policy.png[Politique ILM pour l'exemple 3 : Meilleure protection des fichiers image]

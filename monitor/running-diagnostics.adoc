@@ -1,0 +1,85 @@
+---
+permalink: monitor/running-diagnostics.html 
+sidebar: sidebar 
+keywords: how to run diagnostics 
+summary: 'Lors du dépannage d"un problème, vous pouvez travailler avec le support technique pour exécuter des diagnostics sur votre système StorageGRID et examiner les résultats.' 
+---
+= Exécuter les diagnostics
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lors du dépannage d'un problème, vous pouvez travailler avec le support technique pour exécuter des diagnostics sur votre système StorageGRID et examiner les résultats.
+
+* link:reviewing-support-metrics.html["Examiner les mesures de support"]
+* link:commonly-used-prometheus-metrics.html["Métriques Prometheus couramment utilisées"]
+
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Tu aslink:../admin/admin-group-permissions.html["autorisations d'accès spécifiques"] .
+
+
+.À propos de cette tâche
+La page Diagnostics effectue un ensemble de vérifications de diagnostic sur l’état actuel de la grille.  Chaque contrôle de diagnostic peut avoir l’un des trois statuts suivants :
+
+* image:../media/icon_alert_green_checkmark.png["Icône d'alerte Coche verte"]*Normal* : Toutes les valeurs sont dans la plage normale.
+* image:../media/icon_alert_yellow_minor.png["Icône d'alerte mineure jaune"]*Attention* : Une ou plusieurs valeurs sont en dehors de la plage normale.
+* image:../media/icon_alert_red_critical.png["Icône d'alerte rouge critique"]*Attention* : Une ou plusieurs valeurs sont significativement en dehors de la plage normale.
+
+
+Les états de diagnostic sont indépendants des alertes actuelles et peuvent ne pas indiquer de problèmes opérationnels avec le réseau.  Par exemple, un contrôle de diagnostic peut afficher le statut Attention même si aucune alerte n'a été déclenchée.
+
+.Étapes
+. Sélectionnez *SUPPORT* > *Outils* > *Diagnostics*.
++
+La page Diagnostics s’affiche et répertorie les résultats de chaque vérification de diagnostic.  Les résultats sont triés par gravité (Attention, Attention, puis Normal).  Au sein de chaque gravité, les résultats sont triés par ordre alphabétique.
+
++
+Dans cet exemple, tous les diagnostics ont un statut Normal.
+
++
+image::../media/support_diagnostics_page.png[Page de diagnostic d'assistance]
+
+. Pour en savoir plus sur un diagnostic spécifique, cliquez n’importe où sur la ligne.
++
+Les détails sur le diagnostic et ses résultats actuels s'affichent.  Les détails suivants sont répertoriés :
+
++
+** *Statut* : L’état actuel de ce diagnostic : Normal, Attention ou Attention.
+** *Requête Prometheus* : si elle est utilisée pour le diagnostic, l'expression Prometheus qui a été utilisée pour générer les valeurs d'état.  (Une expression Prometheus n'est pas utilisée pour tous les diagnostics.)
+** *Seuils* : Si disponibles pour le diagnostic, les seuils définis par le système pour chaque état de diagnostic anormal.  (Les valeurs de seuil ne sont pas utilisées pour tous les diagnostics.)
++
+
+NOTE: Vous ne pouvez pas modifier ces seuils.
+
+** *Valeurs d'état* : un tableau indiquant l'état et la valeur du diagnostic dans l'ensemble du système StorageGRID . Dans cet exemple, l'utilisation actuelle du processeur pour chaque nœud d'un système StorageGRID est affichée. Toutes les valeurs des nœuds sont inférieures aux seuils d'attention et de prudence, donc l'état global du diagnostic est Normal.
+
+
++
+image::../media/support_diagnostics_cpu_utilization.png[Prise en charge des diagnostics d'utilisation du processeur]
+
+. *Facultatif* : Pour voir les graphiques Grafana liés à ce diagnostic, cliquez sur le lien *Tableau de bord Grafana*.
++
+Ce lien n'est pas affiché pour tous les diagnostics.
+
++
+Le tableau de bord Grafana associé apparaît. Dans cet exemple, le tableau de bord du nœud s'affiche, affichant l'utilisation du processeur au fil du temps pour ce nœud ainsi que d'autres graphiques Grafana pour le nœud.
+
++
+
+NOTE: Vous pouvez également accéder aux tableaux de bord Grafana pré-construits à partir de la section Grafana de la page *SUPPORT* > *Outils* > *Métriques*.
+
++
+image::../media/grafana_dashboard_nodes.png[Nœuds du tableau de bord Grafana]
+
+. *Facultatif* : Pour voir un graphique de l'expression Prometheus au fil du temps, cliquez sur *Afficher dans Prometheus*.
++
+Un graphique Prometheus de l’expression utilisée dans le diagnostic apparaît.
+
++
+image::../media/support_diagnostics_prometheus_png.png[Page Prometheus de diagnostic d'assistance]
+
+

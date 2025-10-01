@@ -1,0 +1,46 @@
+---
+permalink: maintain/removing-port-remaps.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, remove port remap, removing port remap, port remap 
+summary: 'Si vous souhaitez configurer un point de terminaison pour le service Load Balancer et que vous souhaitez utiliser un port qui a déjà été configuré comme port mappé d"un remappage de port, vous devez d"abord supprimer le remappage de port existant, sinon le point de terminaison ne sera pas efficace.  Vous devez exécuter un script sur chaque nœud d"administration et nœud de passerelle comportant des ports remappés en conflit pour supprimer tous les remappages de ports du nœud.' 
+---
+= Supprimer les remappages de ports
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si vous souhaitez configurer un point de terminaison pour le service Load Balancer et que vous souhaitez utiliser un port qui a déjà été configuré comme port mappé d'un remappage de port, vous devez d'abord supprimer le remappage de port existant, sinon le point de terminaison ne sera pas efficace.  Vous devez exécuter un script sur chaque nœud d'administration et nœud de passerelle comportant des ports remappés en conflit pour supprimer tous les remappages de ports du nœud.
+
+.À propos de cette tâche
+Cette procédure supprime tous les remappages de ports.  Si vous devez conserver certains remappages, contactez le support technique.
+
+Pour plus d'informations sur la configuration des points de terminaison de l'équilibreur de charge, consultezlink:../admin/configuring-load-balancer-endpoints.html["Configuration des points de terminaison de l'équilibreur de charge"] .
+
+
+NOTE: Si le remappage du port fournit un accès client, reconfigurez le client pour utiliser un port différent comme point de terminaison d'équilibrage de charge afin d'éviter la perte de service.  Dans le cas contraire, la suppression du mappage de port entraînera la perte de l’accès client et devra être planifiée de manière appropriée.
+
+
+NOTE: Cette procédure ne fonctionne pas pour un système StorageGRID déployé en tant que conteneur sur des hôtes bare metal. Voir les instructions pourlink:removing-port-remaps-on-bare-metal-hosts.html["suppression des remappages de ports sur les hôtes bare metal"] .
+
+.Étapes
+. Connectez-vous au nœud.
++
+.. Entrez la commande suivante : `ssh -p 8022 admin@node_IP`
++
+Le port 8022 est le port SSH du système d'exploitation de base, tandis que le port 22 est le port SSH du moteur de conteneur exécutant StorageGRID.
+
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
+.. Entrez la commande suivante pour passer en root : `su -`
+.. Entrez le mot de passe indiqué dans le `Passwords.txt` déposer.
++
+Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
+
+
+
+. Exécutez le script suivant : `remove-port-remap.sh`
+. Redémarrez le nœud : `reboot`
+. Déconnectez-vous de l'interpréteur de commandes : `exit`
+. Répétez ces étapes sur chaque nœud d’administration et nœud de passerelle comportant des ports remappés en conflit.
+

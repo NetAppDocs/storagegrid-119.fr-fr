@@ -1,0 +1,20 @@
+---
+permalink: monitor/viewing-platform-services-tab.html 
+sidebar: sidebar 
+keywords: platform services tab 
+summary: 'L"onglet Services de plateforme fournit des informations sur toutes les opérations de service de plateforme S3 sur un site.' 
+---
+= Afficher l'onglet Services de la plateforme
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'onglet Services de plateforme fournit des informations sur toutes les opérations de service de plateforme S3 sur un site.
+
+L'onglet Services de la plateforme est affiché pour chaque site.  Cet onglet fournit des informations sur les services de la plateforme S3, tels que la réplication CloudMirror et le service d'intégration de recherche.  Les graphiques de cet onglet affichent des mesures telles que le nombre de demandes en attente, le taux d'achèvement des demandes et le taux d'échec des demandes.
+
+image::../media/nodes_page_site_level_platform_services.gif[Services de plateforme au niveau du site de la page Nœuds]
+
+Pour plus d'informations sur les services de la plateforme S3, y compris les détails de dépannage, consultez lelink:../admin/index.html["instructions pour administrer StorageGRID"] .

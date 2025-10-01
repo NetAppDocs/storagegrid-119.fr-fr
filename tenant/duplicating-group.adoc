@@ -1,0 +1,40 @@
+---
+permalink: tenant/duplicating-group.html 
+sidebar: sidebar 
+keywords: how to duplicate tenant group 
+summary: Vous pouvez créer de nouveaux groupes plus rapidement en dupliquant un groupe existant. 
+---
+= Groupe en double
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez créer de nouveaux groupes plus rapidement en dupliquant un groupe existant.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d’utilisateurs disposant de l’autorisation d’accès Root. Voir link:tenant-management-permissions.html["Autorisations de gestion des locataires"] .
+
+
+.Étapes
+. Sélectionnez *GESTION DES ACCÈS* > *Groupes*.
+. Cochez la case correspondant au groupe que vous souhaitez dupliquer.
+. Sélectionnez *Dupliquer le groupe*. Pour plus de détails sur la création d'un groupe, consultez les instructions de création de groupes pourlink:creating-groups-for-s3-tenant.html["un locataire S3"] ou pourlink:creating-groups-for-swift-tenant.html["un locataire Swift"] .
+. Sélectionnez l'onglet *Groupe local* pour créer un groupe local ou sélectionnez l'onglet *Groupe fédéré* pour importer un groupe à partir de la source d'identité précédemment configurée.
++
+Si l'authentification unique (SSO) est activée pour votre système StorageGRID , les utilisateurs appartenant à des groupes locaux ne pourront pas se connecter au gestionnaire de locataires, bien qu'ils puissent utiliser des applications clientes pour gérer les ressources du locataire, en fonction delink:tenant-management-permissions.html["autorisations de groupe"] .
+
+. Entrez le nom du groupe.
++
+** *Groupe local* : saisissez un nom d’affichage et un nom unique.  Vous pouvez modifier le nom d'affichage ultérieurement.
+** *Groupe fédéré* : Saisissez le nom unique.  Pour Active Directory, le nom unique est le nom associé au `sAMAccountName` attribut.  Pour OpenLDAP, le nom unique est le nom associé au `uid` attribut.
+
+
+. Sélectionnez *Continuer*.
+. Si nécessaire, modifiez les autorisations pour ce groupe.
+. Sélectionnez *Continuer*.
+. Si nécessaire, si vous dupliquez un groupe pour un locataire S3, sélectionnez éventuellement une stratégie différente à partir des boutons radio *Ajouter une stratégie S3*.  Si vous avez sélectionné une politique personnalisée, mettez à jour la chaîne JSON comme requis.
+. Sélectionnez *Créer un groupe*.
+

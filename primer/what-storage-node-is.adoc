@@ -1,0 +1,231 @@
+---
+permalink: primer/what-storage-node-is.html 
+sidebar: sidebar 
+keywords: what is a storage node, how many storage nodes 
+summary: Les nœuds de stockage gèrent et stockent les données et les métadonnées des objets.  Les nœuds de stockage incluent les services et processus requis pour stocker, déplacer, vérifier et récupérer les données et métadonnées des objets sur le disque. 
+---
+= Qu'est-ce qu'un nœud de stockage ?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les nœuds de stockage gèrent et stockent les données et les métadonnées des objets.  Les nœuds de stockage incluent les services et processus requis pour stocker, déplacer, vérifier et récupérer les données et métadonnées des objets sur le disque.
+
+Chaque site de votre système StorageGRID doit disposer d’au moins trois nœuds de stockage.
+
+
+
+== Types de nœuds de stockage
+
+Lors de l'installation, vous pouvez sélectionner le type de nœud de stockage que vous souhaitez installer.  Ces types sont disponibles pour les nœuds de stockage basés sur des logiciels et pour les nœuds de stockage basés sur des appliances qui prennent en charge la fonctionnalité :
+
+* Nœud de stockage combiné de données et de métadonnées
+* Nœud de stockage de métadonnées uniquement
+* Nœud de stockage de données uniquement
+
+
+Vous pouvez sélectionner le type de nœud de stockage dans ces situations :
+
+* Lors de l'installation initiale d'un nœud de stockage
+* Lorsque vous ajoutez un nœud de stockage lors de l'extension du système StorageGRID
+
+
+
+NOTE: Vous ne pouvez pas modifier le type une fois l’installation du nœud de stockage terminée.
+
+Nœud de stockage de données et de métadonnées (combiné):: Par défaut, tous les nouveaux nœuds de stockage stockeront à la fois les données d’objet et les métadonnées.  Ce type de nœud de stockage est appelé nœud de stockage _combiné_.
+Nœud de stockage de métadonnées uniquement:: L'utilisation d'un nœud de stockage exclusivement pour les métadonnées peut être judicieuse si votre grille stocke un très grand nombre de petits objets.  L’installation d’une capacité de métadonnées dédiée offre un meilleur équilibre entre l’espace nécessaire à un très grand nombre de petits objets et l’espace nécessaire aux métadonnées de ces objets.  De plus, les nœuds de stockage contenant uniquement des métadonnées hébergés sur des appliances hautes performances peuvent augmenter les performances.
+
+
+Les nœuds de stockage de métadonnées uniquement ont des exigences matérielles spécifiques :
+
+* Lors de l'utilisation d'appliances StorageGRID , les nœuds de métadonnées uniquement peuvent être configurés uniquement sur les appliances SGF6112 avec douze disques de 1,9 To ou douze disques de 3,8 To.
+* Lors de l'utilisation de nœuds basés sur des logiciels, les ressources de nœuds contenant uniquement des métadonnées doivent correspondre aux ressources de nœuds de stockage existantes. Par exemple:
++
+** Si le site StorageGRID existant utilise des appliances SG6000 ou SG6100, les nœuds de métadonnées uniquement basés sur des logiciels doivent répondre aux exigences minimales suivantes :
++
+*** 128 Go de RAM
+*** processeur à 8 cœurs
+*** SSD de 8 To ou stockage équivalent pour la base de données Cassandra (rangedb/0)
+
+
+** Si le site StorageGRID existant utilise des nœuds de stockage virtuels avec 24 Go de RAM, un processeur à 8 cœurs et 3 To ou 4 To de stockage de métadonnées, les nœuds de métadonnées uniquement basés sur un logiciel doivent utiliser des ressources similaires (24 Go de RAM, un processeur à 8 cœurs et 4 To de stockage de métadonnées (rangedb/0).
+
+
+* Lors de l'ajout d'un nouveau site StorageGRID , la capacité totale des métadonnées du nouveau site doit, au minimum, correspondre aux sites StorageGRID existants et les nouvelles ressources du site doivent correspondre aux nœuds de stockage des sites StorageGRID existants.
+
+
+Lors de l'installation de nœuds contenant uniquement des métadonnées, la grille doit également contenir un nombre minimum de nœuds pour le stockage des données :
+
+* Pour une grille à site unique, configurez au moins deux nœuds de stockage combinés ou de données uniquement.
+* Pour une grille multisite, configurez au moins un nœud de stockage combiné ou de données uniquement _par site_.
+
+
+
+NOTE: Bien que les nœuds de stockage contenant uniquement des métadonnées contiennent les<<ldr-service,Service LDR>> et peut traiter les demandes des clients S3, les performances de StorageGRID peuvent ne pas augmenter.
+
+Nœud de stockage de données uniquement:: L'utilisation d'un nœud de stockage exclusivement pour les données peut être judicieuse si vos nœuds de stockage présentent des caractéristiques de performances différentes.  Par exemple, pour potentiellement augmenter les performances, vous pouvez disposer de nœuds de stockage à disque rotatif haute capacité uniquement pour les données, accompagnés de nœuds de stockage hautes performances uniquement pour les métadonnées.
+
+
+Lors de l'installation de nœuds de données uniquement, la grille doit contenir les éléments suivants :
+
+* Un minimum de deux nœuds de stockage combinés ou de données uniquement _par grille_
+* Au moins un nœud de stockage combiné ou de données uniquement _par site_
+* Un minimum de trois nœuds de stockage combinés ou de métadonnées uniquement _par site_
+
+
+
+
+== Services principaux pour les nœuds de stockage
+
+Le tableau suivant présente les principaux services des nœuds de stockage ; toutefois, ce tableau ne répertorie pas tous les services de nœud.
+
+
+NOTE: Certains services, tels que le service ADC et le service RSM, n'existent généralement que sur trois nœuds de stockage sur chaque site.
+
+[cols="1a,3a"]
+|===
+| Service | Fonction clé 
+
+
+ a| 
+Compte (acct)
+ a| 
+Gère les comptes des locataires.
+
+
+
+ a| 
+Contrôleur de domaine administratif (ADC)
+ a| 
+Maintient la topologie et la configuration à l'échelle du réseau.
+
+*Remarque* : les nœuds de stockage de données uniquement n'hébergent pas le service ADC.
+
+.Détails
+[%collapsible]
+====
+Le service Contrôleur de domaine administratif (ADC) authentifie les nœuds de grille et leurs connexions entre eux.  Le service ADC est hébergé sur un minimum de trois nœuds de stockage sur un site.
+
+Le service ADC conserve les informations de topologie, notamment l'emplacement et la disponibilité des services.  Lorsqu'un nœud de grille nécessite des informations d'un autre nœud de grille ou une action à effectuer par un autre nœud de grille, il contacte un service ADC pour trouver le meilleur nœud de grille pour traiter sa demande.  De plus, le service ADC conserve une copie des bundles de configuration du déploiement StorageGRID , permettant à n'importe quel nœud de grille de récupérer les informations de configuration actuelles.
+
+Pour faciliter les opérations distribuées et isolées, chaque service ADC synchronise les certificats, les ensembles de configuration et les informations sur les services et la topologie avec les autres services ADC du système StorageGRID .
+
+En général, tous les nœuds de grille maintiennent une connexion à au moins un service ADC.  Cela garantit que les nœuds de la grille accèdent toujours aux informations les plus récentes.  Lorsque les nœuds de grille se connectent, ils mettent en cache les certificats des autres nœuds de grille, permettant aux systèmes de continuer à fonctionner avec les nœuds de grille connus même lorsqu'un service ADC n'est pas disponible.  Les nouveaux nœuds de grille ne peuvent établir des connexions qu'en utilisant un service ADC.
+
+La connexion de chaque nœud de grille permet au service ADC de collecter des informations sur la topologie.  Ces informations sur le nœud de grille incluent la charge du processeur, l'espace disque disponible (s'il dispose d'un stockage), les services pris en charge et l'ID du site du nœud de grille.  D'autres services demandent au service ADC des informations de topologie via des requêtes de topologie.  Le service ADC répond à chaque requête avec les dernières informations reçues du système StorageGRID .
+
+====
+
+
+ a| 
+Cassandre
+ a| 
+Stocke et protège les métadonnées des objets.
+
+*Remarque* : les nœuds de stockage de données uniquement n'hébergent pas le service Cassandra.
+
+
+
+ a| 
+Cassandra Reaper
+ a| 
+Effectue des réparations automatiques des métadonnées des objets.
+
+*Remarque* : les nœuds de stockage de données uniquement n'hébergent pas le service Cassandra Reaper.
+
+
+
+ a| 
+Gros morceau
+ a| 
+Gère les données codées par effacement et les fragments de parité.
+
+
+
+ a| 
+Déplaceur de données (DMV)
+ a| 
+Déplace les données vers les pools de stockage cloud.
+
+
+
+ a| 
+Magasin de données distribué (DDS)
+ a| 
+Surveille le stockage des métadonnées des objets.
+
+.Détails
+[%collapsible]
+====
+Chaque nœud de stockage inclut le service de magasin de données distribuées (DDS).  Ce service s'interface avec la base de données Cassandra pour effectuer des tâches en arrière-plan sur les métadonnées d'objet stockées dans le système StorageGRID .
+
+Le service DDS suit le nombre total d'objets ingérés dans le système StorageGRID ainsi que le nombre total d'objets ingérés via chacune des interfaces prises en charge du système (S3).
+
+====
+
+
+ a| 
+Identité (idnt)
+ a| 
+Fédère les identités des utilisateurs de LDAP et Active Directory.
+
+
+
+ a| 
+[[ldr-service]]Routeur de distribution local (LDR)
+ a| 
+Traite les demandes du protocole de stockage d'objets et gère les données d'objets sur le disque.
+
+.Détails
+[%collapsible]
+====
+Chaque nœud de stockage _combiné_, _données uniquement_ et _métadonnées uniquement_ inclut le service de routeur de distribution local (LDR).  Ce service gère les fonctions de transport de contenu, notamment le stockage des données, le routage et le traitement des demandes.  Le service LDR effectue la majeure partie du travail du système StorageGRID en gérant les charges de transfert de données et les fonctions de trafic de données.
+
+Le service LDR gère les tâches suivantes :
+
+* Requêtes
+* Activité de gestion du cycle de vie de l'information (ILM)
+* Suppression d'objet
+* Stockage de données d'objets
+* Transferts de données d'objets depuis un autre service LDR (nœud de stockage)
+* Gestion du stockage des données
+* Interface du protocole S3
+
+
+Le service LDR mappe également chaque objet S3 à son UUID unique.
+
+Magasins d'objets:: Le stockage de données sous-jacent d'un service LDR est divisé en un nombre fixe de magasins d'objets (également appelés volumes de stockage).  Chaque magasin d’objets est un point de montage distinct.
++
+--
+Les magasins d'objets d'un nœud de stockage sont identifiés par un nombre hexadécimal compris entre 0000 et 002F, appelé ID de volume.  L'espace est réservé dans le premier magasin d'objets (volume 0) pour les métadonnées d'objet dans une base de données Cassandra ; tout espace restant sur ce volume est utilisé pour les données d'objet.  Tous les autres magasins d'objets sont utilisés exclusivement pour les données d'objet, qui incluent les copies répliquées et les fragments codés par effacement.
+
+Pour garantir une utilisation uniforme de l'espace pour les copies répliquées, les données d'objet pour un objet donné sont stockées dans un magasin d'objets en fonction de l'espace de stockage disponible.  Lorsqu'un magasin d'objets atteint sa capacité maximale, les magasins d'objets restants continuent de stocker des objets jusqu'à ce qu'il n'y ait plus de place sur le nœud de stockage.
+
+--
+Protection des métadonnées:: StorageGRID stocke les métadonnées des objets dans une base de données Cassandra, qui s'interface avec le service LDR.
++
+--
+Pour assurer la redondance et donc la protection contre les pertes, trois copies des métadonnées des objets sont conservées sur chaque site.  Cette réplication n'est pas configurable et est effectuée automatiquement. Pour plus de détails, consultez la section link:../admin/managing-object-metadata-storage.html["Gérer le stockage des métadonnées des objets"] .
+
+--
+
+
+====
+
+
+ a| 
+Machine à états répliquée (RSM)
+ a| 
+Garantit que les demandes de services de la plateforme S3 sont envoyées à leurs points de terminaison respectifs.
+
+
+
+ a| 
+Moniteur d'état du serveur (SSM)
+ a| 
+Surveille le système d'exploitation et le matériel sous-jacent.
+
+|===

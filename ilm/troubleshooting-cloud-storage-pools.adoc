@@ -1,0 +1,160 @@
+---
+permalink: ilm/troubleshooting-cloud-storage-pools.html 
+sidebar: sidebar 
+keywords: cloud storage pool, troubleshoot 
+summary: Utilisez ces étapes de dépannage pour vous aider à résoudre les erreurs que vous pourriez rencontrer lors de la création, de la modification ou de la suppression d’un pool de stockage cloud. 
+---
+= Dépannage des pools de stockage cloud
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Utilisez ces étapes de dépannage pour vous aider à résoudre les erreurs que vous pourriez rencontrer lors de la création, de la modification ou de la suppression d’un pool de stockage cloud.
+
+
+
+== Déterminer si une erreur s'est produite
+
+StorageGRID effectue un simple contrôle de santé sur chaque pool de stockage cloud en lisant l'objet connu `x-ntap-sgws-cloud-pool-uuid` pour garantir que le pool de stockage cloud est accessible et fonctionne correctement.  Lorsque StorageGRID rencontre une erreur sur le point de terminaison, il effectue une vérification de l’état toutes les minutes à partir de chaque nœud de stockage.  Une fois l’erreur résolue, les contrôles de santé s’arrêtent.  Si un contrôle d’intégrité détecte un problème, un message s’affiche dans la colonne Dernière erreur du tableau Pools de stockage cloud sur la page Pools de stockage.
+
+Le tableau affiche l’erreur la plus récente détectée pour chaque pool de stockage cloud et indique depuis combien de temps l’erreur s’est produite.
+
+De plus, une alerte *Erreur de connectivité du pool de stockage cloud* est déclenchée si le contrôle d'intégrité détecte qu'une ou plusieurs nouvelles erreurs du pool de stockage cloud se sont produites au cours des 5 dernières minutes.  Si vous recevez une notification par e-mail pour cette alerte, accédez à la page Pools de stockage (sélectionnez *ILM* > *Pools de stockage*), examinez les messages d'erreur dans la colonne Dernière erreur et reportez-vous aux instructions de dépannage ci-dessous.
+
+
+
+== Vérifiez si une erreur a été résolue
+
+Après avoir résolu les problèmes sous-jacents, vous pouvez déterminer si l’erreur a été résolue.  Depuis la page Cloud Storage Pool, sélectionnez le point de terminaison, puis sélectionnez *Effacer l'erreur*.  Un message de confirmation indique que StorageGRID a corrigé l’erreur pour le pool de stockage cloud.
+
+Si le problème sous-jacent a été résolu, le message d’erreur n’est plus affiché.  Cependant, si le problème sous-jacent n’a pas été résolu (ou si une erreur différente est rencontrée), le message d’erreur s’affichera dans la colonne Dernière erreur dans quelques minutes.
+
+
+
+== Erreur : le contrôle de santé a échoué.  Erreur du point de terminaison
+
+Vous pouvez rencontrer cette erreur lorsque vous activez le verrouillage d'objet S3 avec la rétention par défaut pour votre compartiment Amazon S3 après avoir commencé à utiliser ce compartiment pour un pool de stockage cloud.  Cette erreur se produit lorsque l'opération PUT n'a pas d'en-tête HTTP avec une valeur de somme de contrôle de charge utile telle que `Content-MD5` .  Cette valeur d'en-tête est requise par AWS pour les opérations PUT dans les buckets avec S3 Object Lock activé.
+
+Pour corriger ce problème, suivez les étapes décrites danslink:editing-cloud-storage-pool.html["Modifier un pool de stockage cloud"] sans apporter aucune modification.  Cette action déclenche la validation de la configuration du pool de stockage Cloud qui détecte et met à jour automatiquement l'indicateur de verrouillage d'objet S3 sur une configuration de point de terminaison du pool de stockage Cloud.
+
+
+
+== Erreur : ce pool de stockage cloud contient du contenu inattendu
+
+Vous pouvez rencontrer cette erreur lorsque vous essayez de créer, de modifier ou de supprimer un pool de stockage cloud.  Cette erreur se produit si le bucket ou le conteneur inclut le `x-ntap-sgws-cloud-pool-uuid` fichier marqueur, mais ce fichier ne possède pas le champ de métadonnées avec l'UUID attendu.
+
+En règle générale, vous ne verrez cette erreur que si vous créez un nouveau pool de stockage cloud et qu'une autre instance de StorageGRID utilise déjà le même pool de stockage cloud.
+
+Essayez l’une de ces étapes pour corriger le problème :
+
+* Si vous configurez un nouveau pool de stockage cloud et que le bucket contient le `x-ntap-sgws-cloud-pool-uuid` fichier et clés d'objet supplémentaires similaires à l'exemple suivant, créez un nouveau bucket et utilisez ce nouveau bucket à la place.
++
+Exemple d'une clé d'objet supplémentaire : `my-bucket.3E64CF2C-B74D-4B7D-AFE7-AD28BC18B2F6.1727326606730410`
+
+* Si le `x-ntap-sgws-cloud-pool-uuid` le fichier est le seul objet dans le bucket, supprimez ce fichier.
+
+
+Si ces étapes ne s’appliquent pas à votre scénario, contactez le support.
+
+
+
+== Erreur : impossible de créer ou de mettre à jour le pool de stockage cloud.  Erreur du point de terminaison
+
+Vous pouvez rencontrer cette erreur dans les circonstances suivantes :
+
+* Lorsque vous essayez de créer ou de modifier un pool de stockage cloud.
+* Lorsque vous sélectionnez une combinaison de plateforme, d’authentification ou de protocole non prise en charge avec S3 Object Lock lors de la configuration d’un nouveau pool de stockage cloud. Voir link:../ilm/considerations-for-cloud-storage-pools.html["Considérations relatives aux pools de stockage cloud"] .
+
+
+Cette erreur indique qu'un problème de connectivité ou de configuration empêche StorageGRID d'écrire dans le pool de stockage cloud.
+
+Pour corriger le problème, examinez le message d’erreur du point de terminaison.
+
+* Si le message d'erreur contient `Get _url_: EOF` , vérifiez que le point de terminaison de service utilisé pour le pool de stockage cloud n'utilise pas HTTP pour un conteneur ou un bucket nécessitant HTTPS.
+* Si le message d'erreur contient `Get _url_: net/http: request canceled while waiting for connection` , vérifiez que la configuration réseau permet aux nœuds de stockage d’accéder au point de terminaison de service utilisé pour le pool de stockage cloud.
+* Si l'erreur est due à une plate-forme, une authentification ou un protocole non pris en charge, passez à une configuration prise en charge avec S3 Object Lock et essayez à nouveau d'enregistrer le nouveau pool de stockage cloud.
+* Pour tous les autres messages d’erreur de point de terminaison, essayez une ou plusieurs des solutions suivantes :
++
+** Créez un conteneur ou un bucket externe portant le même nom que celui que vous avez saisi pour le pool de stockage cloud et essayez à nouveau d’enregistrer le nouveau pool de stockage cloud.
+** Corrigez le nom du conteneur ou du bucket que vous avez spécifié pour le pool de stockage cloud et essayez à nouveau d’enregistrer le nouveau pool de stockage cloud.
+
+
+
+
+
+
+== Erreur : échec de l'analyse du certificat CA
+
+Vous pouvez rencontrer cette erreur lorsque vous essayez de créer ou de modifier un pool de stockage cloud.  L'erreur se produit si StorageGRID n'a pas pu analyser le certificat que vous avez entré lors de la configuration du pool de stockage cloud.
+
+Pour corriger le problème, vérifiez le certificat CA que vous avez fourni pour les problèmes.
+
+
+
+== Erreur : aucun pool de stockage cloud avec cet ID n'a été trouvé
+
+Vous pouvez rencontrer cette erreur lorsque vous essayez de modifier ou de supprimer un pool de stockage cloud.  Cette erreur se produit si le point de terminaison renvoie une réponse 404, ce qui peut signifier l'une des choses suivantes :
+
+* Les informations d’identification utilisées pour le pool de stockage cloud ne disposent pas d’autorisation de lecture pour le bucket.
+* Le bucket utilisé pour le pool de stockage cloud n'inclut pas le `x-ntap-sgws-cloud-pool-uuid` fichier marqueur.
+
+
+Essayez une ou plusieurs de ces étapes pour corriger le problème :
+
+* Vérifiez que l’utilisateur associé à la clé d’accès configurée dispose des autorisations requises.
+* Modifiez le pool de stockage cloud avec les informations d’identification disposant des autorisations requises.
+* Si les autorisations sont correctes, contactez le support.
+
+
+
+
+== Erreur : impossible de vérifier le contenu du pool de stockage cloud.  Erreur du point de terminaison
+
+Vous pouvez rencontrer cette erreur lorsque vous essayez de supprimer un pool de stockage cloud.  Cette erreur indique qu'un problème de connectivité ou de configuration empêche StorageGRID de lire le contenu du bucket Cloud Storage Pool.
+
+Pour corriger le problème, examinez le message d’erreur du point de terminaison.
+
+
+
+== Erreur : des objets ont déjà été placés dans ce bucket
+
+Vous pouvez rencontrer cette erreur lorsque vous essayez de supprimer un pool de stockage cloud.  Vous ne pouvez pas supprimer un pool de stockage cloud s'il contient des données qui y ont été déplacées par ILM, des données qui se trouvaient dans le bucket avant la configuration du pool de stockage cloud ou des données qui ont été placées dans le bucket par une autre source après la création du pool de stockage cloud.
+
+Essayez une ou plusieurs de ces étapes pour corriger le problème :
+
+* Suivez les instructions pour déplacer des objets vers StorageGRID dans « Cycle de vie d'un objet Cloud Storage Pool ».
+* Si vous êtes certain que les objets restants n'ont pas été placés dans le pool de stockage cloud par ILM, supprimez manuellement les objets du bucket.
++
+
+NOTE: Ne supprimez jamais manuellement des objets d'un pool de stockage cloud qui auraient pu y être placés par ILM.  Si vous tentez ultérieurement d'accéder à un objet supprimé manuellement à partir de StorageGRID, l'objet supprimé ne sera pas trouvé.
+
+
+
+
+
+== Erreur : le proxy a rencontré une erreur externe lors de la tentative d'accès au pool de stockage cloud
+
+Vous pouvez rencontrer cette erreur si vous avez configuré un proxy de stockage non transparent entre les nœuds de stockage et le point de terminaison S3 externe utilisé pour le pool de stockage cloud.  Cette erreur se produit si le serveur proxy externe ne peut pas atteindre le point de terminaison du pool de stockage cloud.  Par exemple, le serveur DNS peut ne pas être en mesure de résoudre le nom d’hôte ou il peut y avoir un problème de réseau externe.
+
+Essayez une ou plusieurs de ces étapes pour corriger le problème :
+
+* Vérifiez les paramètres du pool de stockage cloud (*ILM* > *Pools de stockage*).
+* Vérifiez la configuration réseau du serveur proxy de stockage.
+
+
+
+
+== Erreur : le certificat X.509 n'a plus de validité
+
+Vous pouvez rencontrer cette erreur lorsque vous essayez de supprimer un pool de stockage cloud.  Cette erreur se produit lorsque l'authentification nécessite un certificat X.509 pour garantir que le pool de stockage cloud externe correct est validé et que le pool externe est vide avant la suppression de la configuration du pool de stockage cloud.
+
+Essayez ces étapes pour corriger le problème :
+
+* Mettez à jour le certificat configuré pour l’authentification auprès du pool de stockage cloud.
+* Assurez-vous que toute alerte d’expiration de certificat sur ce pool de stockage cloud est résolue.
+
+
+.Informations connexes
+link:lifecycle-of-cloud-storage-pool-object.html["Cycle de vie d'un objet Cloud Storage Pool"]

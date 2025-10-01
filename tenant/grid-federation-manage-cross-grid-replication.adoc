@@ -1,0 +1,174 @@
+---
+permalink: tenant/grid-federation-manage-cross-grid-replication.html 
+sidebar: sidebar 
+keywords: grid federation, cross-grid replication, use grid federation connection, replicate client delete markers, s3 bucket 
+summary: 'Si l"autorisation Utiliser la connexion de fédération de grille a été attribuée à votre compte de locataire lors de sa création, vous pouvez utiliser la réplication inter-grille pour répliquer automatiquement les objets entre les buckets de la grille source du locataire et les buckets de la grille de destination du locataire.  La réplication inter-grille peut se produire dans un sens ou dans les deux sens.' 
+---
+= Gérer la réplication inter-réseaux
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si l'autorisation *Utiliser la connexion à la fédération de grille* a été attribuée à votre compte de locataire lors de sa création, vous pouvez utiliser la réplication inter-grille pour répliquer automatiquement les objets entre les buckets de la grille source du locataire et les buckets de la grille de destination du locataire.  La réplication inter-grille peut se produire dans un sens ou dans les deux sens.
+
+
+
+== Flux de travail pour la réplication inter-grille
+
+Le diagramme de flux de travail résume les étapes que vous effectuerez pour configurer la réplication inter-grille entre les buckets sur deux grilles.  Ces étapes sont décrites plus en détail ci-dessous.
+
+image::../media/grid-federation-cgr-workflow.png[Flux de travail de réplication inter-grille]
+
+
+
+== Configurer la réplication inter-grille
+
+Avant de pouvoir utiliser la réplication inter-grille, vous devez vous connecter aux comptes locataires correspondants sur chaque grille et créer des buckets identiques. Ensuite, vous pouvez activer la réplication inter-grille sur l’un ou les deux buckets.
+
+.Avant de commencer
+* Vous avez examiné les exigences relatives à la réplication inter-réseaux. Voir link:../admin/grid-federation-what-is-cross-grid-replication.html["Qu'est-ce que la réplication inter-réseau"] .
+* Vous utilisez unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Le compte locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille* et des comptes locataires identiques existent sur les deux grilles. Voir link:../admin/grid-federation-manage-tenants.html["Gérer les locataires autorisés pour la connexion à la fédération de réseau"] .
+* L'utilisateur locataire avec lequel vous vous connecterez existe déjà sur les deux grilles et appartient à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Autorisation d'accès root"] .
+* Si vous vous connectez à la grille de destination du locataire en tant qu'utilisateur local, l'utilisateur root du compte locataire a défini un mot de passe pour votre compte utilisateur sur cette grille.
+
+
+
+
+=== Créer deux buckets identiques
+
+Dans un premier temps, connectez-vous aux comptes locataires correspondants sur chaque grille et créez des buckets identiques.
+
+.Étapes
+. À partir de l’une ou l’autre des grilles de la connexion à la fédération de grilles, créez un nouveau bucket :
++
+.. Sign in au compte locataire à l’aide des informations d’identification d’un utilisateur locataire qui existe sur les deux grilles.
++
+
+NOTE: Si vous ne parvenez pas à vous connecter à la grille de destination du locataire en tant qu'utilisateur local, confirmez que l'utilisateur root du compte locataire a défini un mot de passe pour votre compte utilisateur.
+
+.. Suivez les instructions pourlink:creating-s3-bucket.html["créer un bucket S3"] .
+.. Dans l’onglet *Gérer les paramètres de l’objet*, sélectionnez *Activer le contrôle de version de l’objet*.
+.. Si le verrouillage d'objet S3 est activé pour votre système StorageGRID , n'activez pas le verrouillage d'objet S3 pour le bucket.
+.. Sélectionnez *Créer un bucket*.
+.. Sélectionnez *Terminer*.
+
+
+. Répétez ces étapes pour créer un bucket identique pour le même compte locataire sur l’autre grille dans la connexion de fédération de grille.
++
+
+TIP: Selon les besoins, chaque bucket peut utiliser une région différente.
+
+
+
+
+
+=== Activer la réplication inter-réseaux
+
+Vous devez effectuer ces étapes avant d’ajouter des objets à l’un ou l’autre des compartiments.
+
+.Étapes
+. À partir d'une grille dont vous souhaitez répliquer les objets, activezlink:../admin/grid-federation-what-is-cross-grid-replication.html["réplication inter-grille dans une direction"] :
++
+.. Sign in au compte locataire du bucket.
+.. Sélectionnez *Afficher les buckets* dans le tableau de bord ou sélectionnez *STOCKAGE (S3)* > *Buckets*.
+.. Sélectionnez le nom du bucket dans le tableau pour accéder à la page des détails du bucket.
+.. Sélectionnez l'onglet *Réplication inter-grille*.
+.. Sélectionnez *Activer* et examinez la liste des exigences.
+.. Si toutes les exigences sont remplies, sélectionnez la connexion à la fédération de réseau que vous souhaitez utiliser.
+.. Vous pouvez également modifier le paramètre *Répliquer les marqueurs de suppression* pour déterminer ce qui se passe sur la grille de destination si un client S3 émet une demande de suppression vers la grille source qui n'inclut pas d'ID de version :
++
+*** *Oui* (par défaut) : un marqueur de suppression est ajouté au bucket source et répliqué vers le bucket de destination.
+*** *Non* : un marqueur de suppression est ajouté au bucket source mais n'est pas répliqué dans le bucket de destination.
++
+image::../media/grid-federation-cross-grid-replication-client-deletes.png[image montrant la suppression du client répliqué sur les deux grilles]
+
++
+
+NOTE: Si la demande de suppression inclut un ID de version, cette version d'objet est définitivement supprimée du bucket source. StorageGRID ne réplique pas les demandes de suppression qui incluent un ID de version, donc la même version d'objet n'est pas supprimée de la destination.
+
++
+Voirlink:../admin/grid-federation-what-is-cross-grid-replication.html["Qu'est-ce que la réplication inter-réseau"] pour plus de détails.
+
+
+
+.. Vous pouvez également modifier le paramètre de la catégorie d'audit *Réplication inter-grille* pour gérer le volume des messages d'audit :
++
+*** *Erreur* (par défaut) : seules les demandes de réplication inter-grille ayant échoué sont incluses dans la sortie d'audit.
+*** *Normal* : toutes les demandes de réplication inter-grille sont incluses, ce qui augmente considérablement le volume de sortie d'audit.
+
+
+.. Revoyez vos sélections.  Vous ne pouvez pas modifier ces paramètres à moins que les deux compartiments soient vides.
+.. Sélectionnez *Activer et tester*.
++
+Après quelques instants, un message de réussite apparaît. Les objets ajoutés à ce bucket seront désormais automatiquement répliqués sur l’autre grille. La *réplication inter-grille* est affichée comme une fonctionnalité activée sur la page des détails du bucket.
+
+
+
+. En option, accédez au bucket correspondant sur l’autre grille etlink:../admin/grid-federation-what-is-cross-grid-replication.html["activer la réplication inter-réseau dans les deux sens"] .
+
+
+
+
+== Réplication des tests entre les grilles
+
+Si la réplication inter-grille est activée pour un bucket, vous devrez peut-être vérifier que la connexion et la réplication inter-grille fonctionnent correctement et que les buckets source et de destination répondent toujours à toutes les exigences (par exemple, le contrôle de version est toujours activé).
+
+.Avant de commencer
+* Vous utilisez unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Autorisation d'accès root"] .
+
+
+.Étapes
+. Sign in au compte locataire du bucket.
+. Sélectionnez *Afficher les buckets* dans le tableau de bord ou sélectionnez *STOCKAGE (S3)* > *Buckets*.
+. Sélectionnez le nom du bucket dans le tableau pour accéder à la page des détails du bucket.
+. Sélectionnez l'onglet *Réplication inter-grille*.
+. Sélectionnez *Tester la connexion*.
++
+Si la connexion est saine, une bannière de réussite apparaît. Sinon, un message d’erreur s’affiche, que vous et l’administrateur du réseau pouvez utiliser pour résoudre le problème. Pour plus de détails, consultez la section link:../admin/grid-federation-troubleshoot.html["Résoudre les erreurs de fédération de grille"] .
+
+. Si la réplication inter-grille est configurée pour se produire dans les deux sens, accédez au bucket correspondant sur l'autre grille et sélectionnez *Tester la connexion* pour vérifier que la réplication inter-grille fonctionne dans l'autre sens.
+
+
+
+
+== Désactiver la réplication inter-grille
+
+Vous pouvez arrêter définitivement la réplication inter-grille si vous ne souhaitez plus copier d'objets vers l'autre grille.
+
+Avant de désactiver la réplication inter-grille, notez les points suivants :
+
+* La désactivation de la réplication inter-grille ne supprime aucun objet qui a déjà été copié entre les grilles. Par exemple, les objets dans `my-bucket` sur la grille 1 qui ont été copiés sur `my-bucket` sur la grille 2 ne sont pas supprimés si vous désactivez la réplication inter-grille pour ce bucket. Si vous souhaitez supprimer ces objets, vous devez les supprimer manuellement.
+* Si la réplication inter-grille a été activée pour chacun des buckets (c'est-à-dire si la réplication se produit dans les deux sens), vous pouvez désactiver la réplication inter-grille pour l'un ou les deux buckets.  Par exemple, vous souhaiterez peut-être désactiver la réplication d’objets à partir de `my-bucket` sur la grille 1 à `my-bucket` sur la grille 2, tout en continuant à répliquer les objets de `my-bucket` sur la grille 2 à `my-bucket` sur la grille 1.
+* Vous devez désactiver la réplication inter-grille avant de pouvoir supprimer l'autorisation d'un locataire d'utiliser la connexion de fédération de grille. Voir link:../admin/grid-federation-manage-tenants.html["Gérer les locataires autorisés"] .
+* Si vous désactivez la réplication inter-grille pour un bucket contenant des objets, vous ne pourrez pas réactiver la réplication inter-grille, sauf si vous supprimez tous les objets des buckets source et de destination.
++
+
+CAUTION: Vous ne pouvez pas réactiver la réplication à moins que les deux buckets ne soient vides.
+
+
+
+.Avant de commencer
+* Vous utilisez unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Autorisation d'accès root"] .
+
+
+.Étapes
+. En partant de la grille dont vous ne souhaitez plus répliquer les objets, arrêtez la réplication inter-grille pour le bucket :
++
+.. Sign in au compte locataire du bucket.
+.. Sélectionnez *Afficher les buckets* dans le tableau de bord ou sélectionnez *STOCKAGE (S3)* > *Buckets*.
+.. Sélectionnez le nom du bucket dans le tableau pour accéder à la page des détails du bucket.
+.. Sélectionnez l'onglet *Réplication inter-grille*.
+.. Sélectionnez *Désactiver la réplication*.
+.. Si vous êtes sûr de vouloir désactiver la réplication inter-grille pour ce bucket, saisissez *Oui* dans la zone de texte et sélectionnez *Désactiver*.
++
+Après quelques instants, un message de réussite apparaît. Les nouveaux objets ajoutés à ce bucket ne peuvent plus être automatiquement répliqués sur l'autre grille.  La *réplication inter-grille* n'est plus affichée comme une fonctionnalité activée sur la page Buckets.
+
+
+
+. Si la réplication inter-grille a été configurée pour se produire dans les deux sens, accédez au bucket correspondant sur l'autre grille et arrêtez la réplication inter-grille dans l'autre sens.
+

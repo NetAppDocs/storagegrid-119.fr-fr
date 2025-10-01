@@ -1,0 +1,65 @@
+---
+permalink: ilm/manage-ilm-policy-tags.html 
+sidebar: sidebar 
+keywords: ILM policy tag 
+summary: Vous pouvez afficher les détails des balises de stratégie ILM, modifier une balise ou supprimer une balise. 
+---
+= Gérer les balises de politique ILM
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez afficher les détails des balises de stratégie ILM, modifier une balise ou supprimer une balise.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:../admin/admin-group-permissions.html["autorisations d'accès requises"] .
+
+
+
+
+== Afficher les détails de la balise de politique ILM
+
+Pour afficher les détails d’une balise :
+
+. Sélectionnez *ILM* > *Balises de politique*.
+. Sélectionnez le nom de la politique dans le tableau.  La page de détails de la balise apparaît.
+. Sur la page des détails, consultez l’historique précédent des politiques attribuées.
+. Consultez une politique en la sélectionnant.
+
+
+
+
+== Modifier la balise de politique ILM
+
+
+NOTE: Les noms et descriptions des balises sont visibles par les locataires.  Choisissez des valeurs qui aideront les locataires à prendre une décision éclairée lors de la sélection des balises de stratégie à attribuer à leurs compartiments.  Par exemple, si la politique attribuée supprime des objets après une période donnée, vous pouvez le communiquer dans la description.  N'incluez pas d'informations sensibles dans ces champs.
+
+Pour modifier la description d’une balise existante :
+
+. Sélectionnez *ILM* > *Balises de politique*.
+. Cochez la case correspondant à la balise, puis sélectionnez *Modifier*.
++
+Vous pouvez également sélectionner le nom de la balise.  La page de détails de la balise apparaît et vous pouvez sélectionner *Modifier* sur cette page.
+
+. Modifiez la description de la balise selon vos besoins
+. Sélectionnez *Enregistrer*.
+
+
+
+
+== Supprimer la balise de politique ILM
+
+Lorsque vous supprimez une balise de stratégie, la stratégie par défaut sera appliquée à tous les compartiments auxquels cette balise est attribuée.
+
+Pour supprimer une balise :
+
+. Sélectionnez *ILM* > *Balises de politique*.
+. Cochez la case correspondant à la balise, puis sélectionnez *Supprimer*.  Une boîte de dialogue de confirmation apparaît.
++
+Vous pouvez également sélectionner le nom de la balise.  La page de détails de la balise apparaît et vous pouvez sélectionner *Supprimer* sur cette page.
+
+. Sélectionnez *Oui* pour supprimer la balise.
+

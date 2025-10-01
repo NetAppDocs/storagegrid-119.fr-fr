@@ -1,0 +1,92 @@
+---
+permalink: s3/operations-for-multipart-uploads.html 
+sidebar: sidebar 
+keywords: operations, multipart uploads, uploads, rest API 
+summary: Cette section décrit comment StorageGRID prend en charge les opérations de téléchargement en plusieurs parties. 
+---
+= Opérations pour les téléchargements en plusieurs parties
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Cette section décrit comment StorageGRID prend en charge les opérations de téléchargement en plusieurs parties.
+
+Les conditions et notes suivantes s'appliquent à toutes les opérations de téléchargement en plusieurs parties :
+
+* Vous ne devez pas dépasser 1 000 téléchargements multipartites simultanés vers un seul bucket, car les résultats des requêtes ListMultipartUploads pour ce bucket peuvent renvoyer des résultats incomplets.
+* StorageGRID applique les limites de taille AWS pour les parties en plusieurs parties.  Les clients S3 doivent suivre ces directives :
++
+** Chaque partie d'un téléchargement en plusieurs parties doit être comprise entre 5 Mio (5 242 880 octets) et 5 Gio (5 368 709 120 octets).
+** La dernière partie peut être inférieure à 5 Mio (5 242 880 octets).
+** En général, les tailles des pièces doivent être aussi grandes que possible.  Par exemple, utilisez des tailles de partie de 5 Gio pour un objet de 100 Gio.  Étant donné que chaque partie est considérée comme un objet unique, l’utilisation de grandes tailles de partie réduit la surcharge des métadonnées StorageGRID .
+** Pour les objets inférieurs à 5 Gio, envisagez plutôt d'utiliser un téléchargement non multipartite.
+
+
+* L'ILM est évalué pour chaque partie d'un objet multipartite au fur et à mesure de son ingestion et pour l'objet dans son ensemble lorsque le téléchargement multipartite est terminé, si la règle ILM utilise l'option Équilibré ou Strictlink:../ilm/data-protection-options-for-ingest.html["option d'ingestion"] .  Vous devez être conscient de la manière dont cela affecte le placement des objets et des pièces :
++
+** Si l'ILM change pendant qu'un téléchargement multipartie S3 est en cours, certaines parties de l'objet peuvent ne pas répondre aux exigences ILM actuelles une fois le téléchargement multipartie terminé.  Toute pièce qui n'est pas placée correctement est mise en file d'attente pour une réévaluation ILM et déplacée vers l'emplacement correct ultérieurement.
+** Lors de l'évaluation de l'ILM pour une pièce, StorageGRID filtre sur la taille de la pièce, et non sur la taille de l'objet.  Cela signifie que des parties d'un objet peuvent être stockées dans des emplacements qui ne répondent pas aux exigences ILM pour l'objet dans son ensemble.  Par exemple, si une règle spécifie que tous les objets de 10 Go ou plus sont stockés sur DC1 tandis que tous les objets plus petits sont stockés sur DC2, chaque partie de 1 Go d'un téléchargement multipartie en 10 parties est stockée sur DC2 lors de l'ingestion.  Cependant, lorsque l’ILM est évalué pour l’objet dans son ensemble, toutes les parties de l’objet sont déplacées vers DC1.
+
+
+* Toutes les opérations de téléchargement en plusieurs parties prennent en charge StorageGRIDlink:consistency-controls.html["valeurs de cohérence"] .
+* Lorsqu'un objet est ingéré à l'aide d'un téléchargement en plusieurs parties, lelink:../admin/what-object-segmentation-is.html["seuil de segmentation des objets (1 Gio)"] n'est pas appliqué.
+* Selon vos besoins, vous pouvez utiliserlink:using-server-side-encryption.html["chiffrement côté serveur"] avec des téléchargements en plusieurs parties.  Pour utiliser SSE (chiffrement côté serveur avec clés gérées par StorageGRID), vous incluez le `x-amz-server-side-encryption` en-tête de demande dans la demande CreateMultipartUpload uniquement.  Pour utiliser SSE-C (chiffrement côté serveur avec clés fournies par le client), vous spécifiez les trois mêmes en-têtes de demande de clé de chiffrement dans la demande CreateMultipartUpload et dans chaque demande UploadPart ultérieure.
+
+
+[cols="2a,3a"]
+|===
+| Opération | Mise en œuvre 
+
+
+ a| 
+Abandonner le téléchargement en plusieurs parties
+ a| 
+Implémenté avec tous les comportements de l'API REST Amazon S3.  Sous réserve de modifications sans préavis.
+
+
+
+ a| 
+Téléchargement complet en plusieurs parties
+ a| 
+Voirlink:complete-multipart-upload.html["Téléchargement complet en plusieurs parties"]
+
+
+
+ a| 
+Créer un téléchargement multi-parties
+
+(anciennement appelé Initiate Multipart Upload)
+ a| 
+Voirlink:initiate-multipart-upload.html["Créer un téléchargement multi-parties"]
+
+
+
+ a| 
+ListeMultipartUploads
+ a| 
+Voirlink:list-multipart-uploads.html["ListeMultipartUploads"]
+
+
+
+ a| 
+Liste des pièces
+ a| 
+Implémenté avec tous les comportements de l'API REST Amazon S3.  Sous réserve de modifications sans préavis.
+
+
+
+ a| 
+Télécharger une partie
+ a| 
+Voirlink:upload-part.html["Télécharger une partie"]
+
+
+
+ a| 
+TéléchargerPartCopy
+ a| 
+Voirlink:upload-part-copy.html["TéléchargerPartCopy"]
+
+|===

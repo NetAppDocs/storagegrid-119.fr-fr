@@ -1,0 +1,104 @@
+---
+permalink: tenant/signing-in-to-tenant-manager.html 
+sidebar: sidebar 
+keywords: how to sign in to tenant manager 
+summary: 'Vous accédez au gestionnaire de locataires en saisissant l"URL du locataire dans la barre d"adresse d"un navigateur Web pris en charge.' 
+---
+= Sign in à Tenant Manager
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous accédez au Tenant Manager en saisissant l'URL du locataire dans la barre d'adresse d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+
+.Avant de commencer
+* Vous avez vos identifiants de connexion.
+* Vous disposez d'une URL pour accéder au gestionnaire de locataires, fournie par votre administrateur de réseau.  L'URL ressemblera à l'un de ces exemples :
++
+`\https://FQDN_or_Admin_Node_IP/`
+
++
+`\https://FQDN_or_Admin_Node_IP:port/`
+
++
+`\https://FQDN_or_Admin_Node_IP/?accountId=20-digit-account-id`
+
++
+`\https://FQDN_or_Admin_Node_IP:port/?accountId=20-digit-account-id`
+
++
+L'URL inclut toujours un nom de domaine complet (FQDN), l'adresse IP d'un nœud d'administration ou l'adresse IP virtuelle d'un groupe HA de nœuds d'administration.  Il peut également inclure un numéro de port, l'ID de compte locataire à 20 chiffres ou les deux.
+
+* Si l'URL n'inclut pas l'ID de compte à 20 chiffres du locataire, vous disposez de cet ID de compte.
+* Vous utilisez unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Les cookies sont activés dans votre navigateur Web.
+* Vous appartenez à un groupe d'utilisateurs qui alink:tenant-management-permissions.html["autorisations d'accès spécifiques"] .
+
+
+.Étapes
+. Lancer unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+. Dans la barre d’adresse du navigateur, saisissez l’URL permettant d’accéder à Tenant Manager.
+. Si une alerte de sécurité s'affiche, installez le certificat à l'aide de l'assistant d'installation du navigateur.
+. Sign in au gestionnaire de locataires.
++
+L'écran de connexion qui s'affiche dépend de l'URL que vous avez saisie et de la configuration de l'authentification unique (SSO) pour StorageGRID.
+
++
+[role="tabbed-block"]
+====
+.Ne pas utiliser SSO
+--
+Si StorageGRID n’utilise pas SSO, l’un des écrans suivants s’affiche :
+
+** La page de connexion de Grid Manager.  Sélectionnez le lien *Connexion du locataire*.
++
+image::../media/tenant_login_link.png[Lien de connexion du locataire sur la page de connexion de Grid Manager]
+
+** La page de connexion du gestionnaire de locataires. Le champ *Compte* est peut-être déjà rempli, comme indiqué ci-dessous.
++
+image::../media/tenant_user_sign_in.png[Page de connexion du gestionnaire de locataires]
+
++
+... Si l'ID de compte à 20 chiffres du locataire n'est pas affiché, sélectionnez le nom du compte du locataire s'il apparaît dans la liste des comptes récents ou saisissez l'ID de compte.
+... Entrez votre nom d'utilisateur et votre mot de passe.
+... Sélectionnez * Sign in*.
++
+Le tableau de bord du gestionnaire de locataires apparaît.
+
+... Si vous avez reçu un mot de passe initial de quelqu'un d'autre, sélectionnez *_username_* > *Modifier le mot de passe* pour sécuriser votre compte.
+
+
+
+
+--
+.Utilisation de SSO
+--
+Si StorageGRID utilise SSO, l’un des écrans suivants s’affiche :
+
+** La page SSO de votre organisation. Par exemple:
++
+image::../media/sso_organization_page.gif[exemple de page de connexion d'organisation pour SSO]
+
++
+Saisissez vos identifiants SSO standard et sélectionnez * Sign in*.
+
+** La page de connexion SSO du gestionnaire de locataires.
++
+image::../media/sign_in_sso.png[Connexion à un compte locataire si SSO est activé]
+
++
+... Si l'ID de compte à 20 chiffres du locataire n'est pas affiché, sélectionnez le nom du compte du locataire s'il apparaît dans la liste des comptes récents ou saisissez l'ID de compte.
+... Sélectionnez * Sign in*.
+... Sign in avec vos informations d'identification SSO standard sur la page de connexion SSO de votre organisation.
++
+Le tableau de bord du gestionnaire de locataires apparaît.
+
+
+
+
+
+--
+====
+

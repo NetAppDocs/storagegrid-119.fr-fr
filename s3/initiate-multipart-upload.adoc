@@ -1,0 +1,154 @@
+---
+permalink: s3/initiate-multipart-upload.html 
+sidebar: sidebar 
+keywords: initiate multipart upload, CreateMultipartUpload, upload ID 
+summary: 'L"opération CreateMultipartUpload lance un téléchargement en plusieurs parties pour un objet et renvoie un ID de téléchargement.' 
+---
+= Créer un téléchargement multi-parties
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'opération CreateMultipartUpload (précédemment nommée Initiate Multipart Upload) lance un téléchargement en plusieurs parties pour un objet et renvoie un ID de téléchargement.
+
+Le `x-amz-storage-class` l'en-tête de requête est pris en charge.  La valeur soumise pour `x-amz-storage-class` affecte la manière dont StorageGRID protège les données de l'objet pendant l'ingestion et non le nombre de copies persistantes de l'objet stockées dans le système StorageGRID (qui est déterminé par ILM).
+
+Si la règle ILM correspondant à un objet ingéré utilise le Strictlink:../ilm/data-protection-options-for-ingest.html["option d'ingestion"] , le `x-amz-storage-class` l'en-tête n'a aucun effet.
+
+Les valeurs suivantes peuvent être utilisées pour `x-amz-storage-class` :
+
+* `STANDARD`(Défaut)
++
+** *Double validation* : si la règle ILM spécifie l'option d'ingestion Double validation, dès qu'un objet est ingéré, une deuxième copie de cet objet est créée et distribuée à un autre nœud de stockage (double validation).  Lorsque l'ILM est évalué, StorageGRID détermine si ces copies intermédiaires initiales satisfont aux instructions de placement de la règle.  Si ce n’est pas le cas, de nouvelles copies d’objets devront peut-être être réalisées à des emplacements différents et les copies intermédiaires initiales devront peut-être être supprimées.
+** *Équilibré* : si la règle ILM spécifie l'option Équilibré et que StorageGRID ne peut pas effectuer immédiatement toutes les copies spécifiées dans la règle, StorageGRID effectue deux copies intermédiaires sur différents nœuds de stockage.
++
+Si StorageGRID peut créer immédiatement toutes les copies d'objets spécifiées dans la règle ILM (placement synchrone), le `x-amz-storage-class` l'en-tête n'a aucun effet.
+
+
+
+* `REDUCED_REDUNDANCY`
++
+** *Double validation* : si la règle ILM spécifie l'option Double validation, StorageGRID crée une seule copie intermédiaire lorsque l'objet est ingéré (validation unique).
+** *Équilibré* : si la règle ILM spécifie l'option Équilibré, StorageGRID effectue une seule copie intermédiaire uniquement si le système ne peut pas effectuer immédiatement toutes les copies spécifiées dans la règle.  Si StorageGRID peut effectuer un placement synchrone, cet en-tête n'a aucun effet.  Le `REDUCED_REDUNDANCY` L'option est mieux utilisée lorsque la règle ILM qui correspond à l'objet crée une seule copie répliquée.  Dans ce cas, en utilisant `REDUCED_REDUNDANCY` élimine la création et la suppression inutiles d'une copie d'objet supplémentaire pour chaque opération d'ingestion.
+
+
++
+En utilisant le `REDUCED_REDUNDANCY` Cette option n'est pas recommandée dans d'autres circonstances. `REDUCED_REDUNDANCY` augmente le risque de perte de données d'objet lors de l'ingestion.  Par exemple, vous risquez de perdre des données si la copie unique est initialement stockée sur un nœud de stockage qui échoue avant que l'évaluation ILM puisse avoir lieu.
+
+
+
+
+CAUTION: Le fait de n'avoir qu'une seule copie répliquée pendant une période donnée expose les données à un risque de perte permanente.  Si une seule copie répliquée d’un objet existe, cet objet est perdu si un nœud de stockage échoue ou présente une erreur importante.  Vous perdez également temporairement l’accès à l’objet pendant les procédures de maintenance telles que les mises à niveau.
+
+Spécification `REDUCED_REDUNDANCY` affecte uniquement le nombre de copies créées lorsqu'un objet est ingéré pour la première fois.  Cela n'affecte pas le nombre de copies de l'objet effectuées lorsque l'objet est évalué par les stratégies ILM actives et n'entraîne pas le stockage des données à des niveaux de redondance inférieurs dans le système StorageGRID .
+
+
+NOTE: Si vous ingérez un objet dans un bucket avec le verrouillage d'objet S3 activé, le `REDUCED_REDUNDANCY` l'option est ignorée.  Si vous ingérez un objet dans un bucket conforme hérité, le `REDUCED_REDUNDANCY` l'option renvoie une erreur.  StorageGRID effectuera toujours une ingestion à double validation pour garantir que les exigences de conformité sont satisfaites.
+
+
+
+== En-têtes de requête pris en charge
+
+Les en-têtes de requête suivants sont pris en charge :
+
+* `Content-Type`
+* `x-amz-checksum-algorithm`
++
+Actuellement, seule la valeur SHA256 pour `x-amz-checksum-algorithm` est pris en charge.
+
+* `x-amz-meta-`, suivi d'une paire nom-valeur contenant des métadonnées définies par l'utilisateur
++
+Lors de la spécification de la paire nom-valeur pour les métadonnées définies par l'utilisateur, utilisez ce format général :
+
++
+[listing]
+----
+x-amz-meta-_name_: `value`
+----
++
+Si vous souhaitez utiliser l'option *Heure de création définie par l'utilisateur* comme heure de référence pour une règle ILM, vous devez utiliser `creation-time` comme le nom des métadonnées qui enregistrent quand l'objet a été créé. Par exemple:
+
++
+[listing]
+----
+x-amz-meta-creation-time: 1443399726
+----
++
+La valeur pour `creation-time` est évalué en secondes depuis le 1er janvier 1970.
+
++
+
+NOTE: Ajout `creation-time` car les métadonnées définies par l'utilisateur ne sont pas autorisées si vous ajoutez un objet à un bucket pour lequel la conformité héritée est activée.  Une erreur sera renvoyée.
+
+* En-têtes de demande de verrouillage d'objet S3 :
++
+** `x-amz-object-lock-mode`
+** `x-amz-object-lock-retain-until-date`
+** `x-amz-object-lock-legal-hold`
++
+Si une demande est effectuée sans ces en-têtes, les paramètres de conservation par défaut du bucket sont utilisés pour calculer la date de conservation de la version de l'objet.
+
++
+link:../s3/use-s3-api-for-s3-object-lock.html["Utiliser l'API REST S3 pour configurer le verrouillage d'objet S3"]
+
+
+
+* En-têtes de requête SSE :
++
+** `x-amz-server-side-encryption`
+** `x-amz-server-side-encryption-customer-key-MD5`
+** `x-amz-server-side-encryption-customer-key`
+** `x-amz-server-side-encryption-customer-algorithm`
++
+<<En-têtes de requête pour le chiffrement côté serveur>>
+
+
+
++
+
+NOTE: Pour plus d'informations sur la façon dont StorageGRID gère les caractères UTF-8, consultezlink:put-object.html["Mettre l'objet"] .
+
+
+
+
+
+== En-têtes de requête pour le chiffrement côté serveur
+
+Vous pouvez utiliser les en-têtes de requête suivants pour chiffrer un objet en plusieurs parties avec un chiffrement côté serveur.  Les options SSE et SSE-C s'excluent mutuellement.
+
+* *SSE* : utilisez l'en-tête suivant dans la demande CreateMultipartUpload si vous souhaitez chiffrer l'objet avec une clé unique gérée par StorageGRID.  Ne spécifiez pas cet en-tête dans aucune des requêtes UploadPart.
++
+** `x-amz-server-side-encryption`
+
+
+* *SSE-C* : utilisez ces trois en-têtes dans la demande CreateMultipartUpload (et dans chaque demande UploadPart ultérieure) si vous souhaitez crypter l'objet avec une clé unique que vous fournissez et gérez.
++
+** `x-amz-server-side-encryption-customer-algorithm`: Préciser `AES256` .
+** `x-amz-server-side-encryption-customer-key`:Spécifiez votre clé de chiffrement pour le nouvel objet.
+** `x-amz-server-side-encryption-customer-key-MD5`: Spécifiez le condensé MD5 de la clé de chiffrement du nouvel objet.
+
+
+
+
+
+CAUTION: Les clés de chiffrement que vous fournissez ne sont jamais stockées.  Si vous perdez une clé de chiffrement, vous perdez l'objet correspondant.  Avant d'utiliser les clés fournies par le client pour sécuriser les données d'objet, examinez les considérations relativeslink:using-server-side-encryption.html["en utilisant le cryptage côté serveur"] .
+
+
+
+== En-têtes de requête non pris en charge
+
+L'en-tête de requête suivant n'est pas pris en charge :
+
+* `x-amz-website-redirect-location`
++
+Le `x-amz-website-redirect-location` retours d'en-tête `XNotImplemented` .
+
+
+
+
+
+== Gestion des versions
+
+Le téléchargement en plusieurs parties consiste en des opérations distinctes pour lancer le téléchargement, répertorier les téléchargements, télécharger des parties, assembler les parties téléchargées et terminer le téléchargement.  Les objets sont créés (et versionnés si applicable) lorsque l'opération CompleteMultipartUpload est effectuée.

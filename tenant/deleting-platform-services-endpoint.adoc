@@ -1,0 +1,36 @@
+---
+permalink: tenant/deleting-platform-services-endpoint.html 
+sidebar: sidebar 
+keywords: how to delete tenant platform services endpoint 
+summary: Vous pouvez supprimer un point de terminaison si vous ne souhaitez plus utiliser le service de plateforme associé. 
+---
+= Supprimer le point de terminaison des services de la plateforme
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez supprimer un point de terminaison si vous ne souhaitez plus utiliser le service de plateforme associé.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Gérer les points de terminaison ou l'autorisation d'accès root"] .
+
+
+.Étapes
+. Sélectionnez *STOCKAGE (S3)* > *Points de terminaison des services de plateforme*.
++
+La page Points de terminaison des services de plateforme s’affiche et affiche la liste des points de terminaison des services de plateforme qui ont déjà été configurés.
+
+. Cochez la case correspondant à chaque point de terminaison que vous souhaitez supprimer.
++
+
+NOTE: Si vous supprimez un point de terminaison de services de plateforme en cours d'utilisation, le service de plateforme associé sera désactivé pour tous les buckets qui utilisent le point de terminaison.  Toutes les demandes qui n’ont pas encore été traitées seront abandonnées.  Toutes les nouvelles demandes continueront d’être générées jusqu’à ce que vous modifiiez la configuration de votre bucket pour ne plus référencer l’URN supprimée.  StorageGRID signalera ces demandes comme des erreurs irrécupérables.
+
+. Sélectionnez *Actions* > *Supprimer le point de terminaison*.
++
+Un message de confirmation apparaît.
+
+. Sélectionnez *Supprimer le point de terminaison*.
+

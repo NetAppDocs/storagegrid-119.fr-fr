@@ -1,0 +1,62 @@
+---
+permalink: primer/delete-data-flow.html 
+sidebar: sidebar 
+keywords: object, delete, deletion, object lock, bucket lifecycle, expiration, ilm, placement instruction 
+summary: 'Toutes les copies d"objet sont supprimées du système StorageGRID lorsqu"un client ou un locataire effectue une opération de suppression ou lorsque la durée de vie de l"objet expire, déclenchant sa suppression automatique.  Il existe un flux de données défini pour la suppression d"objets.' 
+---
+= Supprimer le flux de données
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Toutes les copies d'objet sont supprimées du système StorageGRID lorsqu'un client effectue une opération de suppression ou lorsque la durée de vie de l'objet expire, déclenchant sa suppression automatique.  Il existe un flux de données défini pour la suppression d'objets.
+
+
+
+== Hiérarchie de suppression
+
+StorageGRID fournit plusieurs méthodes pour contrôler le moment où les objets sont conservés ou supprimés.  Les objets peuvent être supprimés à la demande du client ou automatiquement.  StorageGRID donne toujours la priorité aux paramètres de verrouillage d'objet S3 par rapport aux demandes de suppression des clients, qui sont prioritaires par rapport aux instructions de cycle de vie du compartiment S3 et de placement ILM.
+
+* *Verrouillage d'objet S3* : si le paramètre global de verrouillage d'objet S3 est activé pour la grille, les clients S3 peuvent créer des compartiments avec le verrouillage d'objet S3 activé, puis utiliser l'API REST S3 pour spécifier les paramètres de conservation jusqu'à la date et de conservation légale pour chaque version d'objet ajoutée à ce compartiment.
++
+** Une version d'objet soumise à une suspension légale ne peut être supprimée par aucune méthode.
+** Avant que la date de conservation d'une version d'objet ne soit atteinte, cette version ne peut être supprimée par aucune méthode.
+** Les objets dans les buckets avec le verrouillage d'objet S3 activé sont conservés par ILM « pour toujours ».  Cependant, une fois sa date de conservation atteinte, une version d'objet peut être supprimée par une demande client ou par l'expiration du cycle de vie du bucket.
+** Si les clients S3 appliquent une date de conservation par défaut au bucket, ils n'ont pas besoin de spécifier une date de conservation pour chaque objet.
+
+
+* *Demande de suppression du client* : Un client S3 peut émettre une demande de suppression d'objet.  Lorsqu'un client supprime un objet, toutes les copies de l'objet sont supprimées du système StorageGRID .
+* *Supprimer les objets dans le bucket* : les utilisateurs de Tenant Manager peuvent utiliser cette option pour supprimer définitivement toutes les copies des objets et des versions d'objet dans les buckets sélectionnés du système StorageGRID .
+* *Cycle de vie du bucket S3* : les clients S3 peuvent ajouter une configuration de cycle de vie à leurs buckets qui spécifie une action d'expiration.  Si un cycle de vie de compartiment existe, StorageGRID supprime automatiquement toutes les copies d'un objet lorsque la date ou le nombre de jours spécifiés dans l'action Expiration est atteint, sauf si le client supprime d'abord l'objet.
+* *Instructions de placement ILM* : En supposant que le verrouillage d'objet S3 n'est pas activé pour le bucket et qu'il n'y a pas de cycle de vie de bucket, StorageGRID supprime automatiquement un objet lorsque la dernière période de la règle ILM se termine et qu'aucun autre placement n'est spécifié pour l'objet.
++
+
+NOTE: Lorsqu'un cycle de vie de compartiment S3 est configuré, les actions d'expiration du cycle de vie remplacent la stratégie ILM pour les objets qui correspondent au filtre de cycle de vie.  Par conséquent, un objet peut être conservé sur la grille même après l'expiration des instructions ILM de placement de l'objet.
+
+
+
+Voir link:../ilm/how-objects-are-deleted.html["Comment les objets sont supprimés"] pour plus d'informations.
+
+
+
+== Flux de données pour les suppressions de clients
+
+image::../media/delete_data_flow.png[Flux de suppression de données du client]
+
+. Le service LDR reçoit une demande de suppression de l'application cliente.
+. Le service LDR met à jour le magasin de métadonnées afin que l'objet semble supprimé aux demandes des clients et demande au moteur ILM de supprimer toutes les copies des données de l'objet.
+. L'objet est supprimé du système.  Le magasin de métadonnées est mis à jour pour supprimer les métadonnées de l'objet.
+
+
+
+
+== Flux de données pour les suppressions ILM
+
+image::../media/automatic_deletion_data_flow.png[Flux de données de suppression automatique]
+
+. Le moteur ILM détermine que l’objet doit être supprimé.
+. Le moteur ILM notifie le magasin de métadonnées.  Le magasin de métadonnées met à jour les métadonnées de l'objet afin que l'objet semble supprimé aux demandes des clients.
+. Le moteur ILM supprime toutes les copies de l'objet.  Le magasin de métadonnées est mis à jour pour supprimer les métadonnées de l'objet.
+

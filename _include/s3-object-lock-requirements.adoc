@@ -1,0 +1,52 @@
+= Exigences pour les buckets avec S3 Object Lock activé
+:allow-uri-read: 
+
+
+
+
+== Exigences pour les buckets avec S3 Object Lock activé
+
+* Si le paramètre global de verrouillage d'objet S3 est activé pour le système StorageGRID , vous pouvez utiliser le gestionnaire de locataires, l'API de gestion des locataires ou l'API REST S3 pour créer des buckets avec le verrouillage d'objets S3 activé.
+* Si vous prévoyez d'utiliser S3 Object Lock, vous devez activer S3 Object Lock lorsque vous créez le bucket.  Vous ne pouvez pas activer le verrouillage d'objet S3 pour un bucket existant.
+* Lorsque le verrouillage d'objet S3 est activé pour un bucket, StorageGRID active automatiquement le contrôle de version pour ce bucket.  Vous ne pouvez pas désactiver le verrouillage d'objet S3 ou suspendre le contrôle de version du bucket.
+* Vous pouvez également spécifier un mode de conservation par défaut et une période de conservation pour chaque compartiment à l'aide du gestionnaire de locataires, de l'API de gestion des locataires ou de l'API REST S3.  Les paramètres de conservation par défaut du bucket s'appliquent uniquement aux nouveaux objets ajoutés au bucket qui ne disposent pas de leurs propres paramètres de conservation.  Vous pouvez remplacer ces paramètres par défaut en spécifiant un mode de conservation et une date de conservation pour chaque version d'objet lors de son téléchargement.
+* La configuration du cycle de vie du bucket est prise en charge pour les buckets avec S3 Object Lock activé.
+* La réplication CloudMirror n'est pas prise en charge pour les buckets avec S3 Object Lock activé.
+
+
+
+
+== Exigences relatives aux objets dans les compartiments avec le verrouillage d'objet S3 activé
+
+* Pour protéger une version d'objet, vous pouvez spécifier des paramètres de rétention par défaut pour le compartiment ou spécifier des paramètres de rétention pour chaque version d'objet.  Les paramètres de conservation au niveau de l’objet peuvent être spécifiés à l’aide de l’application cliente S3 ou de l’API REST S3.
+* Les paramètres de conservation s'appliquent aux versions d'objet individuelles.  Une version d'objet peut avoir à la fois une date de conservation et un paramètre de conservation légale, l'un mais pas l'autre, ou aucun des deux.  La spécification d'une date de conservation ou d'un paramètre de conservation légale pour un objet protège uniquement la version spécifiée dans la demande.  Vous pouvez créer de nouvelles versions de l'objet, tandis que la version précédente de l'objet reste verrouillée.
+
+
+
+
+== Cycle de vie des objets dans les buckets avec S3 Object Lock activé
+
+Chaque objet enregistré dans un bucket avec S3 Object Lock activé passe par ces étapes :
+
+. *Objet ingéré*
++
+Lorsqu'une version d'objet est ajoutée à un bucket sur lequel le verrouillage d'objet S3 est activé, les paramètres de rétention sont appliqués comme suit :
+
++
+** Si des paramètres de conservation sont spécifiés pour l’objet, les paramètres au niveau de l’objet sont appliqués.  Tous les paramètres de bucket par défaut sont ignorés.
+** Si aucun paramètre de conservation n'est spécifié pour l'objet, les paramètres de compartiment par défaut sont appliqués, s'ils existent.
+** Si aucun paramètre de conservation n'est spécifié pour l'objet ou le compartiment, l'objet n'est pas protégé par S3 Object Lock.
+
+
++
+Si les paramètres de conservation sont appliqués, l'objet et toutes les métadonnées définies par l'utilisateur S3 sont protégés.
+
+. *Conservation et suppression d'objets*
++
+Plusieurs copies de chaque objet protégé sont stockées par StorageGRID pendant la période de conservation spécifiée.  Le nombre et le type exacts de copies d'objets ainsi que les emplacements de stockage sont déterminés par les règles de conformité des politiques ILM actives.  La possibilité de supprimer un objet protégé avant que sa date de conservation ne soit atteinte dépend de son mode de conservation.
+
++
+** Si un objet est sous conservation légale, personne ne peut supprimer l'objet, quel que soit son mode de conservation.
+
+
+

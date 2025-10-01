@@ -1,0 +1,51 @@
+---
+permalink: maintain/selecting-start-recovery-to-configure-gateway-node.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, gateway node 
+summary: Après avoir remplacé un nœud de passerelle, vous devez sélectionner Démarrer la récupération dans le gestionnaire de grille pour configurer le nouveau nœud en remplacement du nœud défaillant. 
+---
+= Sélectionnez Démarrer la récupération pour configurer le nœud de passerelle
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Après avoir remplacé un nœud de passerelle, vous devez sélectionner Démarrer la récupération dans le gestionnaire de grille pour configurer le nouveau nœud en remplacement du nœud défaillant.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:../admin/admin-group-permissions.html["Autorisation d'accès de maintenance ou root"] .
+* Vous disposez de la phrase secrète de provisionnement.
+* Vous avez déployé et configuré le nœud de remplacement.
+
+
+.Étapes
+. Depuis le Gestionnaire de grille, sélectionnez *MAINTENANCE* > *Tâches* > *Récupération*.
+. Sélectionnez le nœud de grille que vous souhaitez récupérer dans la liste des nœuds en attente.
++
+Les nœuds apparaissent dans la liste après leur échec, mais vous ne pouvez pas sélectionner un nœud tant qu'il n'a pas été réinstallé et qu'il n'est pas prêt pour la récupération.
+
+. Saisissez la *phrase secrète de provisionnement*.
+. Cliquez sur *Démarrer la récupération*.
++
+image::../media/4b_select_recovery_node.png[capture d'écran montrant la page Maintenance > Récupération]
+
+. Surveillez la progression de la récupération dans le tableau des nœuds de grille de récupération.
++
+
+NOTE: Pendant que la procédure de récupération est en cours, vous pouvez cliquer sur *Réinitialiser* pour démarrer une nouvelle récupération.  Une boîte de dialogue apparaît, indiquant que le nœud sera laissé dans un état indéterminé si vous réinitialisez la procédure.
+
++
+image::../media/recovery_reset_warning.gif[capture d'écran montrant la boîte de dialogue d'avertissement de réinitialisation de récupération]
+
++
+Si vous souhaitez réessayer la récupération après avoir réinitialisé la procédure, vous devez restaurer le nœud à un état préinstallé, comme suit :
+
++
+** *VMware* : supprimez le nœud de grille virtuelle déployé.  Ensuite, lorsque vous êtes prêt à redémarrer la récupération, redéployez le nœud.
+** *Linux* : redémarrez le nœud en exécutant cette commande sur l’hôte Linux : `storagegrid node force-recovery _node-name_`
+** *Appareil* : Si vous souhaitez réessayer la récupération après avoir réinitialisé la procédure, vous devez restaurer le nœud de l'appareil à un état préinstallé en exécutant `sgareinstall` sur le nœud. Voir link:preparing-appliance-for-reinstallation-platform-replacement-only.html["Préparer l'appareil pour la réinstallation (remplacement de la plate-forme uniquement)"] .
+
+
+

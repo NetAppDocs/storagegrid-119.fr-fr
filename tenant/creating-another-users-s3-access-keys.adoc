@@ -1,0 +1,64 @@
+---
+permalink: tenant/creating-another-users-s3-access-keys.html 
+sidebar: sidebar 
+keywords: how to create other user S3 access key 
+summary: Si vous utilisez un locataire S3 et que vous disposez de l’autorisation appropriée, vous pouvez créer des clés d’accès S3 pour d’autres utilisateurs, tels que les applications qui ont besoin d’accéder aux buckets et aux objets. 
+---
+= Créer les clés d'accès S3 d'un autre utilisateur
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si vous utilisez un locataire S3 et que vous disposez de l’autorisation appropriée, vous pouvez créer des clés d’accès S3 pour d’autres utilisateurs, tels que les applications qui ont besoin d’accéder aux buckets et aux objets.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Autorisation d'accès root"] .
+
+
+.À propos de cette tâche
+Vous pouvez créer une ou plusieurs clés d’accès S3 pour d’autres utilisateurs afin qu’ils puissent créer et gérer des buckets pour leur compte locataire.  Après avoir créé une nouvelle clé d’accès, mettez à jour l’application avec le nouvel ID de clé d’accès et la clé d’accès secrète.  Pour des raisons de sécurité, ne créez pas plus de clés que nécessaire pour l'utilisateur et supprimez les clés qui ne sont pas utilisées.  Si vous n'avez qu'une seule clé et qu'elle est sur le point d'expirer, créez une nouvelle clé avant l'expiration de l'ancienne, puis supprimez l'ancienne.
+
+Chaque clé peut avoir une date d'expiration spécifique ou aucune date d'expiration.  Suivez ces directives concernant le délai d’expiration :
+
+* Définissez un délai d'expiration pour les clés afin de limiter l'accès de l'utilisateur à une certaine période.  La définition d’un délai d’expiration court peut aider à réduire les risques si l’ID de clé d’accès et la clé d’accès secrète sont accidentellement exposés.  Les clés expirées sont supprimées automatiquement.
+* Si le risque de sécurité dans votre environnement est faible et que vous n’avez pas besoin de créer périodiquement de nouvelles clés, vous n’avez pas besoin de définir un délai d’expiration pour les clés.  Si vous décidez ultérieurement de créer de nouvelles clés, supprimez les anciennes clés manuellement.
+
+
+
+CAUTION: Les compartiments et objets S3 appartenant à un utilisateur sont accessibles à l'aide de l'ID de clé d'accès et de la clé d'accès secrète affichées pour cet utilisateur dans le gestionnaire de locataires.  Pour cette raison, protégez les clés d’accès comme vous le feriez avec un mot de passe.  Faites tourner régulièrement les clés d’accès, supprimez toutes les clés inutilisées du compte et ne les partagez jamais avec d’autres utilisateurs.
+
+.Étapes
+. Sélectionnez *GESTION DES ACCÈS* > *Utilisateurs*.
+. Sélectionnez l’utilisateur dont vous souhaitez gérer les clés d’accès S3.
++
+La page de détails de l'utilisateur apparaît.
+
+. Sélectionnez *Clés d’accès*, puis sélectionnez *Créer une clé*.
+. Effectuez l’une des opérations suivantes :
++
+** Sélectionnez *Ne pas définir de délai d'expiration* pour créer une clé qui n'expire pas.  (Défaut)
+** Sélectionnez *Définir une heure d’expiration* et définissez la date et l’heure d’expiration.
++
+
+NOTE: La date d’expiration peut être au maximum de cinq ans à compter de la date actuelle.  Le délai d'expiration peut être d'au moins une minute à partir de l'heure actuelle.
+
+
+
+. Sélectionnez *Créer une clé d'accès*.
++
+La boîte de dialogue Télécharger la clé d'accès s'affiche, répertoriant l'ID de la clé d'accès et la clé d'accès secrète.
+
+. Copiez l'ID de clé d'accès et la clé d'accès secrète dans un emplacement sûr ou sélectionnez *Télécharger .csv* pour enregistrer un fichier de feuille de calcul contenant l'ID de clé d'accès et la clé d'accès secrète.
++
+
+CAUTION: Ne fermez pas cette boîte de dialogue tant que vous n'avez pas copié ou téléchargé ces informations.  Vous ne pouvez pas copier ou télécharger des clés une fois la boîte de dialogue fermée.
+
+. Sélectionnez *Terminer*.
++
+La nouvelle clé est répertoriée dans l’onglet Clés d’accès de la page des détails de l’utilisateur.
+
+. Si votre compte de locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille*, utilisez éventuellement l'API de gestion des locataires pour cloner manuellement les clés d'accès S3 du locataire sur la grille source vers le locataire sur la grille de destination. Voir link:grid-federation-clone-keys-with-api.html["Cloner les clés d'accès S3 à l'aide de l'API"] .
+

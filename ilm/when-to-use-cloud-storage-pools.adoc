@@ -1,0 +1,60 @@
+---
+permalink: ilm/when-to-use-cloud-storage-pools.html 
+sidebar: sidebar 
+keywords: use cloud storage pool, benefits of cloud storage pools 
+summary: À l’aide des pools de stockage cloud, vous pouvez sauvegarder ou hiérarchiser des données vers un emplacement externe.  De plus, vous pouvez sauvegarder ou hiérarchiser des données sur plusieurs clouds. 
+---
+= Quand utiliser les pools de stockage cloud
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+À l’aide des pools de stockage cloud, vous pouvez sauvegarder ou hiérarchiser des données vers un emplacement externe.  De plus, vous pouvez sauvegarder ou hiérarchiser des données sur plusieurs clouds.
+
+
+
+== Sauvegarder les données StorageGRID vers un emplacement externe
+
+Vous pouvez utiliser un pool de stockage cloud pour sauvegarder des objets StorageGRID vers un emplacement externe.
+
+Si les copies dans StorageGRID sont inaccessibles, les données d'objet dans le pool de stockage cloud peuvent être utilisées pour répondre aux demandes des clients.  Cependant, vous devrez peut-être émettre une demande S3 RestoreObject pour accéder à la copie de l'objet de sauvegarde dans le pool de stockage cloud.
+
+Les données d'objet dans un pool de stockage cloud peuvent également être utilisées pour récupérer des données perdues de StorageGRID en raison d'une défaillance d'un volume de stockage ou d'un nœud de stockage.  Si la seule copie restante d’un objet se trouve dans un pool de stockage cloud, StorageGRID restaure temporairement l’objet et crée une nouvelle copie sur le nœud de stockage récupéré.
+
+Pour mettre en œuvre une solution de sauvegarde :
+
+. Créez un pool de stockage cloud unique.
+. Configurez une règle ILM qui stocke simultanément des copies d’objet sur des nœuds de stockage (en tant que copies répliquées ou codées par effacement) et une seule copie d’objet dans le pool de stockage cloud.
+. Ajoutez la règle à votre politique ILM.  Ensuite, simulez et activez la politique.
+
+
+
+
+== Transférer les données de StorageGRID vers un emplacement externe
+
+Vous pouvez utiliser un pool de stockage cloud pour stocker des objets en dehors du système StorageGRID .  Par exemple, supposons que vous disposez d’un grand nombre d’objets que vous devez conserver, mais que vous prévoyez d’y accéder rarement, voire jamais.  Vous pouvez utiliser un pool de stockage cloud pour hiérarchiser les objets vers un stockage à moindre coût et pour libérer de l'espace dans StorageGRID.
+
+Pour mettre en œuvre une solution de hiérarchisation :
+
+. Créez un pool de stockage cloud unique.
+. Configurez une règle ILM qui déplace les objets rarement utilisés des nœuds de stockage vers le pool de stockage cloud.
+. Ajoutez la règle à votre politique ILM.  Ensuite, simulez et activez la politique.
+
+
+
+
+== Maintenir plusieurs points de terminaison cloud
+
+Vous pouvez configurer plusieurs points de terminaison de pool de stockage cloud si vous souhaitez hiérarchiser ou sauvegarder des données d'objet sur plusieurs clouds.  Les filtres de vos règles ILM vous permettent de spécifier quels objets sont stockés dans chaque pool de stockage cloud.  Par exemple, vous souhaiterez peut-être stocker des objets de certains locataires ou compartiments dans Amazon S3 Glacier et des objets d’autres locataires ou compartiments dans le stockage Azure Blob.  Ou, vous souhaiterez peut-être déplacer des données entre Amazon S3 Glacier et le stockage Azure Blob.
+
+
+NOTE: Lorsque vous utilisez plusieurs points de terminaison Cloud Storage Pool, gardez à l’esprit qu’un objet ne peut être stocké que dans un seul Cloud Storage Pool à la fois.
+
+Pour implémenter plusieurs points de terminaison cloud :
+
+. Créez jusqu'à 10 pools de stockage cloud.
+. Configurez les règles ILM pour stocker les données d’objet appropriées au moment approprié dans chaque pool de stockage cloud.  Par exemple, stockez les objets du compartiment A dans le pool de stockage Cloud A et stockez les objets du compartiment B dans le pool de stockage Cloud B. Ou stockez les objets dans le pool de stockage Cloud A pendant un certain temps, puis déplacez-les vers le pool de stockage Cloud B.
+. Ajoutez les règles à votre politique ILM.  Ensuite, simulez et activez la politique.
+

@@ -1,0 +1,33 @@
+---
+permalink: rhel/specifying-grid-network-subnets.html 
+sidebar: sidebar 
+keywords: how to specify Grid Network subnets 
+summary: Vous devez spécifier les sous-réseaux utilisés sur le réseau Grid. 
+---
+= Spécifier les sous-réseaux du réseau Grid
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez spécifier les sous-réseaux utilisés sur le réseau Grid.
+
+.À propos de cette tâche
+Les entrées de sous-réseau incluent les sous-réseaux du réseau Grid pour chaque site de votre système StorageGRID , ainsi que tous les sous-réseaux qui doivent être accessibles via le réseau Grid.
+
+Si vous disposez de plusieurs sous-réseaux de grille, la passerelle Grid Network est requise.  Tous les sous-réseaux de grille spécifiés doivent être accessibles via cette passerelle.
+
+.Étapes
+. Spécifiez l'adresse réseau CIDR pour au moins un réseau de grille dans la zone de texte *Sous-réseau 1*.
+. Cliquez sur le signe plus à côté de la dernière entrée pour ajouter une entrée réseau supplémentaire.  Vous devez spécifier tous les sous-réseaux pour tous les sites du réseau Grid.
++
+** Si vous avez déjà déployé au moins un nœud, cliquez sur *Découvrir les sous-réseaux des réseaux de grille* pour remplir automatiquement la liste des sous-réseaux des réseaux de grille avec les sous-réseaux signalés par les nœuds de grille enregistrés auprès du gestionnaire de grille.
+** Vous devez ajouter manuellement tous les sous-réseaux pour NTP, DNS, LDAP ou autres serveurs externes accessibles via la passerelle Grid Network.
++
+image::../media/4_gmi_installer_grid_network_page.gif[Spécifier les sous-réseaux]
+
+
+
+. Cliquez sur *Suivant*.
+

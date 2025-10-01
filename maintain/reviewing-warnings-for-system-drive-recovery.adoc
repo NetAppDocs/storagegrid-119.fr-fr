@@ -1,0 +1,38 @@
+---
+permalink: maintain/reviewing-warnings-for-system-drive-recovery.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, system drive warning, storage node 
+summary: 'Avant de récupérer un lecteur système défaillant d"un nœud de stockage, examinez les avertissements et considérations généraux relatifs à la récupération du nœud de grille et les avertissements spécifiques suivants.' 
+---
+= Avertissements pour la récupération du lecteur système du nœud de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avant de récupérer un lecteur système défaillant d'un nœud de stockage, consultez les instructions généraleslink:warnings-and-considerations-for-grid-node-recovery.html["avertissements et considérations pour la récupération des nœuds de grille"] et les avertissements spécifiques suivants.
+
+Les nœuds de stockage disposent d'une base de données Cassandra qui inclut des métadonnées d'objet. La base de données Cassandra peut être reconstruite dans les circonstances suivantes :
+
+* Un nœud de stockage est remis en ligne après avoir été hors ligne pendant plus de 15 jours.
+* Un volume de stockage est tombé en panne et a été récupéré.
+* Le lecteur système et un ou plusieurs volumes de stockage tombent en panne et sont récupérés.
+
+
+Lorsque Cassandra est reconstruit, le système utilise les informations provenant d’autres nœuds de stockage. Si trop de nœuds de stockage sont hors ligne, certaines données Cassandra peuvent ne pas être disponibles. Si Cassandra a été reconstruit récemment, les données Cassandra peuvent ne pas encore être cohérentes sur l'ensemble de la grille.  Une perte de données peut se produire si Cassandra est reconstruit alors que trop de nœuds de stockage sont hors ligne ou si deux nœuds de stockage ou plus sont reconstruits à 15 jours d'intervalle.
+
+
+CAUTION: Si plusieurs nœuds de stockage sont en panne (ou sont hors ligne), contactez le support technique. N'effectuez pas la procédure de récupération suivante. Une perte de données pourrait survenir.
+
+
+CAUTION: S'il s'agit de la deuxième panne d'un nœud de stockage en moins de 15 jours après une panne ou une récupération d'un nœud de stockage, contactez le support technique.  La reconstruction de Cassandra sur deux nœuds de stockage ou plus dans un délai de 15 jours peut entraîner une perte de données.
+
+
+NOTE: Si plusieurs nœuds de stockage d'un site sont défaillants, une procédure de récupération de site peut être nécessaire. Voir link:how-site-recovery-is-performed-by-technical-support.html["Comment le support technique récupère un site"] .
+
+
+CAUTION: Si ce nœud de stockage est en mode de maintenance en lecture seule pour permettre la récupération d'objets par un autre nœud de stockage avec des volumes de stockage défaillants, récupérez les volumes sur le nœud de stockage avec des volumes de stockage défaillants avant de récupérer ce nœud de stockage défaillant. Consultez les instructions pourlink:recovering-from-storage-volume-failure-where-system-drive-is-intact.html["récupérer après une panne de volume de stockage lorsque le lecteur système est intact"] .
+
+
+CAUTION: Si les règles ILM sont configurées pour stocker une seule copie répliquée et que la copie existe sur un volume de stockage défaillant, vous ne pourrez pas récupérer l'objet.

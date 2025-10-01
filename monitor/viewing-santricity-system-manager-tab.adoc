@@ -1,0 +1,47 @@
+---
+permalink: monitor/viewing-santricity-system-manager-tab.html 
+sidebar: sidebar 
+keywords: SANtricity System Manager tab, hardware diagnostics 
+summary: 'L"onglet SANtricity System Manager vous permet d"accéder à SANtricity System Manager sans avoir à configurer ou à connecter le port de gestion du dispositif de stockage.  Vous pouvez utiliser cet onglet pour consulter les informations de diagnostic matériel et environnementales ainsi que les problèmes liés aux lecteurs.' 
+---
+= Afficher l'onglet Gestionnaire de système SANtricity (série E uniquement)
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'onglet SANtricity System Manager vous permet d'accéder à SANtricity System Manager sans avoir à configurer ou à connecter le port de gestion du dispositif de stockage.  Vous pouvez utiliser cet onglet pour consulter les informations de diagnostic matériel et environnementales ainsi que les problèmes liés aux lecteurs.
+
+
+CAUTION: L'accès à SANtricity System Manager à partir du Grid Manager est généralement destiné uniquement à surveiller le matériel de l'appareil et à configurer E-Series AutoSupport.  De nombreuses fonctionnalités et opérations au sein de SANtricity System Manager, telles que la mise à niveau du micrologiciel, ne s'appliquent pas à la surveillance de votre appliance StorageGRID .  Pour éviter les problèmes, suivez toujours les instructions de maintenance matérielle de votre appareil.  Pour mettre à niveau le micrologiciel SANtricity , consultez le https://docs.netapp.com/us-en/storagegrid-appliances/landing-maintain-hdwr/index.html["Procédures de configuration de maintenance"^] pour votre appareil de stockage.
+
+
+NOTE: L'onglet Gestionnaire de système SANtricity s'affiche uniquement pour les nœuds d'appliance de stockage utilisant du matériel de la série E.
+
+En utilisant SANtricity System Manager, vous pouvez effectuer les opérations suivantes :
+
+* Affichez les données de performances telles que les performances au niveau de la baie de stockage, la latence d'E/S, l'utilisation du processeur du contrôleur de stockage et le débit.
+* Vérifiez l’état des composants matériels.
+* Exécutez des fonctions d'assistance, notamment l'affichage des données de diagnostic et la configuration d'E-Series AutoSupport.
++
+
+NOTE: Pour utiliser SANtricity System Manager pour configurer un proxy pour E-Series AutoSupport, voirlink:../admin/sending-eseries-autosupport-messages-through-storagegrid.html["Envoyer des packages AutoSupport de la série E via StorageGRID"] .
+
+
+
+Pour accéder à SANtricity System Manager via Grid Manager, vous devez disposer dulink:../admin/admin-group-permissions.html["Administrateur de l'appareil de stockage ou autorisation d'accès root"] .
+
+
+NOTE: Vous devez disposer du micrologiciel SANtricity 8.70 ou supérieur pour accéder à SANtricity System Manager à l'aide de Grid Manager.
+
+L'onglet affiche la page d'accueil de SANtricity System Manager.
+
+image::../media/nodes_page_santricity_tab.png[Page Nœuds, onglet SANtricity]
+
+
+NOTE: Vous pouvez utiliser le lien SANtricity System Manager pour ouvrir SANtricity System Manager dans une nouvelle fenêtre de navigateur pour une visualisation plus facile.
+
+Pour voir les détails des performances au niveau de la baie de stockage et de l'utilisation de la capacité, placez votre curseur sur chaque graphique.
+
+Pour plus de détails sur l'affichage des informations accessibles depuis l'onglet SANtricity System Manager, voir https://docs.netapp.com/us-en/e-series-family/index.html["Documentation NetApp E-Series et SANtricity"^] .

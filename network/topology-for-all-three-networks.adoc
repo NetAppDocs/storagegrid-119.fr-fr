@@ -1,0 +1,25 @@
+---
+permalink: network/topology-for-all-three-networks.html 
+sidebar: sidebar 
+keywords: network topology for storagegrid 
+summary: 'Vous pouvez configurer les trois réseaux dans une topologie de réseau composée d"un réseau de grille privé, de réseaux d"administration spécifiques au site délimités et de réseaux clients ouverts.  L’utilisation de points de terminaison d’équilibrage de charge et de réseaux clients non approuvés peut fournir une sécurité supplémentaire si nécessaire.' 
+---
+= Topologie des trois réseaux
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez configurer les trois réseaux dans une topologie de réseau composée d'un réseau de grille privé, de réseaux d'administration spécifiques au site délimités et de réseaux clients ouverts.  L’utilisation de points de terminaison d’équilibrage de charge et de réseaux clients non approuvés peut fournir une sécurité supplémentaire si nécessaire.
+
+Dans cet exemple :
+
+* Le réseau Grid est utilisé pour le trafic réseau lié aux opérations de gestion des objets internes.
+* Le réseau d'administration est utilisé pour le trafic lié aux fonctions administratives.
+* Le réseau client est utilisé pour le trafic lié aux demandes des clients S3.
+
+
+*Exemple de topologie : réseaux grille, administrateur et client*
+
+image::../media/grid_admin_client_networks.png[Réseaux clients d'administration de grille]

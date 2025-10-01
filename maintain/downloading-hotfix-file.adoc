@@ -1,0 +1,48 @@
+---
+permalink: maintain/downloading-hotfix-file.html 
+sidebar: sidebar 
+keywords: storagegrid, hotfix, download 
+summary: Vous devez télécharger le fichier de correctif avant de pouvoir appliquer le correctif. 
+---
+= Télécharger le fichier de correctif
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez télécharger le fichier de correctif avant de pouvoir appliquer le correctif.
+
+.Étapes
+. Aller à https://mysupport.netapp.com/site/products/all/details/storagegrid/downloads-tab["Téléchargements NetApp : StorageGRID"^] .
+. Sélectionnez la flèche vers le bas sous *Logiciels disponibles* pour voir une liste des correctifs disponibles au téléchargement.
++
+
+NOTE: Les versions des fichiers de correctifs ont la forme : 11.4__.x.y__.
+
+. Consultez les modifications incluses dans la mise à jour.
++
+
+NOTE: Si vous venez delink:configuring-replacement-primary-admin-node.html["récupéré le nœud d'administration principal"] et vous devez appliquer un correctif, sélectionnez la même version de correctif que celle installée sur les autres nœuds de la grille.
+
++
+.. Sélectionnez la version du correctif que vous souhaitez télécharger et sélectionnez *Aller*.
+.. Sign in en utilisant le nom d’utilisateur et le mot de passe de votre compte NetApp .
+.. Lisez et acceptez le contrat de licence utilisateur final.
++
+La page de téléchargement de la version que vous avez sélectionnée apparaît.
+
+.. Télécharger le correctif `readme.txt` fichier pour afficher un résumé des modifications incluses dans le correctif.
+
+
+. Sélectionnez le bouton de téléchargement du correctif et enregistrez le fichier.
++
+
+NOTE: Ne changez pas le nom de ce fichier.
+
++
+
+NOTE: Si vous utilisez un appareil macOS, le fichier de correctif peut être automatiquement enregistré en tant que `.txt` déposer.  Si c'est le cas, vous devez renommer le fichier sans le `.txt` extension.
+
+. Sélectionnez un emplacement pour le téléchargement et sélectionnez *Enregistrer*.
+

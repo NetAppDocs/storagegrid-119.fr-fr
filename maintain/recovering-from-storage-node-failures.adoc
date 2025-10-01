@@ -1,0 +1,77 @@
+---
+permalink: maintain/recovering-from-storage-node-failures.html 
+sidebar: sidebar 
+keywords: recover, storage node failure, Reaper 
+summary: La procédure de récupération d’un nœud de stockage défaillant dépend du type de défaillance et du type de nœud de stockage défaillant. 
+---
+= Récupérer après une panne de nœud de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+La procédure de récupération d’un nœud de stockage défaillant dépend du type de défaillance et du type de nœud de stockage défaillant.
+
+Utilisez ce tableau pour sélectionner la procédure de récupération pour un nœud de stockage défaillant.
+
+[cols="1a,1a,1a"]
+|===
+| Problème | Action | Remarques 
+
+
+ a| 
+* Plusieurs nœuds de stockage sont tombés en panne.
+* Un deuxième nœud de stockage est tombé en panne moins de 15 jours après une panne ou une récupération d'un nœud de stockage.
++
+Cela inclut le cas où un nœud de stockage échoue alors que la récupération d'un autre nœud de stockage est toujours en cours.
+
+
+ a| 
+Contactez le support technique.
+ a| 
+La récupération de plusieurs nœuds de stockage (ou de plusieurs nœuds de stockage dans un délai de 15 jours) peut affecter l'intégrité de la base de données Cassandra, ce qui peut entraîner une perte de données.
+
+Le support technique peut déterminer quand il est possible de commencer la récupération d’un deuxième nœud de stockage en toute sécurité.
+
+*Remarque* : si plusieurs nœuds de stockage contenant le service ADC échouent sur un site, vous perdez toutes les demandes de service de plateforme en attente pour ce site.
+
+
+
+ a| 
+Plusieurs nœuds de stockage sur un site sont tombés en panne ou un site entier est tombé en panne.
+ a| 
+Contactez le support technique. Il peut être nécessaire d’effectuer une procédure de récupération de site.
+ a| 
+Le support technique évaluera votre situation et élaborera un plan de récupération. Voir link:how-site-recovery-is-performed-by-technical-support.html["Comment le support technique récupère un site"] .
+
+
+
+ a| 
+Un nœud de stockage d’appareil est en panne.
+ a| 
+link:recovering-storagegrid-appliance-storage-node.html["Récupérer le nœud de stockage de l'appareil"]
+ a| 
+La procédure de récupération des nœuds de stockage de l'appliance est la même pour toutes les pannes.
+
+
+
+ a| 
+Un ou plusieurs volumes de stockage sont tombés en panne, mais le lecteur système est intact
+ a| 
+link:recovering-from-storage-volume-failure-where-system-drive-is-intact.html["Récupérer après une panne de volume de stockage lorsque le lecteur système est intact"]
+ a| 
+Cette procédure est utilisée pour les nœuds de stockage basés sur des logiciels.
+
+
+
+ a| 
+Le lecteur système est en panne.
+ a| 
+link:reviewing-warnings-for-system-drive-recovery.html["Récupérer après une panne du lecteur système"]
+ a| 
+La procédure de remplacement du nœud dépend de la plate-forme de déploiement et de la défaillance éventuelle de volumes de stockage.
+
+|===
+
+NOTE: Certaines procédures de récupération StorageGRID utilisent Reaper pour gérer les réparations Cassandra.  Les réparations se produisent automatiquement dès que les services concernés ou requis ont commencé.  Vous remarquerez peut-être une sortie de script qui mentionne « reaper » ou « réparation Cassandra ».  Si vous voyez un message d’erreur indiquant que la réparation a échoué, exécutez la commande indiquée dans le message d’erreur.

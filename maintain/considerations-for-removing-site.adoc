@@ -1,0 +1,171 @@
+---
+permalink: maintain/considerations-for-removing-site.html 
+sidebar: sidebar 
+keywords: how to remove site 
+summary: Avant d’utiliser la procédure de déclassement de site pour supprimer un site, vous devez examiner les considérations. 
+---
+= Considérations relatives à la suppression d'un site
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Avant d’utiliser la procédure de déclassement de site pour supprimer un site, vous devez examiner les considérations.
+
+
+
+== Que se passe-t-il lorsque vous décommissionnez un site
+
+Lorsque vous mettez hors service un site, StorageGRID supprime définitivement tous les nœuds du site et le site lui-même du système StorageGRID .
+
+Une fois la procédure de démantèlement du site terminée :
+
+* Vous ne pouvez plus utiliser StorageGRID pour afficher ou accéder au site ou à l'un des nœuds du site.
+* Vous ne pouvez plus utiliser de pools de stockage ni de profils de codage d'effacement faisant référence au site.  Lorsque StorageGRID met hors service un site, il supprime automatiquement ces pools de stockage et désactive ces profils de codage d'effacement.
+
+
+
+
+== Différences entre les procédures de déclassement d'un site connecté et d'un site déconnecté
+
+Vous pouvez utiliser la procédure de déclassement de site pour supprimer un site dans lequel tous les nœuds sont connectés à StorageGRID (appelé déclassement de site connecté) ou pour supprimer un site dans lequel tous les nœuds sont déconnectés de StorageGRID (appelé déclassement de site déconnecté).  Avant de commencer, vous devez comprendre les différences entre ces procédures.
+
+
+NOTE: Si un site contient un mélange de sites connectés (image:../media/icon_alert_green_checkmark.png["Icône d'alerte Coche verte"] ) et les nœuds déconnectés (image:../media/icon_alarm_gray_administratively_down.png["Icône d'alarme grise administrativement en panne"] ouimage:../media/icon_alarm_blue_unknown.png["Icône Alarme Bleue Inconnue"] ), vous devez remettre tous les nœuds hors ligne en ligne.
+
+* La mise hors service d'un site connecté vous permet de supprimer un site opérationnel du système StorageGRID .  Par exemple, vous pouvez effectuer une mise hors service d’un site connecté pour supprimer un site fonctionnel mais qui n’est plus nécessaire.
+* Lorsque StorageGRID supprime un site connecté, il utilise ILM pour gérer les données d'objet sur le site.  Avant de pouvoir démarrer la mise hors service d'un site connecté, vous devez supprimer le site de toutes les règles ILM et activer une nouvelle stratégie ILM.  Les processus ILM de migration des données d'objet et les processus internes de suppression d'un site peuvent se produire en même temps, mais la meilleure pratique consiste à laisser les étapes ILM se terminer avant de démarrer la procédure de mise hors service proprement dite.
+* Une mise hors service de site déconnecté vous permet de supprimer un site défaillant du système StorageGRID .  Par exemple, vous pouvez effectuer une mise hors service d’un site déconnecté pour supprimer un site qui a été détruit par un incendie ou une inondation.
++
+Lorsque StorageGRID supprime un site déconnecté, il considère que tous les nœuds sont irrécupérables et ne fait aucune tentative pour préserver les données.  Cependant, avant de pouvoir démarrer la mise hors service d'un site déconnecté, vous devez supprimer le site de toutes les règles ILM et activer une nouvelle stratégie ILM.
+
++
+
+CAUTION: Avant d'effectuer une procédure de déclassement de site déconnecté, vous devez contacter votre représentant de compte NetApp .  NetApp examinera vos exigences avant d’activer toutes les étapes de l’assistant de mise hors service du site.  Vous ne devez pas tenter de décommissionner un site déconnecté si vous pensez qu'il pourrait être possible de récupérer le site ou de récupérer les données d'objet du site.
+
+
+
+
+
+== Exigences générales pour la suppression d'un site connecté ou déconnecté
+
+Avant de supprimer un site connecté ou déconnecté, vous devez prendre connaissance des exigences suivantes :
+
+* Vous ne pouvez pas désactiver un site qui inclut le nœud d'administration principal.
+* Vous ne pouvez pas désactiver un site si l’un des nœuds possède une interface appartenant à un groupe de haute disponibilité (HA).  Vous devez soit modifier le groupe HA pour supprimer l'interface du nœud, soit supprimer l'intégralité du groupe HA.
+* Vous ne pouvez pas désactiver un site s'il contient un mélange de sites connectés (image:../media/icon_alert_green_checkmark.png["Icône d'alerte Coche verte"] ) et déconnecté (image:../media/icon_alarm_blue_unknown.png["Icône Alarme Bleue Inconnue"] ouimage:../media/icon_alarm_gray_administratively_down.png["Icône d'alarme grise administrativement en panne"] ) nœuds.
+* Vous ne pouvez pas mettre hors service un site si un nœud d'un autre site est déconnecté (image:../media/icon_alarm_blue_unknown.png["Icône Alarme Bleue Inconnue"] ouimage:../media/icon_alarm_gray_administratively_down.png["Icône d'alarme grise administrativement en panne"] ).
+* Vous ne pouvez pas démarrer la procédure de déclassement du site si une opération ec-node-repair est en cours.  Voirlink:checking-data-repair-jobs.html["Vérifier les tâches de réparation de données"] pour suivre les réparations des données codées par effacement.
+* Pendant que la procédure de déclassement du site est en cours :
++
+** Vous ne pouvez pas créer de règles ILM qui font référence au site en cours de mise hors service.  Vous ne pouvez pas non plus modifier une règle ILM existante pour faire référence au site.
+** Vous ne pouvez pas effectuer d’autres procédures de maintenance, telles que l’extension ou la mise à niveau.
++
+
+NOTE: Si vous devez effectuer une autre procédure de maintenance lors de la mise hors service d'un site connecté, vous pouvezlink:pausing-and-resuming-decommission-process-for-storage-nodes.html["suspendre la procédure pendant la suppression des nœuds de stockage"] .  Le bouton *Pause* est activé uniquement lorsque les étapes d'évaluation ILM ou de mise hors service des données codées par effacement sont atteintes ; cependant, l'évaluation ILM (migration des données) continuera de s'exécuter en arrière-plan.  Une fois la deuxième procédure de maintenance terminée, vous pouvez reprendre la mise hors service.
+
+** Si vous devez récupérer un nœud après avoir démarré la procédure de mise hors service du site, vous devez contacter le support.
+
+
+* Vous ne pouvez pas désactiver plus d’un site à la fois.
+* Si le site inclut un ou plusieurs nœuds d'administration et que l'authentification unique (SSO) est activée pour votre système StorageGRID , vous devez supprimer toutes les approbations de parties de confiance pour le site des services de fédération Active Directory (AD FS).
+
+
+
+
+== Exigences relatives à la gestion du cycle de vie de l'information (ILM)
+
+Dans le cadre de la suppression d'un site, vous devez mettre à jour votre configuration ILM.  L'assistant de déclassement du site vous guide à travers un certain nombre d'étapes préalables pour garantir les éléments suivants :
+
+* Le site n'est référencé par aucune politique ILM.  Si tel est le cas, vous devez modifier les politiques ou créer et activer des politiques avec de nouvelles règles ILM.
+* Aucune règle ILM ne fait référence au site, même si ces règles ne sont utilisées dans aucune politique.  Vous devez supprimer ou modifier toutes les règles qui font référence au site.
+
+
+Lorsque StorageGRID met hors service le site, il désactive automatiquement tous les profils de codage d'effacement inutilisés qui font référence au site et supprime automatiquement tous les pools de stockage inutilisés qui font référence au site.  Si le pool de stockage Tous les nœuds de stockage existe (StorageGRID 11.6 et versions antérieures), il est supprimé car il utilise tous les sites.
+
+
+CAUTION: Avant de pouvoir supprimer un site, vous devrez peut-être créer de nouvelles règles ILM et activer une nouvelle politique ILM.  Ces instructions supposent que vous avez une bonne compréhension du fonctionnement d'ILM et que vous êtes familiarisé avec la création de pools de stockage, de profils de codage d'effacement, de règles ILM et de la simulation et de l'activation d'une stratégie ILM. Voir link:../ilm/index.html["Gérer les objets avec ILM"] .
+
+
+
+== Considérations relatives aux données d'objet sur un site connecté
+
+Si vous effectuez la mise hors service d'un site connecté, vous devez décider quoi faire des données d'objet existantes sur le site lorsque vous créez de nouvelles règles ILM et une nouvelle stratégie ILM.  Vous pouvez effectuer l’une ou les deux actions suivantes :
+
+* Déplacez les données d’objet du site sélectionné vers un ou plusieurs autres sites de votre grille.
++
+*Exemple de déplacement de données* : Supposons que vous souhaitiez mettre hors service un site à Raleigh parce que vous avez ajouté un nouveau site à Sunnyvale.  Dans cet exemple, vous souhaitez déplacer toutes les données d’objet de l’ancien site vers le nouveau site.  Avant de mettre à jour vos règles et politiques ILM, vous devez vérifier la capacité des deux sites.  Vous devez vous assurer que le site de Sunnyvale dispose d'une capacité suffisante pour accueillir les données d'objet du site de Raleigh et qu'une capacité adéquate restera à Sunnyvale pour la croissance future.
+
++
+
+NOTE: Pour garantir qu'une capacité adéquate est disponible, vous devrez peut-êtrelink:../expand/index.html["étendre une grille"] en ajoutant des volumes de stockage ou des nœuds de stockage à un site existant ou en ajoutant un nouveau site avant d'effectuer cette procédure.
+
+* Supprimer les copies d’objets du site sélectionné.
++
+*Exemple de suppression de données* : Supposons que vous utilisiez actuellement une règle ILM à 3 copies pour répliquer les données d'objet sur trois sites.  Avant de mettre hors service un site, vous pouvez créer une règle ILM équivalente à 2 copies pour stocker des données sur seulement deux sites.  Lorsque vous activez une nouvelle stratégie ILM qui utilise la règle à 2 copies, StorageGRID supprime les copies du troisième site car elles ne répondent plus aux exigences ILM.  Toutefois, les données de l’objet seront toujours protégées et la capacité des deux sites restants restera la même.
+
++
+
+CAUTION: Ne créez jamais une règle ILM à copie unique pour prendre en charge la suppression d'un site.  Une règle ILM qui crée une seule copie répliquée pour une période donnée expose les données à un risque de perte permanente.  Si une seule copie répliquée d’un objet existe, cet objet est perdu si un nœud de stockage échoue ou présente une erreur importante.  Vous perdez également temporairement l’accès à l’objet pendant les procédures de maintenance telles que les mises à niveau.
+
+
+
+
+
+== Exigences supplémentaires pour le déclassement d'un site connecté
+
+Avant que StorageGRID puisse supprimer un site connecté, vous devez vous assurer des points suivants :
+
+* Tous les nœuds de votre système StorageGRID doivent avoir un état de connexion *Connecté* (image:../media/icon_alert_green_checkmark.png["Icône d'alerte Coche verte"] ); cependant, les nœuds peuvent avoir des alertes actives.
++
+
+NOTE: Vous pouvez effectuer les étapes 1 à 4 de l’assistant de déclassement du site si un ou plusieurs nœuds sont déconnectés.  Cependant, vous ne pouvez pas terminer l'étape 5 de l'assistant, qui démarre le processus de mise hors service, à moins que tous les nœuds ne soient connectés.
+
+* Si le site que vous prévoyez de supprimer contient un nœud de passerelle ou un nœud d'administration utilisé pour l'équilibrage de charge, vous devrez peut-êtrelink:../expand/index.html["étendre une grille"] pour ajouter un nouveau nœud équivalent sur un autre site.  Assurez-vous que les clients peuvent se connecter au nœud de remplacement avant de démarrer la procédure de mise hors service du site.
+* Si le site que vous prévoyez de supprimer contient des nœuds de passerelle ou des nœuds d'administration qui se trouvent dans un groupe haute disponibilité (HA), vous pouvez suivre les étapes 1 à 4 de l'assistant de mise hors service du site.  Cependant, vous ne pouvez pas terminer l'étape 5 de l'assistant, qui démarre le processus de mise hors service, tant que vous n'avez pas supprimé ces nœuds de tous les groupes HA.  Si les clients existants se connectent à un groupe HA qui inclut des nœuds du site, vous devez vous assurer qu'ils peuvent continuer à se connecter à StorageGRID après la suppression du site.
+* Si les clients se connectent directement aux nœuds de stockage sur le site que vous prévoyez de supprimer, vous devez vous assurer qu'ils peuvent se connecter aux nœuds de stockage sur d'autres sites avant de démarrer la procédure de mise hors service du site.
+* Vous devez fournir suffisamment d’espace sur les sites restants pour accueillir toutes les données d’objet qui seront déplacées en raison de modifications apportées à une politique ILM active.  Dans certains cas, vous devrez peut-êtrelink:../expand/index.html["étendre une grille"] en ajoutant des nœuds de stockage, des volumes de stockage ou de nouveaux sites avant de pouvoir terminer la mise hors service d'un site connecté.
+* Vous devez prévoir suffisamment de temps pour que la procédure de mise hors service soit terminée.  Les processus StorageGRID ILM peuvent prendre des jours, des semaines, voire des mois, pour déplacer ou supprimer les données d'objet du site avant que le site puisse être mis hors service.
++
+
+NOTE: Le déplacement ou la suppression des données d'objet d'un site peut prendre des jours, des semaines, voire des mois, en fonction de la quantité de données sur le site, de la charge sur votre système, des latences du réseau et de la nature des modifications ILM requises.
+
+* Dans la mesure du possible, vous devez effectuer les étapes 1 à 4 de l’assistant de déclassement du site le plus tôt possible.  La procédure de déclassement s'effectuera plus rapidement et avec moins d'interruptions et d'impacts sur les performances si vous autorisez le déplacement des données du site avant de démarrer la procédure de déclassement proprement dite (en sélectionnant *Démarrer la déclassement* à l'étape 5 de l'assistant).
+
+
+
+
+== Exigences supplémentaires pour le déclassement d'un site déconnecté
+
+Avant que StorageGRID puisse supprimer un site déconnecté, vous devez vous assurer des points suivants :
+
+* Vous avez contacté votre représentant de compte NetApp .  NetApp examinera vos exigences avant d’activer toutes les étapes de l’assistant de mise hors service du site.
++
+
+CAUTION: Vous ne devez pas tenter de décommissionner un site déconnecté si vous pensez qu'il pourrait être possible de récupérer le site ou de récupérer des données d'objet à partir du site. Voir link:how-site-recovery-is-performed-by-technical-support.html["Comment le support technique récupère un site"] .
+
+* Tous les nœuds du site doivent avoir un état de connexion parmi les suivants :
++
+** *Inconnu* (image:../media/icon_alarm_blue_unknown.png["Icône Alarme Bleue Inconnue"] ): Pour une raison inconnue, un nœud est déconnecté ou les services sur le nœud sont indisponibles de manière inattendue.  Par exemple, un service sur le nœud peut être arrêté ou le nœud peut avoir perdu sa connexion réseau en raison d’une panne de courant ou d’une panne inattendue.
+** *Administrativement en panne* (image:../media/icon_alarm_gray_administratively_down.png["Icône d'alarme grise administrativement en panne"] ): Le nœud n'est pas connecté au réseau pour une raison attendue.  Par exemple, le nœud ou les services sur le nœud ont été arrêtés correctement.
+
+
+* Tous les nœuds de tous les autres sites doivent avoir un état de connexion *Connecté* (image:../media/icon_alert_green_checkmark.png["Icône d'alerte Coche verte"] ); cependant, ces autres nœuds peuvent avoir des alertes actives.
+* Vous devez comprendre que vous ne pourrez plus utiliser StorageGRID pour afficher ou récupérer les données d’objet stockées sur le site.  Lorsque StorageGRID exécute cette procédure, il ne tente pas de préserver les données du site déconnecté.
++
+
+NOTE: Si vos règles et votre politique ILM ont été conçues pour protéger contre la perte d'un seul site, des copies de vos objets existent toujours sur les sites restants.
+
+* Vous devez comprendre que si le site contenait la seule copie d'un objet, l'objet est perdu et ne peut pas être récupéré.
+
+
+
+
+== Considérations relatives à la cohérence lors de la suppression d'un site
+
+La cohérence d'un bucket S3 détermine si StorageGRID réplique entièrement les métadonnées d'objet sur tous les nœuds et sites avant d'indiquer à un client que l'ingestion d'objet a réussi.  La cohérence fournit un équilibre entre la disponibilité des objets et la cohérence de ces objets sur différents nœuds de stockage et sites.
+
+Lorsque StorageGRID supprime un site, il doit s'assurer qu'aucune donnée n'est écrite sur le site en cours de suppression.  Par conséquent, il remplace temporairement la cohérence de chaque bucket ou conteneur.  Une fois le processus de déclassement du site démarré, StorageGRID utilise temporairement la cohérence de site forte pour empêcher l'écriture des métadonnées d'objet sur le site en cours de suppression.
+
+En raison de ce remplacement temporaire, sachez que toutes les opérations d'écriture, de mise à jour et de suppression de client qui se produisent pendant la mise hors service d'un site peuvent échouer si plusieurs nœuds deviennent indisponibles sur les sites restants.

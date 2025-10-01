@@ -1,0 +1,162 @@
+---
+permalink: admin/configure-vlan-interfaces.html 
+sidebar: sidebar 
+keywords: how to configure vlan interfaces, vlan interfaces, trunk interface 
+summary: 'Vous pouvez créer des interfaces LAN virtuelles (VLAN) sur des nœuds d"administration et des nœuds de passerelle et les utiliser dans des groupes HA et des points de terminaison d"équilibrage de charge pour isoler et partitionner le trafic pour la sécurité, la flexibilité et les performances.' 
+---
+= Configurer les interfaces VLAN
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez créer des interfaces LAN virtuelles (VLAN) sur des nœuds d'administration et des nœuds de passerelle et les utiliser dans des groupes HA et des points de terminaison d'équilibrage de charge pour isoler et partitionner le trafic pour la sécurité, la flexibilité et les performances.
+
+
+
+== Considérations relatives aux interfaces VLAN
+
+* Vous créez une interface VLAN en saisissant un ID VLAN et en choisissant une interface parent sur un ou plusieurs nœuds.
+* Une interface parent doit être configurée comme interface de jonction au niveau du commutateur.
+* Une interface parent peut être le réseau Grid (eth0), le réseau client (eth2) ou une interface de jonction supplémentaire pour la machine virtuelle ou l'hôte bare-metal (par exemple, ens256).
+* Pour chaque interface VLAN, vous ne pouvez sélectionner qu'une seule interface parent pour un nœud donné.  Par exemple, vous ne pouvez pas utiliser à la fois l’interface réseau Grid et l’interface réseau client sur le même nœud de passerelle que l’interface parent pour le même VLAN.
+* Si l'interface VLAN est destinée au trafic du nœud d'administration, qui inclut le trafic lié au gestionnaire de grille et au gestionnaire de locataires, sélectionnez les interfaces sur les nœuds d'administration uniquement.
+* Si l'interface VLAN est destinée au trafic client S3, sélectionnez les interfaces sur les nœuds d'administration ou sur les nœuds de passerelle.
+* Si vous devez ajouter des interfaces de jonction, consultez les éléments suivants pour plus de détails :
++
+** *VMware (après l'installation du nœud)*:link:../maintain/vmware-adding-trunk-or-access-interfaces-to-node.html["VMware : ajouter des interfaces de jonction ou d'accès à un nœud"]
+** *RHEL (avant l'installation du nœud)*:link:../rhel/creating-node-configuration-files.html["Créer des fichiers de configuration de nœud"]
+** *Ubuntu ou Debian (avant d'installer le nœud)* :link:../ubuntu/creating-node-configuration-files.html["Créer des fichiers de configuration de nœud"]
+** *RHEL, Ubuntu ou Debian (après l'installation du nœud)* :link:../maintain/linux-adding-trunk-or-access-interfaces-to-node.html["Linux : ajouter des interfaces trunk ou d'accès à un nœud"]
+
+
+
+
+
+
+== Créer une interface VLAN
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:admin-group-permissions.html["Autorisation d'accès root"] .
+* Une interface de jonction a été configurée dans le réseau et attachée au nœud VM ou Linux.  Vous connaissez le nom de l'interface trunk.
+* Vous connaissez l’ID du VLAN que vous configurez.
+
+
+.À propos de cette tâche
+Votre administrateur réseau a peut-être configuré une ou plusieurs interfaces de jonction et un ou plusieurs VLAN pour séparer le trafic client ou administrateur appartenant à différentes applications ou locataires.  Chaque VLAN est identifié par un ID numérique ou une balise.  Par exemple, votre réseau peut utiliser le VLAN 100 pour le trafic FabricPool et le VLAN 200 pour une application d'archivage.
+
+Vous pouvez utiliser Grid Manager pour créer des interfaces VLAN qui permettent aux clients d'accéder à StorageGRID sur un VLAN spécifique.  Lorsque vous créez des interfaces VLAN, vous spécifiez l'ID VLAN et sélectionnez les interfaces parentes (trunk) sur un ou plusieurs nœuds.
+
+
+
+=== Accéder à l'assistant
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Réseau* > *Interfaces VLAN*.
+. Sélectionnez *Créer*.
+
+
+
+
+=== Saisissez les détails des interfaces VLAN
+
+.Étapes
+. Spécifiez l'ID du VLAN dans votre réseau.  Vous pouvez saisir n’importe quelle valeur entre 1 et 4094.
++
+Les ID VLAN n’ont pas besoin d’être uniques.  Par exemple, vous pouvez utiliser l’ID VLAN 200 pour le trafic administrateur sur un site et le même ID VLAN pour le trafic client sur un autre site.  Vous pouvez créer des interfaces VLAN distinctes avec différents ensembles d’interfaces parentes sur chaque site.  Cependant, deux interfaces VLAN avec le même ID ne peuvent pas partager la même interface sur un nœud.  Si vous spécifiez un ID qui a déjà été utilisé, un message apparaît.
+
+. Vous pouvez également saisir une brève description de l’interface VLAN.
+. Sélectionnez *Continuer*.
+
+
+
+
+=== Choisir les interfaces parentes
+
+Le tableau répertorie les interfaces disponibles pour tous les nœuds d’administration et les nœuds de passerelle sur chaque site de votre grille.  Les interfaces réseau d'administration (eth1) ne peuvent pas être utilisées comme interfaces parentes et ne sont pas affichées.
+
+.Étapes
+. Sélectionnez une ou plusieurs interfaces parentes auxquelles attacher ce VLAN.
++
+Par exemple, vous souhaiterez peut-être attacher un VLAN à l’interface réseau client (eth2) pour un nœud de passerelle et un nœud d’administration.
+
++
+image::../media/vlan-create-parent-interfaces.png[Interfaces parentes de l'assistant de création de VLAN]
+
+. Sélectionnez *Continuer*.
+
+
+
+
+=== Confirmer les paramètres
+
+.Étapes
+. Vérifiez la configuration et apportez les modifications nécessaires.
++
+** Si vous devez modifier l'ID ou la description du VLAN, sélectionnez *Entrer les détails du VLAN* en haut de la page.
+** Si vous devez modifier une interface parente, sélectionnez *Choisir les interfaces parentes* en haut de la page ou sélectionnez *Précédent*.
+** Si vous devez supprimer une interface parent, sélectionnez la corbeilleimage:../media/icon-trash-can.png["icône de la poubelle"] .
+
+
+. Sélectionnez *Enregistrer*.
+. Attendez jusqu'à 5 minutes pour que la nouvelle interface apparaisse comme sélection sur la page Groupes de haute disponibilité et soit répertoriée dans la table *Interfaces réseau* pour le nœud (*NODES* > *_parent interface node_* > *Network*).
+
+
+
+
+== Modifier une interface VLAN
+
+Lorsque vous modifiez une interface VLAN, vous pouvez effectuer les types de modifications suivants :
+
+* Modifiez l'ID ou la description du VLAN.
+* Ajouter ou supprimer des interfaces parentes.
+
+
+Par exemple, vous souhaiterez peut-être supprimer une interface parent d’une interface VLAN si vous prévoyez de mettre hors service le nœud associé.
+
+Notez ce qui suit :
+
+* Vous ne pouvez pas modifier un ID VLAN si l’interface VLAN est utilisée dans un groupe HA.
+* Vous ne pouvez pas supprimer une interface parente si cette interface parente est utilisée dans un groupe HA.
++
+Par exemple, supposons que le VLAN 200 soit attaché aux interfaces parentes sur les nœuds A et B. Si un groupe HA utilise l'interface VLAN 200 pour le nœud A et l'interface eth2 pour le nœud B, vous pouvez supprimer l'interface parente inutilisée pour le nœud B, mais vous ne pouvez pas supprimer l'interface parente utilisée pour le nœud A.
+
+
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Réseau* > *Interfaces VLAN*.
+. Cochez la case correspondant à l’interface VLAN que vous souhaitez modifier.  Ensuite, sélectionnez *Actions* > *Modifier*.
+. Vous pouvez également mettre à jour l'ID VLAN ou la description.  Ensuite, sélectionnez *Continuer*.
++
+Vous ne pouvez pas mettre à jour un ID VLAN si le VLAN est utilisé dans un groupe HA.
+
+. Vous pouvez également cocher ou décocher les cases pour ajouter des interfaces parentes ou pour supprimer les interfaces inutilisées.  Ensuite, sélectionnez *Continuer*.
+. Vérifiez la configuration et apportez les modifications nécessaires.
+. Sélectionnez *Enregistrer*.
+
+
+
+
+== Supprimer une interface VLAN
+
+Vous pouvez supprimer une ou plusieurs interfaces VLAN.
+
+Vous ne pouvez pas supprimer une interface VLAN si elle est actuellement utilisée dans un groupe HA.  Vous devez supprimer l'interface VLAN du groupe HA avant de pouvoir la supprimer.
+
+Pour éviter toute interruption du trafic client, envisagez d’effectuer l’une des opérations suivantes :
+
+* Ajoutez une nouvelle interface VLAN au groupe HA avant de supprimer cette interface VLAN.
+* Créez un nouveau groupe HA qui n’utilise pas cette interface VLAN.
+* Si l’interface VLAN que vous souhaitez supprimer est actuellement l’interface active, modifiez le groupe HA.  Déplacez l’interface VLAN que vous souhaitez supprimer vers le bas de la liste des priorités.  Attendez que la communication soit établie sur la nouvelle interface principale, puis supprimez l’ancienne interface du groupe HA.  Enfin, supprimez l’interface VLAN sur ce nœud.
+
+
+.Étapes
+. Sélectionnez *CONFIGURATION* > *Réseau* > *Interfaces VLAN*.
+. Cochez la case correspondant à chaque interface VLAN que vous souhaitez supprimer.  Ensuite, sélectionnez *Actions* > *Supprimer*.
+. Sélectionnez *Oui* pour confirmer votre sélection.
++
+Toutes les interfaces VLAN que vous avez sélectionnées sont supprimées.  Une bannière de réussite verte apparaît sur la page des interfaces VLAN.
+
+

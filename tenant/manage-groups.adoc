@@ -1,0 +1,154 @@
+---
+permalink: tenant/manage-groups.html 
+sidebar: sidebar 
+keywords: how to view and edit tenant groups, manage groups, duplicate group, remove group, edit group 
+summary: Gérez vos groupes de locataires selon vos besoins pour afficher, modifier ou dupliquer un groupe, et bien plus encore. 
+---
+= Gérer les groupes
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Gérez vos groupes de locataires selon vos besoins pour afficher, modifier ou dupliquer un groupe, et bien plus encore.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Autorisation d'accès root"] .
+
+
+
+
+== Afficher ou modifier le groupe
+
+Vous pouvez afficher et modifier les informations de base et les détails de chaque groupe.
+
+.Étapes
+. Sélectionnez *GESTION DES ACCÈS* > *Groupes*.
+. Consultez les informations fournies sur la page Groupes, qui répertorie les informations de base pour tous les groupes locaux et fédérés pour ce compte locataire.
++
+Si le compte locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille* et que vous visualisez les groupes sur la grille source du locataire :
+
++
+** Un message de bannière indique que si vous modifiez ou supprimez un groupe, vos modifications ne seront pas synchronisées avec l'autre grille.
+** Si nécessaire, un message de bannière indique si les groupes n'ont pas été clonés sur le locataire sur la grille de destination.  Tu peux<<clone-groups,réessayer un clonage de groupe>> ça a échoué.
+
+
+. Si vous souhaitez modifier le nom du groupe :
++
+.. Cochez la case correspondant au groupe.
+.. Sélectionnez *Actions* > *Modifier le nom du groupe*.
+.. Entrez le nouveau nom.
+.. Sélectionnez *Enregistrer les modifications*.
+
+
+. Si vous souhaitez afficher plus de détails ou apporter des modifications supplémentaires, effectuez l’une des opérations suivantes :
++
+** Sélectionnez le nom du groupe.
+** Cochez la case correspondant au groupe, puis sélectionnez *Actions* > *Afficher les détails du groupe*.
+
+
+. Consultez la section Présentation, qui affiche les informations suivantes pour chaque groupe :
++
+** Nom d'affichage
+** Nom unique
+** Type
+** Mode d'accès
+** Autorisations
+** Politique S3
+** Nombre d'utilisateurs dans ce groupe
+** Champs supplémentaires si le compte locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille* et que vous visualisez le groupe sur la grille source du locataire :
++
+*** Statut du clonage, soit *Succès* soit *Échec*
+*** Une bannière bleue indiquant que si vous modifiez ou supprimez ce groupe, vos modifications ne seront pas synchronisées avec l'autre grille.
+
+
+
+
+. Modifiez les paramètres du groupe selon vos besoins. Voirlink:creating-groups-for-s3-tenant.html["Créer des groupes pour un locataire S3"] etlink:creating-groups-for-swift-tenant.html["Créer des groupes pour un locataire Swift"] pour plus de détails sur ce qu'il faut saisir.
++
+.. Dans la section Aperçu, modifiez le nom d'affichage en sélectionnant le nom ou l'icône de modificationimage:../media/icon_edit_tm.png["Modifier l'icône"] .
+.. Dans l’onglet *Autorisations de groupe*, mettez à jour les autorisations et sélectionnez *Enregistrer les modifications*.
+.. Dans l’onglet *Stratégie de groupe*, apportez les modifications nécessaires et sélectionnez *Enregistrer les modifications*.
++
+*** Si vous modifiez un groupe S3, sélectionnez éventuellement une autre stratégie de groupe S3 ou saisissez la chaîne JSON d'une stratégie personnalisée, selon vos besoins.
+*** Si vous modifiez un groupe Swift, cochez ou décochez éventuellement la case *Administrateur Swift*.
+
+
+
+
+. Pour ajouter un ou plusieurs utilisateurs locaux existants au groupe :
++
+.. Sélectionnez l’onglet Utilisateurs.
++
+image::../media/manage_users.png[Gérer les utilisateurs]
+
+.. Sélectionnez *Ajouter des utilisateurs*.
+.. Sélectionnez les utilisateurs existants que vous souhaitez ajouter, puis sélectionnez *Ajouter des utilisateurs*.
++
+Un message de réussite apparaît dans le coin supérieur droit.
+
+
+
+. Pour supprimer les utilisateurs locaux du groupe :
++
+.. Sélectionnez l’onglet Utilisateurs.
+.. Sélectionnez *Supprimer les utilisateurs*.
+.. Sélectionnez les utilisateurs que vous souhaitez supprimer, puis sélectionnez *Supprimer les utilisateurs*.
++
+Un message de réussite apparaît dans le coin supérieur droit.
+
+
+
+. Confirmez que vous avez sélectionné *Enregistrer les modifications* pour chaque section que vous avez modifiée.
+
+
+
+
+== Groupe en double
+
+Vous pouvez dupliquer un groupe existant pour créer de nouveaux groupes plus rapidement.
+
+
+NOTE: Si votre compte locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille* et que vous dupliquez un groupe à partir de la grille source du locataire, le groupe dupliqué sera cloné sur la grille de destination du locataire.
+
+.Étapes
+. Sélectionnez *GESTION DES ACCÈS* > *Groupes*.
+. Cochez la case correspondant au groupe que vous souhaitez dupliquer.
+. Sélectionnez *Actions* > *Dupliquer le groupe*.
+. Voirlink:creating-groups-for-s3-tenant.html["Créer des groupes pour un locataire S3"] oulink:creating-groups-for-swift-tenant.html["Créer des groupes pour un locataire Swift"] pour plus de détails sur ce qu'il faut saisir.
+. Sélectionnez *Créer un groupe*.
+
+
+
+
+== [[clone-groups]]Réessayer le clonage du groupe
+
+Pour réessayer un clonage qui a échoué :
+
+. Sélectionnez chaque groupe qui indique _(Échec du clonage)_ sous le nom du groupe.
+. Sélectionnez *Actions* > *Cloner les groupes*.
+. Affichez l’état de l’opération de clonage à partir de la page de détails de chaque groupe que vous clonez.
+
+
+Pour plus d'informations, voirlink:grid-federation-account-clone.html["Cloner des groupes de locataires et des utilisateurs"] .
+
+
+
+== Supprimer un ou plusieurs groupes
+
+Vous pouvez supprimer un ou plusieurs groupes.  Tous les utilisateurs appartenant uniquement à un groupe supprimé ne pourront plus se connecter au gestionnaire de locataires ni utiliser le compte de locataire.
+
+
+NOTE: Si votre compte locataire dispose de l'autorisation *Utiliser la connexion à la fédération de grille* et que vous supprimez un groupe, StorageGRID ne supprimera pas le groupe correspondant sur l'autre grille.  Si vous devez conserver ces informations synchronisées, vous devez supprimer le même groupe des deux grilles.
+
+.Étapes
+. Sélectionnez *GESTION DES ACCÈS* > *Groupes*.
+. Cochez la case correspondant à chaque groupe que vous souhaitez supprimer.
+. Sélectionnez *Actions* > *Supprimer le groupe* ou *Actions* > *Supprimer les groupes*.
++
+Une boîte de dialogue de confirmation apparaît.
+
+. Sélectionnez *Supprimer le groupe* ou *Supprimer les groupes*.
+

@@ -1,0 +1,62 @@
+---
+permalink: tenant/viewing-and-editing-group-details.html 
+sidebar: sidebar 
+keywords: how to view and edit group 
+summary: 'Lorsque vous affichez les détails d"un groupe, vous pouvez modifier le nom d"affichage du groupe, les autorisations, les politiques et les utilisateurs qui appartiennent au groupe.' 
+---
+= Afficher et modifier les détails du groupe
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lorsque vous affichez les détails d'un groupe, vous pouvez modifier le nom d'affichage du groupe, les autorisations, les politiques et les utilisateurs qui appartiennent au groupe.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous appartenez à un groupe d’utilisateurs disposant de l’autorisation d’accès Root.
+
+
+.Étapes
+. Sélectionnez *GESTION DES ACCÈS* > *Groupes*.
+. Sélectionnez le nom du groupe dont vous souhaitez afficher ou modifier les détails.
++
+Vous pouvez également sélectionner *Actions* > *Afficher les détails du groupe*.
+
++
+La page des détails du groupe apparaît.  L'exemple suivant montre la page des détails du groupe S3.
+
++
+image::../media/tenant_group_details.png[Afficher les détails du groupe]
+
+. Apportez les modifications nécessaires aux paramètres du groupe.
++
+
+TIP: Pour vous assurer que vos modifications sont enregistrées, sélectionnez *Enregistrer les modifications* après avoir apporté des modifications dans chaque section.  Lorsque vos modifications sont enregistrées, un message de confirmation apparaît dans le coin supérieur droit de la page.
+
++
+.. En option, sélectionnez le nom d'affichage ou l'icône d'éditionimage:../media/icon_edit_tm.png["Modifier l'icône"] pour mettre à jour le nom d'affichage.
++
+Vous ne pouvez pas modifier le nom unique d'un groupe.  Vous ne pouvez pas modifier le nom d’affichage d’un groupe fédéré.
+
+.. En option, mettez à jour les autorisations.
+.. Pour la stratégie de groupe, apportez les modifications appropriées à votre locataire S3.
++
+*** Si vous modifiez un groupe pour un locataire S3, sélectionnez éventuellement une autre stratégie de groupe S3.  Si vous sélectionnez une politique S3 personnalisée, mettez à jour la chaîne JSON selon vos besoins.
+*** Si vous modifiez un groupe pour un locataire Swift, cochez ou décochez éventuellement la case *Administrateur Swift*.
++
+Pour plus d’informations sur l’autorisation d’administrateur Swift, consultez les instructions de création de groupes pour un locataire Swift.
+
+
+
+.. Vous pouvez également ajouter ou supprimer des utilisateurs.
+
+
+. Confirmez que vous avez sélectionné *Enregistrer les modifications* pour chaque section que vous avez modifiée.
+
+
+.Informations connexes
+* link:creating-groups-for-s3-tenant.html["Créer des groupes pour le locataire S3"]
+* link:creating-groups-for-swift-tenant.html["Créer des groupes pour le locataire Swift"]
+

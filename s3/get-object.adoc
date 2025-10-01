@@ -1,0 +1,169 @@
+---
+permalink: s3/get-object.html 
+sidebar: sidebar 
+keywords: get object 
+summary: 'Vous pouvez utiliser la requête S3 GET Object pour récupérer un objet d"un bucket S3.' 
+---
+= Obtenir l'objet
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser la requête S3 GetObject pour récupérer un objet d'un bucket S3.
+
+
+
+== GetObject et objets multipartites
+
+Vous pouvez utiliser le `partNumber` paramètre de requête pour récupérer une partie spécifique d'un objet en plusieurs parties ou segmenté.  Le `x-amz-mp-parts-count` L'élément de réponse indique le nombre de parties que contient l'objet.
+
+Vous pouvez définir `partNumber` à 1 pour les objets segmentés/multipartites et les objets non segmentés/non multipartites ; cependant, le `x-amz-mp-parts-count` L'élément de réponse n'est renvoyé que pour les objets segmentés ou en plusieurs parties.
+
+
+
+== Caractères UTF-8 dans les métadonnées utilisateur
+
+StorageGRID n'analyse ni n'interprète les caractères UTF-8 échappés dans les métadonnées définies par l'utilisateur.  Les requêtes GET pour un objet avec des caractères UTF-8 échappés dans les métadonnées définies par l'utilisateur ne renvoient pas le `x-amz-missing-meta` en-tête si le nom ou la valeur de la clé inclut des caractères non imprimables.
+
+
+
+== En-tête de requête pris en charge
+
+L'en-tête de requête suivant est pris en charge :
+
+* `x-amz-checksum-mode`: Préciser `ENABLED`
++
+Le `Range` l'en-tête n'est pas pris en charge avec `x-amz-checksum-mode` pour GetObject.  Lorsque vous incluez `Range` dans la demande avec `x-amz-checksum-mode` activé, StorageGRID ne renvoie pas de valeur de somme de contrôle dans la réponse.
+
+
+
+
+
+== En-tête de requête non pris en charge
+
+L'en-tête de requête suivant n'est pas pris en charge et renvoie `XNotImplemented` :
+
+* `x-amz-website-redirect-location`
+
+
+
+
+== Gestion des versions
+
+Si un `versionId` la sous-ressource n'est pas spécifiée, l'opération récupère la version la plus récente de l'objet dans un bucket versionné.  Si la version actuelle de l'objet est un marqueur de suppression, un statut « Non trouvé » est renvoyé avec le `x-amz-delete-marker` en-tête de réponse défini sur `true` .
+
+
+
+== En-têtes de requête pour le chiffrement côté serveur avec les clés de chiffrement fournies par le client (SSE-C)
+
+Utilisez les trois en-têtes si l’objet est chiffré avec une clé unique que vous avez fournie.
+
+* `x-amz-server-side-encryption-customer-algorithm`: Préciser `AES256` .
+* `x-amz-server-side-encryption-customer-key`:Spécifiez votre clé de chiffrement pour l'objet.
+* `x-amz-server-side-encryption-customer-key-MD5`: Spécifiez le condensé MD5 de la clé de chiffrement de l'objet.
+
+
+
+CAUTION: Les clés de chiffrement que vous fournissez ne sont jamais stockées.  Si vous perdez une clé de chiffrement, vous perdez l'objet correspondant.  Avant d'utiliser les clés fournies par le client pour sécuriser les données d'objet, examinez les considérations danslink:using-server-side-encryption.html["Utiliser le cryptage côté serveur"] .
+
+
+
+== Comportement de GetObject pour les objets Cloud Storage Pool
+
+Si un objet a été stocké dans unlink:../ilm/what-cloud-storage-pool-is.html["Pool de stockage cloud"] , le comportement d'une requête GetObject dépend de l'état de l'objet. Voirlink:head-object.html["HeadObject"] pour plus de détails.
+
+
+NOTE: Si un objet est stocké dans un pool de stockage cloud et qu'une ou plusieurs copies de l'objet existent également sur la grille, les requêtes GetObject tenteront de récupérer les données de la grille, avant de les récupérer du pool de stockage cloud.
+
+[cols="1a,1a"]
+|===
+| État de l'objet | Comportement de GetObject 
+
+
+ a| 
+Objet ingéré dans StorageGRID mais pas encore évalué par ILM, ou objet stocké dans un pool de stockage traditionnel ou utilisant un codage d'effacement
+ a| 
+`200 OK`
+
+Une copie de l'objet est récupérée.
+
+
+
+ a| 
+Objet dans le pool de stockage cloud, mais pas encore passé à un état non récupérable
+ a| 
+`200 OK`
+
+Une copie de l'objet est récupérée.
+
+
+
+ a| 
+Objet passé à un état non récupérable
+ a| 
+`403 Forbidden` ,  `InvalidObjectState`
+
+Utiliser unlink:post-object-restore.html["Restaurer l'objet"] demande de restauration de l'objet à un état récupérable.
+
+
+
+ a| 
+Objet en cours de restauration à partir d'un état non récupérable
+ a| 
+`403 Forbidden` ,  `InvalidObjectState`
+
+Attendez que la demande RestoreObject soit terminée.
+
+
+
+ a| 
+Objet entièrement restauré dans le pool de stockage cloud
+ a| 
+`200 OK`
+
+Une copie de l'objet est récupérée.
+
+|===
+
+
+=== Objets multipartites ou segmentés dans un pool de stockage cloud
+
+Si vous avez téléchargé un objet en plusieurs parties ou si StorageGRID a divisé un objet volumineux en segments, StorageGRID détermine si l'objet est disponible dans le pool de stockage cloud en échantillonnant un sous-ensemble des parties ou des segments de l'objet.  Dans certains cas, une requête GetObject peut renvoyer de manière incorrecte `200 OK` lorsque certaines parties de l'objet ont déjà été transférées vers un état non récupérable ou lorsque certaines parties de l'objet n'ont pas encore été restaurées.
+
+Dans ces cas :
+
+* La requête GetObject peut renvoyer des données mais s'arrêter à mi-chemin du transfert.
+* Une requête GetObject ultérieure peut renvoyer `403 Forbidden` .
+
+
+
+
+== GetObject et réplication inter-grille
+
+Si vous utilisezlink:../admin/grid-federation-overview.html["fédération de réseau"] etlink:../tenant/grid-federation-manage-cross-grid-replication.html["réplication inter-réseaux"] est activé pour un bucket, le client S3 peut vérifier l'état de réplication d'un objet en émettant une requête GetObject.  La réponse inclut le StorageGRID spécifique `x-ntap-sg-cgr-replication-status` en-tête de réponse, qui aura l'une des valeurs suivantes :
+
+[cols="1a,2a"]
+|===
+| Grille | État de réplication 
+
+
+ a| 
+Source
+ a| 
+* *TERMINÉ* : La réplication a réussi.
+* *EN ATTENTE* : L'objet n'a pas encore été répliqué.
+* *ÉCHEC* : La réplication a échoué avec un échec permanent. Un utilisateur doit résoudre l’erreur.
+
+
+
+
+ a| 
+Destination
+ a| 
+*RÉPLIQUE* : L'objet a été répliqué à partir de la grille source.
+
+|===
+
+NOTE: StorageGRID ne prend pas en charge le `x-amz-replication-status` en-tête.

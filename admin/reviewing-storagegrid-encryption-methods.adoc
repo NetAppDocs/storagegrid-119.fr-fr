@@ -1,0 +1,146 @@
+---
+permalink: admin/reviewing-storagegrid-encryption-methods.html 
+sidebar: sidebar 
+keywords: encryption, encrypting data, best practices 
+summary: StorageGRID fournit plusieurs options pour crypter les données.  Vous devez examiner les méthodes disponibles pour déterminer celles qui répondent à vos exigences en matière de protection des données. 
+---
+= Examiner les méthodes de chiffrement StorageGRID
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID fournit plusieurs options pour crypter les données.  Vous devez examiner les méthodes disponibles pour déterminer celles qui répondent à vos exigences en matière de protection des données.
+
+Le tableau fournit un résumé de haut niveau des méthodes de chiffrement disponibles dans StorageGRID.
+
+[cols="1a,1a,1a"]
+|===
+| Option de cryptage | Comment ça marche | S'applique à 
+
+
+ a| 
+Serveur de gestion de clés (KMS) dans Grid Manager
+ a| 
+Toilink:kms-configuring.html["configurer un serveur de gestion de clés"] pour le site StorageGRID et https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/optional-enabling-node-encryption.html["activer le chiffrement des nœuds pour l'appliance"^] .  Ensuite, un nœud d’appareil se connecte au KMS pour demander une clé de chiffrement de clé (KEK).  Cette clé crypte et décrypte la clé de cryptage des données (DEK) sur chaque volume.
+ a| 
+Nœuds d'appareils pour lesquels le *chiffrement de nœud* est activé lors de l'installation.  Toutes les données de l'appareil sont protégées contre toute perte physique ou suppression du centre de données.
+
+*Remarque* : la gestion des clés de chiffrement avec un KMS est uniquement prise en charge pour les nœuds de stockage et les appliances de services.
+
+
+
+ a| 
+Page de chiffrement de lecteur dans le programme d'installation de l'appliance StorageGRID
+ a| 
+Si l'appareil contient des lecteurs prenant en charge le chiffrement matériel, vous pouvez définir une phrase secrète de lecteur lors de l'installation.  Lorsque vous définissez une phrase secrète de lecteur, il est impossible pour quiconque de récupérer des données valides à partir de lecteurs qui ont été supprimés du système, à moins de connaître la phrase secrète.  Avant de commencer l'installation, accédez à *Configurer le matériel* > *Chiffrement de lecteur* pour définir une phrase secrète de lecteur qui s'applique à tous les lecteurs à chiffrement automatique gérés par StorageGRID dans un nœud.
+ a| 
+Appareils contenant des lecteurs à chiffrement automatique.  Toutes les données sur les disques sécurisés sont protégées contre toute perte physique ou suppression du centre de données.
+
+Le chiffrement des lecteurs ne s'applique pas aux lecteurs gérés par SANtricity.  Si vous disposez d'un dispositif de stockage avec des lecteurs à chiffrement automatique et des contrôleurs SANtricity , vous pouvez activer la sécurité des lecteurs dans SANtricity.
+
+
+
+ a| 
+Pilotez la sécurité dans SANtricity System Manager
+ a| 
+Si la fonctionnalité Drive Security est activée pour votre appliance StorageGRID , vous pouvez utiliser https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/accessing-and-configuring-santricity-system-manager.html["Gestionnaire de système SANtricity"^] pour créer et gérer la clé de sécurité.  La clé est nécessaire pour accéder aux données sur les lecteurs sécurisés.
+ a| 
+Appareils de stockage dotés de lecteurs à chiffrement complet du disque (FDE) ou de lecteurs à chiffrement automatique.  Toutes les données sur les disques sécurisés sont protégées contre toute perte physique ou suppression du centre de données.  Ne peut pas être utilisé avec certains appareils de stockage ou avec des appareils de service.
+
+
+
+ a| 
+Chiffrement des objets stockés
+ a| 
+Vous activez lelink:changing-network-options-object-encryption.html["Chiffrement des objets stockés"] option dans le gestionnaire de grille.  Lorsque cette option est activée, tous les nouveaux objets qui ne sont pas chiffrés au niveau du bucket ou au niveau de l'objet sont chiffrés lors de l'ingestion.
+ a| 
+Données d’objet S3 nouvellement ingérées.
+
+Les objets stockés existants ne sont pas chiffrés.  Les métadonnées des objets et autres données sensibles ne sont pas chiffrées.
+
+
+
+ a| 
+Chiffrement du compartiment S3
+ a| 
+Vous émettez une demande PutBucketEncryption pour activer le chiffrement du bucket.  Tous les nouveaux objets qui ne sont pas chiffrés au niveau de l’objet sont chiffrés lors de l’ingestion.
+ a| 
+Données d'objet S3 nouvellement ingérées uniquement.
+
+Le chiffrement doit être spécifié pour le bucket.  Les objets de bucket existants ne sont pas chiffrés.  Les métadonnées des objets et autres données sensibles ne sont pas chiffrées.
+
+link:../s3/operations-on-buckets.html["Opérations sur les godets"]
+
+
+
+ a| 
+Chiffrement côté serveur d'objets S3 (SSE)
+ a| 
+Vous émettez une requête S3 pour stocker un objet et incluez le `x-amz-server-side-encryption` en-tête de requête.
+ a| 
+Données d'objet S3 nouvellement ingérées uniquement.
+
+Le cryptage doit être spécifié pour l'objet.  Les métadonnées des objets et autres données sensibles ne sont pas chiffrées.
+
+StorageGRID gère les clés.
+
+link:../s3/using-server-side-encryption.html["Utiliser le cryptage côté serveur"]
+
+
+
+ a| 
+Chiffrement côté serveur d'objets S3 avec clés fournies par le client (SSE-C)
+ a| 
+Vous émettez une requête S3 pour stocker un objet et incluez trois en-têtes de requête.
+
+* `x-amz-server-side-encryption-customer-algorithm`
+* `x-amz-server-side-encryption-customer-key`
+* `x-amz-server-side-encryption-customer-key-MD5`
+
+ a| 
+Données d'objet S3 nouvellement ingérées uniquement.
+
+Le cryptage doit être spécifié pour l'objet.  Les métadonnées des objets et autres données sensibles ne sont pas chiffrées.
+
+Les clés sont gérées en dehors de StorageGRID.
+
+link:../s3/using-server-side-encryption.html["Utiliser le cryptage côté serveur"]
+
+
+
+ a| 
+Chiffrement de volume externe ou de banque de données
+ a| 
+Vous utilisez une méthode de chiffrement en dehors de StorageGRID pour chiffrer un volume ou une banque de données entière, si votre plate-forme de déploiement la prend en charge.
+ a| 
+Toutes les données d'objet, métadonnées et données de configuration système, en supposant que chaque volume ou banque de données soit chiffré.
+
+Une méthode de cryptage externe permet un contrôle plus strict des algorithmes et des clés de cryptage.  Peut être combiné avec les autres méthodes répertoriées.
+
+
+
+ a| 
+Chiffrement d'objets en dehors de StorageGRID
+ a| 
+Vous utilisez une méthode de chiffrement en dehors de StorageGRID pour chiffrer les données et les métadonnées des objets avant qu'elles ne soient ingérées dans StorageGRID.
+ a| 
+Données d'objet et métadonnées uniquement (les données de configuration du système ne sont pas chiffrées).
+
+Une méthode de cryptage externe permet un contrôle plus strict des algorithmes et des clés de cryptage.  Peut être combiné avec les autres méthodes répertoriées.
+
+https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingClientSideEncryption.html["Amazon Simple Storage Service - Guide de l'utilisateur : Protection des données à l'aide du chiffrement côté client"^]
+
+|===
+
+
+== Utiliser plusieurs méthodes de cryptage
+
+Selon vos besoins, vous pouvez utiliser plusieurs méthodes de cryptage à la fois. Par exemple:
+
+* Vous pouvez utiliser un KMS pour protéger les nœuds de l'appliance et également utiliser la fonction de sécurité du lecteur dans SANtricity System Manager pour « doublement crypter » les données sur les lecteurs à chiffrement automatique dans les mêmes appliances.
+* Vous pouvez utiliser un KMS pour sécuriser les données sur les nœuds de l’appliance et également utiliser l’option de chiffrement des objets stockés pour chiffrer tous les objets lorsqu’ils sont ingérés.
+
+
+Si seule une petite partie de vos objets nécessite un chiffrement, envisagez plutôt de contrôler le chiffrement au niveau du bucket ou de l'objet individuel.  L’activation de plusieurs niveaux de cryptage entraîne un coût supplémentaire en termes de performances.

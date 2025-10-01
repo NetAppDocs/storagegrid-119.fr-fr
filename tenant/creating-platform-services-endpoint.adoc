@@ -1,0 +1,367 @@
+---
+permalink: tenant/creating-platform-services-endpoint.html 
+sidebar: sidebar 
+keywords: how to create platform services endpoint 
+summary: Vous devez créer au moins un point de terminaison du type correct avant de pouvoir activer un service de plateforme. 
+---
+= Créer un point de terminaison des services de plateforme
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous devez créer au moins un point de terminaison du type correct avant de pouvoir activer un service de plateforme.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Les services de plateforme ont été activés pour votre compte locataire par un administrateur StorageGRID .
+* Vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Gérer les points de terminaison ou l'autorisation d'accès root"] .
+* La ressource référencée par le point de terminaison des services de la plateforme a été créée :
++
+** Réplication CloudMirror : compartiment S3
+** Notification d'événement : Amazon Simple Notification Service (Amazon SNS) ou rubrique Kafka
+** Notification de recherche : index Elasticsearch, si le cluster de destination n'est pas configuré pour créer automatiquement des index.
+
+
+* Vous avez les informations sur la ressource de destination :
++
+** Hôte et port pour l'identifiant de ressource uniforme (URI)
++
+
+NOTE: Si vous prévoyez d'utiliser un bucket hébergé sur un système StorageGRID comme point de terminaison pour la réplication CloudMirror, contactez l'administrateur de la grille pour déterminer les valeurs à saisir.
+
+** Nom de ressource unique (URN)
++
+link:specifying-urn-for-platform-services-endpoint.html["Spécifier l'URN pour le point de terminaison des services de la plateforme"]
+
+** Informations d'authentification (si nécessaire) :
++
+[role="tabbed-block"]
+====
+.Points de terminaison d'intégration de recherche
+--
+Pour les points de terminaison d’intégration de recherche, vous pouvez utiliser les informations d’identification suivantes :
+
+*** Clé d'accès : ID de clé d'accès et clé d'accès secrète
+*** HTTP de base : nom d'utilisateur et mot de passe
+
+
+--
+.Points de terminaison de réplication CloudMirror
+--
+Pour les points de terminaison de réplication CloudMirror, vous pouvez utiliser les informations d’identification suivantes :
+
+*** Clé d'accès : ID de clé d'accès et clé d'accès secrète
+*** CAP (portail d'accès C2S) : URL d'informations d'identification temporaires, certificats serveur et client, clés client et une phrase secrète de clé privée client facultative.
+
+
+--
+.Points de terminaison Amazon SNS
+--
+Pour les points de terminaison Amazon SNS, vous pouvez utiliser les informations d’identification suivantes :
+
+*** Clé d'accès : ID de clé d'accès et clé d'accès secrète
+
+
+--
+.Points de terminaison Kafka
+--
+Pour les points de terminaison Kafka, vous pouvez utiliser les informations d’identification suivantes :
+
+*** SASL/PLAIN : Nom d'utilisateur et mot de passe
+*** SASL/SCRAM-SHA-256 : Nom d'utilisateur et mot de passe
+*** SASL/SCRAM-SHA-512 : Nom d'utilisateur et mot de passe
+
+
+--
+====
+** Certificat de sécurité (si vous utilisez un certificat CA personnalisé)
+
+
+* Si les fonctionnalités de sécurité Elasticsearch sont activées, vous disposez du privilège de surveillance du cluster pour les tests de connectivité, ainsi que du privilège d'écriture d'index ou des privilèges d'index et de suppression d'index pour les mises à jour de documents.
+
+
+.Étapes
+. Sélectionnez *STOCKAGE (S3)* > *Points de terminaison des services de plateforme*.  La page Points de terminaison des services de la plateforme s’affiche.
+. Sélectionnez *Créer un point de terminaison*.
+. Saisissez un nom d’affichage pour décrire brièvement le point de terminaison et son objectif.
++
+Le type de service de plateforme pris en charge par le point de terminaison est affiché à côté du nom du point de terminaison lorsqu'il est répertorié sur la page Points de terminaison. Vous n'avez donc pas besoin d'inclure ces informations dans le nom.
+
+. Dans le champ *URI*, spécifiez l’identifiant de ressource unique (URI) du point de terminaison.
++
+--
+Utilisez l’un des formats suivants :
+
+[listing]
+----
+https://host:port
+http://host:port
+----
+Si vous ne spécifiez pas de port, les ports par défaut suivants sont utilisés :
+
+** Port 443 pour les URI HTTPS et port 80 pour les URI HTTP (la plupart des points de terminaison)
+** Port 9092 pour les URI HTTPS et HTTP (points de terminaison Kafka uniquement)
+
+
+--
++
+Par exemple, l'URI d'un bucket hébergé sur StorageGRID pourrait être :
+
++
+[listing]
+----
+https://s3.example.com:10443
+----
++
+Dans cet exemple, `s3.example.com` représente l'entrée DNS pour l'IP virtuelle (VIP) du groupe haute disponibilité (HA) StorageGRID , et `10443` représente le port défini dans le point de terminaison de l'équilibreur de charge.
+
++
+
+NOTE: Dans la mesure du possible, vous devez vous connecter à un groupe HA de nœuds d’équilibrage de charge pour éviter un point de défaillance unique.
+
++
+De même, l'URI d'un bucket hébergé sur AWS pourrait être :
+
++
+[listing]
+----
+https://s3-aws-region.amazonaws.com
+----
++
+
+NOTE: Si le point de terminaison est utilisé pour le service de réplication CloudMirror, n'incluez pas le nom du bucket dans l'URI.  Vous incluez le nom du bucket dans le champ *URN*.
+
+. Saisissez le nom de ressource unique (URN) pour le point de terminaison.
++
+
+NOTE: Vous ne pouvez pas modifier l'URN d'un point de terminaison une fois le point de terminaison créé.
+
+. Sélectionnez *Continuer*.
+. Sélectionnez une valeur pour *Type d'authentification*.
++
+[role="tabbed-block"]
+====
+.Points de terminaison d'intégration de recherche
+--
+Saisissez ou téléchargez les informations d’identification d’un point de terminaison d’intégration de recherche.
+
+Les informations d’identification que vous fournissez doivent disposer d’autorisations d’écriture pour la ressource de destination.
+
+[cols="1a,2a,2a"]
+|===
+| Type d'authentification | Description | Informations d'identification 
+
+
+ a| 
+Anonyme
+ a| 
+Fournit un accès anonyme à la destination.  Fonctionne uniquement pour les points de terminaison dont la sécurité est désactivée.
+ a| 
+Aucune authentification.
+
+
+
+ a| 
+Clé d'accès
+ a| 
+Utilise les informations d’identification de style AWS pour authentifier les connexions avec la destination.
+ a| 
+** ID de la clé d'accès
+** Clé d'accès secrète
+
+
+
+
+ a| 
+HTTP de base
+ a| 
+Utilise un nom d'utilisateur et un mot de passe pour authentifier les connexions à la destination.
+ a| 
+** Nom d'utilisateur
+** Mot de passe
+
+
+|===
+--
+.Points de terminaison de réplication CloudMirror
+--
+Saisissez ou téléchargez les informations d’identification d’un point de terminaison de réplication CloudMirror.
+
+Les informations d’identification que vous fournissez doivent disposer d’autorisations d’écriture pour la ressource de destination.
+
+[cols="1a,2a,2a"]
+|===
+| Type d'authentification | Description | Informations d'identification 
+
+
+ a| 
+Anonyme
+ a| 
+Fournit un accès anonyme à la destination.  Fonctionne uniquement pour les points de terminaison dont la sécurité est désactivée.
+ a| 
+Aucune authentification.
+
+
+
+ a| 
+Clé d'accès
+ a| 
+Utilise les informations d’identification de style AWS pour authentifier les connexions avec la destination.
+ a| 
+** ID de la clé d'accès
+** Clé d'accès secrète
+
+
+
+
+ a| 
+CAP (Portail d'accès C2S)
+ a| 
+Utilise des certificats et des clés pour authentifier les connexions à la destination.
+ a| 
+** URL des informations d'identification temporaires
+** Certificat d'autorité de certification du serveur (téléchargement de fichier PEM)
+** Certificat client (téléchargement de fichier PEM)
+** Clé privée du client (téléchargement de fichier PEM, format crypté OpenSSL ou format de clé privée non cryptée)
+** Mot de passe de la clé privée du client (facultatif)
+
+
+|===
+--
+.Points de terminaison Amazon SNS
+--
+Saisissez ou téléchargez les informations d’identification d’un point de terminaison Amazon SNS.
+
+Les informations d’identification que vous fournissez doivent disposer d’autorisations d’écriture pour la ressource de destination.
+
+[cols="1a,2a,2a"]
+|===
+| Type d'authentification | Description | Informations d'identification 
+
+
+ a| 
+Anonyme
+ a| 
+Fournit un accès anonyme à la destination.  Fonctionne uniquement pour les points de terminaison dont la sécurité est désactivée.
+ a| 
+Aucune authentification.
+
+
+
+ a| 
+Clé d'accès
+ a| 
+Utilise les informations d’identification de style AWS pour authentifier les connexions avec la destination.
+ a| 
+** ID de la clé d'accès
+** Clé d'accès secrète
+
+
+|===
+--
+.Points de terminaison Kafka
+--
+Saisissez ou téléchargez les informations d’identification d’un point de terminaison Kafka.
+
+Les informations d’identification que vous fournissez doivent disposer d’autorisations d’écriture pour la ressource de destination.
+
+[cols="1a,2a,2a"]
+|===
+| Type d'authentification | Description | Informations d'identification 
+
+
+ a| 
+Anonyme
+ a| 
+Fournit un accès anonyme à la destination.  Fonctionne uniquement pour les points de terminaison dont la sécurité est désactivée.
+ a| 
+Aucune authentification.
+
+
+
+ a| 
+SASL/PLAIN
+ a| 
+Utilise un nom d'utilisateur et un mot de passe en texte brut pour authentifier les connexions à la destination.
+ a| 
+** Nom d'utilisateur
+** Mot de passe
+
+
+
+
+ a| 
+SASL/SCRAM-SHA-256
+ a| 
+Utilise un nom d'utilisateur et un mot de passe à l'aide d'un protocole de défi-réponse et d'un hachage SHA-256 pour authentifier les connexions à la destination.
+ a| 
+** Nom d'utilisateur
+** Mot de passe
+
+
+
+
+ a| 
+SASL/SCRAM-SHA-512
+ a| 
+Utilise un nom d'utilisateur et un mot de passe à l'aide d'un protocole de défi-réponse et d'un hachage SHA-512 pour authentifier les connexions à la destination.
+ a| 
+** Nom d'utilisateur
+** Mot de passe
+
+
+|===
+Sélectionnez *Utiliser l’authentification par délégation* si le nom d’utilisateur et le mot de passe sont dérivés d’un jeton de délégation obtenu à partir d’un cluster Kafka.
+
+--
+====
+. Sélectionnez *Continuer*.
+. Sélectionnez un bouton radio pour *Vérifier le serveur* pour choisir comment la connexion TLS au point de terminaison est vérifiée.
++
+[cols="1a,2a"]
+|===
+| Type de vérification du certificat | Description 
+
+
+ a| 
+Utiliser un certificat CA personnalisé
+ a| 
+Utilisez un certificat de sécurité personnalisé.  Si vous sélectionnez ce paramètre, copiez et collez le certificat de sécurité personnalisé dans la zone de texte *Certificat CA*.
+
+
+
+ a| 
+Utiliser le certificat CA du système d'exploitation
+ a| 
+Utilisez le certificat Grid CA par défaut installé sur le système d’exploitation pour sécuriser les connexions.
+
+
+
+ a| 
+Ne pas vérifier le certificat
+ a| 
+Le certificat utilisé pour la connexion TLS n'est pas vérifié.  Cette option n'est pas sécurisée.
+
+|===
+. Sélectionnez *Tester et créer un point de terminaison*.
++
+** Un message de réussite s'affiche si le point de terminaison peut être atteint à l'aide des informations d'identification spécifiées.  La connexion au point de terminaison est validée à partir d’un nœud sur chaque site.
+** Un message d’erreur s’affiche si la validation du point de terminaison échoue.  Si vous devez modifier le point de terminaison pour corriger l'erreur, sélectionnez *Retour aux détails du point de terminaison* et mettez à jour les informations.  Ensuite, sélectionnez *Tester et créer un point de terminaison*.
++
+
+NOTE: La création du point de terminaison échoue si les services de plateforme ne sont pas activés pour votre compte locataire.  Contactez votre administrateur StorageGRID .
+
+
+
+
+
+Après avoir configuré un point de terminaison, vous pouvez utiliser son URN pour configurer un service de plateforme.
+
+.Informations connexes
+* link:specifying-urn-for-platform-services-endpoint.html["Spécifier l'URN pour le point de terminaison des services de la plateforme"]
+* link:configuring-cloudmirror-replication.html["Configurer la réplication CloudMirror"]
+* link:configuring-event-notifications.html["Configurer les notifications d'événements"]
+* link:configuring-search-integration-service.html["Configurer le service d'intégration de recherche"]
+

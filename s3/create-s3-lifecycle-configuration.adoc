@@ -1,0 +1,176 @@
+---
+permalink: s3/create-s3-lifecycle-configuration.html 
+sidebar: sidebar 
+keywords: s3 lifecycle, object deletion, bucket 
+summary: Vous pouvez créer une configuration de cycle de vie S3 pour contrôler le moment où des objets spécifiques sont supprimés du système StorageGRID . 
+---
+= Créer une configuration du cycle de vie S3
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez créer une configuration de cycle de vie S3 pour contrôler le moment où des objets spécifiques sont supprimés du système StorageGRID .
+
+L'exemple simple de cette section illustre comment une configuration de cycle de vie S3 peut contrôler le moment où certains objets sont supprimés (expirés) de compartiments S3 spécifiques.  L'exemple dans cette section est fourni à titre d'illustration uniquement.  Pour plus de détails sur la création de configurations de cycle de vie S3, consultez https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html["Guide de l'utilisateur d'Amazon Simple Storage Service : Gestion du cycle de vie des objets"^] .  Notez que StorageGRID prend uniquement en charge les actions d’expiration ; il ne prend pas en charge les actions de transition.
+
+
+
+== Quelle est la configuration du cycle de vie
+
+Une configuration de cycle de vie est un ensemble de règles appliquées aux objets dans des compartiments S3 spécifiques.  Chaque règle spécifie quels objets sont concernés et quand ces objets expireront (à une date spécifique ou après un certain nombre de jours).
+
+StorageGRID prend en charge jusqu'à 1 000 règles de cycle de vie dans une configuration de cycle de vie.  Chaque règle peut inclure les éléments XML suivants :
+
+* Expiration : supprimez un objet lorsqu'une date spécifiée est atteinte ou lorsqu'un nombre de jours spécifié est atteint, à compter du moment où l'objet a été ingéré.
+* NoncurrentVersionExpiration : supprimez un objet lorsqu'un nombre de jours spécifié est atteint, à compter du moment où l'objet est devenu non actuel.
+* Filtre (préfixe, balise)
+* Statut
+* ID
+
+
+Chaque objet suit les paramètres de conservation d'un cycle de vie de compartiment S3 ou d'une politique ILM.  Lorsqu'un cycle de vie de compartiment S3 est configuré, les actions d'expiration du cycle de vie remplacent la stratégie ILM pour les objets correspondant au filtre de cycle de vie du compartiment.  Les objets qui ne correspondent pas au filtre de cycle de vie du bucket utilisent les paramètres de conservation de la stratégie ILM.  Si un objet correspond à un filtre de cycle de vie de compartiment et qu'aucune action d'expiration n'est explicitement spécifiée, les paramètres de conservation de la stratégie ILM ne sont pas utilisés et il est implicite que les versions d'objet sont conservées pour toujours. Voir link:../ilm/example-8-priorities-for-s3-bucket-lifecycle-and-ilm-policy.html["Exemples de priorités pour le cycle de vie du bucket S3 et la politique ILM"] .
+
+Par conséquent, un objet peut être supprimé de la grille même si les instructions de placement d'une règle ILM s'appliquent toujours à l'objet.  Ou bien, un objet peut être conservé sur la grille même après l'expiration des instructions de placement ILM pour l'objet. Pour plus de détails, consultez la section link:../ilm/how-ilm-operates-throughout-objects-life.html["Comment ILM fonctionne tout au long de la vie d'un objet"] .
+
+
+NOTE: La configuration du cycle de vie du bucket peut être utilisée avec les buckets pour lesquels le verrouillage d'objet S3 est activé, mais la configuration du cycle de vie du bucket n'est pas prise en charge pour les buckets conformes hérités.
+
+StorageGRID prend en charge l'utilisation des opérations de bucket suivantes pour gérer les configurations du cycle de vie :
+
+* Supprimer le cycle de vie du bucket
+* GetBucketLifecycleConfiguration
+* Configuration du cycle de vie de PutBucket
+
+
+
+
+== Créer une configuration du cycle de vie
+
+Comme première étape de la création d’une configuration de cycle de vie, vous créez un fichier JSON qui inclut une ou plusieurs règles.  Par exemple, ce fichier JSON comprend trois règles, comme suit :
+
+. La règle 1 s'applique uniquement aux objets qui correspondent au préfixe `category1` / et qui ont un `key2` valeur de `tag2` .  Le `Expiration` le paramètre spécifie que les objets correspondant au filtre expireront à minuit le 22 août 2020.
+. La règle 2 s'applique uniquement aux objets qui correspondent au préfixe `category2` /.  Le `Expiration` le paramètre spécifie que les objets correspondant au filtre expireront 100 jours après leur ingestion.
++
+
+CAUTION: Les règles qui spécifient un nombre de jours sont relatives au moment où l'objet a été ingéré.  Si la date actuelle dépasse la date d'ingestion plus le nombre de jours, certains objets peuvent être supprimés du bucket dès que la configuration du cycle de vie est appliquée.
+
+. La règle 3 s'applique uniquement aux objets qui correspondent au préfixe `category3` /.  Le `Expiration` le paramètre spécifie que toutes les versions non actuelles des objets correspondants expireront 50 jours après être devenues non actuelles.
+
+
+[listing]
+----
+{
+	"Rules": [
+        {
+		    "ID": "rule1",
+			"Filter": {
+                "And": {
+                    "Prefix": "category1/",
+                    "Tags": [
+                        {
+                            "Key": "key2",
+							"Value": "tag2"
+                        }
+                    ]
+                }
+            },
+			"Expiration": {
+                "Date": "2020-08-22T00:00:00Z"
+            },
+            "Status": "Enabled"
+        },
+		{
+            "ID": "rule2",
+			"Filter": {
+                "Prefix": "category2/"
+            },
+			"Expiration": {
+                "Days": 100
+            },
+            "Status": "Enabled"
+        },
+		{
+            "ID": "rule3",
+			"Filter": {
+                "Prefix": "category3/"
+            },
+			"NoncurrentVersionExpiration": {
+                "NoncurrentDays": 50
+            },
+            "Status": "Enabled"
+        }
+    ]
+}
+----
+
+
+== Appliquer la configuration du cycle de vie au bucket
+
+Après avoir créé le fichier de configuration du cycle de vie, vous l'appliquez à un bucket en émettant une requête PutBucketLifecycleConfiguration.
+
+Cette requête applique la configuration du cycle de vie dans le fichier d'exemple aux objets d'un bucket nommé `testbucket` .
+
+[listing]
+----
+aws s3api --endpoint-url <StorageGRID endpoint> put-bucket-lifecycle-configuration
+--bucket testbucket --lifecycle-configuration file://bktjson.json
+----
+Pour valider qu’une configuration de cycle de vie a été correctement appliquée au bucket, émettez une demande GetBucketLifecycleConfiguration. Par exemple:
+
+[listing]
+----
+aws s3api --endpoint-url <StorageGRID endpoint> get-bucket-lifecycle-configuration
+ --bucket testbucket
+----
+Une réponse réussie répertorie la configuration du cycle de vie que vous venez d’appliquer.
+
+
+
+== Valider que l'expiration du cycle de vie du bucket s'applique à l'objet
+
+Vous pouvez déterminer si une règle d'expiration dans la configuration du cycle de vie s'applique à un objet spécifique lors de l'émission d'une demande PutObject, HeadObject ou GetObject.  Si une règle s'applique, la réponse comprend une `Expiration` paramètre qui indique quand l'objet expire et quelle règle d'expiration a été respectée.
+
+
+NOTE: Étant donné que le cycle de vie du bucket remplace ILM, le `expiry-date` la date réelle à laquelle l'objet sera supprimé est indiquée. Pour plus de détails, consultez la section link:../ilm/how-object-retention-is-determined.html["Comment la rétention d'objet est déterminée"] .
+
+Par exemple, cette requête PutObject a été émise le 22 juin 2020 et place un objet dans le `testbucket` seau.
+
+[listing]
+----
+aws s3api --endpoint-url <StorageGRID endpoint> put-object
+--bucket testbucket --key obj2test2 --body bktjson.json
+----
+La réponse de réussite indique que l'objet expirera dans 100 jours (1er octobre 2020) et qu'il correspond à la règle 2 de la configuration du cycle de vie.
+
+[listing, subs="specialcharacters,quotes"]
+----
+{
+      *"Expiration": "expiry-date=\"Thu, 01 Oct 2020 09:07:49 GMT\", rule-id=\"rule2\"",
+      "ETag": "\"9762f8a803bc34f5340579d4446076f7\""
+}
+----
+Par exemple, cette requête HeadObject a été utilisée pour obtenir des métadonnées pour le même objet dans le bucket testbucket.
+
+[listing]
+----
+aws s3api --endpoint-url <StorageGRID endpoint> head-object
+--bucket testbucket --key obj2test2
+----
+La réponse de réussite inclut les métadonnées de l'objet et indique que l'objet expirera dans 100 jours et qu'il correspond à la règle 2.
+
+[listing, subs="specialcharacters,quotes"]
+----
+{
+      "AcceptRanges": "bytes",
+      *"Expiration": "expiry-date=\"Thu, 01 Oct 2020 09:07:48 GMT\", rule-id=\"rule2\"",
+      "LastModified": "2020-06-23T09:07:48+00:00",
+      "ContentLength": 921,
+      "ETag": "\"9762f8a803bc34f5340579d4446076f7\""
+      "ContentType": "binary/octet-stream",
+      "Metadata": {}
+}
+----
+
+NOTE: Pour les buckets avec contrôle de version activé, le `x-amz-expiration` l'en-tête de réponse s'applique uniquement aux versions actuelles des objets.

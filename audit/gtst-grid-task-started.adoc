@@ -1,0 +1,42 @@
+---
+permalink: audit/gtst-grid-task-started.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, GTST, Grid Task Started 
+summary: 'Ce message d’audit indique que le service CMN a commencé à traiter la tâche de grille spécifiée.  Le message d"audit suit immédiatement le message Tâche de grille soumise pour les tâches de grille initiées par le service de soumission de tâche de grille interne et sélectionnées pour l"activation automatique.  Pour les tâches de grille soumises dans la table En attente, ce message est généré lorsque l"utilisateur démarre la tâche de grille.' 
+---
+= GTST : tâche de grille démarrée
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ce message d’audit indique que le service CMN a commencé à traiter la tâche de grille spécifiée.  Le message d'audit suit immédiatement le message Tâche de grille soumise pour les tâches de grille initiées par le service de soumission de tâche de grille interne et sélectionnées pour l'activation automatique.  Pour les tâches de grille soumises dans la table En attente, ce message est généré lorsque l'utilisateur démarre la tâche de grille.
+
+[cols="1a,1a,4a"]
+|===
+| Code | Champ | Description 
+
+
+ a| 
+TSID
+ a| 
+ID de tâche
+ a| 
+Ce champ identifie de manière unique une tâche de grille générée et permet de gérer la tâche tout au long de son cycle de vie.
+
+*Remarque :* l'ID de tâche est attribué au moment où une tâche de grille est générée, et non au moment où elle est soumise.  Il est possible qu'une tâche de grille donnée soit soumise plusieurs fois et, dans ce cas, le champ ID de tâche n'est pas suffisant pour lier de manière unique les messages d'audit Soumis, Démarré et Terminé.
+
+
+
+ a| 
+RSLT
+ a| 
+Résultat
+ a| 
+Le résultat.  Ce champ n'a qu'une seule valeur :
+
+* SUCS : la tâche de grille a été démarrée avec succès.
+
+
+|===

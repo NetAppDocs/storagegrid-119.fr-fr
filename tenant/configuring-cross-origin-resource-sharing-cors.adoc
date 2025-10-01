@@ -1,0 +1,87 @@
+---
+permalink: tenant/configuring-cross-origin-resource-sharing-cors.html 
+sidebar: sidebar 
+keywords: how to configure cross-origin resource sharing, cors 
+summary: 'Vous pouvez configurer le partage de ressources inter-origines (CORS) pour un bucket S3 si vous souhaitez que ce bucket et les objets qu"il contient soient accessibles aux applications Web d"autres domaines.' 
+---
+= Configurer le partage de ressources inter-origines (CORS)
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez configurer le partage de ressources inter-origines (CORS) pour un bucket S3 si vous souhaitez que ce bucket et les objets qu'il contient soient accessibles aux applications Web d'autres domaines.
+
+.Avant de commencer
+* Vous êtes connecté au Tenant Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Pour les demandes de configuration GET CORS, vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Autorisation de gérer tous les compartiments ou d'afficher tous les compartiments"] . Ces autorisations remplacent les paramètres d’autorisations dans les stratégies de groupe ou de compartiment.
+* Pour les demandes de configuration PUT CORS, vous appartenez à un groupe d'utilisateurs qui possède lelink:tenant-management-permissions.html["Gérer toutes les autorisations des buckets"] .  Cette autorisation remplace les paramètres d’autorisations dans les stratégies de groupe ou de compartiment.
+* Lelink:tenant-management-permissions.html["Autorisation d'accès root"] donne accès à toutes les demandes de configuration CORS.
+
+
+.À propos de cette tâche
+Le partage de ressources inter-origines (CORS) est un mécanisme de sécurité qui permet aux applications Web clientes d'un domaine d'accéder aux ressources d'un domaine différent.  Par exemple, supposons que vous utilisiez un bucket S3 nommé `Images` pour stocker des graphiques.  En configurant CORS pour le `Images` bucket, vous pouvez autoriser l'affichage des images de ce bucket sur le site Web `+http://www.example.com+` .
+
+
+
+== Activer CORS pour un bucket
+
+.Étapes
+. Utilisez un éditeur de texte pour créer le XML requis.  Cet exemple montre le XML utilisé pour activer CORS pour un bucket S3.  Spécifiquement:
++
+** Permet à n'importe quel domaine d'envoyer des requêtes GET au bucket
+** Autorise uniquement le `+http://www.example.com+` domaine pour envoyer des requêtes GET, POST et DELETE
+** Tous les en-têtes de requête sont autorisés
++
+[listing]
+----
+<CORSConfiguration
+    xmlns="http://s3.amazonaws.com/doc/2020-10-22/">
+    <CORSRule>
+        <AllowedOrigin>*</AllowedOrigin>
+        <AllowedMethod>GET</AllowedMethod>
+        <AllowedHeader>*</AllowedHeader>
+    </CORSRule>
+    <CORSRule>
+        <AllowedOrigin>http://www.example.com</AllowedOrigin>
+        <AllowedMethod>GET</AllowedMethod>
+        <AllowedMethod>POST</AllowedMethod>
+        <AllowedMethod>DELETE</AllowedMethod>
+        <AllowedHeader>*</AllowedHeader>
+    </CORSRule>
+</CORSConfiguration>
+----
++
+Pour plus d'informations sur le XML de configuration CORS, voir http://docs.aws.amazon.com/AmazonS3/latest/dev/Welcome.html["Documentation Amazon Web Services (AWS) : Guide de l'utilisateur d'Amazon Simple Storage Service"^] .
+
+
+
+. Sélectionnez *Afficher les buckets* dans le tableau de bord ou sélectionnez *STOCKAGE (S3)* > *Buckets*.
+. Sélectionnez le nom du bucket dans le tableau.
++
+La page des détails du bucket apparaît.
+
+. Dans l'onglet *Accès au bucket*, sélectionnez l'accordéon *Partage de ressources inter-origines (CORS)*.
+. Cochez la case *Activer CORS*.
+. Collez le XML de configuration CORS dans la zone de texte.
+. Sélectionnez *Enregistrer les modifications*.
+
+
+
+
+== Modifier le paramètre CORS
+
+.Étapes
+. Mettez à jour le XML de configuration CORS dans la zone de texte ou sélectionnez *Effacer* pour recommencer.
+. Sélectionnez *Enregistrer les modifications*.
+
+
+
+
+== Désactiver le paramètre CORS
+
+.Étapes
+. Décochez la case *Activer CORS*.
+. Sélectionnez *Enregistrer les modifications*.
+

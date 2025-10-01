@@ -1,0 +1,46 @@
+---
+permalink: maintain/pausing-and-resuming-decommission-process-for-storage-nodes.html 
+sidebar: sidebar 
+keywords: how to pause decommission 
+summary: 'Si vous devez effectuer une deuxième procédure de maintenance, vous pouvez suspendre la procédure de mise hors service d"un nœud de stockage pendant certaines étapes.  Une fois l’autre procédure terminée, vous pouvez reprendre la mise hors service.' 
+---
+= Suspendre et reprendre le processus de mise hors service des nœuds de stockage
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si vous devez effectuer une deuxième procédure de maintenance, vous pouvez suspendre la procédure de mise hors service d'un nœud de stockage pendant certaines étapes.  Une fois l’autre procédure terminée, vous pouvez reprendre la mise hors service.
+
+
+NOTE: Le bouton *Pause* est activé uniquement lorsque les étapes d'évaluation ILM ou de mise hors service des données codées par effacement sont atteintes ; cependant, l'évaluation ILM (migration des données) continuera de s'exécuter en arrière-plan.
+
+.Avant de commencer
+* Vous êtes connecté au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .
+* Vous avez lelink:../admin/admin-group-permissions.html["Autorisation d'accès de maintenance ou root"] .
+
+
+.Étapes
+. Sélectionnez *MAINTENANCE* > *Tâches* > *Mise hors service*.
++
+La page de mise hors service apparaît.
+
+. Sélectionnez *Désactiver les nœuds*.
++
+La page Décommissionner les nœuds s’affiche.  Lorsque la procédure de mise hors service atteint l’une des étapes suivantes, le bouton *Pause* est activé.
+
++
+** Évaluation de l'ILM
+** Mise hors service des données codées par effacement
+
+
+. Sélectionnez *Pause* pour suspendre la procédure.
++
+L'étape en cours est en pause et le bouton *Reprendre* est activé.
+
++
+image::../media/decommission_nodes_procedure_paused.png[Procédure de déclassement des nœuds suspendue]
+
+. Une fois l’autre procédure de maintenance terminée, sélectionnez *Reprendre* pour procéder à la mise hors service.
+

@@ -1,0 +1,35 @@
+---
+permalink: maintain/replacing-failed-node-with-services-appliance.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, replace failed node, services appliance 
+summary: 'Vous pouvez utiliser un dispositif de services pour récupérer un nœud de passerelle défaillant, un nœud d"administration non principal défaillant ou un nœud d"administration principal défaillant hébergé sur VMware, un hôte Linux ou un dispositif de services.  Cette procédure est une étape de la procédure de récupération du nœud de grille.' 
+---
+= Remplacer le nœud défaillant par un dispositif de services
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Vous pouvez utiliser un dispositif de services pour récupérer un nœud de passerelle défaillant, un nœud d'administration non principal défaillant ou un nœud d'administration principal défaillant hébergé sur VMware, un hôte Linux ou un dispositif de services.  Cette procédure est une étape de la procédure de récupération du nœud de grille.
+
+.Avant de commencer
+* Vous avez déterminé que l’une des situations suivantes est vraie :
++
+** La machine virtuelle hébergeant le nœud ne peut pas être restaurée.
+** L'hôte Linux physique ou virtuel du nœud de grille est tombé en panne et doit être remplacé.
+** L'appareil de services hébergeant le nœud de grille doit être remplacé.
+
+
+* Vous avez confirmé que la version du programme d'installation de l'appliance StorageGRID sur l'appliance de services correspond à la version du logiciel de votre système StorageGRID . Voir https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/verifying-and-upgrading-storagegrid-appliance-installer-version.html["Vérifier et mettre à niveau la version du programme d'installation de l'appliance StorageGRID"^] .
+
+
+
+NOTE: Ne déployez pas à la fois un dispositif de services SG110 et SG1100 ou un dispositif de services SG100 et SG1000 sur le même site.  Des performances imprévisibles pourraient en résulter.
+
+.À propos de cette tâche
+Vous pouvez utiliser un dispositif de services pour récupérer un nœud de réseau défaillant dans les cas suivants :
+
+* Le nœud défaillant était hébergé sur VMware ou Linux (link:installing-services-appliance-platform-change-only.html["changement de plateforme"] )
+* Le nœud défaillant était hébergé sur un dispositif de services (link:preparing-appliance-for-reinstallation-platform-replacement-only.html["remplacement de la plateforme"] )
+

@@ -1,0 +1,71 @@
+---
+permalink: admin/manage-platform-services-for-tenants.html 
+sidebar: sidebar 
+keywords: platform service, cloudmirror replication, event notification, search integration service 
+summary: 'Les services de la plateforme incluent la réplication CloudMirror, les notifications d"événements et le service d"intégration de recherche.' 
+---
+= Que sont les services de plateforme ?
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Les services de la plateforme incluent la réplication CloudMirror, les notifications d'événements et le service d'intégration de recherche.
+
+Si vous activez les services de plateforme pour les comptes de locataire S3, vous devez configurer votre grille afin que les locataires puissent accéder aux ressources externes nécessaires pour utiliser ces services.
+
+
+
+== Réplication CloudMirror
+
+Le service de réplication StorageGRID CloudMirror est utilisé pour mettre en miroir des objets spécifiques d'un bucket StorageGRID vers une destination externe spécifiée.
+
+Par exemple, vous pouvez utiliser la réplication CloudMirror pour mettre en miroir des enregistrements clients spécifiques dans Amazon S3, puis exploiter les services AWS pour effectuer des analyses sur vos données.
+
+
+NOTE: La réplication CloudMirror présente certaines similitudes et différences importantes avec la fonctionnalité de réplication inter-grille.  Pour en savoir plus, voirlink:../admin/grid-federation-compare-cgr-to-cloudmirror.html["Comparer la réplication inter-grille et la réplication CloudMirror"] .
+
+
+NOTE: La réplication CloudMirror n'est pas prise en charge si le verrouillage d'objet S3 est activé pour le compartiment source.
+
+
+
+== Notifications
+
+Les notifications d'événements par compartiment sont utilisées pour envoyer des notifications sur des actions spécifiques effectuées sur des objets à un cluster Kafka externe spécifié ou à Amazon Simple Notification Service.
+
+Par exemple, vous pouvez configurer des alertes à envoyer aux administrateurs pour chaque objet ajouté à un bucket, où les objets représentent des fichiers journaux associés à un événement système critique.
+
+
+NOTE: Bien que la notification d'événement puisse être configurée sur un bucket avec le verrouillage d'objet S3 activé, les métadonnées du verrouillage d'objet S3 (y compris la date de conservation et le statut de conservation légale) des objets ne seront pas incluses dans les messages de notification.
+
+
+
+== Service d'intégration de recherche
+
+Le service d'intégration de recherche est utilisé pour envoyer des métadonnées d'objet S3 à un index Elasticsearch spécifié où les métadonnées peuvent être recherchées ou analysées à l'aide du service externe.
+
+Par exemple, vous pouvez configurer vos buckets pour envoyer des métadonnées d’objet S3 à un service Elasticsearch distant.  Vous pouvez ensuite utiliser Elasticsearch pour effectuer des recherches dans plusieurs compartiments et effectuer des analyses sophistiquées des modèles présents dans les métadonnées de votre objet.
+
+
+NOTE: Bien que l'intégration Elasticsearch puisse être configurée sur un bucket avec S3 Object Lock activé, les métadonnées S3 Object Lock (y compris la date de conservation et le statut de conservation légale) des objets ne seront pas incluses dans les messages de notification.
+
+Les services de plateforme offrent aux locataires la possibilité d'utiliser des ressources de stockage externes, des services de notification et des services de recherche ou d'analyse avec leurs données.  Étant donné que l'emplacement cible des services de plateforme est généralement externe à votre déploiement StorageGRID , vous devez décider si vous souhaitez autoriser les locataires à utiliser ces services.  Si vous le faites, vous devez activer l’utilisation des services de plateforme lorsque vous créez ou modifiez des comptes locataires.  Vous devez également configurer votre réseau de manière à ce que les messages des services de plateforme générés par les locataires puissent atteindre leurs destinations.
+
+
+
+== Recommandations pour l'utilisation des services de la plateforme
+
+Avant d’utiliser les services de la plateforme, tenez compte des recommandations suivantes :
+
+* Si le contrôle de version et la réplication CloudMirror sont activés pour un compartiment S3 du système StorageGRID , vous devez également activer le contrôle de version du compartiment S3 pour le point de terminaison de destination.  Cela permet à la réplication CloudMirror de générer des versions d’objet similaires sur le point de terminaison.
+* Vous ne devez pas utiliser plus de 100 locataires actifs avec des requêtes S3 nécessitant une réplication CloudMirror, des notifications et une intégration de recherche.  Avoir plus de 100 locataires actifs peut entraîner des performances client S3 plus lentes.
+* Les demandes adressées à un point de terminaison qui ne peuvent pas être traitées seront mises en file d'attente jusqu'à un maximum de 500 000 demandes.  Cette limite est partagée équitablement entre les locataires actifs.  Les nouveaux locataires sont autorisés à dépasser temporairement cette limite de 500 000 afin que les locataires nouvellement créés ne soient pas injustement pénalisés.
+
+
+.Informations connexes
+* link:../tenant/what-platform-services-are.html["Gérer les services de la plateforme"]
+* link:configuring-storage-proxy-settings.html["Configurer les paramètres du proxy de stockage"]
+* link:../monitor/index.html["Surveiller StorageGRID"]
+

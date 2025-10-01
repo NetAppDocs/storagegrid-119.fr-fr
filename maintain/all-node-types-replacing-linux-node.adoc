@@ -1,0 +1,20 @@
+---
+permalink: maintain/all-node-types-replacing-linux-node.html 
+sidebar: sidebar 
+keywords: replace linux node 
+summary: 'Si une panne nécessite le déploiement d"un ou plusieurs nouveaux hôtes physiques ou virtuels ou la réinstallation de Linux sur un hôte existant, déployez et configurez l"hôte de remplacement avant de pouvoir récupérer le nœud de grille.  Cette procédure est une étape du processus de récupération des nœuds de grille pour tous les types de nœuds de grille.' 
+---
+= Remplacer le nœud Linux
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Si une panne nécessite le déploiement d'un ou plusieurs nouveaux hôtes physiques ou virtuels ou la réinstallation de Linux sur un hôte existant, déployez et configurez l'hôte de remplacement avant de pouvoir récupérer le nœud de grille.  Cette procédure est une étape du processus de récupération des nœuds de grille pour tous les types de nœuds de grille.
+
+« Linux » fait référence à un déploiement Red Hat® Enterprise Linux®, Ubuntu® ou Debian®. Pour une liste des versions prises en charge, consultez le https://imt.netapp.com/matrix/#welcome["Outil de matrice d'interopérabilité NetApp (IMT)"^] .
+
+Cette procédure n'est effectuée qu'en tant qu'étape du processus de récupération des nœuds de stockage basés sur des logiciels, des nœuds d'administration principaux ou non principaux ou des nœuds de passerelle.  Les étapes sont identiques quel que soit le type de nœud de grille que vous récupérez.
+
+Si plusieurs nœuds de grille sont hébergés sur un hôte Linux physique ou virtuel, vous pouvez récupérer les nœuds de grille dans n'importe quel ordre.  Cependant, la récupération préalable d'un nœud d'administration principal, s'il est présent, empêche la récupération des autres nœuds de grille de se bloquer lorsqu'ils tentent de contacter le nœud d'administration principal pour s'inscrire à la récupération.

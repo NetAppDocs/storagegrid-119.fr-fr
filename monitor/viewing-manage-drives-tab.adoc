@@ -1,0 +1,25 @@
+---
+permalink: monitor/viewing-manage-drives-tab.html 
+sidebar: sidebar 
+keywords: Manage drives tab, hardware diagnostics, fail drive, logically replace drive 
+summary: 'L"onglet Gérer les lecteurs vous permet d"accéder aux détails et d"effectuer des tâches de dépannage et de maintenance sur les lecteurs des appareils qui prennent en charge cette fonctionnalité.' 
+---
+= Afficher l'onglet Gérer les lecteurs
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+L'onglet Gérer les lecteurs vous permet d'accéder aux détails et d'effectuer des tâches de dépannage et de maintenance sur les lecteurs des appareils qui prennent en charge cette fonctionnalité.
+
+À l’aide de l’onglet Gérer les lecteurs, vous pouvez effectuer les opérations suivantes :
+
+* Afficher la disposition des lecteurs de stockage de données dans l'appareil
+* Afficher un tableau qui répertorie chaque emplacement de lecteur, type, état, version du micrologiciel et numéro de série
+* Exécuter des fonctions de dépannage et de maintenance sur chaque lecteur
+
+
+Pour accéder à l'onglet Gérer les lecteurs, vous devez disposer dulink:../admin/admin-group-permissions.html["Administrateur de l'appareil de stockage ou autorisation d'accès root"] .
+
+Pour plus d'informations sur l'utilisation de l'onglet Gérer les lecteurs, consultez https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/manage-drives-tab.html["Utiliser l'onglet Gérer les lecteurs"^] .

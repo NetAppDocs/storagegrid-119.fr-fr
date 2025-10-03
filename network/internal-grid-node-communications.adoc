@@ -234,6 +234,19 @@ Trafic interne des métadonnées.
 
 
  a| 
+5353
+ a| 
+UDP
+ a| 
+Tous les nœuds
+ a| 
+Tous les nœuds
+ a| 
+Fournit le service DNS multidiffusion (mDNS) utilisé pour les modifications d'adresse IP de grille complète et pour la découverte du nœud d'administration principal lors de l'installation, de l'extension et de la récupération.
+
+
+
+ a| 
 7001
  a| 
 TCP
@@ -407,11 +420,11 @@ Trafic interne du service Data Mover pour les pools de stockage cloud.
  a| 
 TCP
  a| 
-Nœuds de stockage
+Tous les nœuds
  a| 
-Nœuds de stockage
+Tous les nœuds
  a| 
-Trafic interne du service Chunk pour le codage d'effacement.
+Trafic interne du service de fragmentation pour le codage d'effacement et la réplication
 
 
 
@@ -446,9 +459,9 @@ Trafic interne lié à Swift.
  a| 
 TCP
  a| 
-Tous les nœuds de la grille
+Tous les nœuds
  a| 
-Tous les nœuds de stockage
+Nœuds de stockage
  a| 
 Trafic interne lié au service LDR.
 

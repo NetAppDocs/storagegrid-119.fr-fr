@@ -279,7 +279,7 @@ Nœuds d'administration
  a| 
 Utilisé par les navigateurs Web et les clients API de gestion pour accéder au Grid Manager et au Tenant Manager.
 
-*Remarque* : si vous fermez les ports 443 ou 8443 de Grid Manager, tous les utilisateurs actuellement connectés sur un port bloqué, y compris vous, perdront l'accès à Grid Manager, sauf si leur adresse IP a été ajoutée à la liste d'adresses privilégiées.  Voirlink:../admin/configure-firewall-controls.html["Configurer les contrôles du pare-feu"] pour configurer des adresses IP privilégiées.
+*Remarque* : si vous fermez les ports 443 ou 8443 de Grid Manager, tous les utilisateurs actuellement connectés sur un port bloqué, y compris vous, perdront l'accès à Grid Manager, sauf si leur adresse IP a été ajoutée à la liste d'adresses privilégiées. Se référer àlink:../admin/configure-firewall-controls.html["Configurer les contrôles du pare-feu"] pour configurer des adresses IP privilégiées.
 
 
 
@@ -437,9 +437,26 @@ Navigateur
  a| 
 Nœuds d'administration
  a| 
-Facultatif.  Utilisé par les navigateurs Web et les clients API de gestion pour accéder au Grid Manager.  Peut être utilisé pour séparer les communications de Grid Manager et de Tenant Manager.
+Facultatif. Utilisé par les navigateurs Web et les clients API de gestion pour accéder au Grid Manager. Peut être utilisé pour séparer les communications de Grid Manager et de Tenant Manager.
 
-*Remarque* : si vous fermez les ports 443 ou 8443 de Grid Manager, tous les utilisateurs actuellement connectés sur un port bloqué, y compris vous, perdront l'accès à Grid Manager, sauf si leur adresse IP a été ajoutée à la liste d'adresses privilégiées.  Voirlink:../admin/configure-firewall-controls.html["Configurer les contrôles du pare-feu"] pour configurer des adresses IP privilégiées.
+*Remarque* : si vous fermez les ports 443 ou 8443 de Grid Manager, tous les utilisateurs actuellement connectés sur un port bloqué, y compris vous, perdront l'accès à Grid Manager, sauf si leur adresse IP a été ajoutée à la liste d'adresses privilégiées. Se référer àlink:../admin/configure-firewall-controls.html["Configurer les contrôles du pare-feu"] pour configurer des adresses IP privilégiées.
+
+
+
+ a| 
+8443
+ a| 
+TCP
+ a| 
+HTTPS
+ a| 
+Navigateur
+ a| 
+appareils électroménagers
+ a| 
+Utilisé par les navigateurs Web et les clients API de gestion pour accéder au programme d'installation de l'appliance StorageGRID .
+
+*Remarque* : le port 443 redirige vers le port 8443 pour le programme d'installation de l'appliance StorageGRID .
 
 
 
@@ -501,7 +518,7 @@ Navigateur
  a| 
 Nœuds d'administration
  a| 
-Facultatif.  Utilisé par les navigateurs Web et les clients API de gestion pour accéder au gestionnaire de locataires.  Peut être utilisé pour séparer les communications de Grid Manager et de Tenant Manager.
+Facultatif. Utilisé par les navigateurs Web et les clients API de gestion pour accéder au gestionnaire de locataires. Peut être utilisé pour séparer les communications de Grid Manager et de Tenant Manager.
 
 
 

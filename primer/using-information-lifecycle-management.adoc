@@ -11,9 +11,7 @@ summary: 'Vous utilisez la gestion du cycle de vie des informations (ILM) pour c
 
 
 [role="lead"]
-Vous utilisez la gestion du cycle de vie des informations (ILM) pour contrôler le placement, la durée et le comportement d'ingestion de tous les objets de votre système StorageGRID . Les règles ILM déterminent la manière dont StorageGRID stocke les objets au fil du temps. Vous configurez une ou plusieurs règles ILM, puis les ajoutez à une stratégie ILM.
-
-Une grille n’a qu’une seule politique active à la fois.  Une politique peut contenir plusieurs règles.
+Vous utilisez la gestion du cycle de vie des informations (ILM) pour contrôler le placement, la durée et le comportement d'ingestion de tous les objets de votre système StorageGRID . Les règles ILM déterminent la manière dont StorageGRID stocke les objets au fil du temps. Vous configurez une ou plusieurs règles ILM, puis les ajoutez à une stratégie ILM. Une grille peut avoir plusieurs politiques actives à la fois.
 
 Les règles ILM définissent :
 

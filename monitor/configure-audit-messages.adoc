@@ -558,7 +558,7 @@ Une bannière verte indique que la configuration a été enregistrée.
 +
 Les résultats des tests apparaissent en continu sur la page jusqu'à ce que vous arrêtiez le test.  Pendant que le test est en cours, vos messages d’audit continuent d’être envoyés vers vos destinations précédemment configurées.
 
-. Si vous recevez des erreurs, corrigez-les et sélectionnez à nouveau *Envoyer des messages de test*.
+. Si vous recevez des erreurs lors de la configuration du serveur Syslog ou lors de l'exécution, corrigez-les et sélectionnez à nouveau *Envoyer des messages de test*.
 +
 Voirlink:../troubleshoot/troubleshooting-syslog-server.html["Dépanner un serveur syslog externe"] pour vous aider à résoudre les erreurs.
 

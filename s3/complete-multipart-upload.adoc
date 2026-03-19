@@ -59,6 +59,14 @@ NOTE: Le `ETag` la valeur renvoyée n'est pas une somme MD5 des données, mais s
 
 Les en-têtes de requête suivants ne sont pas pris en charge :
 
+* `If-Match`
++
+Le  `If-Match header` est accepté mais non fonctionnel.
+
+* `If-None-Match`
++
+Le  `If-None-Match header` est accepté mais non fonctionnel.
+
 * `x-amz-sdk-checksum-algorithm`
 * `x-amz-trailer`
 

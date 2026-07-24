@@ -17,6 +17,7 @@ Si vous activez les services de plateforme pour les comptes de locataire S3, vou
 
 
 
+[[cloudmirror-replication]]
 == Réplication CloudMirror
 
 Le service de réplication StorageGRID CloudMirror est utilisé pour mettre en miroir des objets spécifiques d'un bucket StorageGRID vers une destination externe spécifiée.
@@ -31,6 +32,7 @@ NOTE: La réplication CloudMirror n'est pas prise en charge si le verrouillage d
 
 
 
+[[notifications]]
 == Notifications
 
 Les notifications d'événements par compartiment sont utilisées pour envoyer des notifications sur des actions spécifiques effectuées sur des objets à un cluster Kafka externe spécifié ou à Amazon Simple Notification Service.
@@ -42,6 +44,7 @@ NOTE: Bien que la notification d'événement puisse être configurée sur un buc
 
 
 
+[[search-integration-service]]
 == Service d'intégration de recherche
 
 Le service d'intégration de recherche est utilisé pour envoyer des métadonnées d'objet S3 à un index Elasticsearch spécifié où les métadonnées peuvent être recherchées ou analysées à l'aide du service externe.
@@ -55,6 +58,7 @@ Les services de plateforme offrent aux locataires la possibilité d'utiliser des
 
 
 
+[[recommendations-for-using-platform-services]]
 == Recommandations pour l'utilisation des services de la plateforme
 
 Avant d’utiliser les services de la plateforme, tenez compte des recommandations suivantes :

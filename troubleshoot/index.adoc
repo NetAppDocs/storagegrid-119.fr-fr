@@ -17,6 +17,7 @@ Souvent, vous pouvez résoudre les problèmes par vous-même ; cependant, vous d
 
 
 
+[[defineproblemdefine-the-problem]]
 == [[define_problem]]Définir le problème
 
 La première étape pour résoudre un problème est de le définir clairement.
@@ -78,6 +79,7 @@ C'est la première fois que je vois ce problème.
 |===
 
 
+[[assess-the-risk-and-impact-on-the-system]]
 == Évaluer le risque et l'impact sur le système
 
 Après avoir défini le problème, évaluez son risque et son impact sur le système StorageGRID .  Par exemple, la présence d’alertes critiques ne signifie pas nécessairement que le système ne fournit pas de services essentiels.
@@ -118,6 +120,7 @@ Oui, car les applications clientes ne peuvent pas stocker d’objets dans le sys
 |===
 
 
+[[collect-data]]
 == Collecter des données
 
 Après avoir défini le problème et évalué son risque et son impact, collectez des données pour analyse.  Le type de données qu’il est le plus utile de collecter dépend de la nature du problème.
@@ -227,6 +230,7 @@ Le support technique peut vous demander de collecter des données ou d'examiner 
 |===
 
 
+[[createtimelinecreate-a-timeline-of-recent-changes]]
 === [[create_timeline]]Créer une chronologie des modifications récentes
 
 Lorsqu’un problème survient, vous devez tenir compte de ce qui a changé récemment et du moment où ces changements se sont produits.
@@ -295,6 +299,7 @@ Voici quelques exemples de changements potentiellement importants :
 
 
 
+[[establish-baselines]]
 === Établir des lignes de base
 
 Vous pouvez établir des lignes de base pour votre système en enregistrant les niveaux normaux de diverses valeurs opérationnelles.  À l’avenir, vous pourrez comparer les valeurs actuelles à ces lignes de base pour aider à détecter et à résoudre les valeurs anormales.
@@ -397,6 +402,7 @@ Sélectionnez *NODES* > *_Storage Node_* > *Objects*. Dans la table Requêtes, a
 |===
 
 
+[[analyze-data]]
 == Analyser les données
 
 Utilisez les informations que vous collectez pour déterminer la cause du problème et les solutions potentielles.
@@ -410,6 +416,7 @@ L'analyse dépend du problème, mais en général :
 
 
 
+[[escalation-information-checklist]]
 == Liste de contrôle des informations d'escalade
 
 Si vous ne parvenez pas à résoudre le problème vous-même, contactez le support technique.  Avant de contacter le support technique, rassemblez les informations répertoriées dans le tableau suivant pour faciliter la résolution du problème.

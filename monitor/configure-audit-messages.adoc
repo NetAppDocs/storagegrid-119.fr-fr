@@ -26,6 +26,7 @@ En option, vous pouvez configurer un serveur syslog externe pour enregistrer les
 
 
 
+[[change-audit-message-levels]]
 == Modifier les niveaux des messages d'audit
 
 Vous pouvez définir un niveau d’audit différent pour chacune des catégories de messages suivantes dans le journal d’audit :
@@ -154,6 +155,7 @@ Une bannière verte indique que votre configuration a été enregistrée.
 
 
 
+[[define-http-request-headers]]
 == Définir les en-têtes de requête HTTP
 
 Vous pouvez éventuellement définir les en-têtes de requête HTTP que vous souhaitez inclure dans les messages d'audit de lecture et d'écriture du client. Ces en-têtes de protocole s'appliquent uniquement aux requêtes S3.
@@ -179,6 +181,7 @@ Une bannière verte indique que votre configuration a été enregistrée.
 
 
 
+[[use-external-syslog-serveruse-an-external-syslog-server]]
 == [[use-external-syslog-server]]Utiliser un serveur syslog externe
 
 Vous pouvez éventuellement configurer un serveur syslog externe pour enregistrer les journaux d'audit, les journaux d'application et les journaux d'événements de sécurité dans un emplacement extérieur à votre grille.
@@ -191,6 +194,7 @@ TIP: Si les options de configuration disponibles dans cette procédure ne sont p
 
 
 
+[[enter-syslog-information]]
 === Entrez les informations syslog
 
 Accédez à l’assistant de configuration du serveur Syslog externe et fournissez les informations dont StorageGRID a besoin pour accéder au serveur Syslog externe.
@@ -229,6 +233,7 @@ Une coche verte apparaît à côté du nom du certificat ou du fichier de clé, 
 
 
 
+[[manage-syslog-content]]
 === Gérer le contenu du syslog
 
 Vous pouvez sélectionner les informations à envoyer au serveur syslog externe.
@@ -542,6 +547,7 @@ local7
 
 
 
+[[send-test-messages]]
 === Envoyer des messages de test
 
 Avant de commencer à utiliser un serveur syslog externe, vous devez demander à tous les nœuds de votre grille d'envoyer des messages de test au serveur syslog externe.  Vous devez utiliser ces messages de test pour vous aider à valider l’ensemble de votre infrastructure de collecte de journaux avant de vous engager à envoyer des données au serveur syslog externe.
@@ -580,6 +586,7 @@ NOTE: Les informations d'audit StorageGRID ne sont pas envoyées au serveur Sysl
 
 
 
+[[select-audit-information-destinations]]
 == Sélectionner les destinations des informations d'audit
 
 Vous pouvez spécifier où se trouvent les journaux d'audit, les journaux d'événements de sécurité etlink:../monitor/storagegrid-software-logs.html["Journaux du logiciel StorageGRID"] sont envoyés.

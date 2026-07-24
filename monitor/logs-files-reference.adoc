@@ -25,6 +25,7 @@ NOTE: Les détails fournis pour chaque type de journal sont fournis à titre ind
 
 
 
+[[access-the-logs]]
 == Accéder aux journaux
 
 Pour accéder aux journaux, vous pouvezlink:collecting-log-files-and-system-data.html["collecter les fichiers journaux et les données système"] à partir d'un ou plusieurs nœuds sous forme d'archive de fichier journal unique. Ou, si le nœud d'administration principal n'est pas disponible ou ne peut pas atteindre un nœud spécifique, vous pouvez accéder aux fichiers journaux individuels pour chaque nœud de grille comme suit :
@@ -37,6 +38,7 @@ Pour accéder aux journaux, vous pouvezlink:collecting-log-files-and-system-data
 
 
 
+[[export-logs-to-the-syslog-server]]
 == Exporter les journaux vers le serveur syslog
 
 L'exportation des journaux vers le serveur syslog offre les fonctionnalités suivantes :
@@ -51,6 +53,7 @@ Pour exporter les journaux, reportez-vous àlink:../monitor/configure-audit-mess
 
 
 
+[[log-file-categories]]
 == Catégories de fichiers journaux
 
 L'archive du fichier journal StorageGRID contient les journaux décrits pour chaque catégorie et des fichiers supplémentaires contenant des métriques et la sortie des commandes de débogage.

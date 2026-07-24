@@ -22,12 +22,14 @@ Consultez les instructions d'installation pourlink:../rhel/index.html["Red Hat E
 
 
 
+[[host-network-configuration-for-container-engine-deployments]]
 == Configuration du réseau hôte pour les déploiements de moteurs de conteneurs
 
 Avant de démarrer votre déploiement StorageGRID sur une plateforme de moteur de conteneur, déterminez les réseaux (Grid, Admin, Client) que chaque nœud utilisera.  Vous devez vous assurer que l'interface réseau de chaque nœud est configurée sur l'interface hôte virtuelle ou physique correcte et que chaque réseau dispose d'une bande passante suffisante.
 
 
 
+[[physical-hosts]]
 === Hôtes physiques
 
 Si vous utilisez des hôtes physiques pour prendre en charge les nœuds de grille :
@@ -50,6 +52,7 @@ NOTE: Une interface physique sur l'hôte peut être utilisée par l'hôte lui-m�
 
 
 
+[[minimum-bandwidth-recommendations]]
 === Recommandations de bande passante minimale
 
 Le tableau suivant fournit les recommandations de bande passante LAN minimale pour chaque type de nœud StorageGRID et chaque type de réseau.  Vous devez provisionner chaque hôte physique ou virtuel avec une bande passante réseau suffisante pour répondre aux exigences de bande passante minimale globale pour le nombre total et le type de nœuds StorageGRID que vous prévoyez d'exécuter sur cet hôte.

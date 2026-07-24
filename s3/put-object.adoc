@@ -15,12 +15,14 @@ Vous pouvez utiliser la requête S3 PutObject pour ajouter un objet à un bucket
 
 
 
+[[resolve-conflicts]]
 == Résoudre les conflits
 
 Les demandes client conflictuelles, telles que deux clients écrivant sur la même clé, sont résolues sur la base des « derniers gagnants ».  Le moment de l'évaluation des « dernières victoires » est basé sur le moment où le système StorageGRID termine une demande donnée, et non sur le moment où les clients S3 commencent une opération.
 
 
 
+[[object-size]]
 == Taille de l'objet
 
 La taille maximale _recommandée_ pour une seule opération PutObject est de 5 Gio (5 368 709 120 octets).  Si vous avez des objets dont la taille est supérieure à 5 Gio, utilisezlink:operations-for-multipart-uploads.html["téléchargement en plusieurs parties"] plutôt.
@@ -32,12 +34,14 @@ NOTE: Si vous avez effectué une mise à niveau à partir de StorageGRID 11.6 ou
 
 
 
+[[user-metadata-size]]
 == Taille des métadonnées utilisateur
 
 Amazon S3 limite la taille des métadonnées définies par l'utilisateur dans chaque en-tête de requête PUT à 2 Ko.  StorageGRID limite les métadonnées utilisateur à 24 Ko.  La taille des métadonnées définies par l'utilisateur est mesurée en prenant la somme du nombre d'octets dans l'encodage UTF-8 de chaque clé et valeur.
 
 
 
+[[utf-8-characters-in-user-metadata]]
 == Caractères UTF-8 dans les métadonnées utilisateur
 
 Si une demande inclut des valeurs UTF-8 (non échappées) dans le nom de clé ou la valeur des métadonnées définies par l'utilisateur, le comportement de StorageGRID n'est pas défini.
@@ -50,18 +54,21 @@ StorageGRID n'analyse ni n'interprète les caractères UTF-8 échappés inclus d
 
 
 
+[[object-tag-limits]]
 == Limites des balises d'objet
 
 Vous pouvez ajouter des balises aux nouveaux objets lorsque vous les téléchargez, ou vous pouvez les ajouter aux objets existants.  StorageGRID et Amazon S3 prennent en charge jusqu'à 10 balises pour chaque objet.  Les balises associées à un objet doivent avoir des clés de balise uniques.  Une clé de balise peut contenir jusqu'à 128 caractères Unicode et les valeurs de balise peuvent contenir jusqu'à 256 caractères Unicode.  La clé et les valeurs sont sensibles à la casse.
 
 
 
+[[object-ownership]]
 == Propriété de l'objet
 
 Dans StorageGRID, tous les objets appartiennent au compte propriétaire du bucket, y compris les objets créés par un compte non propriétaire ou un utilisateur anonyme.
 
 
 
+[[supported-request-headers]]
 == En-têtes de requête pris en charge
 
 Les en-têtes de requête suivants sont pris en charge :
@@ -137,6 +144,7 @@ Voir<<En-têtes de requête pour le chiffrement côté serveur>>
 
 
 
+[[unsupported-request-headers]]
 == En-têtes de requête non pris en charge
 
 Les en-têtes de requête suivants ne sont pas pris en charge :
@@ -160,6 +168,7 @@ Le `x-amz-website-redirect-location` retours d'en-tête `XNotImplemented` .
 
 
 
+[[storage-class-options]]
 == Options de classe de stockage
 
 Le `x-amz-storage-class` l'en-tête de requête est pris en charge.  La valeur soumise pour `x-amz-storage-class` affecte la manière dont StorageGRID protège les données de l'objet pendant l'ingestion et non le nombre de copies persistantes de l'objet stockées dans le système StorageGRID (qui est déterminé par ILM).
@@ -198,6 +207,7 @@ NOTE: Si vous ingérez un objet dans un bucket avec le verrouillage d'objet S3 a
 
 
 
+[[request-headers-for-server-side-encryption]]
 == En-têtes de requête pour le chiffrement côté serveur
 
 Vous pouvez utiliser les en-têtes de requête suivants pour crypter un objet avec un cryptage côté serveur.  Les options SSE et SSE-C s'excluent mutuellement.
@@ -227,6 +237,7 @@ NOTE: Si un objet est chiffré avec SSE ou SSE-C, tous les paramètres de chiffr
 
 
 
+[[versioning]]
 == Gestion des versions
 
 Si le contrôle de version est activé pour un bucket, un `versionId` est généré automatiquement pour la version de l'objet stocké.  Ce `versionId` est également renvoyé dans la réponse en utilisant le `x-amz-version-id` en-tête de réponse.
@@ -235,6 +246,7 @@ Si le contrôle de version est suspendu, la version de l'objet est stockée avec
 
 
 
+[[signature-calculations-for-the-authorization-header]]
 == Calculs de signature pour l'en-tête d'autorisation
 
 Lors de l'utilisation du `Authorization` en-tête pour authentifier les requêtes, StorageGRID diffère d'AWS des manières suivantes :

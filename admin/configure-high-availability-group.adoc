@@ -29,6 +29,7 @@ Vous pouvez configurer des groupes de haute disponibilité (HA) pour fournir un 
 
 
 
+[[create-a-high-availability-group]]
 == Créer un groupe de haute disponibilité
 
 Lorsque vous créez un groupe de haute disponibilité, vous sélectionnez une ou plusieurs interfaces et les organisez par ordre de priorité.  Ensuite, vous attribuez une ou plusieurs adresses VIP au groupe.
@@ -37,6 +38,7 @@ Une interface doit être disponible pour qu'un nœud de passerelle ou un nœud d
 
 
 
+[[access-the-wizard]]
 === Accéder à l'assistant
 
 .Étapes
@@ -46,6 +48,7 @@ Une interface doit être disponible pour qu'un nœud de passerelle ou un nœud d
 
 
 
+[[enter-details-for-the-ha-group]]
 === Entrez les détails du groupe HA
 
 .Étapes
@@ -56,6 +59,7 @@ Une interface doit être disponible pour qu'un nœud de passerelle ou un nœud d
 
 
 
+[[add-interfaces-to-the-ha-group]]
 === Ajouter des interfaces au groupe HA
 
 .Étapes
@@ -90,6 +94,7 @@ image::../media/vlan_parent_interface_tooltip.png[Info-bulle sur l'interface VLA
 
 
 
+[[determine-the-priority-order]]
 === Déterminer l'ordre de priorité
 
 Si le groupe HA comprend plusieurs interfaces, vous pouvez déterminer quelle est l'interface principale et quelles sont les interfaces de sauvegarde (basculement).  Si l'interface principale échoue, les adresses VIP se déplacent vers l'interface de priorité la plus élevée disponible.  Si cette interface échoue, les adresses VIP se déplacent vers l'interface de priorité la plus élevée disponible, et ainsi de suite.
@@ -111,6 +116,7 @@ TIP: Si le groupe HA fournit un accès au gestionnaire de grille, vous devez sé
 
 
 
+[[enter-ip-addresses]]
 === Entrez les adresses IP
 
 .Étapes
@@ -141,12 +147,14 @@ Le groupe HA est créé et vous pouvez désormais utiliser les adresses IP virtu
 
 
 
+[[next-steps]]
 === Prochaines étapes
 
 Si vous utilisez ce groupe HA pour l’équilibrage de charge, créez un point de terminaison d’équilibrage de charge pour déterminer le port et le protocole réseau et pour joindre tous les certificats requis. Voir link:configuring-load-balancer-endpoints.html["Configurer les points de terminaison de l'équilibreur de charge"] .
 
 
 
+[[edit-a-high-availability-group]]
 == Modifier un groupe de haute disponibilité
 
 Vous pouvez modifier un groupe haute disponibilité (HA) pour changer son nom et sa description, ajouter ou supprimer des interfaces, modifier l'ordre de priorité ou ajouter ou mettre à jour des adresses IP virtuelles.
@@ -189,6 +197,7 @@ NOTE: Si le groupe HA fournit un accès au gestionnaire de grille, vous devez s�
 
 
 
+[[remove-a-high-availability-group]]
 == Supprimer un groupe de haute disponibilité
 
 Vous pouvez supprimer un ou plusieurs groupes de haute disponibilité (HA) à la fois.

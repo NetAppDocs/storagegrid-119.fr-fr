@@ -15,6 +15,7 @@ L'élément de base d'un système StorageGRID est le nœud de grille.  Les nœud
 
 
 
+[[types-of-grid-nodes]]
 == Types de nœuds de grille
 
 Le système StorageGRID utilise quatre types de nœuds de grille :
@@ -43,12 +44,14 @@ Voirlink:what-gateway-node-is.html["Qu'est-ce qu'un nœud de passerelle ?"]
 
 
 
+[[hardware-and-software-nodes]]
 == Nœuds matériels et logiciels
 
 Les nœuds StorageGRID peuvent être déployés en tant que nœuds d’appliance StorageGRID ou en tant que nœuds logiciels.
 
 
 
+[[storagegrid-appliance-nodes]]
 === Nœuds d'appliance StorageGRID
 
 Les appareils matériels StorageGRID sont spécialement conçus pour être utilisés dans un système StorageGRID .  Certains appareils peuvent être utilisés comme nœuds de stockage.  D’autres appareils peuvent être utilisés comme nœuds d’administration ou nœuds de passerelle.  Vous pouvez combiner des nœuds d'appliance avec des nœuds logiciels ou déployer des grilles entièrement conçues et entièrement composées d'appliances qui ne dépendent pas d'hyperviseurs externes, de stockage ou de matériel de calcul.
@@ -61,6 +64,7 @@ Consultez les éléments suivants pour en savoir plus sur les appareils disponib
 
 
 
+[[software-based-nodes]]
 === Nœuds basés sur des logiciels
 
 Les nœuds de grille basés sur des logiciels peuvent être déployés en tant que machines virtuelles VMware ou dans des moteurs de conteneurs sur un hôte Linux.
@@ -76,6 +80,7 @@ Lors de l'installation initiale d'un nouveau nœud de stockage basé sur un logi
 
 
 
+[[storagegrid-services]]
 == Services StorageGRID
 
 Voici une liste complète des services StorageGRID .

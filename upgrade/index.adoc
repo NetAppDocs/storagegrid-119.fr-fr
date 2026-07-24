@@ -17,6 +17,7 @@ Lorsque vous effectuez la mise à niveau, tous les nœuds de votre système Stor
 
 
 
+[[before-you-begin]]
 == Avant de commencer
 
 Consultez ces rubriques pour en savoir plus sur les nouvelles fonctionnalités et améliorations de StorageGRID 11.9, déterminer si des fonctionnalités ont été obsolètes ou supprimées et découvrir les modifications apportées aux API StorageGRID .

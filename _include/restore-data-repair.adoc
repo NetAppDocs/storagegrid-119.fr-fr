@@ -4,6 +4,7 @@
 
 
 
+[[find-hostname-for-storage-node]]
 == Rechercher le nom d'hôte pour le nœud de stockage
 
 . Connectez-vous au nœud d’administration principal :
@@ -22,6 +23,7 @@ Lorsque vous êtes connecté en tant que root, l'invite passe de `$` à `#` .
 
 
 
+[[repair-data-if-all-volumes-have-failed]]
 == Réparer les données si tous les volumes sont en panne
 
 Si tous les volumes de stockage sont en panne, réparez l’ensemble du nœud.  Suivez les instructions pour les *données répliquées*, les *données codées par effacement (EC)* ou les deux, selon que vous utilisez des données répliquées, des données codées par effacement (EC) ou les deux.
@@ -61,6 +63,7 @@ Les réparations des données codées par effacement peuvent commencer lorsque c
 ====
 
 
+[[repair-data-if-only-some-volumes-have-failed]]
 == Réparer les données si seuls certains volumes sont défaillants
 
 Si seulement certains volumes sont défaillants, réparez les volumes concernés.  Suivez les instructions pour les *données répliquées*, les *données codées par effacement (EC)* ou les deux, selon que vous utilisez des données répliquées, des données codées par effacement (EC) ou les deux.

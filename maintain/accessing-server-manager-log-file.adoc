@@ -19,6 +19,7 @@ Consultez ce fichier pour les messages d’erreur concernant les échecs.  Trans
 
 
 
+[[service-with-an-error-state]]
 == Service avec un état d'erreur
 
 Si vous détectez qu’un service est entré dans un état d’erreur, essayez de redémarrer le service.

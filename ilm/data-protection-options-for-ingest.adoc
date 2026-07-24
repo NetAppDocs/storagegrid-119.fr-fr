@@ -17,6 +17,7 @@ Selon votre choix, StorageGRID effectue des copies intermédiaires et met en fil
 
 
 
+[[flowchart-of-ingest-options]]
 == Organigramme des options d'ingestion
 
 L'organigramme montre ce qui se passe lorsque des objets sont mis en correspondance par une règle ILM qui utilise chacune des trois options d'ingestion.
@@ -25,6 +26,7 @@ image::../media/ingest_object_lifecycle.png[Diagramme montrant comment l'ingesti
 
 
 
+[[dual-commit]]
 == Double engagement
 
 Lorsque vous sélectionnez l'option Double validation, StorageGRID effectue immédiatement des copies d'objets intermédiaires sur deux nœuds de stockage différents et renvoie un message « ingestion réussie » au client.  L'objet est mis en file d'attente pour l'évaluation ILM, et les copies qui répondent aux instructions de placement de la règle sont effectuées ultérieurement.  Si la politique ILM ne peut pas être traitée immédiatement après la double validation, la protection contre la perte de site peut prendre du temps à être mise en place.
@@ -42,6 +44,7 @@ Utilisez l’option Dual commit dans l’un ou l’autre de ces cas :
 
 
 
+[[balanced-default]]
 == Équilibré (par défaut)
 
 Lorsque vous sélectionnez l'option Équilibré, StorageGRID utilise également le placement synchrone lors de l'ingestion et effectue immédiatement toutes les copies spécifiées dans les instructions de placement de la règle.  Contrairement à l'option Strict, si StorageGRID ne peut pas effectuer immédiatement toutes les copies, il utilise à la place la validation double.  Si la politique ILM utilise des placements sur plusieurs sites et qu'une protection immédiate contre la perte de site ne peut pas être obtenue, l'alerte *Placement ILM irréalisable* est déclenchée.
@@ -50,6 +53,7 @@ Utilisez l’option Équilibré pour obtenir la meilleure combinaison de protect
 
 
 
+[[strict]]
 == Strict
 
 Lorsque vous sélectionnez l'option Strict, StorageGRID utilise le placement synchrone lors de l'ingestion et effectue immédiatement toutes les copies d'objet spécifiées dans les instructions de placement de la règle.  L'ingestion échoue si StorageGRID ne peut pas créer toutes les copies, par exemple parce qu'un emplacement de stockage requis est temporairement indisponible.  Le client doit réessayer l'opération.

@@ -28,6 +28,7 @@ Si les mises à jour de l'heure du dernier accès sont désactivées pour un buc
 
 
 
+[[request-examples]]
 == Exemples de demandes
 
 Cet exemple active l'heure du dernier accès à un bucket.

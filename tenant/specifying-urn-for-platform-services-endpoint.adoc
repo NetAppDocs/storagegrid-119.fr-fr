@@ -17,6 +17,7 @@ StorageGRID valide les points de terminaison des services de la plateforme au fu
 
 
 
+[[urn-elements]]
 == éléments URN
 
 L'URN d'un point de terminaison de services de plateforme doit commencer par `arn:aws` ou `urn:mysite` , comme suit :
@@ -88,6 +89,7 @@ Intégration de la recherche
 |===
 
 
+[[urns-for-services-hosted-on-aws-and-gcp]]
 == URN pour les services hébergés sur AWS et GCP
 
 Pour les entités AWS et GCP, l’URN complet est un ARN AWS valide. Par exemple:
@@ -118,6 +120,7 @@ NOTE: Pour un point de terminaison d'intégration de recherche AWS, le `domain-n
 
 
 
+[[urns-for-locally-hosted-services]]
 == URN pour les services hébergés localement
 
 Lorsque vous utilisez des services hébergés localement au lieu de services cloud, vous pouvez spécifier l'URN de toute manière qui crée un URN valide et unique, à condition que l'URN inclue les éléments requis dans les troisième et dernière positions.  Vous pouvez laisser les éléments indiqués par facultatif vides, ou vous pouvez les spécifier de toute manière qui vous aide à identifier la ressource et à rendre l'URN unique. Par exemple:

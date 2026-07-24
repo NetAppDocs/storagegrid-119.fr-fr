@@ -55,6 +55,7 @@ Cette étape garantit que le volume de stockage sera remonté automatiquement ap
 
 
 
+[[install-docker]]
 == Installer Docker
 
 Le système StorageGRID fonctionne sur Red Hat Enterprise Linux en tant que collection de conteneurs. Si vous avez choisi d’utiliser le moteur de conteneur Docker, suivez ces étapes pour installer Docker. Sinon,<<Installer Podman,installer Podman>> .
@@ -89,6 +90,7 @@ Les versions Client et Serveur doivent être 1.11.0 ou ultérieures.
 
 
 
+[[install-podman]]
 == Installer Podman
 
 Le système StorageGRID fonctionne sur Red Hat Enterprise Linux en tant que collection de conteneurs. Si vous avez choisi d'utiliser le moteur de conteneur Podman, suivez ces étapes pour installer Podman. Sinon,<<Installer Docker,installer Docker>> .

@@ -56,6 +56,7 @@ Il y a un problème avec la licence du logiciel pour ce système StorageGRID . V
 |===
 
 
+[[monitor-node-connection-states]]
 == Surveiller les états de connexion des nœuds
 
 Si un ou plusieurs nœuds sont déconnectés de la grille, les opérations critiques de StorageGRID peuvent être affectées.  Surveillez les états de connexion des nœuds et résolvez rapidement tout problème.
@@ -111,6 +112,7 @@ Aucune action requise.
 |===
 
 
+[[view-current-and-resolved-alerts]]
 == Afficher les alertes actuelles et résolues
 
 *Alertes actuelles* : Lorsqu'une alerte est déclenchée, une icône d'alerte s'affiche sur le tableau de bord.  Une icône d’alerte est également affichée pour le nœud sur la page Nœuds.  Silink:email-alert-notifications.html["les notifications par e-mail d'alerte sont configurées"] , une notification par e-mail sera également envoyée, sauf si l'alerte a été désactivée.

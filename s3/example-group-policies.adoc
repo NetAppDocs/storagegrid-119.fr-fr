@@ -17,6 +17,7 @@ Les stratégies de groupe spécifient les autorisations d’accès pour le group
 
 
 
+[[example-set-group-policy-using-tenant-manager]]
 == Exemple : définir une stratégie de groupe à l’aide de Tenant Manager
 
 Lorsque vous ajoutez ou modifiez un groupe dans le gestionnaire de locataires, vous pouvez sélectionner une stratégie de groupe pour déterminer les autorisations d'accès S3 dont disposeront les membres de ce groupe. Voir link:../tenant/creating-groups-for-s3-tenant.html["Créer des groupes pour un locataire S3"] .
@@ -33,6 +34,7 @@ Les utilisateurs de Tenant Manager qui disposent de l’autorisation Gérer tous
 
 
 
+[[example-allow-group-full-access-to-all-buckets]]
 == Exemple : autoriser le groupe à accéder à tous les compartiments
 
 Dans cet exemple, tous les membres du groupe sont autorisés à accéder pleinement à tous les compartiments appartenant au compte locataire, sauf si cela est explicitement refusé par la politique de compartiment.
@@ -51,6 +53,7 @@ Dans cet exemple, tous les membres du groupe sont autorisés à accéder pleinem
 ----
 
 
+[[example-allow-group-read-only-access-to-all-buckets]]
 == Exemple : autoriser l’accès en lecture seule du groupe à tous les compartiments
 
 Dans cet exemple, tous les membres du groupe ont un accès en lecture seule aux ressources S3, sauf si cela est explicitement refusé par la politique de bucket.  Par exemple, les utilisateurs de ce groupe peuvent répertorier les objets et lire les données d’objet, les métadonnées et les balises.
@@ -78,6 +81,7 @@ Dans cet exemple, tous les membres du groupe ont un accès en lecture seule aux 
 ----
 
 
+[[example-allow-group-members-full-access-to-only-their-folder-in-a-bucket]]
 == Exemple : autoriser les membres du groupe à accéder pleinement à leur « dossier » dans un compartiment
 
 Dans cet exemple, les membres du groupe sont uniquement autorisés à répertorier et à accéder à leur dossier spécifique (préfixe de clé) dans le compartiment spécifié.  Notez que les autorisations d’accès provenant d’autres stratégies de groupe et de la stratégie de compartiment doivent être prises en compte lors de la détermination de la confidentialité de ces dossiers.

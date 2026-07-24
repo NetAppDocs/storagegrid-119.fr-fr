@@ -15,6 +15,7 @@ Si une erreur se produit lorsque StorageGRID tente de communiquer avec un point 
 
 
 
+[[determine-if-error-has-occurred]]
 == Déterminer si une erreur s'est produite
 
 Si des erreurs de point de terminaison des services de plateforme se sont produites au cours des 7 derniers jours, le tableau de bord du gestionnaire de locataires affiche un message d'alerte.  Vous pouvez accéder à la page Points de terminaison des services de la plateforme pour voir plus de détails sur l'erreur.
@@ -30,6 +31,7 @@ La même erreur qui apparaît sur le tableau de bord apparaît également en hau
 
 
 
+[[check-if-error-is-still-current]]
 == Vérifiez si l'erreur est toujours d'actualité
 
 Certaines erreurs peuvent continuer à s'afficher dans la colonne *Dernière erreur* même après avoir été résolues.  Pour voir si une erreur est actuelle ou pour forcer la suppression d'une erreur résolue du tableau :
@@ -46,6 +48,7 @@ La sélection de *Tester la connexion* amène StorageGRID à valider que le poin
 
 
 
+[[resolve-endpoint-errors]]
 == Résoudre les erreurs de point de terminaison
 
 Vous pouvez utiliser le message *Dernière erreur* sur la page des détails du point de terminaison pour vous aider à déterminer la cause de l'erreur.  Certaines erreurs peuvent nécessiter de modifier le point de terminaison pour résoudre le problème.  Par exemple, une erreur CloudMirroring peut se produire si StorageGRID ne peut pas accéder au bucket S3 de destination car il ne dispose pas des autorisations d’accès appropriées ou si la clé d’accès a expiré.  Le message est « Les informations d'identification du point de terminaison ou l'accès à la destination doivent être mis à jour » et les détails sont « AccessDenied » ou « InvalidAccessKeyId ».
@@ -61,6 +64,7 @@ Si vous devez modifier le point de terminaison pour résoudre une erreur, la sé
 
 
 
+[[endpoint-credentials-with-insufficient-permissions]]
 == Informations d'identification du point de terminaison avec des autorisations insuffisantes
 
 Lorsque StorageGRID valide un point de terminaison de services de plateforme, il confirme que les informations d'identification du point de terminaison peuvent être utilisées pour contacter la ressource de destination et effectue une vérification des autorisations de base.  Cependant, StorageGRID ne valide pas toutes les autorisations requises pour certaines opérations de services de plateforme.  Pour cette raison, si vous recevez une erreur lorsque vous tentez d'utiliser un service de plateforme (par exemple « 403 Forbidden »), vérifiez les autorisations associées aux informations d'identification du point de terminaison.

@@ -15,6 +15,7 @@ Vous pouvez configurer la sécurité du réseau et des objets pour chiffrer les 
 
 
 
+[[stored-object-encryption]]
 == Chiffrement des objets stockés
 
 Le chiffrement des objets stockés permet le chiffrement de toutes les données d'objets lorsqu'elles sont ingérées via S3.  Par défaut, les objets stockés ne sont pas chiffrés, mais vous pouvez choisir de crypter les objets à l'aide de l'algorithme de chiffrement AES-128 ou AES-256.  Lorsque vous activez le paramètre, tous les objets nouvellement ingérés sont chiffrés, mais aucune modification n'est apportée aux objets stockés existants.  Si vous désactivez le chiffrement, les objets actuellement chiffrés restent chiffrés, mais les objets nouvellement ingérés ne sont pas chiffrés.
@@ -25,12 +26,14 @@ Pour plus de détails sur les méthodes de chiffrement StorageGRID , voirlink:..
 
 
 
+[[prevent-client-modification]]
 == Empêcher la modification du client
 
 Empêcher la modification du client est un paramètre à l'échelle du système.  Lorsque l'option *Empêcher la modification du client* est sélectionnée, les demandes suivantes sont refusées.
 
 
 
+[[s3-rest-api]]
 === API REST S3
 
 * Requêtes DeleteBucket
@@ -39,6 +42,7 @@ Empêcher la modification du client est un paramètre à l'échelle du système.
 
 
 
+[[enable-http-for-storage-node-connections]]
 == Activer HTTP pour les connexions aux nœuds de stockage
 
 Par défaut, les applications clientes utilisent le protocole réseau HTTPS pour toutes les connexions directes aux nœuds de stockage.  Vous pouvez éventuellement activer HTTP pour ces connexions, par exemple lors du test d'une grille non productive.
@@ -49,6 +53,7 @@ Voirlink:summary-ip-addresses-and-ports-for-client-connections.html["Résumé :
 
 
 
+[[select-options]]
 == Sélectionnez les options
 
 .Avant de commencer

@@ -30,6 +30,7 @@ Si le nœud est un nœud d’appliance, cet onglet inclut également une section
 
 
 
+[[view-information-about-appliance-storage-nodes]]
 == Afficher les informations sur les nœuds de stockage de l'appliance
 
 La page Nœuds répertorie les informations sur l'état du service et toutes les ressources de calcul, de disque et de réseau pour chaque nœud de stockage de l'appliance.  Vous pouvez également voir la mémoire, le matériel de stockage, la version du micrologiciel du contrôleur, les ressources réseau, les interfaces réseau, les adresses réseau et recevoir et transmettre des données.
@@ -496,6 +497,7 @@ image::../media/nodes_page_storage_tables.png[Tables de stockage de pages de nœ
 
 
 
+[[view-information-about-appliance-admin-nodes-and-gateway-nodes]]
 == Afficher les informations sur les nœuds d'administration et les nœuds de passerelle de l'appareil
 
 La page Nœuds répertorie les informations sur l'état du service et toutes les ressources de calcul, de périphérique de disque et de réseau pour chaque dispositif de services utilisé comme nœud d'administration ou nœud de passerelle.  Vous pouvez également voir la mémoire, le matériel de stockage, les ressources réseau, les interfaces réseau, les adresses réseau et recevoir et transmettre des données.

@@ -18,6 +18,7 @@ NOTE: Le gestionnaire de grille est mis à jour à chaque version et peut ne pas
 
 
 
+[[types-of-charts]]
 == Types de graphiques
 
 Les graphiques et diagrammes résument les valeurs des métriques et attributs StorageGRID spécifiques.
@@ -73,6 +74,7 @@ image::../media/state_graph.gif[Graphique d'état]
 
 
 
+[[chart-legend]]
 == Légende du graphique
 
 Les lignes et les couleurs utilisées pour dessiner des cartes ont une signification spécifique.
@@ -125,6 +127,7 @@ Un mélange de nuances grises et bleues indique que certaines des valeurs d'attr
 |===
 
 
+[[display-charts-and-graphs]]
 == Afficher des tableaux et des graphiques
 
 La page Nœuds contient les graphiques et diagrammes auxquels vous devez accéder régulièrement pour surveiller des attributs tels que la capacité de stockage et le débit.  Dans certains cas, notamment lorsque vous travaillez avec le support technique, vous pouvez utiliser la page *SUPPORT* > *Outils* > *Topologie de grille* pour accéder à des graphiques supplémentaires.
@@ -181,6 +184,7 @@ L'affichage passe automatiquement à la page *Rapports* > *Graphiques*.  Le grap
 
 
 
+[[generate-charts]]
 == Générer des graphiques
 
 Les graphiques affichent une représentation graphique des valeurs des données d’attribut.  Vous pouvez générer un rapport sur un site de centre de données, un nœud de grille, un composant ou un service.

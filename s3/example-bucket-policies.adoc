@@ -26,6 +26,7 @@ Les stratégies de compartiment spécifient les autorisations d’accès pour le
 
 
 
+[[example-allow-everyone-read-only-access-to-a-bucket]]
 == Exemple : autoriser tout le monde à accéder en lecture seule à un bucket
 
 Dans cet exemple, tout le monde, y compris les personnes anonymes, est autorisé à répertorier les objets du bucket et à effectuer des opérations GetObject sur tous les objets du bucket.  Toutes les autres opérations seront refusées.  Notez que cette politique peut ne pas être particulièrement utile car personne, à l’exception de la racine du compte, n’a l’autorisation d’écrire dans le bucket.
@@ -46,6 +47,7 @@ Dans cet exemple, tout le monde, y compris les personnes anonymes, est autorisé
 ----
 
 
+[[example-allow-everyone-in-one-account-full-access-and-everyone-in-another-account-read-only-access-to-a-bucket]]
 == Exemple : autoriser tous les utilisateurs d'un compte à accéder pleinement à un bucket et tous les utilisateurs d'un autre compte à accéder en lecture seule à un bucket.
 
 Dans cet exemple, toutes les personnes d'un compte spécifié sont autorisées à accéder pleinement à un compartiment, tandis que toutes les personnes d'un autre compte spécifié sont uniquement autorisées à répertorier le compartiment et à effectuer des opérations GetObject sur les objets du compartiment commençant par le `shared/` préfixe de clé d'objet.
@@ -94,6 +96,7 @@ NOTE: Dans StorageGRID, les objets créés par un compte non propriétaire (y co
 ----
 
 
+[[example-allow-everyone-read-only-access-to-a-bucket-and-full-access-by-specified-group]]
 == Exemple : autoriser tout le monde à accéder en lecture seule à un compartiment et à accorder un accès complet au groupe spécifié
 
 Dans cet exemple, tout le monde, y compris les anonymes, est autorisé à répertorier le bucket et à effectuer des opérations GetObject sur tous les objets du bucket, tandis que seuls les utilisateurs appartenant au groupe `Marketing` dans le compte spécifié, un accès complet est autorisé.
@@ -127,6 +130,7 @@ Dans cet exemple, tout le monde, y compris les anonymes, est autorisé à réper
 ----
 
 
+[[example-allow-everyone-read-and-write-access-to-a-bucket-if-client-in-ip-range]]
 == Exemple : autoriser tout le monde à accéder en lecture et en écriture à un bucket si le client se trouve dans la plage d'adresses IP
 
 Dans cet exemple, tout le monde, y compris les personnes anonymes, est autorisé à répertorier le bucket et à effectuer toutes les opérations d'objet sur tous les objets du bucket, à condition que les demandes proviennent d'une plage d'adresses IP spécifiée (54.240.143.0 à 54.240.143.255, sauf 54.240.143.188).  Toutes les autres opérations seront refusées et toutes les demandes en dehors de la plage IP seront refusées.
@@ -151,6 +155,7 @@ Dans cet exemple, tout le monde, y compris les personnes anonymes, est autorisé
 ----
 
 
+[[example-allow-full-access-to-a-bucket-exclusively-by-a-specified-federated-user]]
 == Exemple : autoriser l’accès complet à un bucket exclusivement par un utilisateur fédéré spécifié
 
 Dans cet exemple, l'utilisateur fédéré Alex est autorisé à accéder pleinement au `examplebucket` seau et ses objets.  Tous les autres utilisateurs, y compris « root », se voient explicitement refuser toutes les opérations.  Notez cependant que « root » ne se voit jamais refuser les autorisations pour Put/Get/DeleteBucketPolicy.
@@ -190,6 +195,7 @@ Dans cet exemple, l'utilisateur fédéré Alex est autorisé à accéder pleinem
 ----
 
 
+[[example-putoverwriteobject-permission]]
 == Exemple : autorisation PutOverwriteObject
 
 Dans cet exemple, le `Deny` L'effet pour PutOverwriteObject et DeleteObject garantit que personne ne peut écraser ou supprimer les données de l'objet, les métadonnées définies par l'utilisateur et le balisage de l'objet S3.

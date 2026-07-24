@@ -27,6 +27,7 @@ Avant d’effectuer la migration ou la maintenance de l’hyperviseur, arrêtez 
 
 
 
+[[vmware-live-migration-not-supported]]
 == VMware Live Migration n'est pas pris en charge
 
 Lors de l'exécution d'une installation bare-metal sur des machines virtuelles VMware, OpenStack Live Migration et VMware Live vMotion provoquent un saut de l'heure de l'horloge de la machine virtuelle et ne sont pas pris en charge pour les nœuds de grille de tout type.  Bien que rares, des heures d'horloge incorrectes peuvent entraîner une perte de données ou des mises à jour de configuration.
@@ -35,6 +36,7 @@ La migration à froid est prise en charge.  Lors d'une migration à froid, vous 
 
 
 
+[[consistent-network-interface-names]]
 == Noms d'interface réseau cohérents
 
 Pour déplacer un nœud d'un hôte à un autre, le service hôte StorageGRID doit avoir la certitude que la connectivité réseau externe du nœud à son emplacement actuel peut être dupliquée au nouvel emplacement.  Cette confiance est obtenue grâce à l’utilisation de noms d’interface réseau cohérents dans les hôtes.
@@ -51,6 +53,7 @@ Il existe de nombreuses façons d'obtenir une dénomination d'interface réseau 
 
 
 
+[[shared-storage]]
 == Stockage partagé
 
 Pour réaliser des migrations de nœuds rapides et à faible surcharge, la fonctionnalité de migration de nœuds StorageGRID ne déplace pas physiquement les données des nœuds.  Au lieu de cela, la migration des nœuds est effectuée sous la forme d'une paire d'opérations d'exportation et d'importation, comme suit :

@@ -21,6 +21,7 @@ Pour développer ou réduire l'arborescence de la topologie de la grille, clique
 
 
 
+[[storagegrid-attributes]]
 == Attributs StorageGRID
 
 Les attributs signalent les valeurs et les statuts de nombreuses fonctions du système StorageGRID .  Les valeurs d’attribut sont disponibles pour chaque nœud de grille, chaque site et la grille entière.
@@ -34,6 +35,7 @@ Les attributs StorageGRID sont utilisés à plusieurs endroits dans le Grid Mana
 
 
 
+[[attribute-values]]
 === Valeurs d'attribut
 
 Les attributs sont rapportés dans la mesure du possible et sont approximativement corrects.  Les mises à jour d'attributs peuvent être perdues dans certaines circonstances, comme le crash d'un service ou l'échec et la reconstruction d'un nœud de grille.

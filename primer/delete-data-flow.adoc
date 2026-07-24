@@ -15,6 +15,7 @@ Toutes les copies d'objet sont supprimées du système StorageGRID lorsqu'un cli
 
 
 
+[[deletion-hierarchy]]
 == Hiérarchie de suppression
 
 StorageGRID fournit plusieurs méthodes pour contrôler le moment où les objets sont conservés ou supprimés.  Les objets peuvent être supprimés à la demande du client ou automatiquement.  StorageGRID donne toujours la priorité aux paramètres de verrouillage d'objet S3 par rapport aux demandes de suppression des clients, qui sont prioritaires par rapport aux instructions de cycle de vie du compartiment S3 et de placement ILM.
@@ -41,6 +42,7 @@ Voir link:../ilm/how-objects-are-deleted.html["Comment les objets sont supprimé
 
 
 
+[[data-flow-for-client-deletes]]
 == Flux de données pour les suppressions de clients
 
 image::../media/delete_data_flow.png[Flux de suppression de données du client]
@@ -52,6 +54,7 @@ image::../media/delete_data_flow.png[Flux de suppression de données du client]
 
 
 
+[[data-flow-for-ilm-deletes]]
 == Flux de données pour les suppressions ILM
 
 image::../media/automatic_deletion_data_flow.png[Flux de données de suppression automatique]

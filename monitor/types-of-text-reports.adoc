@@ -15,6 +15,7 @@ Les rapports textuels affichent une représentation textuelle des valeurs de don
 
 
 
+[[raw-text-reports]]
 == Rapports de texte brut
 
 Un rapport de texte brut affiche des détails sur l'attribut sélectionné :
@@ -28,6 +29,7 @@ image::../media/raw_text_report.gif[capture d'écran montrant un rapport de text
 
 
 
+[[aggregate-text-reports]]
 == Rapports de texte agrégés
 
 Un rapport de texte agrégé affiche des données sur une période plus longue (généralement une semaine) qu'un rapport de texte brut.  Chaque entrée est le résultat de la synthèse de plusieurs valeurs d'attribut (un agrégat de valeurs d'attribut) par le service NMS au fil du temps dans une seule entrée avec des valeurs moyennes, maximales et minimales dérivées de l'agrégation.
@@ -44,6 +46,7 @@ image::../media/aggregate_text_report.gif[capture d'écran montrant le rapport d
 
 
 
+[[generate-text-reports]]
 == Générer des rapports textuels
 
 Les rapports textuels affichent une représentation textuelle des valeurs de données d'attribut qui ont été traitées par le service NMS.  Vous pouvez générer un rapport sur un site de centre de données, un nœud de grille, un composant ou un service.
@@ -85,6 +88,7 @@ Un rapport texte est généré après quelques instants.  Prévoyez quelques min
 
 
 
+[[export-text-reports]]
 == Exporter des rapports de texte
 
 Les rapports de texte exportés ouvrent un nouvel onglet de navigateur, qui vous permet de sélectionner et de copier les données.

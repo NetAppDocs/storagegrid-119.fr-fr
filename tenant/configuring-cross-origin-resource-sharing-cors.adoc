@@ -25,6 +25,7 @@ Le partage de ressources inter-origines (CORS) est un mécanisme de sécurité q
 
 
 
+[[enable-cors-for-a-bucket]]
 == Activer CORS pour un bucket
 
 .Étapes
@@ -70,6 +71,7 @@ La page des détails du bucket apparaît.
 
 
 
+[[modify-cors-setting]]
 == Modifier le paramètre CORS
 
 .Étapes
@@ -79,6 +81,7 @@ La page des détails du bucket apparaît.
 
 
 
+[[disable-cors-setting]]
 == Désactiver le paramètre CORS
 
 .Étapes

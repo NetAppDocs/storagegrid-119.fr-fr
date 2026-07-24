@@ -15,6 +15,7 @@ Vous pouvez étendre votre système StorageGRID en ajoutant un nouveau site.
 
 
 
+[[guidelines-for-adding-a-site]]
 == Directives pour l'ajout d'un site
 
 Avant d’ajouter un site, passez en revue les exigences et limitations suivantes :

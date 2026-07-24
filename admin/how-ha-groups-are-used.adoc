@@ -69,6 +69,7 @@ Accès client S3 pourlink:../admin/manage-s3-select-for-tenant-accounts.html["S3
 |===
 
 
+[[limitations-of-using-ha-groups-with-grid-manager-or-tenant-manager]]
 == Limitations de l'utilisation des groupes HA avec Grid Manager ou Tenant Manager
 
 Si un service Grid Manager ou Tenant Manager échoue, le basculement du groupe HA n'est pas déclenché.

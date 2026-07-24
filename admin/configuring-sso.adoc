@@ -15,6 +15,7 @@ Lorsque l'authentification unique (SSO) est activée, les utilisateurs ne peuven
 
 
 
+[[how-single-sign-on-works]]
 == Comment fonctionne l'authentification unique
 
 Le système StorageGRID prend en charge l'authentification unique (SSO) à l'aide de la norme Security Assertion Markup Language 2.0 (SAML 2.0).
@@ -23,6 +24,7 @@ Avant d’activer l’authentification unique (SSO), vérifiez comment les proce
 
 
 
+[[sign-in-when-sso-is-enabled]]
 === Sign in lorsque SSO est activé
 
 Lorsque SSO est activé et que vous vous connectez à StorageGRID, vous êtes redirigé vers la page SSO de votre organisation pour valider vos informations d'identification.
@@ -82,6 +84,7 @@ Vous n’avez pas besoin de ressaisir vos identifiants SSO.
 
 
 
+[[sign-out-when-sso-is-enabled]]
 === Déconnectez-vous lorsque SSO est activé
 
 Lorsque SSO est activé pour StorageGRID, ce qui se passe lorsque vous vous déconnectez dépend de ce à quoi vous êtes connecté et de l'endroit d'où vous vous déconnectez.

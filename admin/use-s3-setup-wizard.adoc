@@ -15,6 +15,7 @@ Vous pouvez utiliser l'assistant de configuration S3 pour configurer StorageGRID
 
 
 
+[[when-to-use-the-s3-setup-wizard]]
 == Quand utiliser l'assistant de configuration S3
 
 L'assistant de configuration S3 vous guide à travers chaque étape de la configuration de StorageGRID pour une utilisation avec une application S3.  Dans le cadre de l’exécution de l’assistant, vous téléchargez des fichiers que vous pouvez utiliser pour saisir des valeurs dans l’application S3.  Utilisez l'assistant pour configurer votre système plus rapidement et vous assurer que vos paramètres sont conformes aux meilleures pratiques de StorageGRID .
@@ -23,6 +24,7 @@ Si vous avez lelink:admin-group-permissions.html["Autorisation d'accès root"] ,
 
 
 
+[[before-using-the-wizard]]
 == Avant d'utiliser l'assistant
 
 Avant d’utiliser l’assistant, vérifiez que vous avez rempli ces conditions préalables.

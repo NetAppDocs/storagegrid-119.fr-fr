@@ -24,6 +24,7 @@ NOTE: La prise en charge de Docker comme moteur de conteneur pour les déploieme
 
 
 
+[[python-versions-tested]]
 == Versions Python testées
 
 * 3.5.2-2
@@ -41,6 +42,7 @@ NOTE: La prise en charge de Docker comme moteur de conteneur pour les déploieme
 
 
 
+[[podman-versions-tested]]
 == Versions Podman testées
 
 * 3.2.3-0
@@ -54,6 +56,7 @@ NOTE: La prise en charge de Docker comme moteur de conteneur pour les déploieme
 
 
 
+[[docker-versions-tested]]
 == Versions de Docker testées
 
 

@@ -20,6 +20,7 @@ Toutes les activités des clients S3 sont associées aux comptes locataires Stor
 
 
 
+[[view-all-tenants]]
 == Voir tous les locataires
 
 La page Locataires affiche les informations de base pour tous les comptes locataires actuels.
@@ -60,6 +61,7 @@ Vous ne pouvez pas supprimer un compte locataire si le compte inclut des buckets
 
 
 
+[[view-a-specific-tenant]]
 == Afficher un locataire spécifique
 
 Vous pouvez afficher les détails d'un locataire spécifique.
@@ -124,6 +126,7 @@ Voirlink:../admin/grid-federation-overview.html["Qu'est-ce que la fédération d
 
 
 
+[[view-network-traffic]]
 == Afficher le trafic réseau
 
 Si des stratégies de classification du trafic sont en place pour un locataire, examinez le trafic réseau pour ce locataire.
@@ -142,6 +145,7 @@ Voir link:../admin/managing-traffic-classification-policies.html["Gérer les pol
 
 
 
+[[use-the-audit-log]]
 == Utiliser le journal d'audit
 
 En option, vous pouvez utiliser le journal d'audit pour une surveillance plus précise des activités d'un locataire.
@@ -160,6 +164,7 @@ Voir link:../audit/index.html["Examiner les journaux d'audit"] pour plus d'infor
 
 
 
+[[use-prometheus-metrics]]
 == Utiliser les métriques Prometheus
 
 Vous pouvez également utiliser les métriques Prometheus pour générer des rapports sur l’activité des locataires.

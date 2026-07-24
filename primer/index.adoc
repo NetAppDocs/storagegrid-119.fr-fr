@@ -24,6 +24,7 @@ NOTE: La prise en charge des nœuds d’archive a été supprimée.  Le déplace
 
 
 
+[[storagegrid-benefits]]
 == Avantages de StorageGRID
 
 Les avantages du système StorageGRID sont les suivants :

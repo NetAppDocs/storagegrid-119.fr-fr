@@ -15,6 +15,7 @@ Vous devez comprendre comment le réseau de grille et les réseaux d’administr
 
 
 
+[[initial-deployment-of-a-node]]
 == Déploiement initial d'un nœud
 
 Lorsque vous déployez un nœud pour la première fois, vous devez attacher le nœud au réseau de grille et vous assurer qu'il a accès au nœud d'administration principal.  Si le réseau de grille est isolé, vous pouvez configurer le réseau d'administration sur le nœud d'administration principal pour l'accès à la configuration et à l'installation depuis l'extérieur du réseau de grille.
@@ -25,12 +26,14 @@ Si nécessaire, les sous-réseaux contenant des serveurs NTP ou nécessitant un 
 
 
 
+[[automatic-node-registration-with-primary-admin-node]]
 == Enregistrement automatique des nœuds avec le nœud administrateur principal
 
 Une fois les nœuds déployés, ils s'enregistrent auprès du nœud d'administration principal à l'aide du réseau Grid.  Vous pouvez ensuite utiliser le Grid Manager, le `configure-storagegrid.py` Script Python ou API d'installation pour configurer la grille et approuver les nœuds enregistrés.  Lors de la configuration du réseau, vous pouvez configurer plusieurs sous-réseaux de réseau.  Des itinéraires statiques vers ces sous-réseaux via la passerelle Grid Network seront créés sur chaque nœud lorsque vous aurez terminé la configuration de la grille.
 
 
 
+[[disabling-the-admin-network-or-client-network]]
 == Désactivation du réseau administrateur ou du réseau client
 
 Si vous souhaitez désactiver le réseau administrateur ou le réseau client, vous pouvez supprimer leur configuration pendant le processus d'approbation du nœud, ou vous pouvez utiliser l'outil Modifier l'IP une fois l'installation terminée (voirlink:../maintain/configuring-ip-addresses.html["Configurer les adresses IP"] ).

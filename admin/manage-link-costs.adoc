@@ -15,6 +15,7 @@ Les coûts de liaison vous permettent de prioriser le site de centre de données
 
 
 
+[[what-are-link-costs]]
 == Quels sont les coûts de liaison ?
 
 * Les coûts de lien sont utilisés pour prioriser la copie d'objet utilisée pour effectuer les récupérations d'objet.
@@ -62,6 +63,7 @@ Centres de données logiques dans le même bâtiment physique ou campus connect�
 |===
 
 
+[[update-link-costs]]
 == Coûts de mise à jour des liens
 
 Vous pouvez mettre à jour les coûts de liaison entre les sites du centre de données pour refléter la latence entre les sites.

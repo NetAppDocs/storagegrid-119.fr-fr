@@ -17,6 +17,7 @@ Lorsque vous mettez hors tension tous les nœuds d'un site ou d'une grille, vous
 
 
 
+[[stop-services-and-shut-down-grid-nodes]]
 == Arrêter les services et fermer les nœuds du réseau
 
 Avant de pouvoir mettre hors tension un système StorageGRID , vous devez arrêter tous les services exécutés sur chaque nœud de grille, puis arrêter toutes les machines virtuelles VMware, les moteurs de conteneur et les appliances StorageGRID .
@@ -145,6 +146,7 @@ La grille StorageGRID a maintenant été arrêtée.
 
 
 
+[[start-up-grid-nodes]]
 == Démarrer les nœuds de grille
 
 

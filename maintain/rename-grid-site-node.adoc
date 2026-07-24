@@ -26,6 +26,7 @@ NOTE: Vous pouvez ajouter ou mettre à jour des noms d’affichage à partir d�
 
 
 
+[[how-to-rename-grid-sites-or-nodes]]
 == Comment renommer une grille, des sites ou des nœuds
 
 Vous pouvez renommer votre système StorageGRID , un ou plusieurs sites ou un ou plusieurs nœuds.
@@ -34,6 +35,7 @@ Vous pouvez utiliser un nom d'affichage qui a déjà été utilisé par un autre
 
 
 
+[[select-items-to-rename]]
 === Sélectionnez les éléments à renommer
 
 Pour commencer, sélectionnez les éléments que vous souhaitez renommer.
@@ -97,6 +99,7 @@ Cochez la case correspondant au nœud.
 
 
 
+[[propose-new-names]]
 === Proposer de nouveaux noms
 
 Pour l'étape *Proposer de nouveaux noms*, vous pouvez saisir un nom d'affichage pour chaque élément individuellement ou renommer les éléments en bloc.
@@ -165,6 +168,7 @@ Un message de réussite s'affiche.  Les nouveaux noms d’affichage sont désorm
 ====
 
 
+[[download-recovery-packagedownload-the-recovery-package]]
 === [[download-recovery-package]]Télécharger le package de récupération
 
 Une fois que vous avez terminé de renommer les éléments, téléchargez et enregistrez un nouveau package de récupération. Les nouveaux noms d'affichage des éléments que vous avez renommés sont inclus dans le `Passwords.txt` déposer.
@@ -186,6 +190,7 @@ CAUTION: Le fichier du package de récupération doit être sécurisé car il co
 
 
 
+[[revert-display-names-back-to-system-names]]
 == Rétablir les noms d'affichage aux noms système
 
 Vous pouvez rétablir le nom système d'origine d'une grille, d'un site ou d'un nœud renommé.  Lorsque vous rétablissez le nom système d'un élément, les pages Grid Manager et les autres emplacements StorageGRID n'affichent plus de *Nom d'affichage* pour cet élément.  Seul le nom du système de l'élément est affiché.

@@ -39,6 +39,7 @@ TIP: Si ce groupe d’administrateurs n’existe pas sur les deux grilles avant 
 
 
 
+[[access-the-wizard]]
 == Accéder à l'assistant
 
 .Étapes
@@ -48,6 +49,7 @@ TIP: Si ce groupe d’administrateurs n’existe pas sur les deux grilles avant 
 
 
 
+[[enter-details]]
 == Entrez les détails
 
 .Étapes
@@ -94,6 +96,7 @@ Si vous souhaitez que ce locataire dispose d'un quota de stockage, une valeur nu
 
 
 
+[[admin-tenant-select-permissionsselect-permissions]]
 == [[admin-tenant-select-permissions]]Sélectionner les autorisations
 
 .Étapes
@@ -165,6 +168,7 @@ Autoriser le locataire à utiliser des fonctionnalités spécifiques de S3 Objec
 
 
 
+[[define-root-access-and-create-tenant]]
 == Définir l'accès root et créer un locataire
 
 .Étapes
@@ -223,12 +227,14 @@ TIP: Un utilisateur root local ne peut pas se connecter à Tenant Manager sur la
 
 
 
+[[sign-in-to-tenant-optional]]
 == Sign in au locataire (facultatif)
 
 Si nécessaire, vous pouvez vous connecter au nouveau locataire maintenant pour terminer la configuration, ou vous pouvez vous connecter au locataire ultérieurement.  Les étapes de connexion dépendent du fait que vous soyez connecté au Grid Manager à l'aide du port par défaut (443) ou d'un port restreint. Voir link:controlling-access-through-firewalls.html["Contrôler l'accès au pare-feu externe"] .
 
 
 
+[[sign-in-now]]
 === Sign in maintenant
 
 [cols="1a,3a"]
@@ -280,6 +286,7 @@ L'URL du Tenant Manager a ce format :
 |===
 
 
+[[sign-in-later]]
 === Sign in plus tard
 
 [cols="1a,3a"]
@@ -323,6 +330,7 @@ Un port restreint
 |===
 
 
+[[configure-the-tenant]]
 == Configurer le locataire
 
 Suivez les instructions danslink:../tenant/index.html["Utiliser un compte locataire"] pour gérer les groupes de locataires et les utilisateurs, les clés d'accès S3, les buckets, les services de plateforme, le clonage de compte et la réplication inter-grille.

@@ -17,6 +17,7 @@ L'alerte *Échec permanent de la réplication inter-grille* indique que les obje
 
 
 
+[[determine-if-any-objects-failed-to-be-replicated]]
 == Déterminer si des objets n'ont pas pu être répliqués
 
 Pour déterminer si des objets ou des marqueurs de suppression n'ont pas été répliqués sur l'autre grille, vous pouvez rechercher dans le journal d'auditlink:../audit/cgrr-cross-grid-replication-request.html["CGRR (demande de réplication inter-réseau)"] messages.  Ce message est ajouté au journal lorsque StorageGRID ne parvient pas à répliquer un objet, un objet en plusieurs parties ou à supprimer un marqueur dans le bucket de destination.
@@ -116,6 +117,7 @@ Le type d'erreur.  Si la réplication inter-grille échoue, l'erreur est « Erre
 
 
 
+[[retry-failed-replications]]
 == Réessayer les réplications ayant échoué
 
 Après avoir généré une liste d'objets et supprimé les marqueurs qui n'ont pas été répliqués dans le compartiment de destination et résolu les problèmes sous-jacents, vous pouvez réessayer la réplication de deux manières :
@@ -150,6 +152,7 @@ NOTE: En attente signifie que la demande de réplication inter-grille a été aj
 
 
 
+[[monitor-replication-retries]]
 == Surveiller les tentatives de réplication
 
 Vous devez surveiller les opérations de nouvelle tentative de réplication pour vous assurer qu'elles se terminent.

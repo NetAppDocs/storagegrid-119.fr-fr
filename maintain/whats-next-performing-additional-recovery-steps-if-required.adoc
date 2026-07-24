@@ -17,6 +17,7 @@ La récupération du nœud est terminée si vous n’avez pas eu besoin d’effe
 
 
 
+[[corrective-actions-and-next-steps]]
 == Mesures correctives et prochaines étapes
 
 Lors du remplacement du nœud, vous avez peut-être dû prendre l’une de ces mesures correctives :

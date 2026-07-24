@@ -15,6 +15,7 @@ Vous pouvez utiliser une machine virtuelle pour héberger n’importe quel type 
 
 
 
+[[vmware-vsphere-hypervisor]]
 == Hyperviseur VMware vSphere
 
 Vous devez installer VMware vSphere Hypervisor sur un serveur physique préparé.  Le matériel doit être configuré correctement (y compris les versions du micrologiciel et les paramètres du BIOS) avant d'installer le logiciel VMware.
@@ -29,6 +30,7 @@ link:../network/index.html["Directives de mise en réseau"]
 
 
 
+[[esx-host-configuration-requirements]]
 == Exigences de configuration de l'hôte ESX
 
 
@@ -36,6 +38,7 @@ CAUTION: Vous devez configurer correctement le protocole de temps réseau (NTP) 
 
 
 
+[[vmware-configuration-requirements]]
 == Configuration requise pour VMware
 
 Vous devez installer et configurer VMware vSphere et vCenter avant de déployer les nœuds StorageGRID .

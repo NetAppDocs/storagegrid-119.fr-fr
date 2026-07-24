@@ -15,12 +15,14 @@ Si vous souhaitez utiliser un serveur OpenLDAP pour la fédération d’identit�
 
 
 
+[[memberof-and-refint-overlays]]
 == Superpositions Memberof et refint
 
 Les superpositions memberof et refint doivent être activées.  Pour plus d'informations, consultez les instructions relatives à la maintenance de l'appartenance à un groupe inversé dans le _Guide de l'administrateur du logiciel OpenLDAP_.
 
 
 
+[[indexing]]
 == Indexage
 
 Vous devez configurer les attributs OpenLDAP suivants avec les mots-clés d’index spécifiés :

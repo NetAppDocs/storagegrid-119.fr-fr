@@ -121,6 +121,7 @@ En règle générale, la mise à niveau des nœuds d'appareil prend plus de temp
 
 
 
+[[example-estimated-time-to-upgrade-to-storagegrid-11-9]]
 == Exemple : Temps estimé pour la mise à niveau vers StorageGRID 11.9
 
 Supposons que votre système dispose de 14 nœuds de grille, dont 8 sont des nœuds Linux.

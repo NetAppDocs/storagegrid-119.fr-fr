@@ -24,6 +24,7 @@ NOTE: Si l'authentification unique (SSO) est activée pour votre système Storag
 
 
 
+[[create-usercreate-a-local-user]]
 == [[create-user]]Créer un utilisateur local
 
 Vous pouvez créer un utilisateur local et l’affecter à un ou plusieurs groupes locaux pour contrôler ses autorisations d’accès.
@@ -34,6 +35,7 @@ Les utilisateurs Swift qui n'appartiennent à aucun groupe ne disposent pas d'au
 
 
 
+[[access-the-create-user-wizard]]
 === Accéder à l'assistant de création d'utilisateur
 
 .Étapes
@@ -49,6 +51,7 @@ image::../media/grid-federation-tenant-user-banner.png[image de la bannière ble
 
 
 
+[[enter-credentials]]
 === Entrez les informations d'identification
 
 .Étapes
@@ -95,6 +98,7 @@ Par exemple, sélectionnez *Oui* pour suspendre temporairement la possibilité p
 
 
 
+[[assign-to-groups]]
 === Affecter à des groupes
 
 .Étapes
@@ -114,6 +118,7 @@ Si votre compte locataire dispose de l'autorisation *Utiliser la connexion à la
 
 
 
+[[view-or-edit-local-user]]
 == Afficher ou modifier l'utilisateur local
 
 .Étapes
@@ -174,6 +179,7 @@ Vous ne pouvez pas changer le nom d'utilisateur.
 
 
 
+[[duplicate-local-user]]
 == Utilisateur local en double
 
 Vous pouvez dupliquer un utilisateur local pour créer un nouvel utilisateur plus rapidement.
@@ -191,6 +197,7 @@ NOTE: Si votre compte locataire dispose de l'autorisation *Utiliser la connexion
 
 
 
+[[clone-usersretry-user-clone]]
 == [[clone-users]]Réessayer le clonage de l'utilisateur
 
 Pour réessayer un clonage qui a échoué :
@@ -204,6 +211,7 @@ Pour plus d'informations, voirlink:grid-federation-account-clone.html["Cloner de
 
 
 
+[[delete-one-or-more-local-users]]
 == Supprimer un ou plusieurs utilisateurs locaux
 
 Vous pouvez supprimer définitivement un ou plusieurs utilisateurs locaux qui n'ont plus besoin d'accéder au compte locataire StorageGRID .

@@ -17,6 +17,7 @@ Lorsque vous développez une grille, les nœuds que vous ajoutez ne doivent pas 
 
 
 
+[[vmware-deploy-grid-nodes]]
 == VMware : déployer des nœuds de grille
 
 Vous devez déployer une machine virtuelle dans VMware vSphere pour chaque nœud VMware que vous souhaitez ajouter dans l’extension.
@@ -31,6 +32,7 @@ Lorsque vous déployez le nœud, vous pouvez éventuellement remapper les ports 
 
 
 
+[[linux-deploy-grid-nodes]]
 == Linux : déployer des nœuds de grille
 
 Vous pouvez déployer des nœuds de grille sur de nouveaux hôtes Linux ou sur des hôtes Linux existants.  Si vous avez besoin d'hôtes Linux supplémentaires pour prendre en charge les exigences de CPU, de RAM et de stockage des nœuds StorageGRID que vous souhaitez ajouter à votre grille, vous les préparez de la même manière que vous avez préparé les hôtes lors de leur première installation.  Ensuite, vous déployez les nœuds d’extension de la même manière que vous avez déployé les nœuds de grille lors de l’installation.
@@ -64,6 +66,7 @@ Après avoir déployé tous les nouveaux nœuds de grille, vous pouvezlink:perfo
 
 
 
+[[appliances-deploying-storage-gateway-or-non-primary-admin-nodes]]
 == Appareils : déploiement de stockage, de passerelle ou de nœuds d'administration non principaux
 
 Pour installer le logiciel StorageGRID sur un nœud d'appliance, utilisez le programme d'installation de l'appliance StorageGRID , inclus sur l'appliance.  Dans une extension, chaque appliance de stockage fonctionne comme un nœud de stockage unique et chaque appliance de services fonctionne comme un nœud de passerelle unique ou un nœud d'administration non principal.  Tout appareil peut se connecter au réseau Grid, au réseau administrateur et au réseau client.

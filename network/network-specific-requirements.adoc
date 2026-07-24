@@ -15,6 +15,7 @@ Suivez les exigences pour chaque type de réseau StorageGRID .
 
 
 
+[[network-gateways-and-routers]]
 == Passerelles et routeurs réseau
 
 * Si cette option est définie, la passerelle d'un réseau donné doit se trouver dans le sous-réseau du réseau spécifique.
@@ -24,6 +25,7 @@ Suivez les exigences pour chaque type de réseau StorageGRID .
 
 
 
+[[subnets]]
 == Sous-réseaux
 
 
@@ -60,6 +62,7 @@ Par exemple, n'utilisez pas les plages de sous-réseaux suivantes pour le résea
 
 
 
+[[grid-network]]
 == Réseau de grille
 
 * Au moment du déploiement, chaque nœud de grille doit être connecté au réseau de grille et doit pouvoir communiquer avec le nœud d'administration principal à l'aide de la configuration réseau que vous spécifiez lors du déploiement du nœud.
@@ -74,6 +77,7 @@ NOTE: Le réseau Grid doit être directement routable entre chaque nœud.  La tr
 
 
 
+[[admin-network]]
 == Réseau d'administration
 
 Le réseau d'administration est facultatif.  Si vous envisagez de configurer un réseau d’administration, suivez ces exigences et directives.
@@ -88,6 +92,7 @@ NOTE: Vous devez définir au moins un sous-réseau sur le réseau d'administrati
 
 
 
+[[client-network]]
 == Réseau de clients
 
 Le réseau client est facultatif.  Si vous envisagez de configurer un réseau client, tenez compte des considérations suivantes.

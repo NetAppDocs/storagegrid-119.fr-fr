@@ -15,6 +15,7 @@ Vous devez comprendre les exigences de stockage et de performances des nœuds St
 
 
 
+[[performance-requirements]]
 == Exigences de performance
 
 Les performances du volume du système d’exploitation et du premier volume de stockage ont un impact significatif sur les performances globales du système.  Assurez-vous qu'ils offrent des performances de disque adéquates en termes de latence, d'opérations d'entrée/sortie par seconde (IOPS) et de débit.
@@ -23,6 +24,7 @@ Tous les nœuds StorageGRID nécessitent que le lecteur du système d'exploitati
 
 
 
+[[requirements-for-virtual-machines-that-use-netapp-ontap-storage]]
 == Exigences pour les machines virtuelles qui utilisent le stockage NetApp ONTAP
 
 Si vous déployez un nœud StorageGRID en tant que machine virtuelle avec un stockage attribué à partir d'un système NetApp ONTAP , vous avez confirmé qu'aucune stratégie de hiérarchisation FabricPool n'est activée sur le volume.  Par exemple, si un nœud StorageGRID s'exécute en tant que machine virtuelle sur un hôte VMware, assurez-vous que le volume qui sauvegarde la banque de données du nœud n'a pas de stratégie de hiérarchisation FabricPool activée.  La désactivation de la hiérarchisation FabricPool pour les volumes utilisés avec les nœuds StorageGRID simplifie le dépannage et les opérations de stockage.
@@ -32,12 +34,14 @@ NOTE: N'utilisez jamais FabricPool pour hiérarchiser les données liées à Sto
 
 
 
+[[number-of-virtual-machines-required]]
 == Nombre de machines virtuelles requises
 
 Chaque site StorageGRID nécessite un minimum de trois nœuds de stockage.
 
 
 
+[[storage-requirements-by-node-type]]
 == Besoins de stockage par type de nœud
 
 Dans un environnement de production, les machines virtuelles pour les nœuds StorageGRID doivent répondre à différentes exigences, selon les types de nœuds.
@@ -102,6 +106,7 @@ NOTE: En fonction du niveau d'audit configuré, de la taille des entrées utilis
 
 
 
+[[storage-requirements-for-storage-nodes]]
 == Exigences de stockage pour les nœuds de stockage
 
 Un nœud de stockage basé sur un logiciel peut avoir de 1 à 16 volumes de stockage ; 3 volumes de stockage ou plus sont recommandés. Chaque volume de stockage doit être de 4 To ou plus.

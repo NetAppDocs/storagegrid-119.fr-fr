@@ -9,12 +9,14 @@ CAUTION: Pour les sources d’identité qui ne sont pas ActiveDirectory ou Azure
 
 
 
+[[memberof-and-refint-overlays]]
 === Superpositions Memberof et refint
 
 Les superpositions memberof et refint doivent être activées.  Pour plus d'informations, consultez les instructions relatives à la maintenance de l'appartenance à un groupe inversé dans lehttp://www.openldap.org/doc/admin24/index.html["Documentation OpenLDAP : Guide de l'administrateur version 2.4"^] .
 
 
 
+[[indexing]]
 === Indexage
 
 Vous devez configurer les attributs OpenLDAP suivants avec les mots-clés d’index spécifiés :

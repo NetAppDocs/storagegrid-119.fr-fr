@@ -15,6 +15,7 @@ Les clients doivent communiquer avec les nœuds de la grille pour ingérer et r�
 
 
 
+[[restricted-access-to-ports]]
 == Accès restreint aux ports
 
 Si les politiques de réseau d’entreprise restreignent l’accès à l’un des ports, vous pouvez effectuer l’une des opérations suivantes :
@@ -32,6 +33,7 @@ Si les politiques de réseau d’entreprise restreignent l’accès à l’un de
 
 
 
+[[ports-used-for-external-communications]]
 == Ports utilisés pour les communications externes
 
 Le tableau suivant montre les ports utilisés pour le trafic vers les nœuds.

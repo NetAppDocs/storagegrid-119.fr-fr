@@ -36,6 +36,7 @@ D’autres types de nœuds, tels que les nœuds d’administration ou les nœuds
 ====
 
 
+[[export-node-from-source-host]]
 == Exporter le nœud depuis l'hôte source
 
 Dans un premier temps, arrêtez le nœud de grille et exportez-le depuis l’hôte Linux source.
@@ -96,6 +97,7 @@ Vous exécuterez cette commande sur l’hôte cible à l’étape suivante.
 
 
 
+[[import-node-on-target-host]]
 == Importer un nœud sur l'hôte cible
 
 Après avoir exporté le nœud depuis l’hôte source, vous importez et validez le nœud sur l’hôte cible.  La validation confirme que le nœud a accès aux mêmes périphériques de stockage de blocs et d’interface réseau que ceux dont il disposait sur l’hôte source.
@@ -143,6 +145,7 @@ Pour obtenir des informations de dépannage, consultez les instructions d’inst
 
 
 
+[[start-migrated-node]]
 == Démarrer le nœud migré
 
 Après avoir validé le nœud migré, vous démarrez le nœud en exécutant une commande sur l'hôte cible.

@@ -27,6 +27,7 @@ Par défaut, tout utilisateur appartenant à un groupe disposant d’au moins un
 
 
 
+[[interaction-between-permissions-and-access-mode]]
 == Interaction entre les autorisations et le mode d'accès
 
 Pour toutes les autorisations, le paramètre *Mode d'accès* du groupe détermine si les utilisateurs peuvent modifier les paramètres et effectuer des opérations ou s'ils peuvent uniquement afficher les paramètres et fonctionnalités associés.  Si un utilisateur appartient à plusieurs groupes et qu'un groupe est défini sur *Lecture seule*, l'utilisateur aura un accès en lecture seule à tous les paramètres et fonctionnalités sélectionnés.
@@ -35,12 +36,14 @@ Les sections suivantes décrivent les autorisations que vous pouvez attribuer lo
 
 
 
+[[root-access]]
 == Accès root
 
 Cette autorisation donne accès à toutes les fonctionnalités d’administration du réseau.
 
 
 
+[[change-tenant-root-password]]
 == Modifier le mot de passe root du locataire
 
 Cette autorisation donne accès à l'option *Modifier le mot de passe root* sur la page Locataires, vous permettant de contrôler qui peut modifier le mot de passe de l'utilisateur root local du locataire.  Cette autorisation est également utilisée pour migrer les clés S3 lorsque la fonctionnalité d’importation de clés S3 est activée.  Les utilisateurs qui ne disposent pas de cette autorisation ne peuvent pas voir l'option *Modifier le mot de passe root*.
@@ -50,6 +53,7 @@ NOTE: Pour accorder l'accès à la page Locataires, qui contient l'option *Modif
 
 
 
+[[grid-topology-page-configuration]]
 == Configuration de la page de topologie de grille
 
 Cette autorisation donne accès aux onglets de configuration sur la page *SUPPORT* > *Outils* > *Topologie de grille*.
@@ -59,6 +63,7 @@ NOTE: La page Topologie de grille est obsolète et sera supprimée dans une proc
 
 
 
+[[ilm]]
 == ILM
 
 Cette autorisation donne accès aux options de menu *ILM* suivantes :
@@ -77,6 +82,7 @@ NOTE: Les utilisateurs doivent disposer des autorisations *Autre configuration d
 
 
 
+[[maintenance]]
 == Entretien
 
 Les utilisateurs doivent disposer de l'autorisation Maintenance pour utiliser ces options :
@@ -145,12 +151,14 @@ Les utilisateurs qui ne disposent pas de l'autorisation Maintenance peuvent affi
 
 
 
+[[manage-alerts]]
 == Gérer les alertes
 
 Cette autorisation donne accès aux options de gestion des alertes.  Les utilisateurs doivent disposer de cette autorisation pour gérer les silences, les notifications d’alerte et les règles d’alerte.
 
 
 
+[[metrics-query]]
 == Requête de métriques
 
 Cette autorisation donne accès à :
@@ -162,12 +170,14 @@ Cette autorisation donne accès à :
 
 
 
+[[object-metadata-lookup]]
 == Recherche de métadonnées d'objet
 
 Cette autorisation donne accès à la page *ILM* > *Recherche de métadonnées d'objet*.
 
 
 
+[[other-grid-configuration]]
 == Autre configuration de grille
 
 Cette autorisation donne accès à des options de configuration de grille supplémentaires.
@@ -190,6 +200,7 @@ TIP: Pour voir ces options supplémentaires, les utilisateurs doivent également
 
 
 
+[[storage-appliance-administrator]]
 == Administrateur d'appareils de stockage
 
 Cette autorisation prévoit :
@@ -200,6 +211,7 @@ Cette autorisation prévoit :
 
 
 
+[[tenant-accounts]]
 == Comptes locataires
 
 Cette autorisation donne la possibilité de :

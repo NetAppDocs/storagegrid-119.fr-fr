@@ -22,6 +22,7 @@ Les types d’informations d’audit que vous pouvez envoyer au serveur syslog e
 
 
 
+[[when-to-use-an-external-syslog-server]]
 == Quand utiliser un serveur syslog externe
 
 Un serveur syslog externe est particulièrement utile si vous disposez d'une grande grille, utilisez plusieurs types d'applications S3 ou souhaitez conserver toutes les données d'audit. L'envoi d'informations d'audit à un serveur syslog externe vous permet de :
@@ -40,6 +41,7 @@ NOTE: Pour maximiser les options de récupération complète des données en cas
 
 
 
+[[how-to-configure-an-external-syslog-server]]
 == Comment configurer un serveur syslog externe
 
 Pour savoir comment configurer un serveur syslog externe, consultezlink:../monitor/configure-audit-messages.html["Configurer les messages d'audit et le serveur syslog externe"] .
@@ -57,6 +59,7 @@ NOTE: Si vous utilisez un certificat client, vous devez également utiliser une 
 
 
 
+[[how-to-estimate-the-size-of-the-external-syslog-server]]
 == Comment estimer la taille du serveur syslog externe
 
 Normalement, votre grille est dimensionnée pour atteindre un débit requis, défini en termes d'opérations S3 par seconde ou d'octets par seconde.  Par exemple, vous pouvez avoir besoin que votre grille gère 1 000 opérations S3 par seconde, ou 2 000 Mo par seconde, d’ingestions et de récupérations d’objets.  Vous devez dimensionner votre serveur syslog externe en fonction des besoins en données de votre grille.
@@ -65,6 +68,7 @@ Cette section fournit quelques formules heuristiques qui vous aident à estimer 
 
 
 
+[[use-s3-operations-per-second-in-estimation-formulas]]
 === Utiliser S3 opérations par seconde dans les formules d'estimation
 
 Si votre grille a été dimensionnée pour un débit exprimé en octets par seconde, vous devez convertir ce dimensionnement en opérations S3 par seconde pour utiliser les formules d'estimation.  Pour convertir le débit de la grille, vous devez d'abord déterminer la taille moyenne de votre objet, ce que vous pouvez faire en utilisant les informations des journaux d'audit et des mesures existants (le cas échéant), ou en utilisant vos connaissances des applications qui utiliseront StorageGRID.  Par exemple, si votre grille a été dimensionnée pour atteindre un débit de 2 000 Mo/seconde et que la taille moyenne de votre objet est de 2 Mo, alors votre grille a été dimensionnée pour pouvoir gérer 1 000 opérations S3 par seconde (2 000 Mo / 2 Mo).
@@ -74,6 +78,7 @@ NOTE: Les formules de dimensionnement du serveur syslog externe dans les section
 
 
 
+[[estimation-formulas-for-audit-logs]]
 === Formules d'estimation pour les journaux d'audit
 
 Si vous ne disposez d'aucune information sur votre charge de travail S3 autre que le nombre d'opérations S3 par seconde que votre grille est censée prendre en charge, vous pouvez estimer le volume de journaux d'audit que votre serveur syslog externe devra gérer à l'aide des formules suivantes, en supposant que vous laissiez les niveaux d'audit définis sur les valeurs par défaut (toutes les catégories définies sur Normal, à l'exception du stockage, qui est défini sur Erreur) :
@@ -142,6 +147,7 @@ Par exemple, si votre grille est dimensionnée pour 1 000 opérations S3 par se
 
 
 
+[[estimation-formulas-for-non-default-audit-levels]]
 === Formules d'estimation pour les niveaux d'audit non par défaut
 
 Les formules fournies pour les journaux d'audit supposent l'utilisation des paramètres de niveau d'audit par défaut (toutes les catégories définies sur Normal, à l'exception de Stockage, qui est défini sur Erreur).  Les formules détaillées permettant d'estimer le taux et la taille moyenne des messages d'audit pour les paramètres de niveau d'audit non par défaut ne sont pas disponibles.  Cependant, le tableau suivant peut être utilisé pour faire une estimation approximative du taux ; vous pouvez utiliser la formule de taille moyenne fournie pour les journaux d'audit, mais sachez qu'elle est susceptible d'entraîner une surestimation car les messages d'audit « supplémentaires » sont, en moyenne, plus petits que les messages d'audit par défaut.
@@ -166,12 +172,14 @@ Utiliser la même formule que pour les paramètres par défaut
 |===
 
 
+[[estimation-formulas-for-security-events]]
 === Formules d'estimation des événements de sécurité
 
 Les événements de sécurité ne sont pas corrélés aux opérations S3 et produisent généralement un volume négligeable de journaux et de données.  Pour ces raisons, aucune formule d’estimation n’est fournie.
 
 
 
+[[estimation-formulas-for-application-logs]]
 === Formules d'estimation pour les journaux d'application
 
 Si vous ne disposez d'aucune information sur votre charge de travail S3 autre que le nombre d'opérations S3 par seconde que votre grille est censée prendre en charge, vous pouvez estimer le volume de journaux d'applications que votre serveur syslog externe devra gérer à l'aide des formules suivantes :
@@ -227,6 +235,7 @@ Le nom de la clé S3, sans inclure le nom du bucket.  Les opérations sur les bu
 |===
 
 
+[[example-sizing-estimations]]
 == Exemples d'estimations de dimensionnement
 
 Cette section explique des exemples de cas d'utilisation des formules d'estimation pour les grilles avec les méthodes de protection des données suivantes :
@@ -237,6 +246,7 @@ Cette section explique des exemples de cas d'utilisation des formules d'estimati
 
 
 
+[[if-you-use-replication-for-data-protection]]
 === Si vous utilisez la réplication pour la protection des données
 
 Soit P représente le pourcentage d'opérations S3 qui sont des PUT, où 0 ≤ P ≤ 1 (donc pour une charge de travail PUT de 100 %, P = 1, et pour une charge de travail GET de 100 %, P = 0).
@@ -254,6 +264,7 @@ Ainsi, par exemple, si votre grille est dimensionnée pour 1 000 opérations S3
 
 
 
+[[if-you-use-erasure-coding-for-data-protection]]
 === Si vous utilisez le codage d'effacement pour la protection des données
 
 Soit P représente le pourcentage d'opérations S3 qui sont des PUT, où 0 ≤ P ≤ 1 (donc pour une charge de travail PUT de 100 %, P = 1, et pour une charge de travail GET de 100 %, P = 0).

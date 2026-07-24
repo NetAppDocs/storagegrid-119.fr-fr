@@ -22,6 +22,7 @@ Seuls les comptes locataires pour lesquels S3 Select est activé peuvent émettr
 
 
 
+[[clauses]]
 == Clauses
 
 * Liste SELECT
@@ -32,6 +33,7 @@ Seuls les comptes locataires pour lesquels S3 Select est activé peuvent émettr
 
 
 
+[[data-types]]
 == Types de données
 
 * booléen
@@ -44,10 +46,12 @@ Seuls les comptes locataires pour lesquels S3 Select est activé peuvent émettr
 
 
 
+[[operators]]
 == Opérateurs
 
 
 
+[[logical-operators]]
 === Opérateurs logiques
 
 * ET
@@ -57,6 +61,7 @@ Seuls les comptes locataires pour lesquels S3 Select est activé peuvent émettr
 
 
 
+[[comparison-operators]]
 === Opérateurs de comparaison
 
 * <
@@ -73,6 +78,7 @@ Seuls les comptes locataires pour lesquels S3 Select est activé peuvent émettr
 
 
 
+[[pattern-matching-operators]]
 === Opérateurs de recherche de motifs
 
 * COMME
@@ -82,6 +88,7 @@ Seuls les comptes locataires pour lesquels S3 Select est activé peuvent émettr
 
 
 
+[[unitary-operators]]
 === opérateurs unitaires
 
 * EST NUL
@@ -90,6 +97,7 @@ Seuls les comptes locataires pour lesquels S3 Select est activé peuvent émettr
 
 
 
+[[math-operators]]
 === opérateurs mathématiques
 
 * +
@@ -103,6 +111,7 @@ StorageGRID suit la priorité de l'opérateur Amazon S3 Select.
 
 
 
+[[aggregate-functions]]
 == Fonctions d'agrégation
 
 * MOYENNE()
@@ -114,6 +123,7 @@ StorageGRID suit la priorité de l'opérateur Amazon S3 Select.
 
 
 
+[[conditional-functions]]
 == Fonctions conditionnelles
 
 * CAS
@@ -123,6 +133,7 @@ StorageGRID suit la priorité de l'opérateur Amazon S3 Select.
 
 
 
+[[conversion-functions]]
 == Fonctions de conversion
 
 * CAST (pour le type de données pris en charge)
@@ -130,6 +141,7 @@ StorageGRID suit la priorité de l'opérateur Amazon S3 Select.
 
 
 
+[[date-functions]]
 == Fonctions de date
 
 * DATE_ADD
@@ -142,6 +154,7 @@ StorageGRID suit la priorité de l'opérateur Amazon S3 Select.
 
 
 
+[[string-functions]]
 == Fonctions de chaîne
 
 * LONGUEUR_CARACTÈRE, LONGUEUR_CARACTÈRE

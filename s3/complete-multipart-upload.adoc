@@ -18,12 +18,14 @@ NOTE: StorageGRID prend en charge les valeurs non consécutives dans l'ordre cro
 
 
 
+[[resolve-conflicts]]
 == Résoudre les conflits
 
 Les demandes client conflictuelles, telles que deux clients écrivant sur la même clé, sont résolues sur la base des « derniers gagnants ».  Le moment de l'évaluation des « dernières victoires » est basé sur le moment où le système StorageGRID termine une demande donnée, et non sur le moment où les clients S3 commencent une opération.
 
 
 
+[[supported-request-headers]]
 == En-têtes de requête pris en charge
 
 Les en-têtes de requête suivants sont pris en charge :
@@ -55,6 +57,7 @@ NOTE: Le `ETag` la valeur renvoyée n'est pas une somme MD5 des données, mais s
 
 
 
+[[unsupported-request-headers]]
 == En-têtes de requête non pris en charge
 
 Les en-têtes de requête suivants ne sont pas pris en charge :
@@ -73,6 +76,7 @@ Le  `If-None-Match header` est accepté mais non fonctionnel.
 
 
 
+[[versioning]]
 == Gestion des versions
 
 Cette opération termine un téléchargement en plusieurs parties.  Si le contrôle de version est activé pour un bucket, la version de l'objet est créée une fois le téléchargement en plusieurs parties terminé.
@@ -86,6 +90,7 @@ NOTE: Lorsque le contrôle de version est activé pour un bucket, l'exécution d
 
 
 
+[[failed-replication-notification-or-metadata-notification]]
 == Échec de la réplication, de la notification ou de la notification des métadonnées
 
 Si le bucket dans lequel le téléchargement en plusieurs parties se produit est configuré pour un service de plateforme, le téléchargement en plusieurs parties réussit même si l'action de réplication ou de notification associée échoue.

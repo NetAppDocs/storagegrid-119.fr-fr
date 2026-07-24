@@ -26,6 +26,7 @@ TIP: Si vous souhaitez modifier l'adresse IP du réseau de grille pour tous les 
 
 
 
+[[ethernet-interfaces]]
 == Interfaces Ethernet
 
 L'adresse IP attribuée à eth0 est toujours l'adresse IP du réseau de grille du nœud de grille.  L'adresse IP attribuée à eth1 est toujours l'adresse IP du réseau d'administration du nœud de grille.  L'adresse IP attribuée à eth2 est toujours l'adresse IP du réseau client du nœud de grille.
@@ -34,12 +35,14 @@ Notez que sur certaines plates-formes, telles que les appliances StorageGRID , e
 
 
 
+[[dhcp]]
 == DHCP
 
 Vous ne pouvez configurer DHCP que pendant la phase de déploiement.  Vous ne pouvez pas configurer DHCP pendant la configuration.  Vous devez utiliser les procédures de changement d’adresse IP si vous souhaitez modifier les adresses IP, les masques de sous-réseau et les passerelles par défaut d’un nœud de grille.  L'utilisation de l'outil Modifier IP entraînera la statique des adresses DHCP.
 
 
 
+[[high-availability-ha-groups]]
 == Groupes de haute disponibilité (HA)
 
 * Si une interface réseau client est contenue dans un groupe HA, vous ne pouvez pas modifier l'adresse IP du réseau client pour cette interface en une adresse située en dehors du sous-réseau configuré pour le groupe HA.

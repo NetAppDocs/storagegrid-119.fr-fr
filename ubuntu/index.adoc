@@ -38,6 +38,7 @@ Lorsque tous les nœuds ont été déployés, utilisez le gestionnaire de grille
 
 
 
+[[automate-the-installation]]
 == Automatiser l'installation
 
 Pour gagner du temps et assurer la cohérence, vous pouvez automatiser l'installation du service hôte StorageGRID et la configuration des nœuds de grille.

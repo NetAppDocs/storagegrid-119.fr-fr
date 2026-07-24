@@ -55,6 +55,7 @@ Pour chaque connexion de fédération de grille, l'erreur la plus récente surve
 
 
 
+[[clear-last-errorclear-the-last-error]]
 == [[clear-last-error]]Effacer la dernière erreur
 
 Une erreur peut apparaître dans la colonne *Dernière erreur* pour l'une des raisons suivantes :

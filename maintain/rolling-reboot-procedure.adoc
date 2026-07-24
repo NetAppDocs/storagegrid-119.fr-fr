@@ -47,12 +47,14 @@ Lorsque vous redémarrez le nœud d'administration principal, votre navigateur p
 
 
 
+[[perform-a-rolling-reboot]]
 == Effectuer un redémarrage progressif
 
 Vous sélectionnez les nœuds que vous souhaitez redémarrer, vérifiez vos sélections, démarrez la procédure de redémarrage et surveillez la progression.
 
 
 
+[[select-nodes]]
 === Sélectionner les nœuds
 
 Dans un premier temps, accédez à la page de redémarrage progressif et sélectionnez les nœuds que vous souhaitez redémarrer.
@@ -79,6 +81,7 @@ Vous pouvez utiliser les options de filtre du tableau pour afficher des sous-ens
 
 
 
+[[review-selection]]
 === Sélection d'avis
 
 À cette étape, vous pouvez déterminer la durée totale de la procédure de redémarrage et confirmer que vous avez sélectionné les nœuds appropriés.
@@ -96,6 +99,7 @@ NOTE: Le nœud d’administration principal sera le dernier nœud à redémarrer
 
 
 
+[[monitor-a-rolling-reboot]]
 === Surveiller un redémarrage progressif
 
 Pendant que la procédure de redémarrage progressif est en cours d’exécution, vous pouvez la surveiller à partir du nœud d’administration principal.
@@ -124,6 +128,7 @@ Les tableaux fournissent une barre de progression de l'opération sur chaque nœ
 
 
 
+[[stop-the-rolling-reboot-procedure]]
 == Arrêter la procédure de redémarrage progressif
 
 Vous pouvez arrêter la procédure de redémarrage progressif à partir du nœud d’administration principal.  Lorsque vous arrêtez la procédure, tous les nœuds dont le statut est « Arrêt des services », « Redémarrage du système » ou « Démarrage des services » termineront l'opération de redémarrage.  Cependant, ces nœuds ne seront plus suivis dans le cadre de la procédure.

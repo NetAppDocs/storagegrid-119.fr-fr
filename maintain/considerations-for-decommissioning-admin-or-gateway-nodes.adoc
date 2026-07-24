@@ -15,6 +15,7 @@ Passez en revue les considérations relatives à la mise hors service d’un nœ
 
 
 
+[[considerations-for-admin-node]]
 == Considérations pour le nœud d'administration
 
 * Vous ne pouvez pas désactiver le nœud d’administration principal.
@@ -27,6 +28,7 @@ Passez en revue les considérations relatives à la mise hors service d’un nœ
 
 
 
+[[considerations-for-gateway-node]]
 == Considérations relatives au nœud de passerelle
 
 * Vous ne pouvez pas désactiver un nœud de passerelle si l’une de ses interfaces réseau fait partie d’un groupe de haute disponibilité (HA).  Vous devez d’abord supprimer les interfaces réseau du groupe HA. Voir les instructions pourlink:../admin/managing-high-availability-groups.html["gestion des groupes HA"] .

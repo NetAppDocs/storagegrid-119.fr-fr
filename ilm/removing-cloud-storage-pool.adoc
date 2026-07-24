@@ -20,6 +20,7 @@ Vous pouvez supprimer un pool de stockage cloud s'il n'est pas utilisé dans une
 
 
 
+[[if-needed-use-ilm-to-move-object-data]]
 == Si nécessaire, utilisez ILM pour déplacer les données de l'objet
 
 Si le pool de stockage cloud que vous souhaitez supprimer contient des données d'objet, vous devez utiliser ILM pour déplacer les données vers un autre emplacement.  Par exemple, vous pouvez déplacer les données vers des nœuds de stockage sur votre grille ou vers un autre pool de stockage cloud.
@@ -47,6 +48,7 @@ Pour l'étape 2 de l'assistant de création de règle ILM, sélectionnez le nouv
 
 
 
+[[delete-cloud-storage-pool]]
 == Supprimer le pool de stockage cloud
 
 Lorsque le pool de stockage cloud est vide et n'est utilisé dans aucune règle ILM, vous pouvez le supprimer.

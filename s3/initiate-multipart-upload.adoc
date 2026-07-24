@@ -49,6 +49,7 @@ NOTE: Si vous ingérez un objet dans un bucket avec le verrouillage d'objet S3 a
 
 
 
+[[supported-request-headers]]
 == En-têtes de requête pris en charge
 
 Les en-têtes de requête suivants sont pris en charge :
@@ -114,6 +115,7 @@ NOTE: Pour plus d'informations sur la façon dont StorageGRID gère les caractè
 
 
 
+[[request-headers-for-server-side-encryption]]
 == En-têtes de requête pour le chiffrement côté serveur
 
 Vous pouvez utiliser les en-têtes de requête suivants pour chiffrer un objet en plusieurs parties avec un chiffrement côté serveur.  Les options SSE et SSE-C s'excluent mutuellement.
@@ -137,6 +139,7 @@ CAUTION: Les clés de chiffrement que vous fournissez ne sont jamais stockées. 
 
 
 
+[[unsupported-request-headers]]
 == En-têtes de requête non pris en charge
 
 L'en-tête de requête suivant n'est pas pris en charge :
@@ -149,6 +152,7 @@ Le `x-amz-website-redirect-location` retours d'en-tête `XNotImplemented` .
 
 
 
+[[versioning]]
 == Gestion des versions
 
 Le téléchargement en plusieurs parties consiste en des opérations distinctes pour lancer le téléchargement, répertorier les téléchargements, télécharger des parties, assembler les parties téléchargées et terminer le téléchargement.  Les objets sont créés (et versionnés si applicable) lorsque l'opération CompleteMultipartUpload est effectuée.

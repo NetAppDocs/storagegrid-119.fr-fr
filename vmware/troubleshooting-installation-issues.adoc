@@ -26,6 +26,7 @@ Si vous avez besoin d'aide supplémentaire, contactez https://mysupport.netapp.c
 
 
 
+[[virtual-machine-resource-reservation-requires-adjustment]]
 == La réservation des ressources de la machine virtuelle nécessite un ajustement
 
 Les fichiers OVF incluent une réservation de ressources conçue pour garantir que chaque nœud de grille dispose de suffisamment de RAM et de CPU pour fonctionner efficacement.  Si vous créez des machines virtuelles en déployant ces fichiers OVF sur VMware et que le nombre prédéfini de ressources n'est pas disponible, les machines virtuelles ne démarreront pas.
@@ -49,6 +50,7 @@ Si vous êtes certain que l’hôte de la machine virtuelle dispose de ressource
 
 
 
+[[temporary-installation-password-was-disabled]]
 == Le mot de passe d'installation temporaire a été désactivé
 
 Lorsque vous déployez un nœud VMware, vous pouvez éventuellement spécifier un mot de passe d’installation temporaire.  Vous devez disposer de ce mot de passe pour accéder à la console VM ou utiliser SSH avant que le nouveau nœud ne rejoigne la grille.

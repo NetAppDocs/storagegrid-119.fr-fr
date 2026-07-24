@@ -17,6 +17,7 @@ Le système StorageGRID prend en charge à la fois les demandes de type héberg�
 
 
 
+[[date-handling]]
 == Gestion des dates
 
 L'implémentation StorageGRID de l'API REST S3 prend uniquement en charge les formats de date HTTP valides.
@@ -25,6 +26,7 @@ Le système StorageGRID prend uniquement en charge les formats de date HTTP vali
 
 
 
+[[common-request-headers]]
 == En-têtes de requête courants
 
 Le système StorageGRID prend en charge les en-têtes de requête courants définis par https://docs.aws.amazon.com/AmazonS3/latest/API/RESTCommonRequestHeaders.html["Référence de l'API Amazon Simple Storage Service : en-têtes de requête courants"^] , à une exception près.
@@ -54,6 +56,7 @@ Non implémenté.  Retours `XNotImplemented` .
 |===
 
 
+[[common-response-headers]]
 == En-têtes de réponse courants
 
 Le système StorageGRID prend en charge tous les en-têtes de réponse courants définis par la _Référence API du service de stockage simple_, à une exception près.

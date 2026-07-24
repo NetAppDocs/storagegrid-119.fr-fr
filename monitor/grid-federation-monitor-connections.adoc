@@ -20,6 +20,7 @@ Vous pouvez surveiller les informations de base sur touslink:../admin/grid-feder
 
 
 
+[[view-all-connections]]
 == Voir toutes les connexions
 
 La page Fédération de grille affiche des informations de base sur toutes les connexions de fédération de grille et sur tous les comptes de locataire autorisés à utiliser les connexions de fédération de grille.
@@ -59,6 +60,7 @@ image::../media/grid-federation-permitted-tenants-tab.png[Onglet Locataires auto
 
 
 
+[[view-specific-connectionview-a-specific-connection]]
 == [[view-specific-connection]]Afficher une connexion spécifique
 
 Vous pouvez afficher les détails d'une connexion de fédération de grille spécifique.
@@ -102,6 +104,7 @@ image::../media/grid-federation-certificates-tab.png[onglet certificats de la f�
 
 
 
+[[review-cross-grid-replication-metrics]]
 == Examiner les mesures de réplication inter-grille
 
 Vous pouvez utiliser le tableau de bord de réplication inter-grille dans Grafana pour afficher les métriques Prometheus sur les opérations de réplication inter-grille sur votre grille.

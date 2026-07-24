@@ -22,6 +22,7 @@ Utilisez ces instructions pour :
 
 
 
+[[quick-start-for-configuring-storagegrid-for-fabricpool]]
 == Démarrage rapide pour la configuration de StorageGRID pour FabricPool
 
 .image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["Un"]Planifiez votre configuration
@@ -69,6 +70,7 @@ Lorsque votre système est opérationnel, effectuez des tâches continues dans O
 
 
 
+[[what-is-fabricpool]]
 == Qu'est-ce que FabricPool?
 
 FabricPool est une solution de stockage hybride ONTAP qui utilise un agrégat flash hautes performances comme niveau de performance et un magasin d'objets comme niveau cloud.  L’utilisation d’agrégats compatibles FabricPool vous aide à réduire les coûts de stockage sans compromettre les performances, l’efficacité ou la protection.
@@ -79,12 +81,14 @@ Aucune modification architecturale n’est requise et vous pouvez continuer à g
 
 
 
+[[what-is-storagegrid]]
 == Qu'est-ce que StorageGRID?
 
 NetApp StorageGRID est une architecture de stockage qui gère les données sous forme d'objets, contrairement à d'autres architectures de stockage telles que le stockage de fichiers ou de blocs.  Les objets sont conservés dans un seul conteneur (tel qu'un bucket) et ne sont pas imbriqués en tant que fichiers dans un répertoire à l'intérieur d'autres répertoires.  Bien que le stockage d’objets offre généralement des performances inférieures à celles du stockage de fichiers ou de blocs, il est nettement plus évolutif.  Les buckets StorageGRID peuvent contenir des pétaoctets de données et des milliards d'objets.
 
 
 
+[[why-use-storagegrid-as-a-fabricpool-cloud-tier]]
 == Pourquoi utiliser StorageGRID comme niveau cloud FabricPool ?
 
 FabricPool peut hiérarchiser les données ONTAP vers un certain nombre de fournisseurs de stockage d'objets, notamment StorageGRID.  Contrairement aux clouds publics qui peuvent définir un nombre maximal d'opérations d'entrée/sortie prises en charge par seconde (IOPS) au niveau du bucket ou du conteneur, les performances de StorageGRID évoluent en fonction du nombre de nœuds d'un système.  L'utilisation de StorageGRID comme niveau cloud FabricPool vous permet de conserver vos données froides dans votre propre cloud privé pour des performances optimales et un contrôle complet sur vos données.

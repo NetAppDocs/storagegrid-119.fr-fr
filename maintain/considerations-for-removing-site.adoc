@@ -15,6 +15,7 @@ Avant d’utiliser la procédure de déclassement de site pour supprimer un site
 
 
 
+[[what-happens-when-you-decommission-a-site]]
 == Que se passe-t-il lorsque vous décommissionnez un site
 
 Lorsque vous mettez hors service un site, StorageGRID supprime définitivement tous les nœuds du site et le site lui-même du système StorageGRID .
@@ -27,6 +28,7 @@ Une fois la procédure de démantèlement du site terminée :
 
 
 
+[[differences-between-connected-site-and-disconnected-site-decommission-procedures]]
 == Différences entre les procédures de déclassement d'un site connecté et d'un site déconnecté
 
 Vous pouvez utiliser la procédure de déclassement de site pour supprimer un site dans lequel tous les nœuds sont connectés à StorageGRID (appelé déclassement de site connecté) ou pour supprimer un site dans lequel tous les nœuds sont déconnectés de StorageGRID (appelé déclassement de site déconnecté).  Avant de commencer, vous devez comprendre les différences entre ces procédures.
@@ -48,6 +50,7 @@ CAUTION: Avant d'effectuer une procédure de déclassement de site déconnecté,
 
 
 
+[[general-requirements-for-removing-a-connected-or-a-disconnected-site]]
 == Exigences générales pour la suppression d'un site connecté ou déconnecté
 
 Avant de supprimer un site connecté ou déconnecté, vous devez prendre connaissance des exigences suivantes :
@@ -74,6 +77,7 @@ NOTE: Si vous devez effectuer une autre procédure de maintenance lors de la mis
 
 
 
+[[requirements-for-information-lifecycle-management-ilm]]
 == Exigences relatives à la gestion du cycle de vie de l'information (ILM)
 
 Dans le cadre de la suppression d'un site, vous devez mettre à jour votre configuration ILM.  L'assistant de déclassement du site vous guide à travers un certain nombre d'étapes préalables pour garantir les éléments suivants :
@@ -89,6 +93,7 @@ CAUTION: Avant de pouvoir supprimer un site, vous devrez peut-être créer de no
 
 
 
+[[considerations-for-the-object-data-at-a-connected-site]]
 == Considérations relatives aux données d'objet sur un site connecté
 
 Si vous effectuez la mise hors service d'un site connecté, vous devez décider quoi faire des données d'objet existantes sur le site lorsque vous créez de nouvelles règles ILM et une nouvelle stratégie ILM.  Vous pouvez effectuer l’une ou les deux actions suivantes :
@@ -113,6 +118,7 @@ CAUTION: Ne créez jamais une règle ILM à copie unique pour prendre en charge 
 
 
 
+[[additional-requirements-for-a-connected-site-decommission]]
 == Exigences supplémentaires pour le déclassement d'un site connecté
 
 Avant que StorageGRID puisse supprimer un site connecté, vous devez vous assurer des points suivants :
@@ -136,6 +142,7 @@ NOTE: Le déplacement ou la suppression des données d'objet d'un site peut pren
 
 
 
+[[additional-requirements-for-a-disconnected-site-decommission]]
 == Exigences supplémentaires pour le déclassement d'un site déconnecté
 
 Avant que StorageGRID puisse supprimer un site déconnecté, vous devez vous assurer des points suivants :
@@ -162,6 +169,7 @@ NOTE: Si vos règles et votre politique ILM ont été conçues pour protéger co
 
 
 
+[[considerations-for-consistency-when-you-remove-a-site]]
 == Considérations relatives à la cohérence lors de la suppression d'un site
 
 La cohérence d'un bucket S3 détermine si StorageGRID réplique entièrement les métadonnées d'objet sur tous les nœuds et sites avant d'indiquer à un client que l'ingestion d'objet a réussi.  La cohérence fournit un équilibre entre la disponibilité des objets et la cohérence de ces objets sur différents nœuds de stockage et sites.

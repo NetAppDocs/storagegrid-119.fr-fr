@@ -15,6 +15,7 @@ Une fois l’installation terminée, effectuez les tâches d’intégration et d
 
 
 
+[[required-tasks]]
 == Tâches requises
 
 * link:../admin/managing-tenants.html["Créer un compte locataire"]pour le protocole client S3 qui sera utilisé pour stocker des objets sur votre système StorageGRID .
@@ -36,6 +37,7 @@ Voir https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/configur
 
 
 
+[[optional-tasks]]
 == Tâches facultatives
 
 * link:../maintain/changing-ip-addresses-and-mtu-values-for-all-nodes-in-grid.html["Mettre à jour les adresses IP des nœuds de grille"]s'ils ont changé depuis que vous avez planifié votre déploiement et généré le package de récupération.

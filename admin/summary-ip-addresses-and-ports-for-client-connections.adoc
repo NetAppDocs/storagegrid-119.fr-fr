@@ -71,6 +71,7 @@ Ports S3 par défaut :
 |===
 
 
+[[example-urls]]
 == Exemples d'URL
 
 Pour connecter une application cliente au point de terminaison de l'équilibreur de charge d'un groupe HA de nœuds de passerelle, utilisez une URL structurée comme indiqué ci-dessous :
@@ -83,6 +84,7 @@ Par exemple, si l'adresse IP virtuelle du groupe HA est 192.0.2.5 et que le num�
 
 
 
+[[where-to-find-ip-addresses]]
 == Où trouver les adresses IP
 
 . Sign in au Grid Manager à l'aide d'unlink:../admin/web-browser-requirements.html["navigateur Web pris en charge"] .

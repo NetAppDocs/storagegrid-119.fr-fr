@@ -19,6 +19,7 @@ Le fait de disposer de plusieurs stratégies ILM actives vous permet d'appliquer
 
 
 
+[[create-an-ilm-policy]]
 == Créer une politique ILM
 
 .À propos de cette tâche
@@ -174,6 +175,8 @@ NOTE: Vous devez confirmer que les règles ILM sont dans le bon ordre.  Lorsque 
 
 
 
+[[simulate-a-policy]]
+[[simulate-ilm-policy]]
 == Simuler une politique
 
 Simulez une politique sur des objets de test avant d’activer la politique et de l’appliquer à vos données de production.
@@ -203,6 +206,8 @@ link:simulating-ilm-policy-examples.html["Exemples de simulations de politiques 
 
 
 
+[[activate-a-policy]]
+[[activate-ilm-policy]]
 == Activer une politique
 
 Lorsque vous activez une nouvelle stratégie ILM unique, les objets existants et les objets nouvellement ingérés sont gérés par cette stratégie.  Lorsque vous activez plusieurs stratégies, les balises de stratégie ILM attribuées aux compartiments déterminent les objets à gérer.

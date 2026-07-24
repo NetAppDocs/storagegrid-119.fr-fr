@@ -45,6 +45,7 @@ Par exemple, n'utilisez pas les plages de sous-réseaux suivantes pour le résea
 ====
 
 
+[[add-a-subnet]]
 == Ajouter un sous-réseau
 
 .Étapes
@@ -70,6 +71,7 @@ Les sous-réseaux que vous avez spécifiés sont configurés automatiquement pou
 
 
 
+[[edit-a-subnet]]
 == Modifier un sous-réseau
 
 .Étapes
@@ -87,6 +89,7 @@ Les sous-réseaux que vous avez spécifiés sont configurés automatiquement pou
 
 
 
+[[delete-a-subnet]]
 == Supprimer un sous-réseau
 
 .Étapes

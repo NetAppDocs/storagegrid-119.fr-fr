@@ -15,6 +15,7 @@ Utilisez ces étapes de dépannage pour vous aider à résoudre les erreurs que 
 
 
 
+[[determine-if-an-error-has-occurred]]
 == Déterminer si une erreur s'est produite
 
 StorageGRID effectue un simple contrôle de santé sur chaque pool de stockage cloud en lisant l'objet connu `x-ntap-sgws-cloud-pool-uuid` pour garantir que le pool de stockage cloud est accessible et fonctionne correctement.  Lorsque StorageGRID rencontre une erreur sur le point de terminaison, il effectue une vérification de l’état toutes les minutes à partir de chaque nœud de stockage.  Une fois l’erreur résolue, les contrôles de santé s’arrêtent.  Si un contrôle d’intégrité détecte un problème, un message s’affiche dans la colonne Dernière erreur du tableau Pools de stockage cloud sur la page Pools de stockage.
@@ -25,6 +26,7 @@ De plus, une alerte *Erreur de connectivité du pool de stockage cloud* est déc
 
 
 
+[[check-if-an-error-has-been-resolved]]
 == Vérifiez si une erreur a été résolue
 
 Après avoir résolu les problèmes sous-jacents, vous pouvez déterminer si l’erreur a été résolue.  Depuis la page Cloud Storage Pool, sélectionnez le point de terminaison, puis sélectionnez *Effacer l'erreur*.  Un message de confirmation indique que StorageGRID a corrigé l’erreur pour le pool de stockage cloud.
@@ -33,6 +35,7 @@ Si le problème sous-jacent a été résolu, le message d’erreur n’est plus 
 
 
 
+[[error-health-check-failed-error-from-endpoint]]
 == Erreur : le contrôle de santé a échoué.  Erreur du point de terminaison
 
 Vous pouvez rencontrer cette erreur lorsque vous activez le verrouillage d'objet S3 avec la rétention par défaut pour votre compartiment Amazon S3 après avoir commencé à utiliser ce compartiment pour un pool de stockage cloud.  Cette erreur se produit lorsque l'opération PUT n'a pas d'en-tête HTTP avec une valeur de somme de contrôle de charge utile telle que `Content-MD5` .  Cette valeur d'en-tête est requise par AWS pour les opérations PUT dans les buckets avec S3 Object Lock activé.
@@ -41,6 +44,7 @@ Pour corriger ce problème, suivez les étapes décrites danslink:editing-cloud-
 
 
 
+[[error-this-cloud-storage-pool-contains-unexpected-content]]
 == Erreur : ce pool de stockage cloud contient du contenu inattendu
 
 Vous pouvez rencontrer cette erreur lorsque vous essayez de créer, de modifier ou de supprimer un pool de stockage cloud.  Cette erreur se produit si le bucket ou le conteneur inclut le `x-ntap-sgws-cloud-pool-uuid` fichier marqueur, mais ce fichier ne possède pas le champ de métadonnées avec l'UUID attendu.
@@ -60,6 +64,7 @@ Si ces étapes ne s’appliquent pas à votre scénario, contactez le support.
 
 
 
+[[error-could-not-create-or-update-cloud-storage-pool-error-from-endpoint]]
 == Erreur : impossible de créer ou de mettre à jour le pool de stockage cloud.  Erreur du point de terminaison
 
 Vous pouvez rencontrer cette erreur dans les circonstances suivantes :
@@ -85,6 +90,7 @@ Pour corriger le problème, examinez le message d’erreur du point de terminais
 
 
 
+[[error-failed-to-parse-ca-certificate]]
 == Erreur : échec de l'analyse du certificat CA
 
 Vous pouvez rencontrer cette erreur lorsque vous essayez de créer ou de modifier un pool de stockage cloud.  L'erreur se produit si StorageGRID n'a pas pu analyser le certificat que vous avez entré lors de la configuration du pool de stockage cloud.
@@ -93,6 +99,7 @@ Pour corriger le problème, vérifiez le certificat CA que vous avez fourni pour
 
 
 
+[[error-a-cloud-storage-pool-with-this-id-was-not-found]]
 == Erreur : aucun pool de stockage cloud avec cet ID n'a été trouvé
 
 Vous pouvez rencontrer cette erreur lorsque vous essayez de modifier ou de supprimer un pool de stockage cloud.  Cette erreur se produit si le point de terminaison renvoie une réponse 404, ce qui peut signifier l'une des choses suivantes :
@@ -110,6 +117,7 @@ Essayez une ou plusieurs de ces étapes pour corriger le problème :
 
 
 
+[[error-could-not-check-the-content-of-the-cloud-storage-pool-error-from-endpoint]]
 == Erreur : impossible de vérifier le contenu du pool de stockage cloud.  Erreur du point de terminaison
 
 Vous pouvez rencontrer cette erreur lorsque vous essayez de supprimer un pool de stockage cloud.  Cette erreur indique qu'un problème de connectivité ou de configuration empêche StorageGRID de lire le contenu du bucket Cloud Storage Pool.
@@ -118,6 +126,7 @@ Pour corriger le problème, examinez le message d’erreur du point de terminais
 
 
 
+[[error-objects-have-already-been-placed-in-this-bucket]]
 == Erreur : des objets ont déjà été placés dans ce bucket
 
 Vous pouvez rencontrer cette erreur lorsque vous essayez de supprimer un pool de stockage cloud.  Vous ne pouvez pas supprimer un pool de stockage cloud s'il contient des données qui y ont été déplacées par ILM, des données qui se trouvaient dans le bucket avant la configuration du pool de stockage cloud ou des données qui ont été placées dans le bucket par une autre source après la création du pool de stockage cloud.
@@ -134,6 +143,7 @@ NOTE: Ne supprimez jamais manuellement des objets d'un pool de stockage cloud qu
 
 
 
+[[error-proxy-encountered-an-external-error-while-trying-to-reach-the-cloud-storage-pool]]
 == Erreur : le proxy a rencontré une erreur externe lors de la tentative d'accès au pool de stockage cloud
 
 Vous pouvez rencontrer cette erreur si vous avez configuré un proxy de stockage non transparent entre les nœuds de stockage et le point de terminaison S3 externe utilisé pour le pool de stockage cloud.  Cette erreur se produit si le serveur proxy externe ne peut pas atteindre le point de terminaison du pool de stockage cloud.  Par exemple, le serveur DNS peut ne pas être en mesure de résoudre le nom d’hôte ou il peut y avoir un problème de réseau externe.
@@ -146,6 +156,7 @@ Essayez une ou plusieurs de ces étapes pour corriger le problème :
 
 
 
+[[error-x-509-certificate-is-out-of-validity-period]]
 == Erreur : le certificat X.509 n'a plus de validité
 
 Vous pouvez rencontrer cette erreur lorsque vous essayez de supprimer un pool de stockage cloud.  Cette erreur se produit lorsque l'authentification nécessite un certificat X.509 pour garantir que le pool de stockage cloud externe correct est validé et que le pool externe est vide avant la suppression de la configuration du pool de stockage cloud.

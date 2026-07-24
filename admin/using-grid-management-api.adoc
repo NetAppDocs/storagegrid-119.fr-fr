@@ -15,6 +15,7 @@ Vous pouvez effectuer des tâches de gestion du système à l’aide de l’API 
 
 
 
+[[top-level-resources]]
 == Ressources de haut niveau
 
 L'API de gestion de grille fournit les ressources de niveau supérieur suivantes :
@@ -26,6 +27,7 @@ L'API de gestion de grille fournit les ressources de niveau supérieur suivantes
 
 
 
+[[issue-api-requests]]
 == Émettre des requêtes API
 
 L'API de gestion de grille utilise la plate-forme API open source Swagger.  Swagger fournit une interface utilisateur intuitive qui permet aux développeurs et aux non-développeurs d'effectuer des opérations en temps réel dans StorageGRID avec l'API.

@@ -15,6 +15,7 @@ Si vous avezlink:../admin/configuring-sso.html["configuré et activé l'authenti
 
 
 
+[[sign-in-to-the-api-if-azure-single-sign-on-is-enabled]]
 == Sign in à l’API si l’authentification unique Azure est activée
 
 Ces instructions s'appliquent si vous utilisez Azure comme fournisseur d'identité SSO

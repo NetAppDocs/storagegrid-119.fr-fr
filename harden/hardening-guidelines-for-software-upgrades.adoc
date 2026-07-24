@@ -15,6 +15,7 @@ Vous devez maintenir votre système StorageGRID et les services associés à jou
 
 
 
+[[upgrades-to-storagegrid-software]]
 == Mises à niveau du logiciel StorageGRID
 
 Dans la mesure du possible, vous devez mettre à niveau le logiciel StorageGRID vers la version majeure la plus récente ou vers la version majeure précédente.  Maintenir StorageGRID à jour permet de réduire la durée pendant laquelle les vulnérabilités connues sont actives et réduit la surface d'attaque globale.  De plus, les versions les plus récentes de StorageGRID contiennent souvent des fonctionnalités de renforcement de la sécurité qui ne sont pas incluses dans les versions précédentes.
@@ -28,6 +29,7 @@ Consultez le https://imt.netapp.com/matrix/#welcome["Outil de matrice d'interop�
 
 
 
+[[upgrades-to-external-services]]
 == Mises à niveau des services externes
 
 Les services externes peuvent présenter des vulnérabilités qui affectent StorageGRID indirectement. Vous devez vous assurer que les services dont dépend StorageGRID sont maintenus à jour. Ces services incluent LDAP, KMS (ou serveur KMIP), DNS et NTP.
@@ -36,6 +38,7 @@ Pour une liste des versions prises en charge, consultez le https://imt.netapp.co
 
 
 
+[[upgrades-to-hypervisors]]
 == Mises à niveau des hyperviseurs
 
 Si vos nœuds StorageGRID s'exécutent sur VMware ou un autre hyperviseur, vous devez vous assurer que le logiciel et le micrologiciel de l'hyperviseur sont à jour.
@@ -44,6 +47,7 @@ Pour une liste des versions prises en charge, consultez le https://imt.netapp.co
 
 
 
+[[upgrades-to-linux-nodes]]
 == *Mises à niveau vers les nœuds Linux*
 
 Si vos nœuds StorageGRID utilisent des plates-formes hôtes Linux, vous devez vous assurer que les mises à jour de sécurité et les mises à jour du noyau sont appliquées au système d'exploitation hôte.  De plus, vous devez appliquer les mises à jour du micrologiciel au matériel vulnérable lorsque ces mises à jour sont disponibles.

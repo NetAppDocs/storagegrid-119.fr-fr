@@ -27,6 +27,7 @@ Les paramètres de requête suivants sont pris en charge :
 
 
 
+[[versioning]]
 == Gestion des versions
 
 Le téléchargement en plusieurs parties consiste en des opérations distinctes pour lancer le téléchargement, répertorier les téléchargements, télécharger des parties, assembler les parties téléchargées et terminer le téléchargement.  Les objets sont créés (et versionnés si applicable) lorsque l'opération CompleteMultipartUpload est effectuée.

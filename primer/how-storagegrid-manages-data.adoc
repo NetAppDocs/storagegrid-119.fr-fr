@@ -21,12 +21,14 @@ image::../media/object_conceptual_drawing.png[Objet]
 
 
 
+[[what-is-object-data]]
 == Que sont les données d’objet ?
 
 Les données d’objet peuvent être n’importe quoi ; par exemple, une photographie, un film ou un dossier médical.
 
 
 
+[[what-is-object-metadata]]
 == Que sont les métadonnées d’objet ?
 
 Les métadonnées d’objet sont toutes les informations qui décrivent un objet.  StorageGRID utilise les métadonnées des objets pour suivre les emplacements de tous les objets sur la grille et pour gérer le cycle de vie de chaque objet au fil du temps.
@@ -44,12 +46,14 @@ Pour des informations détaillées sur la manière et l'endroit où StorageGRID 
 
 
 
+[[how-is-object-data-protected]]
 == Comment les données des objets sont-elles protégées ?
 
 Le système StorageGRID vous fournit deux mécanismes pour protéger les données des objets contre la perte : la réplication et le codage d'effacement.
 
 
 
+[[replication]]
 === Réplication
 
 Lorsque StorageGRID fait correspondre des objets à une règle de gestion du cycle de vie des informations (ILM) configurée pour créer des copies répliquées, le système crée des copies exactes des données d'objet et les stocke sur des nœuds de stockage ou des pools de stockage cloud.  Les règles ILM dictent le nombre de copies effectuées, l'endroit où ces copies sont stockées et la durée pendant laquelle elles sont conservées par le système.  Si une copie est perdue, par exemple suite à la perte d'un nœud de stockage, l'objet est toujours disponible si une copie existe ailleurs dans le système StorageGRID .
@@ -60,6 +64,7 @@ image::../media/ilm_replication_make_2_copies.png[Règle de faire 2 copies]
 
 
 
+[[erasure-coding]]
 === Codage d'effacement
 
 Lorsque StorageGRID fait correspondre des objets à une règle ILM configurée pour créer des copies à code d'effacement, il découpe les données d'objet en fragments de données, calcule des fragments de parité supplémentaires et stocke chaque fragment sur un nœud de stockage différent.  Lorsqu'un objet est consulté, il est réassemblé à l'aide des fragments stockés.  Si des données ou un fragment de parité sont corrompus ou perdus, l'algorithme de codage d'effacement peut recréer ce fragment en utilisant un sous-ensemble des données et des fragments de parité restants.  Les règles ILM et les profils de codage d'effacement déterminent le schéma de codage d'effacement utilisé.

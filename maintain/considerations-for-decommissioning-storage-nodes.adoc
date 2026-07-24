@@ -15,6 +15,7 @@ Avant de mettre hors service un nœud de stockage, déterminez si vous pouvez cl
 
 
 
+[[when-to-clone-a-node-instead-of-decommissioning-it]]
 == Quand cloner un nœud au lieu de le mettre hors service
 
 Si vous souhaitez remplacer un nœud de stockage d'appareil plus ancien par un appareil plus récent ou plus grand, envisagez de cloner le nœud d'appareil au lieu d'ajouter un nouvel appareil dans une extension, puis de mettre hors service l'ancien appareil.
@@ -33,6 +34,7 @@ Voir https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/how-app
 
 
 
+[[considerations-for-connected-storage-nodes]]
 == Considérations relatives aux nœuds de stockage connectés
 
 Passez en revue les considérations relatives à la mise hors service d’un nœud de stockage connecté.
@@ -57,6 +59,8 @@ NOTE: Le bouton *Pause* est activé uniquement lorsque les étapes d'évaluation
 
 
 
+[[considerations-for-disconnected-storage-nodes]]
+[[considerations-disconnected-storage-nodes]]
 == Considérations relatives aux nœuds de stockage déconnectés
 
 Passez en revue les considérations relatives à la mise hors service d’un nœud de stockage déconnecté.

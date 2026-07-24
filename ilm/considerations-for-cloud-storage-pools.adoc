@@ -15,6 +15,7 @@ Si vous prévoyez d'utiliser un pool de stockage cloud pour déplacer des objets
 
 
 
+[[general-considerations]]
 == Considérations générales
 
 * En général, le stockage d’archives cloud, tel qu’Amazon S3 Glacier ou le stockage Azure Blob, est un endroit peu coûteux pour stocker des données d’objet.  Cependant, les coûts de récupération des données à partir du stockage d’archives dans le cloud sont relativement élevés.  Pour obtenir le coût global le plus bas, vous devez tenir compte du moment et de la fréquence à laquelle vous accéderez aux objets du pool de stockage cloud.  L'utilisation d'un pool de stockage cloud est recommandée uniquement pour le contenu auquel vous prévoyez d'accéder rarement.
@@ -32,6 +33,7 @@ Si vous prévoyez d'utiliser un pool de stockage cloud pour déplacer des objets
 
 
 
+[[considerations-for-the-ports-used-for-cloud-storage-pools]]
 == Considérations relatives aux ports utilisés pour les pools de stockage cloud
 
 Pour garantir que les règles ILM peuvent déplacer des objets vers et depuis le pool de stockage cloud spécifié, vous devez configurer le ou les réseaux qui contiennent les nœuds de stockage de votre système.  Vous devez vous assurer que les ports suivants peuvent communiquer avec le pool de stockage cloud.
@@ -48,6 +50,7 @@ Si vous utilisez un serveur proxy non transparent, vous devez égalementlink:../
 
 
 
+[[considerations-for-costs]]
 == Considérations relatives aux coûts
 
 L'accès au stockage dans le cloud à l'aide d'un pool de stockage cloud nécessite une connectivité réseau au cloud.  Vous devez prendre en compte le coût de l’infrastructure réseau que vous utiliserez pour accéder au cloud et la provisionner de manière appropriée, en fonction de la quantité de données que vous prévoyez de déplacer entre StorageGRID et le cloud à l’aide du pool de stockage cloud.
@@ -65,6 +68,7 @@ NOTE: Lorsque des objets sont déplacés vers StorageGRID à partir d'un pool de
 
 
 
+[[s3-permissions-required-for-the-cloud-storage-pool-bucket]]
 == S3 : autorisations requises pour le compartiment Cloud Storage Pool
 
 Les politiques du bucket S3 externe utilisé pour un pool de stockage cloud doivent accorder à StorageGRID l'autorisation de déplacer un objet vers le bucket, d'obtenir l'état d'un objet, de restaurer un objet à partir du stockage Glacier lorsque cela est nécessaire, etc.  Idéalement, StorageGRID devrait avoir un accès de contrôle total au bucket(`s3:*` ); cependant, si cela n'est pas possible, la politique de bucket doit accorder les autorisations S3 suivantes à StorageGRID:
@@ -81,6 +85,7 @@ Les politiques du bucket S3 externe utilisé pour un pool de stockage cloud doiv
 
 
 
+[[s3-considerations-for-the-external-buckets-lifecycle]]
 == S3 : Considérations relatives au cycle de vie du bucket externe
 
 Le mouvement des objets entre StorageGRID et le bucket S3 externe spécifié dans le pool de stockage cloud est contrôlé par les règles ILM et les stratégies ILM actives dans StorageGRID.  En revanche, la transition des objets du compartiment S3 externe spécifié dans le pool de stockage Cloud vers Amazon S3 Glacier ou S3 Glacier Deep Archive (ou vers une solution de stockage qui implémente la classe de stockage Glacier) est contrôlée par la configuration du cycle de vie de ce compartiment.
@@ -114,12 +119,14 @@ Si vous souhaitez transférer des objets du pool de stockage cloud vers S3 Glaci
 
 
 
+[[azure-considerations-for-access-tier]]
 == Azure : Considérations relatives au niveau d'accès
 
 Lorsque vous configurez un compte de stockage Azure, vous pouvez définir le niveau d’accès par défaut sur Chaud ou Froid.  Lors de la création d'un compte de stockage à utiliser avec un pool de stockage cloud, vous devez utiliser le niveau Hot comme niveau par défaut.  Même si StorageGRID définit immédiatement le niveau sur Archive lorsqu'il déplace des objets vers le pool de stockage cloud, l'utilisation d'un paramètre par défaut sur Chaud garantit qu'aucun frais de suppression anticipée ne vous sera facturé pour les objets supprimés du niveau Froid avant le minimum de 30 jours.
 
 
 
+[[azure-lifecycle-management-not-supported]]
 == Azure : la gestion du cycle de vie n'est pas prise en charge
 
 N’utilisez pas la gestion du cycle de vie du stockage Azure Blob pour le conteneur utilisé avec un pool de stockage cloud.  Les opérations du cycle de vie peuvent interférer avec les opérations du pool de stockage Cloud.

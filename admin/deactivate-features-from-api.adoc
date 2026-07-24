@@ -36,6 +36,7 @@ Une fois la demande terminée, la fonctionnalité Modifier le mot de passe racin
 
 
 
+[[reactivate-deactivated-features]]
 == Réactiver les fonctionnalités désactivées
 
 Par défaut, vous pouvez utiliser l’API de gestion de grille pour réactiver une fonctionnalité qui a été désactivée.  Cependant, si vous souhaitez empêcher que les fonctionnalités désactivées ne soient réactivées, vous pouvez désactiver la fonctionnalité *activateFeatures* elle-même.

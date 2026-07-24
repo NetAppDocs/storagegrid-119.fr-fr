@@ -4,6 +4,7 @@
 
 
 
+[[what-is-s3-object-lock]]
 == Qu'est-ce que S3 Object Lock ?
 
 La fonctionnalité StorageGRID S3 Object Lock est une solution de protection d'objets équivalente à S3 Object Lock dans Amazon Simple Storage Service (Amazon S3).
@@ -20,6 +21,7 @@ En effet, tous les objets nouvellement ingérés ont des paramètres de rétenti
 
 
 
+[[retention-modes]]
 === Modes de rétention
 
 La fonctionnalité de verrouillage d'objet StorageGRID S3 prend en charge deux modes de conservation pour appliquer différents niveaux de protection aux objets.  Ces modes sont équivalents aux modes de rétention d'Amazon S3.
@@ -42,6 +44,7 @@ La fonctionnalité de verrouillage d'objet StorageGRID S3 prend en charge deux m
 
 
 
+[[retention-settings-for-object-versions]]
 === Paramètres de conservation pour les versions d'objet
 
 Si un compartiment est créé avec le verrouillage d'objet S3 activé, les utilisateurs peuvent utiliser l'application cliente S3 pour spécifier éventuellement les paramètres de conservation suivants pour chaque objet ajouté au compartiment :
@@ -60,6 +63,7 @@ Pour plus de détails sur les paramètres de l'objet, voirlink:../s3/use-s3-api-
 
 
 
+[[default-retention-setting-for-buckets]]
 === Paramètre de rétention par défaut pour les buckets
 
 Si un bucket est créé avec le verrouillage d'objet S3 activé, les utilisateurs peuvent éventuellement spécifier les paramètres par défaut suivants pour le bucket :

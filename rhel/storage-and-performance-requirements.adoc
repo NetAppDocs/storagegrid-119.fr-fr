@@ -24,6 +24,7 @@ Vous devez utiliser des périphériques de blocs sauvegardés par RAID pour tout
 
 
 
+[[performance-requirements]]
 == Exigences de performance
 
 Les performances des volumes utilisés pour le pool de conteneurs, les données système et les métadonnées d’objet ont un impact significatif sur les performances globales du système.  Vous devez utiliser un stockage de niveau de performance (SAS 10K ou SSD) pour ces volumes afin de garantir des performances de disque adéquates en termes de latence, d'opérations d'entrée/sortie par seconde (IOPS) et de débit.  Vous pouvez utiliser le stockage de niveau de capacité (NL-SAS/SATA) pour le stockage persistant des données d'objet.
@@ -32,6 +33,7 @@ Les volumes utilisés pour le pool de conteneurs, les données système et les d
 
 
 
+[[requirements-for-hosts-that-use-netapp-ontap-storage]]
 == Exigences pour les hôtes qui utilisent le stockage NetApp ONTAP
 
 Si le nœud StorageGRID utilise le stockage attribué à partir d'un système NetApp ONTAP , vérifiez que le volume n'a pas de stratégie de hiérarchisation FabricPool activée.  La désactivation de la hiérarchisation FabricPool pour les volumes utilisés avec les nœuds StorageGRID simplifie le dépannage et les opérations de stockage.
@@ -41,6 +43,7 @@ NOTE: N'utilisez jamais FabricPool pour hiérarchiser les données liées à Sto
 
 
 
+[[number-of-hosts-required]]
 == Nombre d'hôtes requis
 
 Chaque site StorageGRID nécessite un minimum de trois nœuds de stockage.
@@ -52,6 +55,7 @@ D'autres types de nœuds, tels que les nœuds d'administration ou les nœuds de 
 
 
 
+[[number-of-storage-volumes-for-each-host]]
 == Nombre de volumes de stockage pour chaque hôte
 
 Le tableau suivant indique le nombre de volumes de stockage (LUN) requis pour chaque hôte et la taille minimale requise pour chaque LUN, en fonction des nœuds qui seront déployés sur cet hôte.
@@ -139,6 +143,7 @@ NOTE: En fonction du niveau d'audit configuré, de la taille des entrées utilis
 
 
 
+[[minimum-storage-space-for-a-host]]
 == Espace de stockage minimum pour un hôte
 
 Le tableau suivant indique l’espace de stockage minimum requis pour chaque type de nœud.  Vous pouvez utiliser ce tableau pour déterminer la quantité minimale de stockage que vous devez fournir à l'hôte dans chaque catégorie de stockage, en fonction des nœuds qui seront déployés sur cet hôte.
@@ -182,6 +187,7 @@ _non applicable_
 |===
 
 
+[[example-calculating-the-storage-requirements-for-a-host]]
 == Exemple : Calcul des besoins de stockage d'un hôte
 
 Supposons que vous envisagiez de déployer trois nœuds sur le même hôte : un nœud de stockage, un nœud d’administration et un nœud de passerelle. Vous devez fournir un minimum de neuf volumes de stockage à l’hôte.  Vous aurez besoin d'un minimum de 300 Go de stockage de niveau performance pour les conteneurs de nœuds, de 670 Go de stockage de niveau performance pour les données système et les journaux de transactions, et de 12 To de stockage de niveau capacité pour les données d'objet.
@@ -274,6 +280,8 @@ Nœud de passerelle
 |===
 
 
+[[storage-requirements-for-storage-nodes]]
+[[storage_req_SN]]
 == Exigences de stockage pour les nœuds de stockage
 
 Un nœud de stockage basé sur un logiciel peut avoir de 1 à 48 volumes de stockage ; 3 volumes de stockage ou plus sont recommandés. Chaque volume de stockage doit être de 4 To ou plus.

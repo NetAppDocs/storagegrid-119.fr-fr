@@ -20,12 +20,14 @@ Pour en savoir plus, rendez-vous surlink:../admin/using-grid-management-api.html
 
 
 
+[[review-compliance-settings-after-enabling-global-s3-object-lock]]
 == Vérifier les paramètres de conformité après avoir activé le verrouillage global des objets S3
 
 Vérifiez les paramètres de conformité des locataires existants après avoir activé le paramètre global de verrouillage d’objet S3.  Lorsque vous activez ce paramètre, les paramètres de verrouillage d'objet S3 par locataire dépendent de la version de StorageGRID au moment de la création du locataire.
 
 
 
+[[legacy-mgmt-api-requests-removed]]
 == Suppression des requêtes héritées de l'API de gestion
 
 Ces demandes héritées ont été supprimées :
@@ -36,6 +38,7 @@ Ces demandes héritées ont été supprimées :
 
 
 
+[[changes-to-get-privatestorage-usage-api]]
 == Modifications apportées à `GET /private/storage-usage` API
 
 * Une nouvelle propriété, `usageCacheDuration` , a été ajouté au corps de la réponse.  Cette propriété spécifie la durée (en secondes) pendant laquelle le cache de recherche d'utilisation reste valide.  Cette valeur s'applique lors de la vérification de l'utilisation par rapport au quota de stockage du locataire et aux limites de capacité du bucket.
@@ -45,6 +48,7 @@ Ces demandes héritées ont été supprimées :
 
 
 
+[[changes-to-get-cross-grid-replication-api]]
 == Modifications apportées à `GET cross-grid-replication` API
 
 L'API GET */org/containers/:name/cross-grid-replication* ne nécessite plus l'accès root(`rootAccess` ) autorisation ; cependant, vous devez appartenir à un groupe d'utilisateurs disposant de l'autorisation Gérer tous les compartiments(`manageAllContainers` ) ou Voir tous les buckets(`viewAllContainers` ) autorisation.

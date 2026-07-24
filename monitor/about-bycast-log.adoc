@@ -19,6 +19,7 @@ En option, vous pouvez modifier la destination des journaux d'audit et envoyer l
 
 
 
+[[file-rotation-for-bycast-log]]
 == Rotation des fichiers pour bycast.log
 
 Quand le `bycast.log` le fichier atteint 1 Go, le fichier existant est enregistré et un nouveau fichier journal est démarré.
@@ -39,6 +40,7 @@ link:collecting-log-files-and-system-data.html["Collecter les fichiers journaux 
 
 
 
+[[messages-in-bycast-log]]
 == Messages dans bycast.log
 
 Messages dans `bycast.log` sont écrits par l'ADE (Asynchronous Distributed Environment).  ADE est l'environnement d'exécution utilisé par les services de chaque nœud de grille.
@@ -99,6 +101,7 @@ Message
 |===
 
 
+[[message-severities-in-bycast-log]]
 == Gravités des messages dans bycast.log
 
 Les messages dans `bycast.log` Des niveaux de gravité sont attribués.
@@ -113,6 +116,7 @@ Par exemple:
 
 
 
+[[error-codes-in-bycast-log]]
 == Codes d'erreur dans `bycast.log`
 
 La plupart des messages d'erreur dans `bycast.log` contenir des codes d'erreur.

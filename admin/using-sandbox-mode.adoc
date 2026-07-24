@@ -55,6 +55,7 @@ Le mode Sandbox facilite l’exécution de cette configuration aller-retour et p
 
 
 
+[[access-sandbox-mode]]
 == Accéder au mode sandbox
 
 .Étapes
@@ -77,6 +78,7 @@ La section Fournisseur d’identité apparaît.
 
 
 
+[[enter-identity-provider-details]]
 == Entrez les détails du fournisseur d'identité
 
 .Étapes
@@ -223,6 +225,7 @@ image::../media/save_button_green_checkmark.gif[Bouton Enregistrer avec une coch
 
 
 
+[[configure-relying-party-trusts-enterprise-applications-or-sp-connections]]
 == Configurer les approbations des parties de confiance, les applications d'entreprise ou les connexions SP
 
 Lorsque la configuration est enregistrée, l'avis de confirmation du mode Sandbox apparaît.  Cet avis confirme que le mode sandbox est désormais activé et fournit des instructions générales.
@@ -285,6 +288,7 @@ Vous devez créer une connexion SP pour chaque nœud d’administration indiqué
 ====
 
 
+[[test-sso-connections]]
 == Tester les connexions SSO
 
 Avant d'appliquer l'utilisation de l'authentification unique pour l'ensemble de votre système StorageGRID , vous devez confirmer que l'authentification unique et la déconnexion unique sont correctement configurées pour chaque nœud d'administration.
@@ -366,6 +370,7 @@ Si vous voyez un message indiquant que la page a expiré, sélectionnez le bouto
 ====
 
 
+[[enable-single-sign-on]]
 == Activer l'authentification unique
 
 Une fois que vous avez confirmé que vous pouvez utiliser SSO pour vous connecter à chaque nœud d'administration, vous pouvez activer SSO pour l'ensemble de votre système StorageGRID .

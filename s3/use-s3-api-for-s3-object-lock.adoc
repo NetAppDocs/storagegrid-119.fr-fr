@@ -15,6 +15,7 @@ Si le paramètre global de verrouillage d'objet S3 est activé pour votre systè
 
 
 
+[[how-to-enable-s3-object-lock-for-a-bucket]]
 == Comment activer le verrouillage d'objet S3 pour un bucket
 
 Si le paramètre global de verrouillage d'objet S3 est activé pour votre système StorageGRID , vous pouvez éventuellement activer le verrouillage d'objet S3 lorsque vous créez chaque bucket.
@@ -31,12 +32,14 @@ S3 Object Lock nécessite le contrôle de version du bucket, qui est activé aut
 
 
 
+[[default-retention-settings-for-a-bucket]]
 == Paramètres de conservation par défaut pour un bucket
 
 Lorsque le verrouillage d'objet S3 est activé pour un compartiment, vous pouvez éventuellement activer la rétention par défaut pour le compartiment et spécifier un mode de rétention par défaut et une période de rétention par défaut.
 
 
 
+[[default-retention-mode]]
 === Mode de rétention par défaut
 
 * En mode CONFORMITÉ :
@@ -57,12 +60,14 @@ Lorsque le verrouillage d'objet S3 est activé pour un compartiment, vous pouvez
 
 
 
+[[default-retention-period]]
 === Période de conservation par défaut
 
 Chaque bucket peut avoir une période de conservation par défaut spécifiée en années ou en jours.
 
 
 
+[[how-to-set-default-retention-for-a-bucket]]
 == Comment définir la rétention par défaut pour un bucket
 
 Pour définir la rétention par défaut d’un bucket, utilisez l’une de ces méthodes :
@@ -73,6 +78,7 @@ Pour définir la rétention par défaut d’un bucket, utilisez l’une de ces m
 
 
 
+[[putobjectlockconfiguration]]
 === Configuration de PutObjectLock
 
 La demande PutObjectLockConfiguration vous permet de définir et de modifier le mode de conservation par défaut et la période de conservation par défaut pour un bucket sur lequel le verrouillage d'objet S3 est activé.  Vous pouvez également supprimer les paramètres de conservation par défaut précédemment configurés.
@@ -115,6 +121,7 @@ Authorization: _authorization-string_
 ----
 
 
+[[how-to-determine-the-default-retention-for-a-bucket]]
 == Comment déterminer la rétention par défaut d'un bucket
 
 Pour déterminer si le verrouillage d'objet S3 est activé pour un bucket et pour voir le mode de conservation par défaut et la période de conservation, utilisez l'une de ces méthodes :
@@ -125,6 +132,7 @@ Pour déterminer si le verrouillage d'objet S3 est activé pour un bucket et pou
 
 
 
+[[getobjectlockconfiguration]]
 === Obtenir la configuration du verrouillage de l'objet
 
 La demande GetObjectLockConfiguration vous permet de déterminer si le verrouillage d'objet S3 est activé pour un compartiment et, s'il est activé, de voir s'il existe un mode de conservation par défaut et une période de conservation configurés pour le compartiment.
@@ -173,6 +181,7 @@ Server: AmazonS3
 ----
 
 
+[[how-to-specify-retention-settings-for-an-object]]
 == Comment spécifier les paramètres de conservation d'un objet
 
 Un bucket avec S3 Object Lock activé peut contenir une combinaison d'objets avec et sans paramètres de conservation S3 Object Lock.
@@ -227,6 +236,7 @@ Vous pouvez utiliser le `s3:object-lock-remaining-retention-days` clé de condit
 
 
 
+[[how-to-update-retention-settings-for-an-object]]
 == Comment mettre à jour les paramètres de conservation d'un objet
 
 Si vous devez mettre à jour les paramètres de conservation légale ou de rétention d'une version d'objet existante, vous pouvez effectuer les opérations de sous-ressources d'objet suivantes :
@@ -246,6 +256,7 @@ Si la nouvelle valeur de conservation légale est activée, l'objet est placé s
 
 
 
+[[how-to-use-governance-mode]]
 == Comment utiliser le mode GOUVERNANCE
 
 Les utilisateurs qui ont le `s3:BypassGovernanceRetention` l'autorisation peut contourner les paramètres de conservation actifs d'un objet qui utilise le mode GOUVERNANCE.  Toutes les opérations DELETE ou PutObjectRetention doivent inclure le `x-amz-bypass-governance-retention:true` en-tête de requête.  Ces utilisateurs peuvent effectuer ces opérations supplémentaires :

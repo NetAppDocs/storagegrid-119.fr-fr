@@ -15,6 +15,7 @@ Si l'autorisation *Utiliser la connexion à la fédération de grille* a été a
 
 
 
+[[workflow-for-cross-grid-replication]]
 == Flux de travail pour la réplication inter-grille
 
 Le diagramme de flux de travail résume les étapes que vous effectuerez pour configurer la réplication inter-grille entre les buckets sur deux grilles.  Ces étapes sont décrites plus en détail ci-dessous.
@@ -23,6 +24,7 @@ image::../media/grid-federation-cgr-workflow.png[Flux de travail de réplication
 
 
 
+[[configure-cross-grid-replication]]
 == Configurer la réplication inter-grille
 
 Avant de pouvoir utiliser la réplication inter-grille, vous devez vous connecter aux comptes locataires correspondants sur chaque grille et créer des buckets identiques. Ensuite, vous pouvez activer la réplication inter-grille sur l’un ou les deux buckets.
@@ -37,6 +39,7 @@ Avant de pouvoir utiliser la réplication inter-grille, vous devez vous connecte
 
 
 
+[[create-two-identical-buckets]]
 === Créer deux buckets identiques
 
 Dans un premier temps, connectez-vous aux comptes locataires correspondants sur chaque grille et créez des buckets identiques.
@@ -65,6 +68,7 @@ TIP: Selon les besoins, chaque bucket peut utiliser une région différente.
 
 
 
+[[enable-cross-grid-replication]]
 === Activer la réplication inter-réseaux
 
 Vous devez effectuer ces étapes avant d’ajouter des objets à l’un ou l’autre des compartiments.
@@ -112,6 +116,7 @@ Après quelques instants, un message de réussite apparaît. Les objets ajoutés
 
 
 
+[[test-replication-between-grids]]
 == Réplication des tests entre les grilles
 
 Si la réplication inter-grille est activée pour un bucket, vous devrez peut-être vérifier que la connexion et la réplication inter-grille fonctionnent correctement et que les buckets source et de destination répondent toujours à toutes les exigences (par exemple, le contrôle de version est toujours activé).
@@ -135,6 +140,7 @@ Si la connexion est saine, une bannière de réussite apparaît. Sinon, un messa
 
 
 
+[[disable-cross-grid-replication]]
 == Désactiver la réplication inter-grille
 
 Vous pouvez arrêter définitivement la réplication inter-grille si vous ne souhaitez plus copier d'objets vers l'autre grille.

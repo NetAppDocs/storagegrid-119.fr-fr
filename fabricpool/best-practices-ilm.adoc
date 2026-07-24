@@ -18,6 +18,7 @@ CAUTION: FabricPool n'a aucune connaissance des règles ou politiques ILM de Sto
 
 
 
+[[guidelines-for-using-ilm-with-fabricpool]]
 == Directives d'utilisation d'ILM avec FabricPool
 
 Lorsque vous utilisez l’assistant de configuration FabricPool , l’assistant crée automatiquement une nouvelle règle ILM pour chaque compartiment S3 que vous créez et ajoute cette règle à une stratégie inactive.  Vous êtes invité à activer la politique.  La règle créée automatiquement suit les meilleures pratiques recommandées : elle utilise le codage d'effacement 2+1 sur un seul site.

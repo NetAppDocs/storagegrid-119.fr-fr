@@ -15,6 +15,7 @@ Si vous prévoyez d'utiliser les services de la plateforme StorageGRID ou les po
 
 
 
+[[networking-for-platform-services]]
 == Mise en réseau des services de plateforme
 
 Comme décrit danslink:../admin/manage-platform-services-for-tenants.html["Gérer les services de la plateforme pour les locataires"] etlink:../tenant/considerations-for-platform-services.html["Gérer les services de la plateforme"] , les services de plateforme incluent des services externes qui fournissent l'intégration de la recherche, la notification d'événements et la réplication CloudMirror.
@@ -27,12 +28,14 @@ Les services de plateforme nécessitent un accès depuis les nœuds de stockage 
 
 
 
+[[networking-for-cloud-storage-pools]]
 == Mise en réseau pour les pools de stockage cloud
 
 Les pools de stockage cloud nécessitent également un accès depuis les nœuds de stockage aux points de terminaison fournis par le service externe utilisé, tel qu'Amazon S3 Glacier ou le stockage Microsoft Azure Blob. Pour plus d'informations, voirlink:../ilm/what-cloud-storage-pool-is.html["Qu'est-ce qu'un pool de stockage cloud"] .
 
 
 
+[[ports-for-platform-services-and-cloud-storage-pools]]
 == Ports pour les services de plateforme et les pools de stockage cloud
 
 Par défaut, les services de plateforme et les communications du Cloud Storage Pool utilisent les ports suivants :
@@ -47,6 +50,7 @@ Si vous utilisez un serveur proxy non transparent, vous devez égalementlink:../
 
 
 
+[[vlans-and-platform-services-and-cloud-storage-pools]]
 == VLAN et services de plateforme et pools de stockage cloud
 
 Vous ne pouvez pas utiliser les réseaux VLAN pour les services de plateforme ou les pools de stockage cloud.  Les points de terminaison de destination doivent être accessibles via le réseau Grid, Admin ou Client.

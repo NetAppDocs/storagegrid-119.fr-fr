@@ -17,12 +17,14 @@ Pour obtenir des informations générales sur l'équilibreur de charge StorageGR
 
 
 
+[[best-practices-for-tenant-access-to-the-load-balancer-endpoint-used-for-fabricpool]]
 == Bonnes pratiques pour l'accès des locataires au point de terminaison de l'équilibreur de charge utilisé pour FabricPool
 
 Vous pouvez contrôler quels locataires peuvent utiliser un point de terminaison d'équilibrage de charge spécifique pour accéder à leurs buckets.  Vous pouvez autoriser tous les locataires, autoriser certains locataires ou bloquer certains locataires.  Lors de la création d'un point de terminaison d'équilibrage de charge pour l'utilisation de FabricPool , sélectionnez *Autoriser tous les locataires*.  ONTAP crypte les données placées dans les buckets StorageGRID , donc peu de sécurité supplémentaire serait fournie par cette couche de sécurité supplémentaire.
 
 
 
+[[best-practices-for-the-security-certificate]]
 == Bonnes pratiques pour le certificat de sécurité
 
 Lorsque vous créez un point de terminaison d'équilibrage de charge StorageGRID pour l'utilisation de FabricPool , vous fournissez le certificat de sécurité qui permettra à ONTAP de s'authentifier auprès de StorageGRID.
@@ -38,12 +40,14 @@ Pour en savoir plus sur le certificat de serveur pour un point de terminaison d�
 
 
 
+[[add-certificate-to-ontap]]
 === Ajouter un certificat à ONTAP
 
 Lorsque vous ajoutez StorageGRID en tant que niveau cloud FabricPool , vous devez installer le même certificat sur le cluster ONTAP , y compris les certificats racine et tous les certificats d'autorité de certification (CA) subordonnés.
 
 
 
+[[manage-certificate-expiration]]
 === Gérer l'expiration des certificats
 
 

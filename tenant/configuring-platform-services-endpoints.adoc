@@ -17,6 +17,7 @@ L'accès aux services de la plateforme est activé pour chaque locataire par un 
 
 
 
+[[what-is-a-platform-services-endpoint]]
 == Qu'est-ce qu'un point de terminaison de services de plateforme ?
 
 Un point de terminaison de services de plateforme spécifie les informations dont StorageGRID a besoin pour accéder à la destination externe.
@@ -29,12 +30,14 @@ Vous pouvez utiliser le même point de terminaison comme destination pour plusie
 
 
 
+[[endpoints-for-cloudmirror-replication]]
 == Points de terminaison pour la réplication CloudMirror
 
 StorageGRID prend en charge les points de terminaison de réplication qui représentent des buckets S3.  Ces buckets peuvent être hébergés sur Amazon Web Services, le même déploiement StorageGRID ou un déploiement distant, ou un autre service.
 
 
 
+[[endpoints-for-notifications]]
 == Points de terminaison pour les notifications
 
 StorageGRID prend en charge les points de terminaison Amazon SNS et Kafka. Les points de terminaison Simple Queue Service (SQS) ou AWS Lambda ne sont pas pris en charge.
@@ -43,6 +46,7 @@ Pour les points de terminaison Kafka, le protocole TLS mutuel n'est pas pris en 
 
 
 
+[[endpoints-for-the-search-integration-service]]
 == Points de terminaison pour le service d'intégration de recherche
 
 StorageGRID prend en charge les points de terminaison d’intégration de recherche qui représentent les clusters Elasticsearch.  Ces clusters Elasticsearch peuvent être situés dans un centre de données local ou hébergés dans un cloud AWS ou ailleurs.

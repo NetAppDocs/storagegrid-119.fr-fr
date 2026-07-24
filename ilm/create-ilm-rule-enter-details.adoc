@@ -52,6 +52,7 @@ Si vous ne configurez pas de filtrage avancé, la règle s'applique à tous les 
 
 
 
+[[use-advanced-filters-in-ilm-rules]]
 == Utiliser des filtres avancés dans les règles ILM
 
 Le filtrage avancé vous permet de créer des règles ILM qui s'appliquent uniquement à des objets spécifiques en fonction de leurs métadonnées.  Lorsque vous configurez un filtrage avancé pour une règle, vous sélectionnez le type de métadonnées que vous souhaitez faire correspondre, sélectionnez un opérateur et spécifiez une valeur de métadonnées.  Lorsque les objets sont évalués, la règle ILM est appliquée uniquement aux objets dont les métadonnées correspondent au filtre avancé.
@@ -193,6 +194,7 @@ Par exemple, pour filtrer sur les objets qui ont une balise d'objet de `Image=Tr
 |===
 
 
+[[specify-multiple-metadata-types-and-values]]
 == Spécifier plusieurs types et valeurs de métadonnées
 
 Lorsque vous définissez un filtrage avancé, vous pouvez spécifier plusieurs types de métadonnées et plusieurs valeurs de métadonnées.  Par exemple, si vous souhaitez qu'une règle corresponde à des objets d'une taille comprise entre 10 Mo et 100 Mo, vous devez sélectionner le type de métadonnées *Taille de l'objet* et spécifier deux valeurs de métadonnées.

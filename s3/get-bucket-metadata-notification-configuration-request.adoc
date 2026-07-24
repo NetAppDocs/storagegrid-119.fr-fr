@@ -17,6 +17,7 @@ Vous devez disposer de l'autorisation s3:GetBucketMetadataNotification ou être 
 
 
 
+[[request-example]]
 == Exemple de demande
 
 Cette requête récupère la configuration de notification des métadonnées pour le bucket nommé `bucket` .
@@ -30,6 +31,7 @@ Host: _host_
 ----
 
 
+[[response]]
 == Réponse
 
 Le corps de la réponse inclut la configuration de notification de métadonnées pour le bucket.  La configuration de notification des métadonnées vous permet de déterminer comment le bucket est configuré pour l'intégration de la recherche.  Autrement dit, il vous permet de déterminer quels objets sont indexés et à quels points de terminaison leurs métadonnées d'objet sont envoyées.
@@ -153,6 +155,7 @@ Oui
 |===
 
 
+[[response-example]]
 == Exemple de réponse
 
 Le XML inclus entre le `<MetadataNotificationConfiguration></MetadataNotificationConfiguration>` Les balises montrent comment l'intégration avec un point de terminaison d'intégration de recherche est configurée pour le bucket.  Dans cet exemple, les métadonnées de l'objet sont envoyées à un index Elasticsearch nommé `current` et le type nommé `2017` qui est hébergé dans un domaine AWS nommé `records` .

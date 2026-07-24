@@ -22,6 +22,7 @@ image::../media/tenant_dashboard_with_buckets.png[Tableau de bord - Liste de cho
 
 
 
+[[tenant-account-information]]
 == Informations sur le compte du locataire
 
 La partie supérieure du tableau de bord affiche le nombre de buckets ou de conteneurs, de groupes et d’utilisateurs configurés.  Il affiche également le nombre de points de terminaison des services de la plateforme, si des points ont été configurés.  Sélectionnez les liens pour afficher les détails.
@@ -30,6 +31,7 @@ En fonction de lalink:tenant-management-permissions.html["autorisations de gesti
 
 
 
+[[storage-and-quota-usage]]
 == Utilisation du stockage et des quotas
 
 Le panneau Utilisation du stockage contient les informations suivantes :
@@ -64,6 +66,7 @@ NOTE: Pour modifier les unités des valeurs de stockage affichées dans le gesti
 
 
 
+[[quota-usage-alerts]]
 == Alertes d'utilisation des quotas
 
 Si les alertes d'utilisation de quota ont été activées dans le gestionnaire de grille, ces alertes apparaîtront dans le gestionnaire de locataires lorsque le quota est faible ou dépassé, comme suit :
@@ -77,6 +80,7 @@ Pensez à demander à votre administrateur de réseau d’augmenter le quota.
 
 
 
+[[bucket-capacity-usagecapacity-limit-usage]]
 == [[bucket-capacity-usage]]Utilisation de la limite de capacité
 
 Si vous avez défini une limite de capacité pour vos compartiments, le tableau de bord du gestionnaire de locataires affiche une liste des compartiments principaux par utilisation de la limite de capacité.
@@ -85,6 +89,7 @@ Si aucune limite n'est définie pour un bucket, sa capacité est illimitée.  Ce
 
 
 
+[[endpoint-errors]]
 == Erreurs de point de terminaison
 
 Si vous avez utilisé Grid Manager pour configurer un ou plusieurs points de terminaison à utiliser avec les services de plateforme, le tableau de bord Tenant Manager affiche une alerte si des erreurs de point de terminaison se sont produites au cours des sept derniers jours.

@@ -17,6 +17,7 @@ Il existe deux processus de vérification : la vérification en arrière-plan et
 
 
 
+[[what-is-background-verification]]
 == Qu’est-ce que la vérification des antécédents?
 
 Le processus de vérification en arrière-plan vérifie automatiquement et en continu les nœuds de stockage pour détecter les copies corrompues des données d'objet et tente automatiquement de réparer tous les problèmes qu'il détecte.
@@ -39,6 +40,7 @@ La vérification des antécédents s'exécute à un rythme continu conçu pour n
 
 
 
+[[alerts-related-to-background-verification]]
 === Alertes liées à la vérification des antécédents
 
 Si le système détecte un objet corrompu qu'il ne peut pas corriger automatiquement (parce que la corruption empêche l'identification de l'objet), l'alerte *Objet corrompu non identifié détecté* est déclenchée.
@@ -47,6 +49,7 @@ Si la vérification en arrière-plan ne peut pas remplacer un objet corrompu car
 
 
 
+[[change-the-background-verification-rate]]
 === Modifier le taux de vérification des antécédents
 
 Vous pouvez modifier la vitesse à laquelle la vérification en arrière-plan vérifie les données d'objet répliquées sur un nœud de stockage si vous avez des inquiétudes concernant l'intégrité des données.
@@ -124,6 +127,7 @@ NOTE: Si l'alerte *Objets perdus* a été déclenchée, le support technique peu
 
 
 
+[[what-is-object-existence-check]]
 == Qu'est-ce que la vérification de l'existence d'un objet ?
 
 La vérification de l'existence d'un objet vérifie si toutes les copies répliquées attendues des objets et des fragments codés par effacement existent sur un nœud de stockage.  La vérification de l'existence d'un objet ne vérifie pas les données de l'objet lui-même (la vérification en arrière-plan le fait) ; au lieu de cela, elle fournit un moyen de vérifier l'intégrité des périphériques de stockage, en particulier si un problème matériel récent a pu affecter l'intégrité des données.
@@ -138,6 +142,7 @@ La vérification de l'existence des objets lit les métadonnées de chaque objet
 
 
 
+[[run-object-existence-check]]
 === Exécuter la vérification de l'existence de l'objet
 
 Vous créez et exécutez une tâche de vérification de l’existence d’un objet à la fois.  Lorsque vous créez une tâche, vous sélectionnez les nœuds de stockage et les volumes que vous souhaitez vérifier.  Vous sélectionnez également la consistance du travail.

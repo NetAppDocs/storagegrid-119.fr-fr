@@ -52,6 +52,7 @@ NOTE: Si vous n'ajoutez pas de noms de domaine de point de terminaison S3 et que
 
 
 
+[[add-an-s3-endpoint-domain-name]]
 == Ajouter un nom de domaine de point de terminaison S3
 
 .Étapes
@@ -72,6 +73,7 @@ Désormais, lorsque les clients utilisent le point de terminaison `_bucket.s3.co
 
 
 
+[[rename-an-s3-endpoint-domain-name]]
 == Renommer un nom de domaine de point de terminaison S3
 
 Si vous modifiez un nom utilisé par les applications S3, les demandes de type hébergé virtuellement échoueront.
@@ -85,6 +87,7 @@ Si vous modifiez un nom utilisé par les applications S3, les demandes de type h
 
 
 
+[[delete-an-s3-endpoint-domain-name]]
 == Supprimer un nom de domaine de point de terminaison S3
 
 Si vous supprimez un nom utilisé par les applications S3, les demandes de type hébergé virtuellement échoueront.

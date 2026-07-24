@@ -17,6 +17,7 @@ Les stratégies de classification du trafic sont appliquées aux points de termi
 
 
 
+[[matching-rules]]
 == Règles de correspondance
 
 Chaque politique de classification du trafic contient une ou plusieurs règles de correspondance pour identifier le trafic réseau lié à une ou plusieurs des entités suivantes :
@@ -31,6 +32,7 @@ StorageGRID surveille le trafic qui correspond à n’importe quelle règle de l
 
 
 
+[[traffic-limiting]]
 == Limitation du trafic
 
 En option, vous pouvez ajouter les types de limites suivants à une politique :
@@ -52,6 +54,7 @@ Dans le gestionnaire de grille, vous pouvez afficher les graphiques de trafic et
 
 
 
+[[use-traffic-classification-policies-with-slas]]
 == Utiliser des politiques de classification du trafic avec des SLA
 
 Vous pouvez utiliser des stratégies de classification du trafic conjointement avec des limites de capacité et la protection des données pour appliquer des accords de niveau de service (SLA) qui fournissent des détails sur la capacité, la protection des données et les performances.

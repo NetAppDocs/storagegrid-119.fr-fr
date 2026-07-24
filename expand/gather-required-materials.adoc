@@ -79,6 +79,7 @@ Pour les versions prises en charge, voir le https://imt.netapp.com/matrix/#welco
 |===
 
 
+[[download-and-extract-the-storagegrid-installation-files]]
 == Téléchargez et extrayez les fichiers d'installation de StorageGRID
 
 .[[télécharger-et-extraire-les-fichiers-d'installation]]
@@ -413,6 +414,7 @@ NOTE: Pour l'installation de l'appareil, ces fichiers ne sont nécessaires que s
 
 
 
+[[verify-hardware-and-networking]]
 == Vérifier le matériel et le réseau
 
 Avant de commencer l’extension de votre système StorageGRID , assurez-vous des points suivants :

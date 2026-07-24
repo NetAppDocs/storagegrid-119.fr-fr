@@ -19,6 +19,7 @@ Le nombre de nœuds que vous devez ajouter dépend également du degré de rempl
 
 
 
+[[general-recommendation-for-adding-storage-capacity-for-erasure-coded-objects]]
 == Recommandation générale pour l'ajout de capacité de stockage pour les objets à code d'effacement
 
 Si vous souhaitez éviter des calculs détaillés, vous pouvez ajouter deux nœuds de stockage par site lorsque les nœuds de stockage existants atteignent 70 % de leur capacité.

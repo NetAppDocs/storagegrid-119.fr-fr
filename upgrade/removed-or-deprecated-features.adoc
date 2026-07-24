@@ -15,6 +15,7 @@ Certaines fonctionnalités et capacités ont été supprimées ou obsolètes dan
 
 
 
+[[definitions]]
 == Définitions
 
 Obsolète:: Cette fonctionnalité *ne devrait pas* être utilisée dans les nouveaux environnements de production.  Les environnements de production existants peuvent continuer à utiliser la fonctionnalité.
@@ -24,6 +25,7 @@ Supprimé:: Première version qui *ne* prend pas en charge la fonctionnalité.
 
 
 
+[[storagegrid-end-of-feature-support]]
 == Fin de la prise en charge des fonctionnalités de StorageGRID
 
 Les fonctionnalités obsolètes seront supprimées dans les versions majeures N+2.  Par exemple, si une fonctionnalité est obsolète dans la version N (par exemple, 6.3), la dernière version où la fonctionnalité existera est N+1 (par exemple, 6.4).  La version N+2 (par exemple, 6.5) est la première version lorsque la fonctionnalité n'existe pas dans le produit.

@@ -15,6 +15,7 @@ Les nœuds StorageGRID peuvent être déployés sur des machines virtuelles VMwa
 
 
 
+[[control-remote-ipmi-access-to-bmc]]
 == Contrôler l'accès IPMI à distance au BMC
 
 Vous pouvez activer ou désactiver l'accès IPMI à distance pour tous les appareils contenant un BMC. L'interface IPMI distante permet l'accès matériel de bas niveau à vos appliances StorageGRID par toute personne disposant d'un compte BMC et d'un mot de passe. Si vous n'avez pas besoin d'un accès IPMI à distance au BMC, désactivez cette option.
@@ -29,6 +30,7 @@ Vous pouvez activer ou désactiver l'accès IPMI à distance pour tous les appar
 
 
 
+[[firewall-configuration]]
 == Configuration du pare-feu
 
 Dans le cadre du processus de renforcement du système, vous devez vérifier les configurations du pare-feu externe et les modifier afin que le trafic soit accepté uniquement à partir des adresses IP et sur les ports à partir desquels il est strictement nécessaire.
@@ -48,24 +50,28 @@ Pour une liste de tous les ports internes et externes utilisés par StorageGRID,
 
 
 
+[[disable-unused-services]]
 == Désactiver les services inutilisés
 
 Pour tous les nœuds StorageGRID , vous devez désactiver ou bloquer l’accès aux services inutilisés. Par exemple, si vous ne prévoyez pas d’utiliser DHCP, utilisez le gestionnaire de grille pour fermer le port 68. Sélectionnez *CONFIGURATION* > *Contrôle du pare-feu* > *Gérer l'accès externe*. Modifiez ensuite le statut du port 68 de *Ouvert* à *Fermé*.
 
 
 
+[[virtualization-containers-and-shared-hardware]]
 == Virtualisation, conteneurs et matériel partagé
 
 Pour tous les nœuds StorageGRID , évitez d’exécuter StorageGRID sur le même matériel physique que des logiciels non approuvés.  Ne présumez pas que les protections de l’hyperviseur empêcheront les logiciels malveillants d’accéder aux données protégées par StorageGRID si StorageGRID et le logiciel malveillant existent sur le même matériel physique.  Par exemple, les attaques Meltdown et Spectre exploitent les vulnérabilités critiques des processeurs modernes et permettent aux programmes de voler des données en mémoire sur le même ordinateur.
 
 
 
+[[protect-nodes-during-installation]]
 == Protéger les nœuds pendant l'installation
 
 N'autorisez pas les utilisateurs non approuvés à accéder aux nœuds StorageGRID via le réseau lorsque les nœuds sont en cours d'installation.  Les nœuds ne sont pas totalement sécurisés tant qu’ils n’ont pas rejoint le réseau.
 
 
 
+[[guidelines-for-admin-nodes]]
 == Directives pour les nœuds d'administration
 
 Les nœuds d’administration fournissent des services de gestion tels que la configuration du système, la surveillance et la journalisation. Lorsque vous vous connectez au gestionnaire de grille ou au gestionnaire de locataires, vous vous connectez à un nœud d'administration.
@@ -85,6 +91,7 @@ Pour plus d'informations, consultez les instructions pourlink:../admin/index.htm
 
 
 
+[[guidelines-for-storage-nodes]]
 == Directives pour les nœuds de stockage
 
 Les nœuds de stockage gèrent et stockent les données et les métadonnées des objets.  Suivez ces directives pour sécuriser les nœuds de stockage dans votre système StorageGRID .
@@ -98,6 +105,7 @@ Les nœuds de stockage gèrent et stockent les données et les métadonnées des
 
 
 
+[[guidelines-for-gateway-nodes]]
 == Directives pour les nœuds de passerelle
 
 Les nœuds de passerelle fournissent une interface d'équilibrage de charge facultative que les applications clientes peuvent utiliser pour se connecter à StorageGRID.  Suivez ces directives pour sécuriser tous les nœuds de passerelle de votre système StorageGRID :
@@ -109,6 +117,7 @@ Les nœuds de passerelle fournissent une interface d'équilibrage de charge facu
 
 
 
+[[guidelines-for-hardware-appliance-nodes]]
 == Directives pour les nœuds d'appareils matériels
 
 Les appareils matériels StorageGRID sont spécialement conçus pour être utilisés dans un système StorageGRID .  Certains appareils peuvent être utilisés comme nœuds de stockage.  D’autres appareils peuvent être utilisés comme nœuds d’administration ou nœuds de passerelle.  Vous pouvez combiner des nœuds d'appareils avec des nœuds basés sur des logiciels ou déployer des grilles entièrement conçues et composées d'appareils.

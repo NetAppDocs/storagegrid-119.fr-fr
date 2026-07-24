@@ -19,12 +19,14 @@ Pour plus de détails sur la syntaxe des requêtes Prometheus, voir https://prom
 
 
 
+[[what-are-prometheus-metrics]]
 == Quelles sont les métriques Prometheus ?
 
 Les métriques Prometheus sont des mesures de séries chronologiques.  Le service Prometheus sur les nœuds d’administration collecte ces métriques à partir des services sur tous les nœuds.  Les métriques sont stockées sur chaque nœud d'administration jusqu'à ce que l'espace réservé aux données Prometheus soit plein.  Quand le `/var/local/mysql_ibdata/` le volume atteint sa capacité, les métriques les plus anciennes sont supprimées en premier.
 
 
 
+[[where-are-prometheus-metrics-used]]
 == Où sont utilisées les métriques Prometheus ?
 
 Les métriques collectées par Prometheus sont utilisées à plusieurs endroits dans le Grid Manager :
@@ -48,6 +50,7 @@ NOTE: Certaines fonctionnalités et éléments de menu de la page Métriques son
 
 
 
+[[list-of-most-common-metrics]]
 == Liste des mesures les plus courantes
 
 La liste suivante contient les métriques Prometheus les plus couramment utilisées.
@@ -147,6 +150,7 @@ quota_d'utilisation_locataire_de_grille_de_stockage_octets:: La quantité maxima
 
 
 
+[[get-a-list-of-all-metrics]]
 == Obtenez une liste de toutes les métriques
 
 [[obtain-all-metrics]]Pour obtenir la liste complète des métriques, utilisez l'API Grid Management.

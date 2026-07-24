@@ -15,6 +15,7 @@ Vous devez comprendre comment votre système StorageGRID sera affecté lorsque v
 
 
 
+[[storagegrid-hotfixes-are-non-disruptive]]
 == Les correctifs de StorageGRID ne sont pas perturbateurs
 
 Le système StorageGRID peut ingérer et récupérer des données à partir des applications clientes tout au long du processus de correctif.  Si vous approuvez tous les nœuds du même type pour le correctif (par exemple, les nœuds de stockage), les nœuds sont arrêtés un par un, de sorte qu'il n'y a aucun moment où tous les nœuds de grille ou tous les nœuds de grille d'un certain type sont indisponibles.
@@ -29,6 +30,7 @@ Pour permettre une disponibilité continue, assurez-vous que votre politique ILM
 
 
 
+[[client-applications-might-experience-short-term-disruptions]]
 == Les applications clientes peuvent subir des perturbations à court terme
 
 Le système StorageGRID peut ingérer et récupérer des données à partir d'applications clientes tout au long du processus de correctif logiciel. Cependant, les connexions clientes aux nœuds de passerelle ou aux nœuds de stockage individuels peuvent être temporairement interrompues si le correctif logiciel doit redémarrer les services sur ces nœuds.  La connectivité sera restaurée une fois le processus de correctif terminé et les services reprendront sur les nœuds individuels.
@@ -40,12 +42,14 @@ NOTE: Vous pouvez utiliser plusieurs passerelles et groupes de haute disponibili
 
 
 
+[[alerts-and-snmp-notifications-might-be-triggered]]
 == Des alertes et des notifications SNMP peuvent être déclenchées
 
 Des alertes et des notifications SNMP peuvent être déclenchées lorsque les services sont redémarrés et lorsque le système StorageGRID fonctionne dans un environnement à versions mixtes (certains nœuds de grille exécutant une version antérieure, tandis que d'autres ont été mis à niveau vers une version ultérieure).  En général, ces alertes et notifications disparaissent une fois le correctif terminé.
 
 
 
+[[configuration-changes-are-restricted]]
 == Les modifications de configuration sont restreintes
 
 Lors de l'application d'un correctif à StorageGRID:

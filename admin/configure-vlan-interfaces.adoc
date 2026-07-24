@@ -15,6 +15,7 @@ Vous pouvez créer des interfaces LAN virtuelles (VLAN) sur des nœuds d'adminis
 
 
 
+[[considerations-for-vlan-interfaces]]
 == Considérations relatives aux interfaces VLAN
 
 * Vous créez une interface VLAN en saisissant un ID VLAN et en choisissant une interface parent sur un ou plusieurs nœuds.
@@ -35,6 +36,7 @@ Vous pouvez créer des interfaces LAN virtuelles (VLAN) sur des nœuds d'adminis
 
 
 
+[[create-a-vlan-interface]]
 == Créer une interface VLAN
 
 .Avant de commencer
@@ -51,6 +53,7 @@ Vous pouvez utiliser Grid Manager pour créer des interfaces VLAN qui permettent
 
 
 
+[[access-the-wizard]]
 === Accéder à l'assistant
 
 .Étapes
@@ -60,6 +63,7 @@ Vous pouvez utiliser Grid Manager pour créer des interfaces VLAN qui permettent
 
 
 
+[[enter-details-for-the-vlan-interfaces]]
 === Saisissez les détails des interfaces VLAN
 
 .Étapes
@@ -73,6 +77,7 @@ Les ID VLAN n’ont pas besoin d’être uniques.  Par exemple, vous pouvez util
 
 
 
+[[choose-parent-interfaces]]
 === Choisir les interfaces parentes
 
 Le tableau répertorie les interfaces disponibles pour tous les nœuds d’administration et les nœuds de passerelle sur chaque site de votre grille.  Les interfaces réseau d'administration (eth1) ne peuvent pas être utilisées comme interfaces parentes et ne sont pas affichées.
@@ -90,6 +95,7 @@ image::../media/vlan-create-parent-interfaces.png[Interfaces parentes de l'assis
 
 
 
+[[confirm-the-settings]]
 === Confirmer les paramètres
 
 .Étapes
@@ -106,6 +112,7 @@ image::../media/vlan-create-parent-interfaces.png[Interfaces parentes de l'assis
 
 
 
+[[edit-a-vlan-interface]]
 == Modifier une interface VLAN
 
 Lorsque vous modifiez une interface VLAN, vous pouvez effectuer les types de modifications suivants :
@@ -139,6 +146,7 @@ Vous ne pouvez pas mettre à jour un ID VLAN si le VLAN est utilisé dans un gro
 
 
 
+[[remove-a-vlan-interface]]
 == Supprimer une interface VLAN
 
 Vous pouvez supprimer une ou plusieurs interfaces VLAN.

@@ -30,6 +30,7 @@ NOTE: Chaque grille peut contenir un maximum de 100 000 buckets.
 
 
 
+[[access-the-wizard]]
 == Accéder à l'assistant
 
 .Étapes
@@ -39,6 +40,7 @@ NOTE: Chaque grille peut contenir un maximum de 100 000 buckets.
 
 
 
+[[enter-details]]
 == Entrez les détails
 
 .Étapes
@@ -82,6 +84,7 @@ Votre administrateur StorageGRID gère les régions disponibles. La région d’
 
 
 
+[[manage-settings]]
 == Gérer les paramètres
 
 .Étapes

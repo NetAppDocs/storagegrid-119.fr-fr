@@ -15,6 +15,7 @@ Découvrez comment votre système StorageGRID sera affecté lors de la mise à n
 
 
 
+[[storagegrid-upgrades-are-non-disruptive]]
 == Les mises à niveau de StorageGRID ne provoquent aucune interruption
 
 Le système StorageGRID peut ingérer et récupérer des données à partir des applications clientes tout au long du processus de mise à niveau.  Si vous approuvez la mise à niveau de tous les nœuds du même type (par exemple, les nœuds de stockage), les nœuds sont arrêtés un par un, de sorte qu'il n'y a aucun moment où tous les nœuds de grille ou tous les nœuds de grille d'un certain type sont indisponibles.
@@ -29,6 +30,7 @@ Pour permettre une disponibilité continue, assurez-vous que votre politique ILM
 
 
 
+[[client-applications-might-experience-short-term-disruptions]]
 == Les applications clientes peuvent subir des perturbations à court terme
 
 Le système StorageGRID peut ingérer et récupérer des données à partir d'applications clientes tout au long du processus de mise à niveau. Cependant, les connexions clientes aux nœuds de passerelle ou aux nœuds de stockage individuels peuvent être temporairement interrompues si la mise à niveau doit redémarrer les services sur ces nœuds.  La connectivité sera restaurée une fois le processus de mise à niveau terminé et les services reprendront sur les nœuds individuels.
@@ -40,6 +42,7 @@ NOTE: Vous pouvez utiliser plusieurs passerelles et groupes de haute disponibili
 
 
 
+[[appliance-firmware-is-upgraded]]
 == Le micrologiciel de l'appareil est mis à niveau
 
 Pendant la mise à niveau vers StorageGRID 11.9 :
@@ -52,6 +55,7 @@ Pendant la mise à niveau vers StorageGRID 11.9 :
 
 
 
+[[ilm-policies-are-handled-differently-according-to-their-status]]
 == Les politiques ILM sont traitées différemment selon leur statut
 
 * La politique active restera la même après la mise à niveau.
@@ -61,6 +65,7 @@ Pendant la mise à niveau vers StorageGRID 11.9 :
 
 
 
+[[alerts-might-be-triggered]]
 == Des alertes peuvent être déclenchées
 
 Des alertes peuvent être déclenchées lorsque les services démarrent et s'arrêtent et lorsque le système StorageGRID fonctionne dans un environnement à versions mixtes (certains nœuds de grille exécutant une version antérieure, tandis que d'autres ont été mis à niveau vers une version ultérieure).  D'autres alertes peuvent être déclenchées une fois la mise à niveau terminée.
@@ -73,12 +78,14 @@ Une fois la mise à niveau terminée, vous pouvez consulter toutes les alertes l
 
 
 
+[[many-snmp-notifications-are-generated]]
 == De nombreuses notifications SNMP sont générées
 
 Sachez qu’un grand nombre de notifications SNMP peuvent être générées lorsque les nœuds de grille sont arrêtés et redémarrés pendant la mise à niveau.  Pour éviter les notifications excessives, décochez la case *Activer les notifications de l'agent SNMP* (*CONFIGURATION* > *Surveillance* > *Agent SNMP*) pour désactiver les notifications SNMP avant de démarrer la mise à niveau.  Ensuite, réactivez les notifications une fois la mise à niveau terminée.
 
 
 
+[[configuration-changes-are-restricted]]
 == Les modifications de configuration sont restreintes
 
 
@@ -106,6 +113,7 @@ Jusqu'à ce que la tâche *Étapes de mise à niveau finales* soit terminée :
 
 
 
+[[you-cant-view-bucket-details-or-manage-buckets-from-the-tenant-manager]]
 == Vous ne pouvez pas afficher les détails des buckets ni les gérer à partir du gestionnaire de locataires.
 
 Lors de la mise à niveau vers StorageGRID 11.9 (c'est-à-dire lorsque le système fonctionne comme un environnement de version mixte), vous ne pouvez pas afficher les détails des buckets ni gérer les buckets à l'aide du gestionnaire de locataires.  L’une des erreurs suivantes apparaît sur la page Buckets dans Tenant Manager :

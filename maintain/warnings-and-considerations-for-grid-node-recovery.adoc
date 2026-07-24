@@ -32,6 +32,7 @@ Suivez toujours la procédure de récupération pour le type spécifique de nœu
 
 
 
+[[preconditions-for-recovering-grid-nodes]]
 == Conditions préalables à la récupération des nœuds de grille
 
 Toutes les conditions suivantes sont supposées lors de la récupération des nœuds de grille :
@@ -44,12 +45,14 @@ Toutes les conditions suivantes sont supposées lors de la récupération des n�
 
 
 
+[[order-of-node-recovery-if-a-server-hosting-more-than-one-grid-node-fails]]
 == Ordre de récupération des nœuds en cas de défaillance d'un serveur hébergeant plusieurs nœuds de grille
 
 Si un serveur hébergeant plusieurs nœuds de grille tombe en panne, vous pouvez récupérer les nœuds dans n'importe quel ordre. Cependant, si le serveur défaillant héberge le nœud d’administration principal, vous devez d’abord récupérer ce nœud. La récupération du nœud d’administration principal en premier empêche les autres récupérations de nœuds de s’arrêter pendant qu’elles attendent de contacter le nœud d’administration principal.
 
 
 
+[[ip-addresses-for-recovered-nodes]]
 == Adresses IP des nœuds récupérés
 
 N'essayez pas de récupérer un nœud à l'aide d'une adresse IP actuellement attribuée à un autre nœud.  Lorsque vous déployez le nouveau nœud, utilisez l’adresse IP actuelle du nœud défaillant ou une adresse IP inutilisée.

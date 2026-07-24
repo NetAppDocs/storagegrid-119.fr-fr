@@ -15,6 +15,7 @@ L'utilisation de la fédération d'identité accélère la configuration des gro
 
 
 
+[[configure-identity-federation-for-grid-manager]]
 == Configurer la fédération d'identité pour Grid Manager
 
 Vous pouvez configurer la fédération d’identité dans Grid Manager si vous souhaitez que les groupes d’administrateurs et les utilisateurs soient gérés dans un autre système tel qu’Active Directory, Azure Active Directory (Azure AD), OpenLDAP ou Oracle Directory Server.
@@ -41,6 +42,7 @@ Vous pouvez configurer une source d’identité pour Grid Manager si vous souhai
 
 
 
+[[enter-the-configuration]]
 === Entrer la configuration
 
 .Étapes
@@ -142,6 +144,7 @@ Si vous sélectionnez ce paramètre, copiez et collez le certificat de sécurit�
 
 
 
+[[test-the-connection-and-save-the-configuration]]
 === Tester la connexion et enregistrer la configuration
 
 Après avoir saisi toutes les valeurs, vous devez tester la connexion avant de pouvoir enregistrer la configuration.  StorageGRID vérifie les paramètres de connexion pour le serveur LDAP et le format du nom d'utilisateur de liaison, si vous en avez fourni un.
@@ -170,6 +173,7 @@ image::../media/identity_federation_test_connection.png[Invite de fédération d
 
 
 
+[[force-synchronization-with-the-identity-source]]
 == Forcer la synchronisation avec la source d'identité
 
 Le système StorageGRID synchronise périodiquement les groupes fédérés et les utilisateurs à partir de la source d'identité.  Vous pouvez forcer le démarrage de la synchronisation si vous souhaitez activer ou restreindre les autorisations des utilisateurs le plus rapidement possible.
@@ -188,6 +192,7 @@ NOTE: L'alerte *Échec de la synchronisation de la fédération d'identité* est
 
 
 
+[[disable-identity-federation]]
 == Désactiver la fédération d'identité
 
 Vous pouvez désactiver temporairement ou définitivement la fédération d’identité pour les groupes et les utilisateurs. Lorsque la fédération d’identité est désactivée, il n’y a aucune communication entre StorageGRID et la source d’identité. Cependant, tous les paramètres que vous avez configurés sont conservés, ce qui vous permet de réactiver facilement la fédération d’identité à l’avenir.
@@ -208,6 +213,7 @@ Avant de désactiver la fédération d’identité, vous devez tenir compte des 
 
 
 
+[[guidelines-for-configuring-an-openldap-server]]
 == Directives pour la configuration d'un serveur OpenLDAP
 
 Si vous souhaitez utiliser un serveur OpenLDAP pour la fédération d’identité, vous devez configurer des paramètres spécifiques sur le serveur OpenLDAP.
@@ -217,12 +223,14 @@ CAUTION: Pour les sources d’identité qui ne sont pas ActiveDirectory ou Azure
 
 
 
+[[memberof-and-refint-overlays]]
 === Superpositions Memberof et refint
 
 Les superpositions memberof et refint doivent être activées.  Pour plus d'informations, consultez les instructions relatives à la maintenance de l'appartenance à un groupe inversé dans lehttp://www.openldap.org/doc/admin24/index.html["Documentation OpenLDAP : Guide de l'administrateur version 2.4"^] .
 
 
 
+[[indexing]]
 === Indexage
 
 Vous devez configurer les attributs OpenLDAP suivants avec les mots-clés d’index spécifiés :

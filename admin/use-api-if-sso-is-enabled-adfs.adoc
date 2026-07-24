@@ -15,6 +15,7 @@ Si vous avezlink:../admin/configuring-sso.html["configuré et activé l'authenti
 
 
 
+[[sign-in-to-the-api-if-single-sign-on-is-enabled]]
 == Sign in à l'API si l'authentification unique est activée
 
 Ces instructions s’appliquent si vous utilisez Active Directory comme fournisseur d’identité SSO.
@@ -242,6 +243,7 @@ Vous pouvez désormais utiliser `MYTOKEN` pour d'autres demandes, de la même ma
 
 
 
+[[sign-out-of-the-api-if-single-sign-on-is-enabled]]
 == Déconnectez-vous de l'API si l'authentification unique est activée
 
 Si l'authentification unique (SSO) a été activée, vous devez émettre une série de requêtes API pour vous déconnecter de l'API Grid Management ou de l'API Tenant Management.  Ces instructions s'appliquent si vous utilisez Active Directory comme fournisseur d'identité SSO

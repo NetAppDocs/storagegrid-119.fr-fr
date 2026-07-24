@@ -17,6 +17,7 @@ L'onglet Stockage s'affiche pour tous les nœuds, chaque site et l'ensemble de l
 
 
 
+[[storage-used-graphs]]
 == Graphiques utilisés pour le stockage
 
 Pour les nœuds de stockage, chaque site et l'ensemble de la grille, l'onglet Stockage inclut des graphiques indiquant la quantité de stockage utilisée par les données d'objet et les métadonnées d'objet au fil du temps.
@@ -28,6 +29,7 @@ image::../media/nodes_storage_node_storage_tab.png[Nœuds > Nœud de stockage > 
 
 
 
+[[disk-devices-volumes-and-object-stores-tables]]
 == Tableaux des périphériques de disque, des volumes et des magasins d'objets
 
 Pour tous les nœuds, l’onglet Stockage contient des détails sur les périphériques de disque et les volumes sur le nœud.  Pour les nœuds de stockage, le tableau Magasins d’objets fournit des informations sur chaque volume de stockage.

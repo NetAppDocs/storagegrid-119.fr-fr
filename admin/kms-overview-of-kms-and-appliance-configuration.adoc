@@ -21,6 +21,7 @@ L'organigramme montre la configuration de KMS et la configuration de l'appliance
 
 
 
+[[set-up-the-key-management-server-kms]]
 == Configurer le serveur de gestion des clés (KMS)
 
 La configuration d’un serveur de gestion de clés comprend les étapes de haut niveau suivantes.
@@ -52,6 +53,7 @@ link:kms-adding.html["Ajouter un serveur de gestion de clés (KMS)"]
 |===
 
 
+[[set-up-the-appliance]]
 == Installer l'appareil
 
 La configuration d’un nœud d’appareil pour l’utilisation de KMS comprend les étapes de haut niveau suivantes.
@@ -74,6 +76,7 @@ Voir https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/optional
 
 
 
+[[key-management-encryption-process-occurs-automatically]]
 == Processus de cryptage de gestion des clés (se produit automatiquement)
 
 Le chiffrement de gestion des clés comprend les étapes de haut niveau suivantes qui sont exécutées automatiquement.

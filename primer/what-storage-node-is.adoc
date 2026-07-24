@@ -17,6 +17,7 @@ Chaque site de votre système StorageGRID doit disposer d’au moins trois nœud
 
 
 
+[[types-of-storage-nodes]]
 == Types de nœuds de stockage
 
 Lors de l'installation, vous pouvez sélectionner le type de nœud de stockage que vous souhaitez installer.  Ces types sont disponibles pour les nœuds de stockage basés sur des logiciels et pour les nœuds de stockage basés sur des appliances qui prennent en charge la fonctionnalité :
@@ -78,6 +79,7 @@ Lors de l'installation de nœuds de données uniquement, la grille doit contenir
 
 
 
+[[primary-services-for-storage-nodes]]
 == Services principaux pour les nœuds de stockage
 
 Le tableau suivant présente les principaux services des nœuds de stockage ; toutefois, ce tableau ne répertorie pas tous les services de nœud.

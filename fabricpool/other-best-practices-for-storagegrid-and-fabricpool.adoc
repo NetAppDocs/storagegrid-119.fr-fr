@@ -15,6 +15,7 @@ Lors de la configuration d'un système StorageGRID à utiliser avec FabricPool, 
 
 
 
+[[audit-message-and-log-destinations]]
 == Destinations des messages d'audit et des journaux
 
 Les charges de travail FabricPool ont souvent un taux élevé d’opérations de lecture, ce qui peut générer un volume élevé de messages d’audit.
@@ -25,24 +26,28 @@ Les charges de travail FabricPool ont souvent un taux élevé d’opérations de
 
 
 
+[[object-encryption]]
 == Chiffrement d'objet
 
 Lors de la configuration de StorageGRID, vous pouvez éventuellement activer lelink:../admin/changing-network-options-object-encryption.html["option globale pour le chiffrement des objets stockés"] si le cryptage des données est requis pour d'autres clients StorageGRID .  Les données hiérarchisées de FabricPool vers StorageGRID sont déjà chiffrées, l'activation du paramètre StorageGRID n'est donc pas requise.  Les clés de chiffrement côté client appartiennent à ONTAP.
 
 
 
+[[object-compression]]
 == Compression d'objets
 
 Lors de la configuration de StorageGRID, n'activez pas lelink:../admin/configuring-stored-object-compression.html["option globale pour compresser les objets stockés"] .  Les données hiérarchisées de FabricPool vers StorageGRID sont déjà compressées.  L'utilisation de l'option StorageGRID ne réduira pas davantage la taille d'un objet.
 
 
 
+[[bucket-consistency]]
 == Consistance du seau
 
 Pour les buckets FabricPool , la cohérence de bucket recommandée est *Lecture après nouvelle écriture*, qui est la cohérence par défaut pour un nouveau bucket.  Ne modifiez pas les buckets FabricPool pour utiliser *Disponible* ou *Strong-site*.
 
 
 
+[[fabricpool-tiering]]
 == Hiérarchisation de FabricPool
 
 Si un nœud StorageGRID utilise le stockage attribué à partir d'un système NetApp ONTAP , vérifiez que le volume n'a pas de stratégie de hiérarchisation FabricPool activée.  Par exemple, si un nœud StorageGRID s'exécute sur un hôte VMware, assurez-vous que le volume qui sauvegarde la banque de données pour le nœud StorageGRID n'a pas de stratégie de hiérarchisation FabricPool activée.  La désactivation de la hiérarchisation FabricPool pour les volumes utilisés avec les nœuds StorageGRID simplifie le dépannage et les opérations de stockage.

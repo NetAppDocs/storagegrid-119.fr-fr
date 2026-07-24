@@ -20,6 +20,7 @@ Gérez vos groupes de locataires selon vos besoins pour afficher, modifier ou du
 
 
 
+[[view-or-edit-group]]
 == Afficher ou modifier le groupe
 
 Vous pouvez afficher et modifier les informations de base et les détails de chaque groupe.
@@ -106,6 +107,7 @@ Un message de réussite apparaît dans le coin supérieur droit.
 
 
 
+[[duplicate-group]]
 == Groupe en double
 
 Vous pouvez dupliquer un groupe existant pour créer de nouveaux groupes plus rapidement.
@@ -123,6 +125,7 @@ NOTE: Si votre compte locataire dispose de l'autorisation *Utiliser la connexion
 
 
 
+[[clone-groupsretry-group-clone]]
 == [[clone-groups]]Réessayer le clonage du groupe
 
 Pour réessayer un clonage qui a échoué :
@@ -136,6 +139,7 @@ Pour plus d'informations, voirlink:grid-federation-account-clone.html["Cloner de
 
 
 
+[[delete-one-or-more-groups]]
 == Supprimer un ou plusieurs groupes
 
 Vous pouvez supprimer un ou plusieurs groupes.  Tous les utilisateurs appartenant uniquement à un groupe supprimé ne pourront plus se connecter au gestionnaire de locataires ni utiliser le compte de locataire.

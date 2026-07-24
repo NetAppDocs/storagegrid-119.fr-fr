@@ -17,6 +17,7 @@ Pour un aperçu des options d'ingestion, voirlink:data-protection-options-for-in
 
 
 
+[[advantages-of-the-balanced-and-strict-options]]
 == Avantages des options Équilibré et Strict
 
 Par rapport à la validation double, qui crée des copies intermédiaires lors de l'ingestion, les deux options de placement synchrone peuvent offrir les avantages suivants :
@@ -29,6 +30,7 @@ Par rapport à la validation double, qui crée des copies intermédiaires lors d
 
 
 
+[[disadvantages-of-the-balanced-and-strict-options]]
 == Inconvénients des options Équilibré et Strict
 
 Par rapport à la validation double, les options équilibrée et stricte présentent certains inconvénients :
@@ -46,6 +48,7 @@ Par rapport à la validation double, les options équilibrée et stricte présen
 
 
 
+[[limitations-on-object-placements-with-the-balanced-and-strict-options]]
 == Limitations sur les placements d'objets avec les options Équilibré et Strict
 
 Les options Équilibré ou Strict ne peuvent pas être utilisées pour les règles ILM qui ont l'une de ces instructions de placement :
@@ -58,6 +61,7 @@ Ces restrictions existent parce que StorageGRID ne peut pas effectuer de copies 
 
 
 
+[[how-ilm-rules-and-consistency-interact-to-affect-data-protection]]
 == Comment les règles ILM et la cohérence interagissent pour affecter la protection des données
 
 Votre règle ILM et votre choix de cohérence affectent la manière dont les objets sont protégés.  Ces paramètres peuvent interagir.
@@ -78,6 +82,7 @@ NOTE: Avant de sélectionner une valeur de cohérence,link:../s3/consistency-con
 
 
 
+[[example-of-how-consistency-and-ilm-rules-can-interact]]
 == Exemple de la manière dont les règles de cohérence et les règles ILM peuvent interagir
 
 Supposons que vous ayez une grille à deux sites avec la règle ILM suivante et la cohérence suivante :

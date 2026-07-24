@@ -17,6 +17,7 @@ Pour des informations détaillées sur les réseaux StorageGRID , consultez leli
 
 
 
+[[guidelines-for-grid-network]]
 == Lignes directrices pour le réseau de grille
 
 Vous devez configurer un réseau Grid pour tout le trafic StorageGRID interne.  Tous les nœuds de grille sont sur le réseau de grille et doivent pouvoir communiquer avec tous les autres nœuds.
@@ -31,6 +32,7 @@ Lors de la configuration du réseau Grid, suivez ces instructions :
 
 
 
+[[guidelines-for-admin-network]]
 == Directives pour le réseau d'administration
 
 Le réseau d'administration est généralement utilisé pour les tâches administratives (employés de confiance utilisant Grid Manager ou SSH) et pour communiquer avec d'autres services de confiance tels que LDAP, DNS, NTP ou KMS (ou serveur KMIP).  Cependant, StorageGRID n'applique pas cette utilisation en interne.
@@ -43,6 +45,7 @@ Si vous utilisez le réseau d’administration, suivez ces instructions :
 
 
 
+[[guidelines-for-client-network]]
 == Lignes directrices pour le réseau de clients
 
 Le réseau client est généralement utilisé pour les locataires et pour communiquer avec des services externes, tels que le service de réplication CloudMirror ou un autre service de plateforme.  Cependant, StorageGRID n'applique pas cette utilisation en interne.

@@ -39,6 +39,7 @@ link:creating-node-configuration-files.html["Création de fichiers de configurat
 
 
 
+[[considerations-and-recommendations-for-mac-address-cloning]]
 == Considérations et recommandations pour le clonage d'adresses MAC
 
 .[[mac_address_cloning_rhel]]
@@ -46,6 +47,7 @@ Le clonage d'adresse MAC amène le conteneur à utiliser l'adresse MAC de l'hôt
 
 
 
+[[enabling-mac-cloning]]
 === Activation du clonage MAC
 
 Dans certains environnements, la sécurité peut être améliorée grâce au clonage d'adresse MAC, car cela vous permet d'utiliser une carte réseau virtuelle dédiée pour le réseau d'administration, le réseau de grille et le réseau client.  Le fait que le conteneur utilise l’adresse MAC de la carte réseau dédiée sur l’hôte vous permet d’éviter d’utiliser des configurations réseau en mode promiscuité.
@@ -72,6 +74,7 @@ NOTE: L'activation du clonage MAC sur un hôte virtuel sans activer également l
 
 
 
+[[mac-cloning-use-cases]]
 === Cas d'utilisation du clonage MAC
 
 Il y a deux cas d'utilisation à prendre en compte avec le clonage MAC :
@@ -87,6 +90,7 @@ Pour activer le clonage MAC, consultez lelink:creating-node-configuration-files.
 
 
 
+[[mac-cloning-example]]
 === Exemple de clonage MAC
 
 Exemple de clonage MAC activé avec un hôte ayant l'adresse MAC 11:22:33:44:55:66 pour l'interface ens256 et les clés suivantes dans le fichier de configuration du nœud :
@@ -100,6 +104,7 @@ Exemple de clonage MAC activé avec un hôte ayant l'adresse MAC 11:22:33:44:55:
 
 
 
+[[example-1-1-to-1-mapping-to-physical-or-virtual-nics]]
 == Exemple 1 : mappage 1 à 1 vers des cartes réseau physiques ou virtuelles
 
 L'exemple 1 décrit un mappage d'interface physique simple qui nécessite peu ou pas de configuration côté hôte.
@@ -114,6 +119,7 @@ Si le commutateur 1 est un commutateur physique, vous devez configurer les ports
 
 
 
+[[example-2-lacp-bond-carrying-vlans]]
 == Exemple 2 : liaison LACP transportant des VLAN
 
 .À propos de cette tâche

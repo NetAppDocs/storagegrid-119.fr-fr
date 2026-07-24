@@ -24,6 +24,7 @@ NOTE: Étant donné que le service d'intégration de recherche provoque l'envoi 
 
 
 
+[[search-integration-and-s3-buckets]]
 == Intégration de la recherche et buckets S3
 
 Vous pouvez activer le service d'intégration de recherche pour n'importe quel bucket versionné ou non versionné.  L'intégration de la recherche est configurée en associant la configuration XML de notification de métadonnées au bucket qui spécifie les objets sur lesquels agir et la destination des métadonnées de l'objet.
@@ -35,6 +36,7 @@ NOTE: Pour les balises et les métadonnées utilisateur, StorageGRID transmet de
 
 
 
+[[search-notifications]]
 == Notifications de recherche
 
 Les notifications de métadonnées sont générées et mises en file d'attente pour être envoyées chaque fois que :
@@ -52,6 +54,7 @@ Une fois que vous avez ajouté une configuration XML de notification de métadon
 
 
 
+[[search-integration-service-and-elasticsearch]]
 == Service d'intégration de recherche et Elasticsearch
 
 Le service d’intégration de recherche StorageGRID prend en charge un cluster Elasticsearch comme destination.  Comme pour les autres services de plateforme, la destination est spécifiée dans le point de terminaison dont l'URN est utilisée dans le XML de configuration du service.  Utilisez le https://imt.netapp.com/matrix/#welcome["Outil de matrice d'interopérabilité NetApp"^] pour déterminer les versions prises en charge d'Elasticsearch.

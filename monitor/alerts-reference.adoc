@@ -19,6 +19,7 @@ Certaines des alertes par défaut utilisentlink:commonly-used-prometheus-metrics
 
 
 
+[[appliance-alerts]]
 == Alertes sur les appareils électroménagers
 
 [cols="1a,2a"]
@@ -356,6 +357,7 @@ Impossible d'accéder à un périphérique de stockage.
 |===
 
 
+[[audit-and-syslog-alerts]]
 == Alertes d'audit et de syslog
 
 [cols="1a,2a"]
@@ -392,6 +394,7 @@ Le nœud ne peut pas transférer les journaux vers le serveur syslog externe et 
 |===
 
 
+[[bucket-alerts]]
 == Alertes de seau
 
 [cols="1a,2a"]
@@ -414,6 +417,7 @@ Un bucket FabricPool a le contrôle de version ou le verrouillage d'objet S3 act
 |===
 
 
+[[cassandra-alerts]]
 == Alertes Cassandra
 
 [cols="1a,2a"]
@@ -485,6 +489,7 @@ Cassandra a détecté une corruption de table.  Cassandra redémarre automatique
 |===
 
 
+[[cloud-storage-pool-alerts]]
 == Alertes du pool de stockage cloud
 
 [cols="1a,2a"]
@@ -507,6 +512,7 @@ Le certificat d’entité finale IAM Roles Anywhere est sur le point d’expirer
 |===
 
 
+[[cross-grid-replication-alerts]]
 == Alertes de réplication inter-réseaux
 
 [cols="1a,2a"]
@@ -529,6 +535,7 @@ Les demandes de réplication inter-grille sont en attente car une ressource n'es
 |===
 
 
+[[dhcp-alerts]]
 == Alertes DHCP
 
 [cols="1a,2a"]
@@ -558,6 +565,7 @@ Le serveur DHCP n'est pas disponible.
 |===
 
 
+[[debug-and-trace-alerts]]
 == Alertes de débogage et de traçage
 
 [cols="1a,2a"]
@@ -580,6 +588,7 @@ Lorsque la configuration de trace est activée, les performances du système peu
 |===
 
 
+[[email-and-autosupport-alerts]]
 == Alertes par e-mail et AutoSupport
 
 [cols="1a,2a"]
@@ -623,6 +632,7 @@ Au cours des dernières 24 heures, un utilisateur s'est connecté avec la consol
 |===
 
 
+[[erasure-coding-ec-alerts]]
 == Alertes de codage d'effacement (EC)
 
 [cols="1a,2a"]
@@ -659,6 +669,7 @@ Les fragments codés par effacement ne peuvent plus être vérifiés.  Les fragm
 |===
 
 
+[[expiration-of-certificates-alerts]]
 == Alertes d'expiration des certificats
 
 [cols="1a,2a"]
@@ -723,6 +734,7 @@ Le certificat du serveur présenté par le serveur syslog externe est sur le poi
 |===
 
 
+[[grid-network-alerts]]
 == Alertes du réseau Grid
 
 [cols="1a,2a"]
@@ -738,6 +750,7 @@ Le paramètre MTU pour l'interface du réseau de grille (eth0) diffère considé
 |===
 
 
+[[grid-federation-alerts]]
 == Alertes de la fédération du réseau
 
 [cols="1a,2a"]
@@ -760,6 +773,7 @@ La connexion de fédération de réseau entre le réseau local et le réseau dis
 |===
 
 
+[[high-usage-or-high-latency-alerts]]
 == Alertes d'utilisation élevée ou de latence élevée
 
 [cols="1a,2a"]
@@ -782,6 +796,7 @@ Le temps moyen des requêtes de métadonnées Cassandra est trop long.
 |===
 
 
+[[identity-federation-alerts]]
 == Alertes de fédération d'identité
 
 [cols="1a,2a"]
@@ -804,6 +819,7 @@ Impossible de synchroniser les groupes fédérés et les utilisateurs à partir 
 |===
 
 
+[[information-lifecycle-management-ilm-alerts]]
 == Alertes de gestion du cycle de vie de l'information (ILM)
 
 [cols="1a,2a"]
@@ -826,6 +842,7 @@ Le taux de numérisation ILM est défini sur moins de 100 objets/seconde.
 |===
 
 
+[[key-management-server-kms-alerts]]
 == Alertes du serveur de gestion des clés (KMS)
 
 [cols="1a,2a"]
@@ -904,6 +921,7 @@ Un nœud d’appareil n’a pas pu se connecter à un ou plusieurs serveurs du c
 |===
 
 
+[[load-balancer-alerts]]
 == Alertes de l'équilibreur de charge
 
 [cols="1a,2a"]
@@ -919,6 +937,7 @@ Un pourcentage élevé de connexions aux points de terminaison de l'équilibreur
 |===
 
 
+[[local-clock-offset-alerts]]
 == Alertes de décalage d'horloge locale
 
 [cols="1a,2a"]
@@ -934,6 +953,7 @@ Le décalage entre l'horloge locale et l'heure du protocole NTP (Network Time Pr
 |===
 
 
+[[low-memory-or-low-space-alerts]]
 == Alertes de faible mémoire ou d'espace insuffisant
 
 [cols="1a,2a"]
@@ -1019,6 +1039,7 @@ L'espace disponible dans le répertoire /tmp est faible.
 |===
 
 
+[[node-or-node-network-alerts]]
 == Alertes de nœud ou de réseau de nœuds
 
 [cols="1a,2a"]
@@ -1216,6 +1237,7 @@ Un nœud a redémarré de manière inattendue au cours des dernières 24 heures.
 |===
 
 
+[[object-alerts]]
 == Alertes d'objets
 
 [cols="1a,2a"]
@@ -1259,6 +1281,7 @@ Un fichier a été trouvé dans le stockage d’objets répliqués qui n’a pas
 |===
 
 
+[[platform-services-alerts]]
 == Alertes des services de la plateforme
 
 [cols="1a,2a"]
@@ -1281,6 +1304,7 @@ Trop peu de nœuds de stockage avec le service RSM sont en cours d'exécution ou
 |===
 
 
+[[storage-volume-alerts]]
 == Alertes de volume de stockage
 
 [cols="1a,2a"]
@@ -1324,6 +1348,7 @@ La réparation des données répliquées pour un volume réparé n'a pas pu êtr
 |===
 
 
+[[storagegrid-services-alerts]]
 == Alertes des services StorageGRID
 
 [cols="1a,2a"]
@@ -1367,6 +1392,7 @@ La configuration du service SSH n'est pas valide.  La configuration précédente
 |===
 
 
+[[tenant-alerts]]
 == Alertes locataires
 
 [cols="1a,2a"]

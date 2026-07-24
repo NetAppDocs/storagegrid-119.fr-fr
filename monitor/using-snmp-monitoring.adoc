@@ -19,6 +19,7 @@ Si vous souhaitez surveiller StorageGRID à l'aide du protocole SNMP (Simple Net
 
 
 
+[[capabilities]]
 == Capacités
 
 Chaque nœud StorageGRID exécute un agent SNMP, ou démon, qui fournit une MIB.  La MIB StorageGRID contient des définitions de table et de notification pour les alertes.  La MIB contient également des informations de description du système telles que la plate-forme et le numéro de modèle pour chaque nœud.  Chaque nœud StorageGRID prend également en charge un sous-ensemble d’objets MIB-II.
@@ -54,6 +55,7 @@ Chaque alerte est mappée à l’un des trois types d’interruption en fonction
 
 
 
+[[snmp-version-support]]
 == Prise en charge des versions SNMP
 
 Le tableau fournit un résumé de haut niveau de ce qui est pris en charge pour chaque version SNMP.
@@ -112,6 +114,7 @@ Utilisateur USM pour chaque destination de trap
 |===
 
 
+[[limitations]]
 == Limites
 
 * StorageGRID prend en charge l'accès MIB en lecture seule.  L'accès en lecture-écriture n'est pas pris en charge.

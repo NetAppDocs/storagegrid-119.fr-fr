@@ -28,6 +28,8 @@ image::../media/nodes_table.png[Menu des nœuds]
 
 
 
+[[connection-state-icons]]
+[[connection-state]]
 == Icônes d'état de connexion
 
 Si un nœud est déconnecté du réseau, l’une des icônes suivantes apparaît à côté du nom du nœud.
@@ -74,6 +76,7 @@ Si un nœud est déconnecté du réseau, il peut y avoir une alerte sous-jacente
 
 
 
+[[alert-icons]]
 == Icônes d'alerte
 
 S'il existe une alerte active pour un nœud, l'une des icônes suivantes apparaît à côté du nom du nœud :
@@ -86,6 +89,7 @@ image:../media/icon_alert_yellow_minor.png["Icône d'alerte mineure jaune"]*Mine
 
 
 
+[[view-details-for-a-system-site-or-node]]
 == Afficher les détails d'un système, d'un site ou d'un nœud
 
 Pour filtrer les informations affichées dans le tableau Nœuds, saisissez une chaîne de recherche dans le champ *Rechercher*.  Vous pouvez effectuer une recherche par nom de système, nom d'affichage ou type (par exemple, saisissez *gat* pour localiser rapidement tous les nœuds de passerelle).

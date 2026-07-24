@@ -15,6 +15,7 @@ Tous les services StorageGRID génèrent des messages d’audit pendant le fonct
 
 
 
+[[audit-message-flow]]
 == Flux de messages d'audit
 
 Les messages d'audit sont traités par les nœuds d'administration et par les nœuds de stockage dotés d'un service de contrôleur de domaine administratif (ADC).
@@ -29,6 +30,7 @@ image::../media/audit_message_flow.gif[Diagramme résumant le flux des messages 
 
 
 
+[[audit-message-retention]]
 === Rétention des messages d'audit
 
 StorageGRID utilise un processus de copie et de suppression pour garantir qu'aucun message d'audit n'est perdu avant de pouvoir être écrit dans le journal d'audit.
@@ -59,6 +61,7 @@ Les types de problèmes suivants peuvent entraîner une augmentation considérab
 
 
 
+[[large-audit-queue-alert-and-audit-messages-queued-amqs-alarm]]
 === Alerte de file d'attente d'audit volumineuse et alarme de messages d'audit en file d'attente (AMQS)
 
 Pour vous aider à surveiller la taille des files d'attente de messages d'audit au fil du temps, l'alerte *Grande file d'attente d'audit* et l'alarme AMQS héritée sont déclenchées lorsque le nombre de messages dans une file d'attente de nœud de stockage ou une file d'attente de nœud d'administration atteint certains seuils.
@@ -69,6 +72,7 @@ Si l’alerte ou l’alarme persiste et augmente en gravité, affichez un graphi
 
 
 
+[[duplicate-messages]]
 === Messages en double
 
 Le système StorageGRID adopte une approche conservatrice en cas de défaillance d'un réseau ou d'un nœud.  Pour cette raison, des messages en double peuvent exister dans le journal d'audit.

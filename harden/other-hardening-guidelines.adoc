@@ -15,6 +15,7 @@ En plus de suivre les directives de renforcement pour les réseaux et les nœuds
 
 
 
+[[temporary-installation-password]]
 == Mot de passe d'installation temporaire
 
 Pour sécuriser le système StorageGRID pendant l'installation, définissez un mot de passe sur la page de mot de passe du programme d'installation temporaire dans l'interface utilisateur d'installation de StorageGRID ou dans l'API d'installation.  Une fois défini, ce mot de passe s'applique à toutes les méthodes d'installation de StorageGRID, y compris l'interface utilisateur, l'API d'installation et `configure-storagegrid.py` scénario.
@@ -29,6 +30,7 @@ Pour plus d'informations, reportez-vous à :
 
 
 
+[[logs-and-audit-messages]]
 == Journaux et messages d'audit
 
 Protégez toujours les journaux StorageGRID et la sortie des messages d'audit de manière sécurisée.  Les journaux et les messages d'audit StorageGRID fournissent des informations précieuses du point de vue du support et de la disponibilité du système.  De plus, les informations et les détails contenus dans les journaux StorageGRID et dans la sortie des messages d'audit sont généralement de nature sensible.
@@ -39,6 +41,7 @@ Voir lelink:../monitor/logs-files-reference.html["Référence des fichiers journ
 
 
 
+[[netapp-autosupport]]
 == NetApp AutoSupport
 
 La fonctionnalité AutoSupport de StorageGRID vous permet de surveiller de manière proactive l'état de votre système et d'envoyer automatiquement des packages au site de support NetApp , à l'équipe de support interne de votre organisation ou à un partenaire de support.  Par défaut, l’envoi de packages AutoSupport à NetApp est activé lorsque StorageGRID est configuré pour la première fois.
@@ -49,6 +52,7 @@ AutoSupport prend en charge HTTPS, HTTP et SMTP pour les protocoles de transport
 
 
 
+[[cross-origin-resource-sharing-cors]]
 == Partage de ressources inter-origines (CORS)
 
 Vous pouvez configurer le partage de ressources inter-origines (CORS) pour un bucket S3 si vous souhaitez que ce bucket et les objets qu'il contient soient accessibles aux applications Web d'autres domaines.  En général, n'activez pas CORS à moins que cela ne soit nécessaire.  Si CORS est requis, limitez-le aux origines fiables.
@@ -57,6 +61,7 @@ Voir les étapes pourlink:../tenant/configuring-cross-origin-resource-sharing-co
 
 
 
+[[external-security-devices]]
 == Dispositifs de sécurité externes
 
 Une solution de renforcement complète doit aborder les mécanismes de sécurité en dehors de StorageGRID.  L’utilisation de périphériques d’infrastructure supplémentaires pour filtrer et limiter l’accès à StorageGRID est un moyen efficace d’établir et de maintenir une posture de sécurité stricte.  Ces dispositifs de sécurité externes comprennent des pare-feu, des systèmes de prévention des intrusions (IPS) et d’autres dispositifs de sécurité.
@@ -65,6 +70,7 @@ Un équilibreur de charge tiers est recommandé pour le trafic client non fiable
 
 
 
+[[ransomware-mitigation]]
 == Atténuation des risques de ransomware
 
 Aidez à protéger vos données d'objet contre les attaques de ransomware en suivant les recommandations de https://www.netapp.com/media/69498-tr-4921.pdf["Défense contre les ransomwares avec StorageGRID"^] .

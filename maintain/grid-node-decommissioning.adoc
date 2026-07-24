@@ -15,6 +15,7 @@ Vous pouvez utiliser la procédure de mise hors service de nœud pour supprimer 
 
 
 
+[[when-to-decommission-a-node]]
 == Quand mettre hors service un nœud
 
 Utilisez la procédure de mise hors service du nœud lorsque l’une des situations suivantes est vraie :
@@ -33,6 +34,7 @@ TIP: Si vous souhaitez remplacer un appareil plus ancien par un appareil plus r�
 
 
 
+[[how-to-decommission-a-node]]
 == Comment décommissionner un nœud
 
 Vous pouvez mettre hors service les nœuds de réseau connectés ou les nœuds de réseau déconnectés.
@@ -53,6 +55,7 @@ Pour les instructions, voirlink:decommissioning-disconnected-grid-nodes.html["D�
 
 
 
+[[what-to-consider-before-decommissioning-a-node]]
 == Éléments à prendre en compte avant de mettre hors service un nœud
 
 Avant d’effectuer l’une ou l’autre procédure, examinez les considérations relatives à chaque type de nœud :

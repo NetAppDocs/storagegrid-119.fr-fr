@@ -24,6 +24,7 @@ NOTE: Le contrôle de version ne peut être activé que sur les buckets créés 
 
 
 
+[[ilm-and-versioning]]
 == ILM et gestion des versions
 
 Les politiques ILM sont appliquées à chaque version d’un objet.  Un processus d'analyse ILM analyse en continu tous les objets et les réévalue par rapport à la politique ILM actuelle.  Toutes les modifications que vous apportez aux stratégies ILM sont appliquées à tous les objets précédemment ingérés.  Cela inclut les versions précédemment ingérées si le contrôle de version est activé.  L'analyse ILM applique de nouvelles modifications ILM aux objets précédemment ingérés.

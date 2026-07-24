@@ -27,6 +27,7 @@ Les en-têtes de requête suivants sont pris en charge :
 
 
 
+[[request-headers-for-server-side-encryption]]
 == En-têtes de requête pour le chiffrement côté serveur
 
 Si vous avez spécifié le chiffrement SSE-C pour la demande CreateMultipartUpload, vous devez également inclure les en-têtes de demande suivants dans chaque demande UploadPartCopy :
@@ -48,6 +49,7 @@ CAUTION: Les clés de chiffrement que vous fournissez ne sont jamais stockées. 
 
 
 
+[[versioning]]
 == Gestion des versions
 
 Le téléchargement en plusieurs parties consiste en des opérations distinctes pour lancer le téléchargement, répertorier les téléchargements, télécharger des parties, assembler les parties téléchargées et terminer le téléchargement.  Les objets sont créés (et versionnés si applicable) lorsque l'opération CompleteMultipartUpload est effectuée.

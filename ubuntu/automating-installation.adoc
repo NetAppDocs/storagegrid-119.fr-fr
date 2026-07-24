@@ -25,6 +25,7 @@ Le service hôte StorageGRID est installé par un package et piloté par des fic
 
 
 
+[[automate-the-installation-and-configuration-of-the-storagegrid-host-service]]
 == Automatiser l'installation et la configuration du service hôte StorageGRID
 
 Vous pouvez automatiser l’installation du service hôte StorageGRID à l’aide de frameworks d’orchestration standard tels qu’Ansible, Puppet, Chef, Fabric ou SaltStack.
@@ -46,12 +47,14 @@ Vous pouvez automatiser ces tâches :
 
 
 
+[[example-ansible-role-and-playbook]]
 === Exemple de rôle et de manuel Ansible
 
 Un exemple de rôle et de playbook Ansible est fourni avec l'archive d'installation dans le `/extras` dossier.  Le playbook Ansible montre comment le `storagegrid` le rôle prépare les hôtes et installe StorageGRID sur les serveurs cibles.  Vous pouvez personnaliser le rôle ou le manuel selon vos besoins.
 
 
 
+[[automate-the-configuration-of-storagegrid]]
 == Automatiser la configuration de StorageGRID
 
 Après avoir déployé les nœuds de grille, vous pouvez automatiser la configuration du système StorageGRID .

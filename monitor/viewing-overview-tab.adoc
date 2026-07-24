@@ -17,6 +17,7 @@ L'onglet Présentation s'affiche pour tous les nœuds.
 
 
 
+[[node-information]]
 == Informations sur le nœud
 
 La section Informations sur le nœud de l’onglet Présentation répertorie les informations de base sur le nœud.
@@ -53,6 +54,7 @@ NOTE: Un nœud peut apparaître comme inconnu lors des opérations d’arrêt g�
 
 
 
+[[alerts]]
 == Alertes
 
 La section Alertes de l’onglet Aperçu répertorie toutes leslink:monitoring-system-health.html#view-current-and-resolved-alerts["alertes affectant actuellement ce nœud qui n'ont pas été désactivées"] .  Sélectionnez le nom de l’alerte pour afficher des détails supplémentaires et les actions recommandées.

@@ -21,6 +21,7 @@ image::../media/nodes_page_load_balancer_tab.png[Onglet Équilibrage de charge d
 
 
 
+[[request-traffic]]
 == Demande de trafic
 
 Ce graphique fournit une moyenne mobile sur 3 minutes du débit des données transmises entre les points de terminaison de l'équilibreur de charge et les clients effectuant les demandes, en bits par seconde.
@@ -30,18 +31,21 @@ NOTE: Cette valeur est mise à jour à la fin de chaque requête.  Par conséque
 
 
 
+[[incoming-request-rate]]
 == Taux de demandes entrantes
 
 Ce graphique fournit une moyenne mobile sur 3 minutes du nombre de nouvelles requêtes par seconde, réparties par type de requête (GET, PUT, HEAD et DELETE).  Cette valeur est mise à jour lorsque les en-têtes d'une nouvelle requête ont été validés.
 
 
 
+[[average-request-duration-non-error]]
 == Durée moyenne de la requête (sans erreur)
 
 Ce graphique fournit une moyenne mobile sur 3 minutes des durées de requête, réparties par type de requête (GET, PUT, HEAD et DELETE).  La durée de chaque demande commence lorsqu'un en-tête de demande est analysé par le service Load Balancer et se termine lorsque le corps de la réponse complet est renvoyé au client.
 
 
 
+[[error-response-rate]]
 == Taux de réponse aux erreurs
 
 Ce graphique fournit une moyenne mobile sur 3 minutes du nombre de réponses d'erreur renvoyées aux clients par seconde, ventilées par code de réponse d'erreur.

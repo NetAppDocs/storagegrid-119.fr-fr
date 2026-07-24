@@ -15,6 +15,7 @@ Vous pouvez effectuer plusieurs tâches pour aider à déterminer la source des 
 
 
 
+[[admin-node-sign-in-errors]]
 == Erreurs de connexion au nœud d'administration
 
 Si vous rencontrez une erreur lorsque vous vous connectez à un nœud d'administration StorageGRID , votre système peut avoir un problème avec unlink:../troubleshoot/troubleshooting-network-hardware-and-platform-issues.html["réseautage"] ou https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/troubleshooting-hardware-installation-sg100-and-sg1000.html["matériel"^] problème, un problème aveclink:../primer/what-admin-node-is.html["Services du nœud d'administration"] , ou unlink:../maintain/recovering-failed-storage-volumes-and-rebuilding-cassandra-database.html["problème avec la base de données Cassandra"] sur les nœuds de stockage connectés.
@@ -165,6 +166,7 @@ Fournissez les journaux que vous avez collectés au support technique. Voir auss
 
 
 
+[[user-interface-issues]]
 == Problèmes d'interface utilisateur
 
 L'interface utilisateur du Grid Manager ou du Tenant Manager peut ne pas répondre comme prévu après la mise à niveau du logiciel StorageGRID .

@@ -15,6 +15,7 @@ Les nœuds d’administration fournissent des services de gestion tels que la co
 
 
 
+[[differences-between-primary-and-non-primary-admin-nodes]]
 == Différences entre les nœuds d'administration principaux et non principaux
 
 Lorsque vous vous connectez au gestionnaire de grille ou au gestionnaire de locataires, vous vous connectez à un nœud d'administration. Vous pouvez vous connecter à n’importe quel nœud d’administration, et chaque nœud d’administration affiche une vue similaire du système StorageGRID . Cependant, le nœud d’administration principal fournit plus de fonctionnalités que les nœuds d’administration non principaux. Par exemple, la plupart des procédures de maintenance doivent être effectuées à partir des nœuds d’administration principaux.
@@ -135,6 +136,7 @@ Oui. Agit comme un expéditeur de secours.
 |===
 
 
+[[preferred-senderpreferred-sender-admin-node]]
 == [[preferred-sender]]Nœud d'administration de l'expéditeur préféré
 
 Si votre déploiement StorageGRID inclut plusieurs nœuds d'administration, le nœud d'administration principal est l'expéditeur préféré pour les notifications d'alerte, les packages AutoSupport et les interruptions et informations SNMP.
@@ -153,6 +155,7 @@ NOTE: Lorsque vous testez les packages AutoSupport , tous les nœuds d’adminis
 
 
 
+[[primary-services-for-admin-nodes]]
 == Services principaux pour les nœuds d'administration
 
 Le tableau suivant présente les principaux services des nœuds d’administration ; cependant, ce tableau ne répertorie pas tous les services de nœud.

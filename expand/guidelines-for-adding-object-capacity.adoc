@@ -15,6 +15,7 @@ Vous pouvez étendre la capacité de stockage d'objets de votre système Storage
 
 
 
+[[guidelines-for-adding-storage-volumes]]
 == Directives pour l'ajout de volumes de stockage
 
 Avant d’ajouter des volumes de stockage aux nœuds de stockage existants, consultez les directives et limitations suivantes :
@@ -38,6 +39,7 @@ Après avoir décidé d'ajouter des volumes de stockage et déterminé les nœud
 
 
 
+[[guidelines-for-adding-storage-nodes]]
 == Directives pour l'ajout de nœuds de stockage
 
 Avant d’ajouter des nœuds de stockage à des sites existants, consultez les directives et limitations suivantes :
@@ -52,6 +54,7 @@ Avant d’ajouter des nœuds de stockage à des sites existants, consultez les d
 
 
 
+[[guidelines-for-adc-service-on-storage-nodes]]
 == Directives pour le service ADC sur les nœuds de stockage
 
 Lors de la configuration de l'extension, vous devez choisir d'inclure ou non le service de contrôleur de domaine administratif (ADC) sur chaque nouveau nœud de stockage. Le service ADC suit l'emplacement et la disponibilité des services du réseau.

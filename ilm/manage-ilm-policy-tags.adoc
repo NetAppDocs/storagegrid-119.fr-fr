@@ -20,6 +20,7 @@ Vous pouvez afficher les détails des balises de stratégie ILM, modifier une ba
 
 
 
+[[view-ilm-policy-tag-details]]
 == Afficher les détails de la balise de politique ILM
 
 Pour afficher les détails d’une balise :
@@ -32,6 +33,7 @@ Pour afficher les détails d’une balise :
 
 
 
+[[edit-ilm-policy-tag]]
 == Modifier la balise de politique ILM
 
 
@@ -50,6 +52,7 @@ Vous pouvez également sélectionner le nom de la balise.  La page de détails d
 
 
 
+[[remove-ilm-policy-tag]]
 == Supprimer la balise de politique ILM
 
 Lorsque vous supprimez une balise de stratégie, la stratégie par défaut sera appliquée à tous les compartiments auxquels cette balise est attribuée.

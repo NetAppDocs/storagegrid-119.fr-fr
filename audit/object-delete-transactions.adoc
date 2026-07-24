@@ -17,6 +17,7 @@ Tous les messages d’audit générés lors d’une transaction de suppression n
 
 
 
+[[s3-delete-audit-messages]]
 == S3 supprime les messages d'audit
 
 [cols="1a,1a,2a,1a,2a"]
@@ -38,6 +39,7 @@ link:sdel-s3-delete.html["SDEL : SUPPRESSION S3"]
 |===
 
 
+[[swift-delete-audit-messages]]
 == Suppression rapide des messages d'audit
 
 [cols="1a,1a,2a,1a,2a"]
@@ -59,6 +61,7 @@ link:wdel-swift-delete.html["WDEL : SUPPRESSION rapide"]
 |===
 
 
+[[example-s3-object-deletion]]
 == Exemple : suppression d'objet S3
 
 Lorsqu'un client S3 supprime un objet d'un nœud de stockage (service LDR), un message d'audit est généré et enregistré dans le journal d'audit.
@@ -68,6 +71,7 @@ NOTE: Tous les messages d’audit générés lors d’une transaction de suppres
 
 
 
+[[sdel-s3-delete]]
 === SDEL : Suppression S3
 
 La suppression d’objet commence lorsque le client envoie une demande DeleteObject à un service LDR.  Le message contient le bucket à partir duquel supprimer l'objet et la clé S3 de l'objet, qui est utilisée pour identifier l'objet.

@@ -18,6 +18,7 @@ NOTE: Si vous souhaitez envoyer vos journaux à un serveur syslog externe ou mod
 
 
 
+[[general-storagegrid-logs]]
 == Journaux généraux StorageGRID
 
 [cols="3a,3a,2a"]
@@ -49,6 +50,7 @@ Tous les nœuds
 |===
 
 
+[[cipher-related-logs]]
 == Journaux liés au chiffrement
 
 [cols="3a,3a,2a"]
@@ -85,6 +87,7 @@ Tous les nœuds
 |===
 
 
+[[grid-federation-logs]]
 == Journaux de la fédération de grille
 
 [cols="3a,3a,2a"]
@@ -100,6 +103,7 @@ Tous les nœuds
 |===
 
 
+[[nms-logs]]
 == Journaux NMS
 
 [cols="3a,3a,2a"]
@@ -136,6 +140,7 @@ Nœuds d'administration
 |===
 
 
+[[server-manager-logs]]
 == Journaux du gestionnaire de serveur
 
 [cols="3a,3a,2a"]
@@ -165,6 +170,7 @@ Tous les nœuds
 |===
 
 
+[[storagegrid-services-logs]]
 == Journaux des services StorageGRID
 
 [cols="3a,3a,2a"]
